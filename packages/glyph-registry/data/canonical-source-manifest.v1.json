@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "count": 32,
+  "sourceAuthority": "ASCEND atlas artwork supplied by Oleksandr",
+  "geometryPolicy": "exact-source-preservation",
+  "status": "vector-assets-ready-for-source-overlay-gate",
+  "families": {
+    "earth": 9,
+    "water": 5,
+    "fire": 6,
+    "air": 6,
+    "spirit": 6
+  },
+  "fireNames": ["Rising Rays","Split Chevrons","Central Core","Expanding Lines","Ascending Path","Ignition Point"],
+  "rule": "No source vector may be altered by the composition engine. Derived designs reference source glyph versions and transforms."
+}
