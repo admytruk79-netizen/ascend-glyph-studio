@@ -1,0 +1,9 @@
+{
+ "schema":"ascend.vectorization.v3",
+ "count":32,
+ "source":"user-supplied approved atlas rasters",
+ "method":"per-crop Otsu segmentation + full CHAIN_APPROX_NONE topology-preserving contours",
+ "status":"candidate-v3-needs-independent-renderback",
+ "rule":"No v3 candidate is canonical until independently rendered and visually/topologically compared against its locked source crop.",
+ "note":"All 32 v3 candidate SVGs have been generated in the working build; promotion remains deliberately blocked pending independent render-back."
+}
