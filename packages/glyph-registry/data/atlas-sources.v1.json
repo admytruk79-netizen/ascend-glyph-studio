@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "authority": "user-supplied ASCEND atlas sheets",
+  "atlases": {
+    "air": {"file":"7_20261001_211127_0024.png","width":1536,"height":864,"visibleFragments":6},
+    "fire": {"file":"6_20261001_211127_0023.png","width":1536,"height":864,"visibleFragments":6,
+      "names":["Rising Rays","Split Chevrons","Central Core","Expanding Lines","Ascending Path","Ignition Point"]},
+    "earth": {"file":"4_20261001_211127_0021.png","width":1536,"height":864,"visibleFragments":9},
+    "water": {"file":"5_20261001_211127_0022.png","width":1536,"height":864,"visibleFragments":5},
+    "spirit": {"file":"8_20261001_211127_0025.png","width":1536,"height":864,"visibleFragments":6}
+  },
+  "totalVisibleFragments": 32
+}
