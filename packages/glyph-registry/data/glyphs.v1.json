@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "source": "Ascend: Five Glyph Apparel System.png",
+  "provenance": "vector reconstruction from approved raster design board",
+  "status": "traced-source-geometry",
+  "glyphs": [
+    {
+      "id": "spirit.hemachatlas.v1",
+      "family": "spirit",
+      "name": "Hemachatlas Spirit",
+      "asset": "../assets/hemachatlas-spirit.svg",
+      "canonical": false,
+      "sourceStatus": "raster-traced"
+    },
+    {
+      "id": "fire.solaris.v1",
+      "family": "fire",
+      "name": "Solaris",
+      "asset": "../assets/solaris.svg",
+      "canonical": false,
+      "sourceStatus": "raster-traced"
+    },
+    {
+      "id": "water.lunethra.v1",
+      "family": "water",
+      "name": "Lunethra",
+      "asset": "../assets/lunethra.svg",
+      "canonical": false,
+      "sourceStatus": "raster-traced"
+    },
+    {
+      "id": "air.auraven.v1",
+      "family": "air",
+      "name": "Auraven",
+      "asset": "../assets/auraven.svg",
+      "canonical": false,
+      "sourceStatus": "raster-traced"
+    },
+    {
+      "id": "earth.hemachatlas.v1",
+      "family": "earth",
+      "name": "Hemachatlas Earth",
+      "asset": "../assets/hemachatlas-earth.svg",
+      "canonical": false,
+      "sourceStatus": "raster-traced"
+    }
+  ]
+}
