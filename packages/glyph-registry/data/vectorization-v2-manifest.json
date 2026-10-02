@@ -1,0 +1,138 @@
+{
+  "schema": "ascend.vectorization.v2",
+  "count": 32,
+  "status": "needs-review",
+  "method": "CHAIN_APPROX_NONE compound contour reconstruction",
+  "sourceAuthority": "approved raster crops",
+  "decision": "NO PROMOTION: render-back topology mismatch remains; correct hierarchy/stroke reconstruction before canonical approval",
+  "glyphs": [
+    {
+      "id": "earth-01",
+      "status": "needs-review"
+    },
+    {
+      "id": "earth-02",
+      "status": "needs-review"
+    },
+    {
+      "id": "earth-03",
+      "status": "needs-review"
+    },
+    {
+      "id": "earth-04",
+      "status": "needs-review"
+    },
+    {
+      "id": "earth-05",
+      "status": "needs-review"
+    },
+    {
+      "id": "earth-06",
+      "status": "needs-review"
+    },
+    {
+      "id": "earth-07",
+      "status": "needs-review"
+    },
+    {
+      "id": "earth-08",
+      "status": "needs-review"
+    },
+    {
+      "id": "earth-09",
+      "status": "needs-review"
+    },
+    {
+      "id": "water-01",
+      "status": "needs-review"
+    },
+    {
+      "id": "water-02",
+      "status": "needs-review"
+    },
+    {
+      "id": "water-03",
+      "status": "needs-review"
+    },
+    {
+      "id": "water-04",
+      "status": "needs-review"
+    },
+    {
+      "id": "water-05",
+      "status": "needs-review"
+    },
+    {
+      "id": "fire-01",
+      "status": "needs-review"
+    },
+    {
+      "id": "fire-02",
+      "status": "needs-review"
+    },
+    {
+      "id": "fire-03",
+      "status": "needs-review"
+    },
+    {
+      "id": "fire-04",
+      "status": "needs-review"
+    },
+    {
+      "id": "fire-05",
+      "status": "needs-review"
+    },
+    {
+      "id": "fire-06",
+      "status": "needs-review"
+    },
+    {
+      "id": "air-01",
+      "status": "needs-review"
+    },
+    {
+      "id": "air-02",
+      "status": "needs-review"
+    },
+    {
+      "id": "air-03",
+      "status": "needs-review"
+    },
+    {
+      "id": "air-04",
+      "status": "needs-review"
+    },
+    {
+      "id": "air-05",
+      "status": "needs-review"
+    },
+    {
+      "id": "air-06",
+      "status": "needs-review"
+    },
+    {
+      "id": "spirit-01",
+      "status": "needs-review"
+    },
+    {
+      "id": "spirit-02",
+      "status": "needs-review"
+    },
+    {
+      "id": "spirit-03",
+      "status": "needs-review"
+    },
+    {
+      "id": "spirit-04",
+      "status": "needs-review"
+    },
+    {
+      "id": "spirit-05",
+      "status": "needs-review"
+    },
+    {
+      "id": "spirit-06",
+      "status": "needs-review"
+    }
+  ]
+}
