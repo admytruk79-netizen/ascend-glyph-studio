@@ -1,1 +1,7 @@
-{"name":"ascend-glyph-studio","private":true,"version":"0.1.0","workspaces":["apps/*","packages/*","services/*"],"scripts":{"check":"npm run typecheck --workspaces --if-present","test":"npm test --workspaces --if-present"},"engines":{"node":">=20"}}
+{
+  "name":"ascend-glyph-studio","private":true,"version":"0.1.0",
+  "workspaces":["apps/*","packages/*","services/*"],
+  "scripts":{"deploy":"wrangler deploy","check":"npm run typecheck --workspaces --if-present","test":"npm test --workspaces --if-present"},
+  "devDependencies":{"wrangler":"^4.46.0"},
+  "engines":{"node":">=20"}
+}
