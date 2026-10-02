@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "policy": "immutable-source-geometry",
+  "sourceAuthority": "five user-supplied ASCEND atlas sheets",
+  "rules": {
+    "sourceGlyphsImmutable": true,
+    "generatorMayMutateSourceGeometry": false,
+    "allowedDerivedOperations": ["translate","uniform-scale","rotate","mirror-x","mirror-y","stack","overlay","nest","repeat","interlock"],
+    "canonicalPromotionRequiresSourceCoincidence": true,
+    "ambiguousGeometryMustNotBeGuessed": true
+  },
+  "families": {"air":6,"fire":6,"earth":9,"water":5,"spirit":6}
+}
