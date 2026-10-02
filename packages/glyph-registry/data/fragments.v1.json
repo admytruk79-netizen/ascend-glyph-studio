@@ -1,0 +1,206 @@
+{
+  "version": 1,
+  "sourceAuthority": "user-supplied ASCEND atlas sheets",
+  "status": "reconstruction-pass-1",
+  "note": "Do not promote to canonical-digital until structural overlay review is complete.",
+  "glyphs": [
+    {
+      "id": "air.fragment-01.v1",
+      "family": "air",
+      "sourceIndex": 1,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "air.fragment-02.v1",
+      "family": "air",
+      "sourceIndex": 2,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "air.fragment-03.v1",
+      "family": "air",
+      "sourceIndex": 3,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "air.fragment-04.v1",
+      "family": "air",
+      "sourceIndex": 4,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "air.fragment-05.v1",
+      "family": "air",
+      "sourceIndex": 5,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "air.fragment-06.v1",
+      "family": "air",
+      "sourceIndex": 6,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "earth.fragment-01.v1",
+      "family": "earth",
+      "sourceIndex": 1,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "earth.fragment-02.v1",
+      "family": "earth",
+      "sourceIndex": 2,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "earth.fragment-03.v1",
+      "family": "earth",
+      "sourceIndex": 3,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "earth.fragment-04.v1",
+      "family": "earth",
+      "sourceIndex": 4,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "earth.fragment-05.v1",
+      "family": "earth",
+      "sourceIndex": 5,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "earth.fragment-06.v1",
+      "family": "earth",
+      "sourceIndex": 6,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "earth.fragment-07.v1",
+      "family": "earth",
+      "sourceIndex": 7,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "earth.fragment-08.v1",
+      "family": "earth",
+      "sourceIndex": 8,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "earth.fragment-09.v1",
+      "family": "earth",
+      "sourceIndex": 9,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "water.fragment-01.v1",
+      "family": "water",
+      "sourceIndex": 1,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "water.fragment-02.v1",
+      "family": "water",
+      "sourceIndex": 2,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "water.fragment-03.v1",
+      "family": "water",
+      "sourceIndex": 3,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "water.fragment-04.v1",
+      "family": "water",
+      "sourceIndex": 4,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "water.fragment-05.v1",
+      "family": "water",
+      "sourceIndex": 5,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "spirit.fragment-01.v1",
+      "family": "spirit",
+      "sourceIndex": 1,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "spirit.fragment-02.v1",
+      "family": "spirit",
+      "sourceIndex": 2,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "spirit.fragment-03.v1",
+      "family": "spirit",
+      "sourceIndex": 3,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "spirit.fragment-04.v1",
+      "family": "spirit",
+      "sourceIndex": 4,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "spirit.fragment-05.v1",
+      "family": "spirit",
+      "sourceIndex": 5,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "spirit.fragment-06.v1",
+      "family": "spirit",
+      "sourceIndex": 6,
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "fire.rising-rays.v1",
+      "family": "fire",
+      "sourceIndex": 1,
+      "name": "Rising Rays",
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "fire.split-chevrons.v1",
+      "family": "fire",
+      "sourceIndex": 2,
+      "name": "Split Chevrons",
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "fire.central-core.v1",
+      "family": "fire",
+      "sourceIndex": 3,
+      "name": "Central Core",
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "fire.expanding-lines.v1",
+      "family": "fire",
+      "sourceIndex": 4,
+      "name": "Expanding Lines",
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "fire.ascending-path.v1",
+      "family": "fire",
+      "sourceIndex": 5,
+      "name": "Ascending Path",
+      "status": "reconstructed-pending-structural-review"
+    },
+    {
+      "id": "fire.ignition-point.v1",
+      "family": "fire",
+      "sourceIndex": 6,
+      "name": "Ignition Point",
+      "status": "reconstructed-pending-structural-review"
+    }
+  ]
+}
