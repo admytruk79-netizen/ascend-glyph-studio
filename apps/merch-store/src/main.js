@@ -1,8 +1,12 @@
 import "./style.css"; import {loadProducts,createCart,shopifyReady,domain} from "./shopify.js";
 const fallback=[
- {id:"earth",title:"Earth — Foundation Shirt",description:"A quiet linen field with a canonical Earth glyph border.",priceRange:{minVariantPrice:{amount:"0",currencyCode:"USD"}},featuredImage:null,variants:{nodes:[]}},
- {id:"fire",title:"Fire — Rising Shirt",description:"Structured repetition built from the Fire family.",priceRange:{minVariantPrice:{amount:"0",currencyCode:"USD"}},featuredImage:null,variants:{nodes:[]}},
- {id:"object",title:"108 Keys Notebook",description:"A restrained object carrying the ASCEND symbolic language.",priceRange:{minVariantPrice:{amount:"0",currencyCode:"USD"}},featuredImage:null,variants:{nodes:[]}}
+ {id:"quiet",title:"Quiet / Poltava Shirt",description:"Tonal Air + Spirit glyph sequence. Fine collar, cuff and placket placement with deliberate negative space.",priceRange:{minVariantPrice:{amount:"0",currencyCode:"USD"}},featuredImage:null,variants:{nodes:[]}},
+ {id:"guard",title:"Guard / Podillia Shirt",description:"Earth + Fire glyphs arranged as a dense protective threshold at cuff and lower sleeve.",priceRange:{minVariantPrice:{amount:"0",currencyCode:"USD"}},featuredImage:null,variants:{nodes:[]}},
+ {id:"ridge",title:"Ridge / Hutsul Overshirt",description:"Compact multi-band Fire + Earth rhythm, generated only from ASCEND glyph geometry.",priceRange:{minVariantPrice:{amount:"0",currencyCode:"USD"}},featuredImage:null,variants:{nodes:[]}},
+ {id:"current",title:"Current / Polissia Tee",description:"A restrained Water + Earth repeat: long continuity, clear rhythm and a limited field.",priceRange:{minVariantPrice:{amount:"0",currencyCode:"USD"}},featuredImage:null,variants:{nodes:[]}},
+ {id:"threshold",title:"Threshold / Spirit Jacket",description:"Layered Spirit + Water glyph bands with controlled premium accents and quiet body.",priceRange:{minVariantPrice:{amount:"0",currencyCode:"USD"}},featuredImage:null,variants:{nodes:[]}},
+ {id:"kharakternyk",title:"Kharakternyk / Field Shirt",description:"A disciplined capsule: one canonical mark, coded border sequence, no costume or invented historical motif.",priceRange:{minVariantPrice:{amount:"0",currencyCode:"USD"}},featuredImage:null,variants:{nodes:[]}},
+ {id:"journal",title:"108 Keys Field Journal",description:"A cloth-bound object using the same canonical glyph grammar as the garments.",priceRange:{minVariantPrice:{amount:"0",currencyCode:"USD"}},featuredImage:null,variants:{nodes:[]}}
 ];
 const app=document.querySelector("#app");
 app.innerHTML=`<header><a class="brand" href="#">ASCEND <span>OBJECTS</span></a><nav><a href="#shop">Shop</a><a href="#language">Glyph Language</a><button id="bag">Bag <b>0</b></button></nav></header>
