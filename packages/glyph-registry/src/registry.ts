@@ -8,7 +8,7 @@ export type GlyphRecord=Readonly<{
 }>;
 export const glyphRegistry:GlyphRecord[]=Object.entries(GLYPH_COUNTS).flatMap(([family,count])=>Array.from({length:count},(_,i)=>{
  const id=`${family}-${String(i+1).padStart(2,"0")}`;
- const verified=id==="water-02";
+ const verified=id==="water-02"||id==="water-03";
  return {id,family:family as GlyphFamily,sourceIndex:i+1,sourceVersion:1,
   displayName:family==="fire"?FIRE_NAMES[i]:null,immutable:true,
   sourceRasterKey:`glyphs/${family}/${id}/source/v1.png`,
