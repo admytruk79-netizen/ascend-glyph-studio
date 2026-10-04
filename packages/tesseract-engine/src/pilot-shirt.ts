@@ -2,6 +2,7 @@ import type {GarmentZoneKind} from "./garment";
 import type {PatternPiece,PatternPieceKind,Point,ShirtPattern} from "./pattern";
 import {resolvePilotShirtMeasurements} from "./shirt-measurements";
 import type {SizeProfile} from "./garment";
+import {addConstructionNoGoZones} from "./pattern-projector";
 
 const rect=(w:number,h:number):Point[]=>[{x:0,y:0},{x:w,y:0},{x:w,y:h},{x:0,y:h}];
 const zone=(kind:GarmentZoneKind,w:number,h:number,wrapGroupId?:string)=>({kind,polygon:rect(w,h),wrapGroupId});
@@ -23,7 +24,7 @@ export function buildPilotShirtPattern(size:SizeProfile):ShirtPattern{
  const cl=piece("cuff-left","cuff-left",cuffW,120,[zone("cuff",cuffW,120,"left-arm")]);
  const cr=piece("cuff-right","cuff-right",cuffW,120,[zone("cuff",cuffW,120,"right-arm")]);
  const collar=piece("collar","collar",m.collarMm/2,110,[zone("collar",m.collarMm/2,110,"neck")]);
- const pieces=[frontL,frontR,back,yoke,sl,sr,cl,cr,collar];
+ const pieces=[frontL,frontR,back,yoke,sl,sr,cl,cr,collar].map(addConstructionNoGoZones);
  const seamGraph=[
   ["front-left","yoke"],["front-right","yoke"],["back","yoke"],
   ["yoke","sleeve-left"],["yoke","sleeve-right"],["sleeve-left","cuff-left"],["sleeve-right","cuff-right"],["yoke","collar"]
