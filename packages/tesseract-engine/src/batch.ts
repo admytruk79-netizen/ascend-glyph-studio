@@ -29,7 +29,7 @@ export function runTesseractBatch(input:BatchInput):BatchResult{
  const issues=input.garment?validateGarmentConfiguration(input.garment,input.compatibilityRules??[]):ConfigurationIssue[]=[];
  if(issues.some(x=>x.severity==="error"))return {seed:input.seed,candidateCount:0,garmentId:input.garment?.id,configurationIssues:issues,candidates:[]};
  const intent:IntentVector={...input.intent,materialId:input.garment?.material.substrateId??input.intent.materialId};
- const found:SearchCandidate[]=searchDesignSpace({seed:input.seed,intent,principles:input.principles,antiStyle:input.antiStyle,population:input.population??64,generations:input.generations??5,keep:input.keep??12});
+ const found:SearchCandidate[]=searchDesignSpace({seed:input.seed,intent,principles:input.principles,antiStyle:input.antiStyle,visualCorpus:input.visualCorpus,population:input.population??64,generations:input.generations??5,keep:input.keep??12});
  const zones=input.garment?designableZones(input.garment):[];
  const candidates=found.map((c,i)=>{
   const enriched=expandRecursiveGrammar(c.topology,`${input.seed}:${i}`,{depth:2,maxNodes:48,mutationRate:.2}),complexity=grammarComplexity(enriched);
