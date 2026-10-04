@@ -18,9 +18,11 @@ import {topologyVisualVector} from "./candidate-visual-vector";
 import {assessVisual,type VisualAssessment} from "./visual-assessment";
 import {adaptForProduction,type MediumId,type ProductionAdaptation} from "./medium-compiler";
 import {assessManufacturability,type ManufacturabilityReport} from "./manufacturability";
+import type {LearnedConstraintSnapshot} from "./learned-constraints";
+import {chooseProductionLimits} from "./learned-constraints";
 import {expandRecursiveGrammar,grammarComplexity} from "./recursive-grammar";
 
-export type BatchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];antiStyle?:WeightedRef[];garment?:GarmentConfiguration;compatibilityRules?:CompatibilityRule[];visualCorpus?:ImageObservation[];medium?:MediumId;population?:number;generations?:number;keep?:number};
+export type BatchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];antiStyle?:WeightedRef[];garment?:GarmentConfiguration;compatibilityRules?:CompatibilityRule[];visualCorpus?:ImageObservation[];medium?:MediumId;learnedConstraints?:LearnedConstraintSnapshot;population?:number;generations?:number;keep?:number};
 export type ZoneProjection={zoneId:string;kind:GarmentZone["kind"];surface:GarmentZone["surface"];wrap:boolean;behavior:ZoneBehavior;svg:SvgProjection};
 export type BatchCandidate={rank:number;score:number;novelty:number;trace:string[];genomeId:string;projection:SvgProjection;zones:ZoneProjection[];continuity:ContinuityEvent[];registration:ContinuitySegment[];trajectories:GarmentTrajectory[];garmentProjection?:GarmentSvg;evolution:EvolutionPlan;visualAssessment?:VisualAssessment;productionAdaptation?:ProductionAdaptation;manufacturability?:ManufacturabilityReport};
 export type BatchResult={seed:string;candidateCount:number;garmentId?:string;configurationIssues:ConfigurationIssue[];candidates:BatchCandidate[]};
@@ -35,9 +37,10 @@ export function runTesseractBatch(input:BatchInput):BatchResult{
  const zones=input.garment?designableZones(input.garment):[];
  const candidates=found.map((c,i)=>{
   const enriched=expandRecursiveGrammar(c.topology,`${input.seed}:${i}`,{depth:2,maxNodes:48,mutationRate:.2}),complexity=grammarComplexity(enriched);
-  const productionAdaptation=input.medium?adaptForProduction(enriched,input.medium):undefined;
+  const learnedLimits=input.medium?chooseProductionLimits(input.medium,input.learnedConstraints):undefined;
+  const productionAdaptation=input.medium?adaptForProduction(enriched,input.medium,undefined,learnedLimits):undefined;
   const effectiveTopology=productionAdaptation?.topology??enriched;
-  const manufacturability=input.medium?assessManufacturability(effectiveTopology,input.medium):undefined;
+  const manufacturability=input.medium?assessManufacturability(effectiveTopology,input.medium,learnedLimits):undefined;
   const evolution=planPrimitiveEvolution(effectiveTopology);
   const visualAssessment=input.visualCorpus?.length?assessVisual(topologyVisualVector(effectiveTopology),input.visualCorpus):undefined;
   const genome=genomeFromTopology(`${input.seed}:${i}`,effectiveTopology),projection=projectSemanticGeometry(genome);
