@@ -1,0 +1,13 @@
+import { EngineIntent } from "./core";import { generateCandidates,ScoredCandidate } from "./candidates";import { ablatePrinciples,AblationResult } from "./ablation";import { FeatureVector,compareOriginality } from "./originality";
+export interface SourceReference{id:string;features:FeatureVector;culturalRisk?:"low"|"review"|"blocked"}
+export interface EvaluatedCandidate{candidate:ScoredCandidate;qualityScore:number;originality:number;ablationCoverage:number;decision:"eligible"|"review"|"reject";reasons:string[]}
+function fv(c:ScoredCandidate):FeatureVector{const n:Record<string,number>={};for(const f of c.zones.flatMap(z=>z.features))n[f.primitive]=(n[f.primitive]??0)+1;const total=Math.max(1,Object.values(n).reduce((a,b)=>a+b,0));return{axis:(n.axis??0)/total,enclosure:(n.enclosure??0)/total,branch:(n.branch??0)/total,step:(n.step??0)/total,pulse:(n.pulse??0)/total,chevron:(n.chevron??0)/total,band:(n.band??0)/total,lattice:(n.lattice??0)/total,meander:(n.meander??0)/total,radial:(n.rosette??0)/total}}
+export function evaluateCandidates(intent:EngineIntent,sources:SourceReference[],count=8):EvaluatedCandidate[]{
+ const candidates=generateCandidates(intent,count),ablation: AblationResult[]=ablatePrinciples(intent),ablationCoverage=ablation.length?ablation.filter(x=>x.meaningful).length/ablation.length:0;
+ return candidates.map(candidate=>{const reasons=[...candidate.rejectionReasons];let decision:"eligible"|"review"|"reject"=reasons.length?"review":"eligible",maxSimilarity=0;
+  for(const s of sources){const x=compareOriginality(fv(candidate),s.features);maxSimilarity=Math.max(maxSimilarity,x.similarity);if(x.tooClose){reasons.push(`too close to source ${s.id}`);decision="reject"}if(s.culturalRisk==="blocked"&&x.similarity>=.65){reasons.push(`blocked cultural source proximity: ${s.id}`);decision="reject"}else if(s.culturalRisk==="review"&&x.similarity>=.65&&decision!=="reject"){reasons.push(`cultural review required: ${s.id}`);decision="review"}}
+  if(ablationCoverage<.5&&decision==="eligible"){reasons.push("weak causal influence from principles");decision="review"}
+  const originality=1-maxSimilarity,qualityScore=Math.max(0,Math.min(1,candidate.score*.55+originality*.3+ablationCoverage*.15));
+  return{candidate,qualityScore:Number(qualityScore.toFixed(4)),originality:Number(originality.toFixed(4)),ablationCoverage:Number(ablationCoverage.toFixed(4)),decision,reasons};
+ }).sort((a,b)=>b.qualityScore-a.qualityScore||a.candidate.ordinal-b.candidate.ordinal)
+}
