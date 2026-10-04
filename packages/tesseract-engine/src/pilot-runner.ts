@@ -16,7 +16,7 @@ export function pilotGarment(sizeId="pilot-m"):GarmentConfiguration{
  const pattern=buildPilotShirtPattern(size);
  const zones=pattern.pieces.flatMap(p=>p.designZones.map((z,i)=>{
   const xs=z.polygon.map(q=>q.x),ys=z.polygon.map(q=>q.y);
-  return {id:`${p.id}:${z.kind}:${i}`,kind:z.kind,surface:(z.wrapGroupId?"tapered-cylinder":"flat") as const,
+  return {id:`${p.id}:${z.kind}:${i}`,kind:z.kind,surface:z.wrapGroupId?"tapered-cylinder" as const:"flat" as const,
    widthMm:Math.max(...xs)-Math.min(...xs),heightMm:Math.max(...ys)-Math.min(...ys),
    editable:true,wrapAllowed:!!z.wrapGroupId};
  }));
