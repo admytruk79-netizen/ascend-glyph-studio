@@ -10,11 +10,13 @@ import {composeTopologyForZone,behaviorForZone,type ZoneBehavior} from "./zone-c
 import {connectGarmentZones,type ContinuityEvent} from "./garment-continuity";
 import {planContinuityRegistration,type ContinuitySegment} from "./continuity-registration";
 import {buildGarmentTrajectories,injectTrajectoryMetadata,type GarmentTrajectory} from "./garment-trajectory";
+import {buildGarmentAtlas} from "./garment-atlas";
+import {renderGarmentAtlasSvg,type GarmentSvg} from "./garment-svg";
 import {expandRecursiveGrammar,grammarComplexity} from "./recursive-grammar";
 
 export type BatchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];antiStyle?:WeightedRef[];garment?:GarmentConfiguration;compatibilityRules?:CompatibilityRule[];population?:number;generations?:number;keep?:number};
 export type ZoneProjection={zoneId:string;kind:GarmentZone["kind"];surface:GarmentZone["surface"];wrap:boolean;behavior:ZoneBehavior;svg:SvgProjection};
-export type BatchCandidate={rank:number;score:number;novelty:number;trace:string[];genomeId:string;projection:SvgProjection;zones:ZoneProjection[];continuity:ContinuityEvent[];registration:ContinuitySegment[];trajectories:GarmentTrajectory[]};
+export type BatchCandidate={rank:number;score:number;novelty:number;trace:string[];genomeId:string;projection:SvgProjection;zones:ZoneProjection[];continuity:ContinuityEvent[];registration:ContinuitySegment[];trajectories:GarmentTrajectory[];garmentProjection?:GarmentSvg};
 export type BatchResult={seed:string;candidateCount:number;garmentId?:string;configurationIssues:ConfigurationIssue[];candidates:BatchCandidate[]};
 
 function zoneCanvas(z:GarmentZone){return {width:Math.max(160,Math.round(z.circumferenceMm??z.widthMm??800)),height:Math.max(80,Math.round(z.heightMm??240))};}
@@ -34,7 +36,7 @@ export function runTesseractBatch(input:BatchInput):BatchResult{
   const registration=input.garment?planContinuityRegistration(input.garment,continuity):[];
   const trajectories=input.garment?buildGarmentTrajectories(input.garment,registration):[];
   zoneProjections=injectTrajectoryMetadata(zoneProjections,trajectories).map(z=>({...z,svg:renderZoneTrajectories(z.svg,z.zoneId,trajectories)}));
-  return {rank:i+1,score:c.score,novelty:c.novelty,trace:[...c.trace,`garment:${input.garment?.id??"none"}`,`zones:${zoneProjections.length}`,`continuity:${continuity.length}`,`registration:${registration.filter(x=>x.manufacturable).length}/${registration.length}`,`trajectories:${trajectories.length}`,`grammar:${complexity.score.toFixed(2)}`,`recursive:${complexity.recursive}`],genomeId:genome.id,projection,zones:zoneProjections,continuity,registration,trajectories};
+  return {rank:i+1,score:c.score,novelty:c.novelty,trace:[...c.trace,`garment:${input.garment?.id??"none"}`,`zones:${zoneProjections.length}`,`continuity:${continuity.length}`,`registration:${registration.filter(x=>x.manufacturable).length}/${registration.length}`,`trajectories:${trajectories.length}`,`grammar:${complexity.score.toFixed(2)}`,`recursive:${complexity.recursive}`],genomeId:genome.id,projection,zones:zoneProjections,continuity,registration,trajectories,garmentProjection};
  });
  return {seed:input.seed,candidateCount:candidates.length,garmentId:input.garment?.id,configurationIssues:issues,candidates};
 }
