@@ -25,10 +25,17 @@ type Scored={t:Topology;score:number;objectives?:ObjectiveVector};
 export function searchDesignSpace(input:SearchInput):SearchCandidate[]{
  const plan=compileIntent(input.intent),principles=retrievePrinciples(plan.intent,input.principles);
  const root=buildTopology(plan.semanticSkeleton,principles),history:Topology[]=[root];
+ const ancestry=new WeakMap<Topology,string[]>();
+ const lineageIds=new WeakMap<Topology,string>();
+ lineageIds.set(root,nameLineage(root,0,input.niches).id);
  let population:Topology[]=[root];const pop=Math.max(8,Math.min(input.population??48,256)),gens=Math.max(1,Math.min(input.generations??3,12));
  for(let g=0;g<gens;g++){
   const expanded:Topology[]=[];
-  for(let i=0;i<pop;i++)expanded.push(mutateTopology(population[i%population.length]!,input.seed+":"+g,i));
+  for(let i=0;i<pop;i++){
+   const parent=population[i%population.length]!,child=mutateTopology(parent,input.seed+":"+g,i);
+   const parentId=lineageIds.get(parent)??nameLineage(parent,g,input.niches).id;
+   ancestry.set(child,[parentId]);expanded.push(child);
+  }
   if(population.length>1)for(let i=0;i<Math.min(pop, population.length*2);i++){const a=population[i%population.length]!,b=population[(i+1+g)%population.length]!,x=crossSpecies(a,b,input.seed+":"+g,i);if(x)expanded.push(x)}
   const scored:Scored[]=expanded.map(t=>{
    const c=checkConstraints(t,principles);if(c.hard.length)return {t,score:-Infinity};
@@ -51,12 +58,12 @@ export function searchDesignSpace(input:SearchInput):SearchCandidate[]{
  const finalists=population.map(t=>{
   const e=evaluateTopology(t,plan.semanticSkeleton.length,principles.length,input.antiStyle),novelty=noveltyAgainst(t,[root]);
   const survival=input.visualCorpus?.length?corpusSurvival(t,input.visualCorpus,input.selectionPolicy):undefined;
-  const lineage=nameLineage(t,gens,input.niches);
+  const lineage=nameLineage(t,gens,input.niches,ancestry.get(t)??[]);
   const visual=input.visualCorpus?.length?assessVisual(topologyVisualVector(t),input.visualCorpus):undefined;
   const manufacturing=input.medium?assessManufacturability(t,input.medium):undefined;
   const physical=input.medium&&input.physicalHistory?.length?productionFitness(t,input.medium,input.physicalHistory,input.substrateId,input.machineProfileId):undefined;
   const objectives=objectiveVector(t,{semanticScore:e.score,novelty,culturalConfidence:1,visual,manufacturing,physical});
-  return {topology:t,score:e.score+novelty*18+(survival?.fitnessDelta??0),novelty,lineageId:lineage.id,objectives,trace:[`lineage:${lineage.id}`,`novelty:${novelty.toFixed(3)}`,`relations:${new Set(t.edges.map(x=>x.relation)).size}`,`corpus-fitness:${(survival?.fitnessDelta??0).toFixed(2)}`,`species:${classifySpecies(t)}`,`niche:${assignNiche(t,input.niches).primary}`,...(input.medium&&input.physicalHistory?.length?(()=>{const p=productionFitness(t,input.medium!,input.physicalHistory!,input.substrateId,input.machineProfileId);return [`physical-risk:${p.risk.toFixed(2)}`,`physical-confidence:${p.confidence.toFixed(2)}`,...p.reasons]})():[]),...(survival?.reasons??[])]};
+  return {topology:t,score:e.score+novelty*18+(survival?.fitnessDelta??0),novelty,lineageId:lineage.id,objectives,trace:[`lineage:${lineage.id}`,`parents:${lineage.parentIds.join(",")||"root"}`,`novelty:${novelty.toFixed(3)}`,`relations:${new Set(t.edges.map(x=>x.relation)).size}`,`corpus-fitness:${(survival?.fitnessDelta??0).toFixed(2)}`,`species:${classifySpecies(t)}`,`niche:${assignNiche(t,input.niches).primary}`,...(input.medium&&input.physicalHistory?.length?(()=>{const p=productionFitness(t,input.medium!,input.physicalHistory!,input.substrateId,input.machineProfileId);return [`physical-risk:${p.risk.toFixed(2)}`,`physical-confidence:${p.confidence.toFixed(2)}`,...p.reasons]})():[]),...(survival?.reasons??[])]};
  });
  const keep=Math.max(1,Math.min(input.keep??8,32));
  return paretoSelect(finalists.map(x=>({item:x,objectives:x.objectives})),keep).map(x=>x.item);
