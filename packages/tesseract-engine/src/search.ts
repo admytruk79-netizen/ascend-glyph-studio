@@ -6,8 +6,10 @@ import type {ImageObservation} from "./image-corpus";
 import {corpusSurvival,type SelectionPolicy} from "./evolutionary-selection";
 import {diverseSelection,classifySpecies} from "./speciation";
 import {crossSpecies} from "./crossover";
+import {assignNiche,nicheDiversity} from "./niche-selection";
+import {DESIGN_NICHES,nicheFitness,type DesignNicheId} from "./niches";
 
-export type SearchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];antiStyle?:WeightedRef[];visualCorpus?:ImageObservation[];selectionPolicy?:SelectionPolicy;population?:number;keep?:number;generations?:number};
+export type SearchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];antiStyle?:WeightedRef[];visualCorpus?:ImageObservation[];selectionPolicy?:SelectionPolicy;niches?:DesignNicheId[];population?:number;keep?:number;generations?:number};
 export type SearchCandidate={topology:Topology;score:number;novelty:number;trace:string[]};
 
 export function searchDesignSpace(input:SearchInput):SearchCandidate[]{
@@ -24,13 +26,15 @@ export function searchDesignSpace(input:SearchInput):SearchCandidate[]{
    const novelty=noveltyAgainst(t,history);const soft=c.soft.reduce((s,x)=>s+x.penalty,0);
    const survival=input.visualCorpus?.length?corpusSurvival(t,input.visualCorpus,input.selectionPolicy):undefined;
    if(survival&&!survival.survive)return {t,score:-Infinity};
-   return {t,score:e.score+novelty*18-soft*100+(survival?.fitnessDelta??0)};
+   const niche=input.niches?.length?Math.max(...input.niches.map(id=>nicheFitness(t,DESIGN_NICHES[id]))):assignNiche(t).fitness;
+   return {t,score:e.score+novelty*18-soft*100+(survival?.fitnessDelta??0)+niche*16};
   }).sort((a,b)=>b.score-a.score);
-  population=diverseSelection(scored,Math.max(4,Math.floor(pop/4)));history.push(...population);
+  const speciesPool=diverseSelection(scored,Math.max(8,Math.floor(pop/2))).map(t=>scored.find(x=>x.t===t)!).filter(Boolean);
+  population=nicheDiversity(speciesPool,Math.max(4,Math.floor(pop/4))).map(x=>x.t);history.push(...population);
  }
  return population.map(t=>{
   const e=evaluateTopology(t,plan.semanticSkeleton.length,principles.length,input.antiStyle),novelty=noveltyAgainst(t,[root]);
   const survival=input.visualCorpus?.length?corpusSurvival(t,input.visualCorpus,input.selectionPolicy):undefined;
-  return {topology:t,score:e.score+novelty*18+(survival?.fitnessDelta??0),novelty,trace:[`novelty:${novelty.toFixed(3)}`,`relations:${new Set(t.edges.map(x=>x.relation)).size}`,`corpus-fitness:${(survival?.fitnessDelta??0).toFixed(2)}`,`species:${classifySpecies(t)}`,...(survival?.reasons??[])]};
+  return {topology:t,score:e.score+novelty*18+(survival?.fitnessDelta??0),novelty,trace:[`novelty:${novelty.toFixed(3)}`,`relations:${new Set(t.edges.map(x=>x.relation)).size}`,`corpus-fitness:${(survival?.fitnessDelta??0).toFixed(2)}`,`species:${classifySpecies(t)}`,`niche:${assignNiche(t,input.niches).primary}`,...(survival?.reasons??[])]};
  }).sort((a,b)=>b.score-a.score).slice(0,Math.max(1,Math.min(input.keep??8,32)));
 }
