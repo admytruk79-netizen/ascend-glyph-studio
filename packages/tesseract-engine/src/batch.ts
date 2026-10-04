@@ -27,7 +27,7 @@ export function runTesseractBatch(input:BatchInput):BatchResult{
  const candidates=found.map((c,i)=>{
   const genome=genomeFromTopology(`${input.seed}:${i}`,c.topology),projection=projectSemanticGeometry(genome);
   const zoneTopologies=Object.fromEntries(zones.map(z=>[z.id,composeTopologyForZone(c.topology,z,`${input.seed}:${i}`)]));
-  let zoneProjections=zones.map(z=>{const canvas=zoneCanvas(z),zoneTopology=zoneTopologies[z.id]!,zoneGenome=genomeFromTopology(`${input.seed}:${i}:${z.id}`,zoneTopology);return {zoneId:z.id,kind:z.kind,surface:z.surface,wrap:z.wrapAllowed,behavior:behaviorForZone(z.kind),svg:projectSemanticGeometry(zoneGenome,canvas.width,canvas.height)};});
+  let zoneProjections=zones.map(z=>{const canvas=zoneCanvas(z),zoneTopology=zoneTopologies[z.id]!,zoneGenome=genomeFromTopology(`${input.seed}:${i}:${z.id}`,zoneTopology);return {zoneId:z.id,kind:z.kind,surface:z.surface,wrap:z.wrapAllowed,behavior:behaviorForZone(z.kind),svg:projectSemanticGeometry(zoneGenome,canvas.width,canvas.height,z)};});
   const continuity=input.garment?connectGarmentZones(input.garment,zoneTopologies):[];
   const registration=input.garment?planContinuityRegistration(input.garment,continuity):[];
   const trajectories=input.garment?buildGarmentTrajectories(input.garment,registration):[];
