@@ -1,0 +1,3 @@
+import { strict as assert } from "node:assert";import { compose } from "./grammar";import { renderComposition } from "./renderer";
+const intent={seed:"universal-001",meanings:["lineage"],principleIds:["p1"],density:"complex" as const,symmetry:"bilateral" as const,product:{kind:"test",zones:[{id:"panel",widthMm:100,heightMm:150,safeInsetMm:10,role:"hero"}]}};
+const plan=compose(intent),a=renderComposition(plan,intent.product.zones[0]),b=renderComposition(plan,intent.product.zones[0]);assert.equal(a.svg,b.svg);assert.ok(a.features.length>0);assert.ok(a.svg.includes('width="100mm"'));for(const x of a.features)assert.ok(x.ruleId);
