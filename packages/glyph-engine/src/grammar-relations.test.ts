@@ -1,0 +1,3 @@
+import{strict as assert}from"node:assert";import{deriveRelationalGrammar,validateRelationalGrammar}from"./grammar";
+const ps=[{id:"p-band",kind:"structure",label:"border band repetition and cadence",confidence:.9,culturalAccess:"open",abstraction:{rhythm:"repeat"}},{id:"p-sym",kind:"structure",label:"bilateral mirror symmetry",confidence:.85,culturalAccess:"open"}];
+const g=deriveRelationalGrammar(ps);assert.equal(validateRelationalGrammar(g).length,0);assert.ok(g.relations.length>0);assert.ok(g.relations.every(r=>r.evidencePrincipleIds.length>0));assert.ok(g.relations.some(r=>r.kind==="repeats_along"||r.kind==="alternates"||r.kind==="mirrors"));
