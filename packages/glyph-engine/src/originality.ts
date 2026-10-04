@@ -1,0 +1,4 @@
+export interface FeatureVector{axis:number;enclosure:number;branch:number;step:number;pulse:number;chevron:number;band:number;lattice:number;meander:number;radial:number}
+export interface SimilarityResult{similarity:number;distance:number;tooClose:boolean}
+export function cosineSimilarity(a:FeatureVector,b:FeatureVector):number{const av=Object.values(a),bv=Object.values(b);let dot=0,aa=0,bb=0;for(let i=0;i<av.length;i++){dot+=av[i]*bv[i];aa+=av[i]*av[i];bb+=bv[i]*bv[i]}if(!aa||!bb)return 0;return Math.max(0,Math.min(1,dot/Math.sqrt(aa*bb)))}
+export function compareOriginality(candidate:FeatureVector,source:FeatureVector,threshold=.88):SimilarityResult{const similarity=cosineSimilarity(candidate,source);return{similarity:Number(similarity.toFixed(4)),distance:Number((1-similarity).toFixed(4)),tooClose:similarity>=threshold}}
