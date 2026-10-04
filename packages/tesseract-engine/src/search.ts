@@ -4,6 +4,8 @@ import {compileIntent} from "./intent";import {retrievePrinciples} from "./knowl
 import {mutateTopology} from "./mutate";import {evaluateTopology} from "./evaluate";import {checkConstraints} from "./constraints";import {noveltyAgainst} from "./novelty";
 import type {ImageObservation} from "./image-corpus";
 import {corpusSurvival,type SelectionPolicy} from "./evolutionary-selection";
+import {diverseSelection,classifySpecies} from "./speciation";
+import {crossSpecies} from "./crossover";
 
 export type SearchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];antiStyle?:WeightedRef[];visualCorpus?:ImageObservation[];selectionPolicy?:SelectionPolicy;population?:number;keep?:number;generations?:number};
 export type SearchCandidate={topology:Topology;score:number;novelty:number;trace:string[]};
@@ -15,6 +17,7 @@ export function searchDesignSpace(input:SearchInput):SearchCandidate[]{
  for(let g=0;g<gens;g++){
   const expanded:Topology[]=[];
   for(let i=0;i<pop;i++)expanded.push(mutateTopology(population[i%population.length]!,input.seed+":"+g,i));
+  if(population.length>1)for(let i=0;i<Math.min(pop, population.length*2);i++){const a=population[i%population.length]!,b=population[(i+1+g)%population.length]!,x=crossSpecies(a,b,input.seed+":"+g,i);if(x)expanded.push(x)}
   const scored=expanded.map(t=>{
    const c=checkConstraints(t,principles);if(c.hard.length)return {t,score:-Infinity};
    const e=evaluateTopology(t,plan.semanticSkeleton.length,principles.length,input.antiStyle);
@@ -23,11 +26,11 @@ export function searchDesignSpace(input:SearchInput):SearchCandidate[]{
    if(survival&&!survival.survive)return {t,score:-Infinity};
    return {t,score:e.score+novelty*18-soft*100+(survival?.fitnessDelta??0)};
   }).sort((a,b)=>b.score-a.score);
-  population=scored.slice(0,Math.max(4,Math.floor(pop/4))).map(x=>x.t);history.push(...population);
+  population=diverseSelection(scored,Math.max(4,Math.floor(pop/4)));history.push(...population);
  }
  return population.map(t=>{
   const e=evaluateTopology(t,plan.semanticSkeleton.length,principles.length,input.antiStyle),novelty=noveltyAgainst(t,[root]);
   const survival=input.visualCorpus?.length?corpusSurvival(t,input.visualCorpus,input.selectionPolicy):undefined;
-  return {topology:t,score:e.score+novelty*18+(survival?.fitnessDelta??0),novelty,trace:[`novelty:${novelty.toFixed(3)}`,`relations:${new Set(t.edges.map(x=>x.relation)).size}`,`corpus-fitness:${(survival?.fitnessDelta??0).toFixed(2)}`,...(survival?.reasons??[])]};
+  return {topology:t,score:e.score+novelty*18+(survival?.fitnessDelta??0),novelty,trace:[`novelty:${novelty.toFixed(3)}`,`relations:${new Set(t.edges.map(x=>x.relation)).size}`,`corpus-fitness:${(survival?.fitnessDelta??0).toFixed(2)}`,`species:${classifySpecies(t)}`,...(survival?.reasons??[])]};
  }).sort((a,b)=>b.score-a.score).slice(0,Math.max(1,Math.min(input.keep??8,32)));
 }
