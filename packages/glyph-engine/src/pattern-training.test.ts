@@ -1,0 +1,12 @@
+import { strict as assert } from "node:assert";
+import { buildPatternTrainingCorpus,summarizePatternCorpus } from "./pattern-training";
+const base={seed:"ascend-lineage-training-v1",meanings:["lineage","protection","ascent","journey"],principles:["asc-lineage-axis","asc-journey-band","asc-placement-cosmology"],density:"balanced" as const,symmetry:"bilateral" as const};
+const a=buildPatternTrainingCorpus(base,8),b=buildPatternTrainingCorpus(base,8);
+assert.deepEqual(a,b);
+const s=summarizePatternCorpus(a);
+assert.equal(s.count,96);
+assert.equal(s.archetypes.length,12);
+assert.deepEqual(s.sourceGlyphs.sort(),["water-02","water-03"]);
+assert.equal(s.densities.length,3);
+assert.equal(s.symmetries.length,3);
+assert.ok(a.every(x=>x.atlas.glyphs.length===2&&x.objectives.traceability===1));
