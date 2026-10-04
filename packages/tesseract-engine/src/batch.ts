@@ -16,11 +16,13 @@ import {planPrimitiveEvolution,type EvolutionPlan} from "./evolution";
 import type {ImageObservation} from "./image-corpus";
 import {topologyVisualVector} from "./candidate-visual-vector";
 import {assessVisual,type VisualAssessment} from "./visual-assessment";
+import {adaptForProduction,type MediumId,type ProductionAdaptation} from "./medium-compiler";
+import {assessManufacturability,type ManufacturabilityReport} from "./manufacturability";
 import {expandRecursiveGrammar,grammarComplexity} from "./recursive-grammar";
 
-export type BatchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];antiStyle?:WeightedRef[];garment?:GarmentConfiguration;compatibilityRules?:CompatibilityRule[];visualCorpus?:ImageObservation[];population?:number;generations?:number;keep?:number};
+export type BatchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];antiStyle?:WeightedRef[];garment?:GarmentConfiguration;compatibilityRules?:CompatibilityRule[];visualCorpus?:ImageObservation[];medium?:MediumId;population?:number;generations?:number;keep?:number};
 export type ZoneProjection={zoneId:string;kind:GarmentZone["kind"];surface:GarmentZone["surface"];wrap:boolean;behavior:ZoneBehavior;svg:SvgProjection};
-export type BatchCandidate={rank:number;score:number;novelty:number;trace:string[];genomeId:string;projection:SvgProjection;zones:ZoneProjection[];continuity:ContinuityEvent[];registration:ContinuitySegment[];trajectories:GarmentTrajectory[];garmentProjection?:GarmentSvg;evolution:EvolutionPlan;visualAssessment?:VisualAssessment};
+export type BatchCandidate={rank:number;score:number;novelty:number;trace:string[];genomeId:string;projection:SvgProjection;zones:ZoneProjection[];continuity:ContinuityEvent[];registration:ContinuitySegment[];trajectories:GarmentTrajectory[];garmentProjection?:GarmentSvg;evolution:EvolutionPlan;visualAssessment?:VisualAssessment;productionAdaptation?:ProductionAdaptation;manufacturability?:ManufacturabilityReport};
 export type BatchResult={seed:string;candidateCount:number;garmentId?:string;configurationIssues:ConfigurationIssue[];candidates:BatchCandidate[]};
 
 function zoneCanvas(z:GarmentZone){return {width:Math.max(160,Math.round(z.circumferenceMm??z.widthMm??800)),height:Math.max(80,Math.round(z.heightMm??240))};}
@@ -40,7 +42,7 @@ export function runTesseractBatch(input:BatchInput):BatchResult{
   const registration=input.garment?planContinuityRegistration(input.garment,continuity):[];
   const trajectories=input.garment?buildGarmentTrajectories(input.garment,registration):[];
   zoneProjections=injectTrajectoryMetadata(zoneProjections,trajectories).map(z=>({...z,svg:renderZoneTrajectories(z.svg,z.zoneId,trajectories)}));
-  return {rank:i+1,score:c.score,novelty:c.novelty,trace:[...c.trace,`garment:${input.garment?.id??"none"}`,`zones:${zoneProjections.length}`,`continuity:${continuity.length}`,`registration:${registration.filter(x=>x.manufacturable).length}/${registration.length}`,`trajectories:${trajectories.length}`,`grammar:${complexity.score.toFixed(2)}`,`recursive:${complexity.recursive}`],genomeId:genome.id,projection,zones:zoneProjections,continuity,registration,trajectories,garmentProjection,evolution,visualAssessment};
+  return {rank:i+1,score:c.score,novelty:c.novelty,trace:[...c.trace,`garment:${input.garment?.id??"none"}`,`zones:${zoneProjections.length}`,`continuity:${continuity.length}`,`registration:${registration.filter(x=>x.manufacturable).length}/${registration.length}`,`trajectories:${trajectories.length}`,`grammar:${complexity.score.toFixed(2)}`,`recursive:${complexity.recursive}`],genomeId:genome.id,projection,zones:zoneProjections,continuity,registration,trajectories,garmentProjection,evolution,visualAssessment,productionAdaptation,manufacturability};
  });
  return {seed:input.seed,candidateCount:candidates.length,garmentId:input.garment?.id,configurationIssues:issues,candidates};
 }
