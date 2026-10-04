@@ -2,8 +2,8 @@ import type {GarmentConfiguration,GarmentZoneKind} from "./garment";
 import type {DesignNicheId} from "./niches";
 
 const ZONE_NICHE:Partial<Record<GarmentZoneKind,DesignNicheId>>={
- collar:"collar",placket:"placket",chest:"chest",sleeve:"sleeve",
- cuff:"cuff-wrap",hem:"hem-band",back:"back-field"
+ collar:"collar",placket:"placket",chest:"chest",shoulder:"shoulder",sleeve:"sleeve",
+ cuff:"cuff-wrap",yoke:"yoke",hem:"hem-band",back:"back-field"
 };
 
 export function nichesForGarment(g?:GarmentConfiguration):DesignNicheId[]{
