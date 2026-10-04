@@ -1,0 +1,11 @@
+import { strict as assert } from "node:assert";
+import { deriveDiaryManufacturingGeometry,KDP_A5_CREAM_160 } from "./diary-manufacturing";
+const g=deriveDiaryManufacturingGeometry(KDP_A5_CREAM_160);
+assert.equal(g.spineWidthMm,10.16);
+assert.equal(g.sheet.widthMm,312.56);
+assert.equal(g.sheet.heightMm,216.4);
+assert.equal(g.spineTextAllowed,true);
+assert.equal(g.minLineMm,.3);
+assert.ok(g.barcodeExclusion.xMm>=g.bleedMm);
+assert.ok(g.folds.rightMm>g.folds.leftMm);
+assert.equal(deriveDiaryManufacturingGeometry({...KDP_A5_CREAM_160,pageCount:78}).spineTextAllowed,false);
