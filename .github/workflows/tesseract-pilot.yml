@@ -1,0 +1,23 @@
+name: Tesseract Pilot
+on:
+  push:
+    paths:
+      - "packages/tesseract-engine/**"
+      - ".github/workflows/tesseract-pilot.yml"
+  workflow_dispatch:
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm install
+      - name: Typecheck Tesseract
+        run: npm run typecheck --workspace=@ascend/tesseract-engine
+      - name: Build Tesseract
+        run: npm run build --workspace=@ascend/tesseract-engine
+      - name: Run pilot production
+        run: npm run pilot --workspace=@ascend/tesseract-engine
