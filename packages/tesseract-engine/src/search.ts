@@ -16,9 +16,10 @@ import {objectiveVector} from "./objectives";
 import {topologyVisualVector} from "./candidate-visual-vector";
 import {assessVisual} from "./visual-assessment";
 import {assessManufacturability} from "./manufacturability";
+import {nameLineage} from "./lineage";
 
 export type SearchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];antiStyle?:WeightedRef[];visualCorpus?:ImageObservation[];selectionPolicy?:SelectionPolicy;niches?:DesignNicheId[];medium?:MediumId;physicalHistory?:PhysicalValidation[];substrateId?:string;machineProfileId?:string;population?:number;keep?:number;generations?:number};
-export type SearchCandidate={topology:Topology;score:number;novelty:number;trace:string[]};
+export type SearchCandidate={topology:Topology;score:number;novelty:number;lineageId:string;trace:string[]};
 
 export function searchDesignSpace(input:SearchInput):SearchCandidate[]{
  const plan=compileIntent(input.intent),principles=retrievePrinciples(plan.intent,input.principles);
@@ -49,6 +50,7 @@ export function searchDesignSpace(input:SearchInput):SearchCandidate[]{
  return population.map(t=>{
   const e=evaluateTopology(t,plan.semanticSkeleton.length,principles.length,input.antiStyle),novelty=noveltyAgainst(t,[root]);
   const survival=input.visualCorpus?.length?corpusSurvival(t,input.visualCorpus,input.selectionPolicy):undefined;
-  return {topology:t,score:e.score+novelty*18+(survival?.fitnessDelta??0),novelty,trace:[`novelty:${novelty.toFixed(3)}`,`relations:${new Set(t.edges.map(x=>x.relation)).size}`,`corpus-fitness:${(survival?.fitnessDelta??0).toFixed(2)}`,`species:${classifySpecies(t)}`,`niche:${assignNiche(t,input.niches).primary}`,...(input.medium&&input.physicalHistory?.length?(()=>{const p=productionFitness(t,input.medium!,input.physicalHistory!,input.substrateId,input.machineProfileId);return [`physical-risk:${p.risk.toFixed(2)}`,`physical-confidence:${p.confidence.toFixed(2)}`,...p.reasons]})():[]),...(survival?.reasons??[])]};
+  const lineage=nameLineage(t,gens,input.niches);
+  return {topology:t,score:e.score+novelty*18+(survival?.fitnessDelta??0),novelty,lineageId:lineage.id,trace:[`lineage:${lineage.id}`,`novelty:${novelty.toFixed(3)}`,`relations:${new Set(t.edges.map(x=>x.relation)).size}`,`corpus-fitness:${(survival?.fitnessDelta??0).toFixed(2)}`,`species:${classifySpecies(t)}`,`niche:${assignNiche(t,input.niches).primary}`,...(input.medium&&input.physicalHistory?.length?(()=>{const p=productionFitness(t,input.medium!,input.physicalHistory!,input.substrateId,input.machineProfileId);return [`physical-risk:${p.risk.toFixed(2)}`,`physical-confidence:${p.confidence.toFixed(2)}`,...p.reasons]})():[]),...(survival?.reasons??[])]};
  }).sort((a,b)=>b.score-a.score).slice(0,Math.max(1,Math.min(input.keep??8,32)));
 }
