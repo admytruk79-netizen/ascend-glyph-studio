@@ -1,0 +1,17 @@
+import{GlyphPhrase,renderPhraseSvg}from"./compound-language";
+export type FieldLayout="band"|"woven"|"radial"|"ascending"|"quartered";
+export type TransformOp="identity"|"mirror-x"|"mirror-y"|"rotate-90"|"rotate-180"|"quarter-fold"|"overlay";
+export interface PhrasePlacement{phraseId:string;x:number;y:number;scale:number;rotation:number;transform:TransformOp}
+export interface SemanticField{id:string;seed:string;layout:FieldLayout;placements:PhrasePlacement[];negativeSpace:{kind:"axis"|"ring"|"branch"|"crown";strength:number};macro:{kind:"tree"|"axis"|"wing"|"crown"|"return-ring";points:{x:number;y:number}[]};provenance:{kind:"original-synthesis";legacyAtlasRequired:false;copiedHistoricalMotif:false}}
+const hash=(s:string)=>{let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
+const OPS:TransformOp[]=["identity","mirror-x","mirror-y","rotate-90","rotate-180","quarter-fold","overlay"];
+export function composeSemanticField(seed:string,phrases:GlyphPhrase[],layout:FieldLayout="woven",repeats=4):SemanticField{
+ if(!phrases.length)throw new Error("phrases required");if(repeats<1||repeats>32)throw new Error("repeats must be 1-32");const h=hash(seed+"|"+layout),placements:PhrasePlacement[]=[];
+ for(let r=0;r<repeats;r++)for(let i=0;i<phrases.length;i++){const k=r*phrases.length+i,t=k/Math.max(1,repeats*phrases.length-1),row=layout==="band"?0:r%4,col=layout==="band"?k:k%Math.ceil(phrases.length/2);
+  const x=layout==="radial"?50+34*Math.cos(t*Math.PI*2):8+(col%8)*12;const y=layout==="radial"?50+34*Math.sin(t*Math.PI*2):layout==="ascending"?92-84*t:18+row*21;
+  placements.push({phraseId:phrases[i].id,x:Number(x.toFixed(2)),y:Number(y.toFixed(2)),scale:Number((.16+((h+k)%8)*.012).toFixed(3)),rotation:layout==="radial"?Number((t*360+90).toFixed(1)):(h+k*23)%360,transform:OPS[(h+k*5)%OPS.length]});}
+ const negKinds=["axis","ring","branch","crown"] as const,macroKinds=["tree","axis","wing","crown","return-ring"] as const;
+ const macroKind=macroKinds[(h>>>5)%macroKinds.length],points=Array.from({length:12},(_,i)=>{const t=i/11;return{x:Number((50+Math.sin(t*Math.PI*2+(h%7))*12*(1-t*.4)).toFixed(2)),y:Number((94-88*t).toFixed(2))}});
+ return{id:`asc-field-${(h%100000).toString().padStart(5,"0")}`,seed,layout,placements,negativeSpace:{kind:negKinds[(h>>>2)%negKinds.length],strength:Number((.18+(h%25)/100).toFixed(2))},macro:{kind:macroKind,points},provenance:{kind:"original-synthesis",legacyAtlasRequired:false,copiedHistoricalMotif:false}};
+}
+export function renderSemanticFieldSvg(field:SemanticField,phrases:GlyphPhrase[]):string{const map=new Map(phrases.map(p=>[p.id,p])),transform=(p:PhrasePlacement)=>{const flip=p.transform==="mirror-x"?"scale(-1 1)":p.transform==="mirror-y"?"scale(1 -1)":"";const phrase=map.get(p.phraseId);if(!phrase)return"";const inner=renderPhraseSvg(phrase).replace(/^<svg[^>]*>|<\/svg>$/g,"");return `<g transform="translate(${p.x} ${p.y}) rotate(${p.rotation}) scale(${p.scale}) ${flip} translate(-50 -50)">${inner}</g>`};const d=field.macro.points.map((p,i)=>`${i?"L":"M"}${p.x} ${p.y}`).join(" ");return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><metadata>${JSON.stringify({id:field.id,layout:field.layout,negativeSpace:field.negativeSpace,macro:field.macro.kind,provenance:field.provenance})}</metadata><path d="${d}" fill="none" stroke="currentColor" stroke-opacity=".09" stroke-width="1.2"/><g>${field.placements.map(transform).join("")}</g></svg>`}
