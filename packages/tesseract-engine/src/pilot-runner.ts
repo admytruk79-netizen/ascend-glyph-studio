@@ -34,6 +34,7 @@ export function runPilotProduction(input:PilotRunInput):PilotRunResult{
  const manifest=compileProductionManifest({garment,pattern,genomeId:winner.genomeId,process:"machine-embroidery",machine:input.machine});
  const transfers=seamTransfers(pattern);
  const artifacts:PilotArtifact[]=pattern.pieces.map(piece=>({fileName:manifest.pieces.find(x=>x.pieceId===piece.id)!.vectorFileName,mime:"image/svg+xml",content:productionPieceSvg(piece,planPieceProjection(piece),transfers)}));
+ if(batch.specimenSheet)artifacts.push({fileName:"lineage-specimens.svg",mime:"image/svg+xml",content:batch.specimenSheet.svg});
  artifacts.push({fileName:"production-manifest.json",mime:"application/json",content:JSON.stringify(manifest,null,2)});
  artifacts.push({fileName:"tesseract-batch.json",mime:"application/json",content:JSON.stringify(batch,null,2)});
  return {batch,manifest,artifacts,errors};
