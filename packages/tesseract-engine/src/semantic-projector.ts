@@ -36,3 +36,20 @@ export function projectSemanticGeometry(g:DesignGenome,width=800,height=240,zone
  return {svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" data-genome="${esc(g.id)}">${metadata}<g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${paths}${shapes}</g></svg>`,width,height,featureMap:Object.fromEntries(nodes.map(v=>[v.id,v.conceptId]))};
 }
 
+export function renderZoneTrajectories(projection:SvgProjection,zoneId:string,trajectories:GarmentTrajectory[]):SvgProjection{
+ const marks=trajectories.flatMap(t=>{
+  const points=t.points.filter(p=>p.zoneId===zoneId);
+  if(!points.length)return [];
+  const xy=points.map(p=>({x:f(p.x01*projection.width),y:f(p.y01*projection.height)}));
+  if(xy.length===1){
+   const p=xy[0]!;
+   return [`<circle cx="${p.x}" cy="${p.y}" r="2.5" data-trajectory="${esc(t.id)}" data-trajectory-role="${points[0]!.role}"/>`];
+  }
+  const d=xy.map((p,i)=>`${i?"L":"M"} ${p.x} ${p.y}`).join(" ");
+  return [`<path d="${d}" data-trajectory="${esc(t.id)}" data-trajectory-relation="${esc(t.relation)}"/>`];
+ }).join("");
+ if(!marks)return projection;
+ const layer=`<g data-trajectory-layer="${esc(zoneId)}" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">${marks}</g>`;
+ return {...projection,svg:projection.svg.replace("</svg>",`${layer}</svg>`)};
+}
+
