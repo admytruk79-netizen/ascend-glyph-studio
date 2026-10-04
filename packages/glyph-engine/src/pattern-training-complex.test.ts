@@ -1,0 +1,10 @@
+import { strict as assert } from "node:assert";
+import { buildComplexPatternCorpus,uniqueComplexPatterns } from "./pattern-training";
+const base={seed:"ascend-deep-lineage-v2",meanings:["lineage","protection","ascent","journey","strength","transformation"],principles:["asc-lineage-axis","asc-journey-band","asc-placement-cosmology","asc-dense-carpathian-register"],density:"complex" as const,symmetry:"bilateral" as const};
+const raw=buildComplexPatternCorpus(base,{variantsPerArchetype:64,generations:8});
+assert.equal(raw.length,6144);
+assert.ok(raw.every(x=>x.registers.length>=3&&x.transitions.length>=2&&x.mutation.length>=2));
+assert.ok(raw.every(x=>x.atlas.glyphs.length===2));
+const unique=uniqueComplexPatterns(raw);
+assert.ok(unique.length>1000,`expected >1000 unique signatures, got ${unique.length}`);
+assert.deepEqual(raw,buildComplexPatternCorpus(base,{variantsPerArchetype:64,generations:8}));
