@@ -1,0 +1,12 @@
+{
+  "schema": "ascend.diary.family.v1",
+  "status": "candidate-unreviewed",
+  "seed": "ascend-first-family-001",
+  "semanticIntent": ["lineage", "journey", "guardian"],
+  "principles": ["axis", "rhythm", "enclosure"],
+  "density": "balanced",
+  "symmetry": "bilateral",
+  "surfaces": ["cover", "spine", "border", "divider", "emblem"],
+  "review": {"human":"pending","cultural":"pending","originality":"pending","physical":"pending"},
+  "notes": "Deterministic first-family recipe only. This file does not assert cultural provenance or production approval."
+}
