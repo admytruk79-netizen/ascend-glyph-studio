@@ -1,0 +1,11 @@
+import { strict as assert } from "node:assert";
+import { selectAtlasSources,verifiedAtlasSources } from "./atlas-source";
+const input={seed:"ascend-first-family-001",meanings:["lineage","journey"],principles:["axis","rhythm"],density:"balanced" as const,symmetry:"bilateral" as const};
+const verified=verifiedAtlasSources();
+assert.deepEqual(verified.map(g=>g.id),["water-02","water-03"]);
+const a=selectAtlasSources(input,2),b=selectAtlasSources(input,2);
+assert.deepEqual(a,b);
+assert.equal(a.glyphs.length,2);
+assert.ok(a.glyphs.every(g=>g.vectorAssetKey.endsWith("/vector/v1.svg")));
+assert.ok(a.rejected.length>=30);
+assert.throws(()=>selectAtlasSources(input,3),/insufficient verified atlas geometry/);
