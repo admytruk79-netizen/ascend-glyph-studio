@@ -59,3 +59,36 @@ export function deriveRelationalGrammar(principles:PrincipleSignal[],base:Gramma
  return{...base,relations};
 }
 export function validateRelationalGrammar(g:RelationalGrammar):string[]{const ids=new Set(g.rules.map(r=>r.id)),e:string[]=[];for(const r of g.relations){if(!ids.has(r.from))e.push(`relation source missing: ${r.from}`);if(!ids.has(r.to))e.push(`relation target missing: ${r.to}`);if(!r.evidencePrincipleIds.length)e.push(`relation lacks evidence: ${r.kind}`)}return e}
+
+
+export interface EvidenceProfile{
+ supportCount:number;sourceDiversity:number;regionDiversity:number;temporalDiversity:number;
+ meanConfidence:number;contradictionCount:number;culturalRisk:"low"|"review"|"blocked";strength:number
+}
+export interface EvidenceObservation{principleId:string;sourceId:string;region?:string;period?:string;confidence:number;stance:"supports"|"contradicts";culturalAccess:string}
+export function profileEvidence(principleId:string,obs:EvidenceObservation[]):EvidenceProfile{
+ const xs=obs.filter(x=>x.principleId===principleId),supports=xs.filter(x=>x.stance==="supports"),contradictions=xs.length-supports.length;
+ const uniq=(v:(x:EvidenceObservation)=>string|undefined)=>new Set(supports.map(v).filter(Boolean)).size;
+ const mean=supports.length?supports.reduce((n,x)=>n+x.confidence,0)/supports.length:0;
+ const blocked=xs.some(x=>["restricted","sacred","prohibited"].includes(x.culturalAccess.toLowerCase()));
+ const review=!blocked&&xs.some(x=>["review","sensitive","nation-specific"].includes(x.culturalAccess.toLowerCase()));
+ const diversity=Math.min(1,(uniq(x=>x.sourceId)/3)*.45+(uniq(x=>x.region)/3)*.3+(uniq(x=>x.period)/3)*.25);
+ const contradictionPenalty=xs.length?contradictions/xs.length:0;
+ const strength=Math.max(0,Math.min(1,mean*.55+diversity*.35+Math.min(1,supports.length/8)*.1-contradictionPenalty*.5));
+ return{supportCount:supports.length,sourceDiversity:uniq(x=>x.sourceId),regionDiversity:uniq(x=>x.region),temporalDiversity:uniq(x=>x.period),meanConfidence:Number(mean.toFixed(4)),contradictionCount:contradictions,culturalRisk:blocked?"blocked":review?"review":"low",strength:Number(strength.toFixed(4))}
+}
+export interface PrincipleHypothesis{principle:PrincipleSignal;evidence:EvidenceProfile;eligible:boolean;reasons:string[]}
+export function evaluatePrinciple(p:PrincipleSignal,obs:EvidenceObservation[]):PrincipleHypothesis{
+ const evidence=profileEvidence(p.id,obs),reasons:string[]=[];
+ if(evidence.supportCount<2)reasons.push("insufficient independent support");
+ if(evidence.sourceDiversity<2)reasons.push("insufficient source diversity");
+ if(evidence.strength<.55)reasons.push("weak evidence strength");
+ if(evidence.contradictionCount>evidence.supportCount)reasons.push("contradiction dominates support");
+ if(evidence.culturalRisk==="blocked")reasons.push("culturally blocked");
+ if(evidence.culturalRisk==="review")reasons.push("cultural review required");
+ return{principle:p,evidence,eligible:reasons.length===0,reasons}
+}
+export function deriveAuditedGrammar(principles:PrincipleSignal[],obs:EvidenceObservation[]):RelationalGrammar{
+ const eligible=principles.filter(p=>evaluatePrinciple(p,obs).eligible);
+ return deriveRelationalGrammar(eligible,deriveGrammar(eligible));
+}
