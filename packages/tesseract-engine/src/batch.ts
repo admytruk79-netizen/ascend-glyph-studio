@@ -28,7 +28,7 @@ export type BatchResult={seed:string;candidateCount:number;garmentId?:string;con
 function zoneCanvas(z:GarmentZone){return {width:Math.max(160,Math.round(z.circumferenceMm??z.widthMm??800)),height:Math.max(80,Math.round(z.heightMm??240))};}
 
 export function runTesseractBatch(input:BatchInput):BatchResult{
- const issues=input.garment?validateGarmentConfiguration(input.garment,input.compatibilityRules??[]):ConfigurationIssue[]=[];
+ const issues:ConfigurationIssue[]=input.garment?validateGarmentConfiguration(input.garment,input.compatibilityRules??[]):[];
  if(issues.some(x=>x.severity==="error"))return {seed:input.seed,candidateCount:0,garmentId:input.garment?.id,configurationIssues:issues,candidates:[]};
  const intent:IntentVector={...input.intent,materialId:input.garment?.material.substrateId??input.intent.materialId};
  const found:SearchCandidate[]=searchDesignSpace({seed:input.seed,intent,principles:input.principles,antiStyle:input.antiStyle,visualCorpus:input.visualCorpus,population:input.population??64,generations:input.generations??5,keep:input.keep??12});
