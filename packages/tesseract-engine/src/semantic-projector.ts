@@ -1,6 +1,8 @@
 import type {DesignGenome} from "./genome";
 import type {SvgProjection} from "./svg-projector";
 import type {GarmentTrajectory} from "./garment-trajectory";
+import type {GarmentZone} from "./garment";
+import {solveRelationalLayout} from "./relational-layout";
 
 const esc=(s:string)=>s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&apos;"}[c]!));
 const f=(x:number)=>Number(x.toFixed(2));
@@ -22,17 +24,15 @@ function geometry(form:string,p:Point,r:number,id:string):string{
  }
 }
 
-export function projectSemanticGeometry(g:DesignGenome,width=800,height=240):SvgProjection{
- const nodes=g.topology.nodes,n=nodes.length,pad=Math.min(38,width*.08),usable=Math.max(1,width-pad*2);
- const pos=new Map(nodes.map((v,i)=>[v.id,{x:pad+(n<2?.5:i/(n-1))*usable,y:height*(.48+(i%3-1)*.12)}]));
- const paths=g.topology.edges.flatMap((e,i)=>{const a=pos.get(e.from),b=pos.get(e.to);if(!a||!b)return [];const bend=(i%2?1:-1)*Math.min(32,height*.12);return [`<path id="relation-${i}" data-relation="${esc(e.relation)}" d="M ${f(a.x)} ${f(a.y)} Q ${f((a.x+b.x)/2)} ${f((a.y+b.y)/2+bend)} ${f(b.x)} ${f(b.y)}"/>`]}).join("");
- const shapes=nodes.map(v=>{const p=pos.get(v.id)!;return geometry(v.form,p,Math.min(22,height*.1)*(v.scale/2),v.id)}).join("");
- return {svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" data-genome="${esc(g.id)}"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${paths}${shapes}</g></svg>`,width,height,featureMap:Object.fromEntries(nodes.map(v=>[v.id,v.conceptId]))};
+export function projectSemanticGeometry(g:DesignGenome,width=800,height=240,zone?:GarmentZone):SvgProjection{
+ const nodes=g.topology.nodes,layout=solveRelationalLayout(g.topology,width,height,g.seed,zone),pos=new Map(nodes.map(v=>[v.id,layout.points[v.id]!]));
+ const paths=g.topology.edges.flatMap((e,i)=>{const a=pos.get(e.from),b=pos.get(e.to);if(!a||!b)return [];let dx=b.x-a.x;
+  const wrap=!!zone?.wrapAllowed&&Math.abs(dx)>width/2,tx=wrap?b.x-Math.sign(dx)*width:b.x,mid=(a.x+tx)/2,bend=(i%2?1:-1)*Math.min(38,height*.14)*(1-e.weight*.35);
+  const main=\`<path id="relation-\${i}" data-relation="\${esc(e.relation)}" data-weight="\${f(e.weight)}" d="M \${f(a.x)} \${f(a.y)} Q \${f(mid)} \${f((a.y+b.y)/2+bend)} \${f(tx)} \${f(b.y)}"/>\`;
+  if(!wrap)return [main];const mirror=tx<0?tx+width:tx-width;return [main,\`<path data-wrap-continuation="relation-\${i}" d="M \${f(mirror)} \${f(b.y)} Q \${f((mirror+b.x)/2)} \${f((a.y+b.y)/2+bend)} \${f(b.x)} \${f(b.y)}"/>\`];
+ }).join("");
+ const shapes=nodes.map(v=>{const p=pos.get(v.id)!;const shape=geometry(v.form,p,Math.min(24,height*.105)*p.scale,v.id);return \`<g transform="rotate(\${f(p.angleDeg)} \${f(p.x)} \${f(p.y)})" data-layer="\${p.layer}">\${shape}</g>\`;}).join("");
+ const metadata=\`<metadata data-layout="constraint-relational" data-iterations="\${layout.iterations}" data-energy="\${f(layout.energy)}" data-wrap="\${zone?.wrapAllowed?"true":"false"}"/>\`;
+ return {svg:\`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 \${width} \${height}" role="img" data-genome="\${esc(g.id)}">\${metadata}<g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">\${paths}\${shapes}</g></svg>\`,width,height,featureMap:Object.fromEntries(nodes.map(v=>[v.id,v.conceptId]))};
 }
 
-export function renderZoneTrajectories(base:SvgProjection,zoneId:string,trajectories:GarmentTrajectory[]):SvgProjection{
- const relevant=trajectories.filter(t=>t.zones.includes(zoneId)); if(!relevant.length)return base;
- const paths=relevant.map(t=>{const p=t.points.find(x=>x.zoneId===zoneId);if(!p)return "";const x=f(p.x01*base.width),end=p.role==="exit"?base.height:f(base.height*.95);
- return `<path id="${esc(t.id)}-${esc(zoneId)}" data-trajectory="${esc(t.id)}" data-relation="${esc(t.relation)}" d="M ${x} 0 C ${f(x-base.width*.08)} ${f(base.height*.3)} ${f(x+base.width*.08)} ${f(base.height*.7)} ${x} ${end}" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>`;}).join("");
- return {...base,svg:base.svg.replace("</svg>",`<g data-zone-trajectories="${esc(zoneId)}">${paths}</g></svg>`)};
-}
