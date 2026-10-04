@@ -1,0 +1,4 @@
+import{strict as assert}from"node:assert";import{evaluatePrinciple,deriveAuditedGrammar}from"./grammar";
+const p={id:"p1",kind:"structure",label:"border rhythm repeat",confidence:.9,culturalAccess:"open"};
+const o=[{principleId:"p1",sourceId:"s1",region:"r1",period:"1900",confidence:.9,stance:"supports" as const,culturalAccess:"open"},{principleId:"p1",sourceId:"s2",region:"r2",period:"1950",confidence:.85,stance:"supports" as const,culturalAccess:"open"},{principleId:"p1",sourceId:"s3",region:"r3",period:"2000",confidence:.8,stance:"supports" as const,culturalAccess:"open"}];
+const h=evaluatePrinciple(p,o);assert.ok(h.eligible);assert.equal(h.evidence.sourceDiversity,3);assert.ok(h.evidence.strength>=.55);const g=deriveAuditedGrammar([p],o);assert.ok(g.rules.length>0);assert.ok(g.relations.length>0);
