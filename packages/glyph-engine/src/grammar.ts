@@ -37,3 +37,25 @@ export function compose(intent:EngineIntent,grammar:Grammar=DEFAULT_GRAMMAR):Com
  const sequence=rules.flatMap(r=>Array(Math.max(r.repeatMin,Math.min(r.repeatMax,r.repeatMin+(hash(intent.seed+r.id)%(r.repeatMax-r.repeatMin+1))))).fill(r.id));
  return{seed:intent.seed,productKind:intent.product.kind,rules,sequence,validation:[],evidencePrincipleIds:intent.principleIds};
 }
+
+
+export type RelationKind="contains"|"frames"|"alternates"|"mirrors"|"branches_from"|"transitions_to"|"repeats_along"|"centers_on";
+export interface GrammarRelation{from:string;to:string;kind:RelationKind;weight:number;evidencePrincipleIds:string[]}
+export interface RelationalGrammar extends Grammar{relations:GrammarRelation[]}
+
+const RELATION_SIGNALS:Array<{kind:RelationKind;from:string;to:string;signals:string[]}>= [
+ {kind:"frames",from:"guard",to:"axis",signals:["frame","border","enclosure","edge"]},
+ {kind:"repeats_along",from:"rhythm",to:"axis",signals:["repeat","rhythm","cadence","interval"]},
+ {kind:"alternates",from:"band",to:"rhythm",signals:["alternation","alternate","register","band"]},
+ {kind:"mirrors",from:"growth",to:"axis",signals:["mirror","bilateral","symmetry"]},
+ {kind:"branches_from",from:"growth",to:"axis",signals:["branch","bifurcation","stem"]},
+ {kind:"transitions_to",from:"journey",to:"ascent",signals:["transition","path","direction","sequence"]},
+ {kind:"centers_on",from:"radial",to:"axis",signals:["center","radial","rotation","rosette"]},
+ {kind:"contains",from:"guard",to:"radial",signals:["contain","enclosure","medallion","center"]}
+];
+export function deriveRelationalGrammar(principles:PrincipleSignal[],base:Grammar=deriveGrammar(principles)):RelationalGrammar{
+ const safe=principles.filter(p=>p.confidence>=.55&&!["restricted","sacred","prohibited"].includes(p.culturalAccess.toLowerCase()));
+ const relations=RELATION_SIGNALS.map(spec=>{const matched=safe.filter(p=>spec.signals.some(s=>words(p).includes(s)));return{from:spec.from,to:spec.to,kind:spec.kind,weight:Number(Math.min(1,matched.reduce((n,p)=>n+p.confidence*.22,.35)).toFixed(4)),evidencePrincipleIds:matched.map(p=>p.id)}}).filter(r=>r.evidencePrincipleIds.length>0);
+ return{...base,relations};
+}
+export function validateRelationalGrammar(g:RelationalGrammar):string[]{const ids=new Set(g.rules.map(r=>r.id)),e:string[]=[];for(const r of g.relations){if(!ids.has(r.from))e.push(`relation source missing: ${r.from}`);if(!ids.has(r.to))e.push(`relation target missing: ${r.to}`);if(!r.evidencePrincipleIds.length)e.push(`relation lacks evidence: ${r.kind}`)}return e}
