@@ -1,0 +1,283 @@
+{
+  "schema": "ascend.research.ukrainian-semantics.v1",
+  "status": "evidence-seed",
+  "policy": {
+    "note": "Attested form, historical interpretation, and ASCEND abstraction are separate fields. No single fixed meaning is inferred where sources describe polysemy or uncertainty.",
+    "culturalAccess": "review"
+  },
+  "evidence": [
+    {
+      "id": "ua-ornament-tree-world",
+      "media": [
+        "embroidery",
+        "rushnyk",
+        "pysanka",
+        "pottery"
+      ],
+      "form": [
+        "tree-of-life",
+        "axis",
+        "branches",
+        "tripartite-symmetry"
+      ],
+      "region": "Ukraine/general reference",
+      "period": "historical continuity; source discusses folk tradition",
+      "attested": "Tree/World Tree described as a major cosmological image occurring across Easter eggs, embroidered towels and pottery.",
+      "semanticEvidence": "ordering of world/cosmos; meanings vary and many older meanings are partly forgotten",
+      "confidence": 0.9,
+      "culturalAccess": "review",
+      "source": "Encyclopedia of Ukraine: Ornament"
+    },
+    {
+      "id": "ua-rhomb-polysemantic",
+      "media": [
+        "ornament"
+      ],
+      "form": [
+        "rhombus",
+        "rhombic-repeat"
+      ],
+      "region": "Ukraine/general reference",
+      "period": "folk tradition",
+      "attested": "Rhomboid is widespread.",
+      "semanticEvidence": "source explicitly gives multiple possible meanings; do not collapse to one definition",
+      "confidence": 0.95,
+      "culturalAccess": "review",
+      "source": "Encyclopedia of Ukraine: Ornament"
+    },
+    {
+      "id": "ua-hutsul-pysanka-1597",
+      "media": [
+        "pysanka"
+      ],
+      "form": [
+        "star",
+        "rhombus",
+        "x-cross",
+        "pine",
+        "flower",
+        "ox-eye",
+        "square",
+        "dots"
+      ],
+      "region": "Hutsul Area/Kosmach",
+      "period": "1950-1980",
+      "attested": "Museum catalogued motif combination.",
+      "semanticEvidence": null,
+      "confidence": 0.98,
+      "culturalAccess": "low",
+      "source": "Ivan Honchar Museum NDF-4484"
+    },
+    {
+      "id": "ua-hutsul-pysanka-1695",
+      "media": [
+        "pysanka"
+      ],
+      "form": [
+        "spiral",
+        "rhombus",
+        "bird",
+        "oak-leaf",
+        "pine",
+        "flower",
+        "ox-eye",
+        "square",
+        "whorl",
+        "petal",
+        "hatching",
+        "dots"
+      ],
+      "region": "Hutsul Area/Kosmach",
+      "period": "1968",
+      "attested": "Museum catalogued motif combination.",
+      "semanticEvidence": null,
+      "confidence": 0.98,
+      "culturalAccess": "low",
+      "source": "Ivan Honchar Museum NDF-4494"
+    },
+    {
+      "id": "ua-polissia-shirt-1200",
+      "media": [
+        "shirt"
+      ],
+      "form": [
+        "geometric",
+        "counted-band",
+        "openwork"
+      ],
+      "region": "Eastern Polissia",
+      "period": "early 20th c.",
+      "attested": "Geometric shirt ornament using multiple satin/cross/backstitch and drawn-thread techniques.",
+      "semanticEvidence": null,
+      "confidence": 0.98,
+      "culturalAccess": "low",
+      "source": "Ivan Honchar Museum KN-6549"
+    },
+    {
+      "id": "ua-pokuttia-shirt-1762",
+      "media": [
+        "shirt"
+      ],
+      "form": [
+        "geometric",
+        "stitched-register"
+      ],
+      "region": "Pokuttia",
+      "period": "early 20th c.",
+      "attested": "Geometric shirt ornament with satin, diagonal cross, running, drawn-thread and stem-stitch techniques.",
+      "semanticEvidence": null,
+      "confidence": 0.98,
+      "culturalAccess": "low",
+      "source": "Ivan Honchar Museum KN-21984/1-2"
+    },
+    {
+      "id": "ua-poltava-rushnyk-2062",
+      "media": [
+        "rushnyk"
+      ],
+      "form": [
+        "geometric",
+        "floral",
+        "band",
+        "grid-openwork"
+      ],
+      "region": "Middle Dnipro/Poltava",
+      "period": "early 20th c.",
+      "attested": "Geometric/floral rushnyk with diagonal cross and grid drawn-thread work.",
+      "semanticEvidence": null,
+      "confidence": 0.98,
+      "culturalAccess": "low",
+      "source": "Ivan Honchar Museum KN-3163"
+    },
+    {
+      "id": "ua-rushnyk-ritual-path",
+      "media": [
+        "rushnyk"
+      ],
+      "form": [
+        "rectangular-field",
+        "ornamented-ends",
+        "band",
+        "threshold"
+      ],
+      "region": "multiple Ukrainian regions",
+      "period": "museum collection",
+      "attested": "Museum describes rushnyky as ritual textiles accompanying life from birth to death, commonly ornamented at short edges.",
+      "semanticEvidence": "museum interprets symbolic ornament as connected to life's path and ritual mediation",
+      "confidence": 0.86,
+      "culturalAccess": "review",
+      "source": "Ivan Honchar Museum collection overview"
+    },
+    {
+      "id": "ua-kosiv-ceramic-1128",
+      "media": [
+        "ceramics"
+      ],
+      "form": [
+        "geometric",
+        "floral",
+        "engraved"
+      ],
+      "region": "Hutsul Area/Kosiv",
+      "period": "early 20th c.",
+      "attested": "Engraved glazed jug catalogued with geometric/floral ornament.",
+      "semanticEvidence": null,
+      "confidence": 0.98,
+      "culturalAccess": "low",
+      "source": "Ivan Honchar Museum KN-21707"
+    },
+    {
+      "id": "ua-embroidery-semantics-2024",
+      "media": [
+        "clothing",
+        "folklore"
+      ],
+      "form": [
+        "placement",
+        "cosmological-plot",
+        "tree-of-life",
+        "celestial",
+        "animal",
+        "plant"
+      ],
+      "region": "Ukraine",
+      "period": "scholarly analysis 2024",
+      "attested": "Study argues historical clothing embroidery may derive from integrated pictorial/cosmological plots and protective symbolic functions.",
+      "semanticEvidence": "authors stress that significant progress in recovering exact traditional semantics has not yet been achieved",
+      "confidence": 0.9,
+      "culturalAccess": "review",
+      "source": "Balushok & Oliynyk 2024, Materials to Ukrainian Ethnology"
+    }
+  ],
+  "ascendAbstractions": [
+    {
+      "id": "asc-lineage-axis",
+      "derivedFrom": [
+        "ua-ornament-tree-world"
+      ],
+      "principle": "vertical axis with rooted lower register, articulated middle, branching upper register",
+      "meaning": [
+        "lineage",
+        "continuity",
+        "ascent"
+      ],
+      "claimType": "ASCEND interpretation, not historical definition"
+    },
+    {
+      "id": "asc-journey-band",
+      "derivedFrom": [
+        "ua-rushnyk-ritual-path",
+        "ua-poltava-rushnyk-2062"
+      ],
+      "principle": "bounded longitudinal field with repeated terminal/register rhythms and controlled thresholds",
+      "meaning": [
+        "journey",
+        "transition",
+        "continuity"
+      ],
+      "claimType": "ASCEND interpretation"
+    },
+    {
+      "id": "asc-polysemantic-diamond",
+      "derivedFrom": [
+        "ua-rhomb-polysemantic",
+        "ua-hutsul-pysanka-1597",
+        "ua-hutsul-pysanka-1695"
+      ],
+      "principle": "rhombic cell used as enclosure/repeat/connector without assigning one inherited meaning",
+      "meaning": [
+        "structure",
+        "continuity"
+      ],
+      "claimType": "formal abstraction only"
+    },
+    {
+      "id": "asc-dense-carpathian-register",
+      "derivedFrom": [
+        "ua-hutsul-pysanka-1597",
+        "ua-hutsul-pysanka-1695",
+        "ua-kosiv-ceramic-1128"
+      ],
+      "principle": "dense nested registers combining angular, spiral and vegetal morphology with disciplined negative space",
+      "meaning": [
+        "strength",
+        "complexity",
+        "resilience"
+      ],
+      "claimType": "ASCEND interpretation"
+    },
+    {
+      "id": "asc-placement-cosmology",
+      "derivedFrom": [
+        "ua-embroidery-semantics-2024"
+      ],
+      "principle": "meaning may arise from relative placement and hierarchy, not isolated icons",
+      "meaning": [
+        "order",
+        "relationship",
+        "ascent"
+      ],
+      "claimType": "design principle derived from scholarly hypothesis"
+    }
+  ]
+}
