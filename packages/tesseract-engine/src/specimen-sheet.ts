@@ -6,7 +6,7 @@ import {projectSemanticGeometry} from "./semantic-projector";
 export type SpecimenCandidate={lineageId:string;topology:Topology;objectives:ObjectiveVector;score?:number};
 export type SpecimenSheet={svg:string;width:number;height:number;count:number};
 
-const esc=(s:string)=>s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",""":"&quot;","'":"&apos;"}[c]!));
+const esc=(s:string)=>s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&apos;"}[c]!));
 const body=(svg:string)=>svg.replace(/^<svg[^>]*>/,"").replace(/<\/svg>$/,"");
 const objectiveSummary=(o:ObjectiveVector)=>Object.entries(o).map(([k,v])=>`${k}:${v.toFixed(2)}`).join(" | ");
 
