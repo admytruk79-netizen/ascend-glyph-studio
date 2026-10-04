@@ -28,11 +28,11 @@ export function projectSemanticGeometry(g:DesignGenome,width=800,height=240,zone
  const nodes=g.topology.nodes,layout=solveRelationalLayout(g.topology,width,height,g.seed,zone),pos=new Map(nodes.map(v=>[v.id,layout.points[v.id]!]));
  const paths=g.topology.edges.flatMap((e,i)=>{const a=pos.get(e.from),b=pos.get(e.to);if(!a||!b)return [];let dx=b.x-a.x;
   const wrap=!!zone?.wrapAllowed&&Math.abs(dx)>width/2,tx=wrap?b.x-Math.sign(dx)*width:b.x,mid=(a.x+tx)/2,bend=(i%2?1:-1)*Math.min(38,height*.14)*(1-e.weight*.35);
-  const main=\`<path id="relation-\${i}" data-relation="\${esc(e.relation)}" data-weight="\${f(e.weight)}" d="M \${f(a.x)} \${f(a.y)} Q \${f(mid)} \${f((a.y+b.y)/2+bend)} \${f(tx)} \${f(b.y)}"/>\`;
-  if(!wrap)return [main];const mirror=tx<0?tx+width:tx-width;return [main,\`<path data-wrap-continuation="relation-\${i}" d="M \${f(mirror)} \${f(b.y)} Q \${f((mirror+b.x)/2)} \${f((a.y+b.y)/2+bend)} \${f(b.x)} \${f(b.y)}"/>\`];
+  const main=`<path id="relation-${i}" data-relation="${esc(e.relation)}" data-weight="${f(e.weight)}" d="M ${f(a.x)} ${f(a.y)} Q ${f(mid)} ${f((a.y+b.y)/2+bend)} ${f(tx)} ${f(b.y)}"/>`;
+  if(!wrap)return [main];const mirror=tx<0?tx+width:tx-width;return [main,`<path data-wrap-continuation="relation-${i}" d="M ${f(mirror)} ${f(b.y)} Q ${f((mirror+b.x)/2)} ${f((a.y+b.y)/2+bend)} ${f(b.x)} ${f(b.y)}"/>`];
  }).join("");
- const shapes=nodes.map(v=>{const p=pos.get(v.id)!;const shape=geometry(v.form,p,Math.min(24,height*.105)*p.scale,v.id);return \`<g transform="rotate(\${f(p.angleDeg)} \${f(p.x)} \${f(p.y)})" data-layer="\${p.layer}">\${shape}</g>\`;}).join("");
- const metadata=\`<metadata data-layout="constraint-relational" data-iterations="\${layout.iterations}" data-energy="\${f(layout.energy)}" data-wrap="\${zone?.wrapAllowed?"true":"false"}"/>\`;
- return {svg:\`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 \${width} \${height}" role="img" data-genome="\${esc(g.id)}">\${metadata}<g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">\${paths}\${shapes}</g></svg>\`,width,height,featureMap:Object.fromEntries(nodes.map(v=>[v.id,v.conceptId]))};
+ const shapes=nodes.map(v=>{const p=pos.get(v.id)!;const shape=geometry(v.form,p,Math.min(24,height*.105)*p.scale,v.id);return `<g transform="rotate(${f(p.angleDeg)} ${f(p.x)} ${f(p.y)})" data-layer="${p.layer}">${shape}</g>`;}).join("");
+ const metadata=`<metadata data-layout="constraint-relational" data-iterations="${layout.iterations}" data-energy="${f(layout.energy)}" data-wrap="${zone?.wrapAllowed?"true":"false"}"/>`;
+ return {svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" data-genome="${esc(g.id)}">${metadata}<g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${paths}${shapes}</g></svg>`,width,height,featureMap:Object.fromEntries(nodes.map(v=>[v.id,v.conceptId]))};
 }
 
