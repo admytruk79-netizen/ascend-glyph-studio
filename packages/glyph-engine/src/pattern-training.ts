@@ -55,3 +55,36 @@ export function summarizePatternCorpus(cases:PatternTrainingCase[]){
   symmetries:[...new Set(cases.map(x=>x.symmetry))]
  };
 }
+
+
+export type ComplexRegister="root"|"threshold"|"path"|"guardian"|"crown"|"edge"|"corner"|"field";
+export interface ComplexPatternCase extends PatternTrainingCase{
+ generation:number;registers:ComplexRegister[];transitions:string[];mutation:string[];
+ complexitySignature:string;
+}
+const REGISTERS:ComplexRegister[]=["root","threshold","path","guardian","crown","edge","corner","field"];
+const TRANSITIONS=["step-shift","mirror-flip","density-rise","density-fall","alternating-gap","nested-return","quarter-turn","axis-break","cadence-double","cadence-half"];
+const MUTATIONS=["scale-alternate","mirror-alternate","rotate-quarter","offset-phase","nested-inset","interlock","interrupt-resume","edge-reflect","corner-fold","center-accent","sparse-breath","dense-knot"];
+
+export function buildComplexPatternCorpus(base:DiarySynthesisInput,opts:{variantsPerArchetype?:number;generations?:number}={}):ComplexPatternCase[]{
+ const variants=opts.variantsPerArchetype??32,generations=opts.generations??4;
+ if(variants<1||variants>128)throw new Error("variantsPerArchetype must be 1-128");
+ if(generations<1||generations>12)throw new Error("generations must be 1-12");
+ const out:ComplexPatternCase[]=[];
+ for(let generation=1;generation<=generations;generation++){
+  const generationBase=buildPatternTrainingCorpus({...base,seed:`${base.seed}|g${generation}`},variants);
+  for(const item of generationBase){
+   const h=hash(item.seed+"|complex|"+generation);
+   const registerCount=3+(h%6),registers=Array.from({length:registerCount},(_,i)=>REGISTERS[(h+i*5+generation)%REGISTERS.length]);
+   const transitionCount=2+((h>>>4)%5),transitions=Array.from({length:transitionCount},(_,i)=>TRANSITIONS[(h+i*7)%TRANSITIONS.length]);
+   const mutationCount=2+((h>>>8)%7),mutation=Array.from({length:mutationCount},(_,i)=>MUTATIONS[(h+i*11+generation)%MUTATIONS.length]);
+   const complexitySignature=[item.archetype,item.density,item.symmetry,...registers,...transitions,...mutation].join("|");
+   out.push({...item,id:`${item.id}-g${generation}`,generation,registers,transitions,mutation,complexitySignature});
+  }
+ }
+ return out;
+}
+
+export function uniqueComplexPatterns(cases:ComplexPatternCase[]):ComplexPatternCase[]{
+ const seen=new Set<string>();return cases.filter(x=>{if(seen.has(x.complexitySignature))return false;seen.add(x.complexitySignature);return true});
+}
