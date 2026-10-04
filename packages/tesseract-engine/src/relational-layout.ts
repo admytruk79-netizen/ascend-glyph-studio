@@ -1,5 +1,6 @@
 import type {Topology,TopologyNode,TopologyEdge} from "./topology";
 import type {GarmentZone} from "./garment";
+import {planEmergence,emergencePenalty} from "./emergence";
 
 export type LayoutPoint={x:number;y:number;angleDeg:number;scale:number;layer:number};
 export type Layout={points:Record<string,LayoutPoint>;iterations:number;energy:number};
@@ -15,7 +16,7 @@ function orientation(e:TopologyEdge){const m:Record<string,number>={ascend:-90,f
 
 export function solveRelationalLayout(t:Topology,width:number,height:number,seed:string,zone?:GarmentZone):Layout{
  const pad=Math.max(18,Math.min(width,height)*.08),pts:Record<string,LayoutPoint>={};
- const n=Math.max(1,t.nodes.length),wrap=!!zone?.wrapAllowed;
+ const n=Math.max(1,t.nodes.length),wrap=!!zone?.wrapAllowed,emergence=planEmergence(t,seed);
  t.nodes.forEach((node,i)=>{const u=(i+.5)/n,j=((hash(seed+node.id)%1000)/999-.5);
    pts[node.id]={x:pad+u*(width-2*pad),y:height*(.5+j*.36),angleDeg:0,scale:.72+node.scale*.18,layer:node.form==="void"?0:node.scale};});
  let energy=0;
@@ -33,9 +34,12 @@ export function solveRelationalLayout(t:Topology,width:number,height:number,seed
    const targetAngle=orientation(e)*Math.PI/180,actual=Math.atan2(dy,dx),turn=Math.atan2(Math.sin(targetAngle-actual),Math.cos(targetAngle-actual))*.05*e.weight;
    force[e.to]!.x+=Math.cos(actual+Math.PI/2)*turn*target;force[e.to]!.y+=Math.sin(actual+Math.PI/2)*turn*target;energy+=Math.abs(q)+Math.abs(turn);
   }
-  for(const node of t.nodes){const p=pts[node.id]!,f=force[node.id]!,step=it<20?3.2:it<48?1.7:.7;p.x+=f.x*step;p.y+=f.y*step;
+  for(const node of t.nodes){const p=pts[node.id]!,f=force[node.id]!,anchor=emergence.anchors[node.id];if(anchor){const pull=(it<30?.045:.018)*anchor.weight;f.x+=(anchor.u*width-p.x)*pull;f.y+=(anchor.v*height-p.y)*pull;}
+   for(const v of emergence.negativeSpace){const vx=v.u*width,vy=v.v*height,rr=v.radius*Math.min(width,height),dx=p.x-vx,dy=p.y-vy,d=Math.max(1,Math.hypot(dx,dy));if(d<rr){const q=(rr-d)/rr;f.x+=dx/d*q*2.4;f.y+=dy/d*q*2.4;}}
+   const step=it<20?3.2:it<48?1.7:.7;p.x+=f.x*step;p.y+=f.y*step;
    if(wrap){p.x=((p.x%width)+width)%width}else p.x=clamp(p.x,pad,width-pad);p.y=clamp(p.y,pad,height-pad);}
  }
  for(const e of t.edges){const a=pts[e.from],b=pts[e.to];if(a&&b){const ang=Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI;a.angleDeg=(a.angleDeg+ang)/2;}}
+ energy+=emergencePenalty(emergence,pts,width,height)*10;
  return {points:pts,iterations:72,energy};
 }
