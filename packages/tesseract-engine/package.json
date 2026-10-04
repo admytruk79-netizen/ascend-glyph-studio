@@ -2,7 +2,7 @@
   "name":"@ascend/tesseract-engine",
   "version":"0.2.0",
   "private":true,
-  "type":"module",
+  "type":"commonjs",
   "scripts":{
     "typecheck":"tsc --noEmit",
     "build":"tsc -p tsconfig.json",
