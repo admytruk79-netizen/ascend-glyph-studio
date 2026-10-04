@@ -5,6 +5,7 @@ import {designableZones,validateGarmentConfiguration,type CompatibilityRule,type
 import {searchDesignSpace,type SearchCandidate} from "./search";
 import {genomeFromTopology} from "./genome";
 import {projectGenomeSvg,type SvgProjection} from "./svg-projector";
+import {projectSemanticGeometry,renderZoneTrajectories} from "./semantic-projector";
 import {composeTopologyForZone,behaviorForZone,type ZoneBehavior} from "./zone-composer";
 import {connectGarmentZones,type ContinuityEvent} from "./garment-continuity";
 import {planContinuityRegistration,type ContinuitySegment} from "./continuity-registration";
@@ -24,13 +25,13 @@ export function runTesseractBatch(input:BatchInput):BatchResult{
  const found:SearchCandidate[]=searchDesignSpace({seed:input.seed,intent,principles:input.principles,antiStyle:input.antiStyle,population:input.population??64,generations:input.generations??5,keep:input.keep??12});
  const zones=input.garment?designableZones(input.garment):[];
  const candidates=found.map((c,i)=>{
-  const genome=genomeFromTopology(`${input.seed}:${i}`,c.topology),projection=projectGenomeSvg(genome);
+  const genome=genomeFromTopology(`${input.seed}:${i}`,c.topology),projection=projectSemanticGeometry(genome);
   const zoneTopologies=Object.fromEntries(zones.map(z=>[z.id,composeTopologyForZone(c.topology,z,`${input.seed}:${i}`)]));
-  let zoneProjections=zones.map(z=>{const canvas=zoneCanvas(z),zoneTopology=zoneTopologies[z.id]!,zoneGenome=genomeFromTopology(`${input.seed}:${i}:${z.id}`,zoneTopology);return {zoneId:z.id,kind:z.kind,surface:z.surface,wrap:z.wrapAllowed,behavior:behaviorForZone(z.kind),svg:projectGenomeSvg(zoneGenome,canvas.width,canvas.height)};});
+  let zoneProjections=zones.map(z=>{const canvas=zoneCanvas(z),zoneTopology=zoneTopologies[z.id]!,zoneGenome=genomeFromTopology(`${input.seed}:${i}:${z.id}`,zoneTopology);return {zoneId:z.id,kind:z.kind,surface:z.surface,wrap:z.wrapAllowed,behavior:behaviorForZone(z.kind),svg:projectSemanticGeometry(zoneGenome,canvas.width,canvas.height)};});
   const continuity=input.garment?connectGarmentZones(input.garment,zoneTopologies):[];
   const registration=input.garment?planContinuityRegistration(input.garment,continuity):[];
   const trajectories=input.garment?buildGarmentTrajectories(input.garment,registration):[];
-  zoneProjections=injectTrajectoryMetadata(zoneProjections,trajectories);
+  zoneProjections=injectTrajectoryMetadata(zoneProjections,trajectories).map(z=>({...z,svg:renderZoneTrajectories(z.svg,z.zoneId,trajectories)}));
   return {rank:i+1,score:c.score,novelty:c.novelty,trace:[...c.trace,`garment:${input.garment?.id??"none"}`,`zones:${zoneProjections.length}`,`continuity:${continuity.length}`,`registration:${registration.filter(x=>x.manufacturable).length}/${registration.length}`,`trajectories:${trajectories.length}`],genomeId:genome.id,projection,zones:zoneProjections,continuity,registration,trajectories};
  });
  return {seed:input.seed,candidateCount:candidates.length,garmentId:input.garment?.id,configurationIssues:issues,candidates};
