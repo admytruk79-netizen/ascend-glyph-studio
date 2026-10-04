@@ -11,6 +11,11 @@ import {DESIGN_NICHES,nicheFitness,type DesignNicheId} from "./niches";
 import type {MediumId} from "./medium-compiler";
 import type {PhysicalValidation} from "./physical-feedback";
 import {productionFitness} from "./production-fitness";
+import {paretoSelect,type ParetoCandidate} from "./pareto";
+import {objectiveVector} from "./objectives";
+import {topologyVisualVector} from "./candidate-visual-vector";
+import {assessVisual} from "./visual-assessment";
+import {assessManufacturability} from "./manufacturability";
 
 export type SearchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];antiStyle?:WeightedRef[];visualCorpus?:ImageObservation[];selectionPolicy?:SelectionPolicy;niches?:DesignNicheId[];medium?:MediumId;physicalHistory?:PhysicalValidation[];substrateId?:string;machineProfileId?:string;population?:number;keep?:number;generations?:number};
 export type SearchCandidate={topology:Topology;score:number;novelty:number;trace:string[]};
@@ -31,9 +36,14 @@ export function searchDesignSpace(input:SearchInput):SearchCandidate[]{
    if(survival&&!survival.survive)return {t,score:-Infinity};
    const niche=input.niches?.length?Math.max(...input.niches.map(id=>nicheFitness(t,DESIGN_NICHES[id]))):assignNiche(t).fitness;
    const pf=input.medium&&input.physicalHistory?.length?productionFitness(t,input.medium,input.physicalHistory,input.substrateId,input.machineProfileId):undefined;
-   return {t,score:e.score+novelty*18-soft*100+(survival?.fitnessDelta??0)+niche*16+(pf?pf.score*18:0)};
+   const visual=input.visualCorpus?.length?assessVisual(topologyVisualVector(t),input.visualCorpus):undefined;
+   const manufacturing=input.medium?assessManufacturability(t,input.medium):undefined;
+   const objectives=objectiveVector(t,{semanticScore:e.score,novelty,culturalConfidence:Math.max(0,1-soft),visual,manufacturing,physical:pf});
+   return {t,score:e.score+novelty*18-soft*100+(survival?.fitnessDelta??0)+niche*16+(pf?pf.score*18:0),objectives};
   }).sort((a,b)=>b.score-a.score);
-  const speciesPool=diverseSelection(scored,Math.max(8,Math.floor(pop/2))).map(t=>scored.find(x=>x.t===t)!).filter(Boolean);
+  const viable=scored.filter(x=>Number.isFinite(x.score)&&x.objectives) as Array<{t:Topology;score:number;objectives:ReturnType<typeof objectiveVector>}>;
+  const pareto=paretoSelect(viable.map(x=>({item:x,objectives:x.objectives})),Math.max(8,Math.floor(pop*.75))).map(x=>x.item);
+  const speciesPool=diverseSelection(pareto,Math.max(8,Math.floor(pop/2))).map(t=>pareto.find(x=>x.t===t)!).filter(Boolean);
   population=nicheDiversity(speciesPool,Math.max(4,Math.floor(pop/4))).map(x=>x.t);history.push(...population);
  }
  return population.map(t=>{
