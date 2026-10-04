@@ -2,6 +2,7 @@ import { runDiaryEngine, DiaryEngineResult } from "./diary-engine";
 import { DiarySynthesisInput } from "./diary";
 import { buildDiaryFamily } from "./diary-family";
 import { synthesizeDiaryVector } from "./diary-vector";
+import { DiaryManufacturingProfile, deriveDiaryManufacturingGeometry } from "./diary-manufacturing";
 
 export interface DiaryFamilyExport {
  schema:"ascend.diary.family-export.v1";
@@ -17,16 +18,18 @@ export interface DiaryFamilyExport {
   safeGeometry:boolean;
   minLineMm:number;
   maxInkCoverage:number;
+  manufacturing?:ReturnType<typeof deriveDiaryManufacturingGeometry>;
  };
 }
 
-export function exportDiaryFamily(input:DiarySynthesisInput):DiaryFamilyExport{
+export function exportDiaryFamily(input:DiarySynthesisInput,profile?:DiaryManufacturingProfile):DiaryFamilyExport{
  const vector=synthesizeDiaryVector(input);
  const family=buildDiaryFamily(vector);
  const result:DiaryEngineResult=runDiaryEngine(input);
  const names=result.exports.map(x=>x.zone);
  const uniqueSurfaceNames=new Set(names).size===family.zones.length;
  const safeGeometry=family.zones.every(z=>z.widthMm>z.safeInsetMm*2&&z.heightMm>z.safeInsetMm*2);
+ const manufacturing=profile?deriveDiaryManufacturingGeometry(profile):undefined;
  const errors=[...result.validation.errors];
  if(result.exports.length!==family.zones.length)errors.push("incomplete diary surface family");
  if(!uniqueSurfaceNames)errors.push("duplicate diary surface");
@@ -44,7 +47,8 @@ export function exportDiaryFamily(input:DiarySynthesisInput):DiaryFamilyExport{
    uniqueSurfaceNames,
    safeGeometry,
    minLineMm:family.designRules.minLineMm,
-   maxInkCoverage:family.designRules.maxInkCoverage
+   maxInkCoverage:family.designRules.maxInkCoverage,
+   manufacturing
   }
  };
 }
