@@ -1,0 +1,12 @@
+export type Unit="m"|"m2"|"piece"|"spool"|"pack"|"hour";
+export type SupplyStatus="draft"|"approved"|"ordered"|"partially-received"|"received"|"cancelled";
+export type WorkStatus="planned"|"released"|"cutting"|"embroidery"|"sewing"|"finishing"|"qc"|"complete"|"blocked";
+export interface MaterialSku{id:string;name:string;unit:Unit;onHand:number;reserved:number;reorderPoint:number;leadTimeDays:number;supplierIds:string[]}
+export interface BomLine{skuId:string;qty:number;scrapRate:number}
+export interface BillOfMaterials{id:string;productId:string;size:string;revision:string;lines:BomLine[]}
+export interface Supplier{id:string;name:string;active:boolean;capabilities:string[];leadTimeDays:number;minOrderValueMinor?:number}
+export interface PurchaseOrder{id:string;supplierId:string;status:SupplyStatus;currency:string;lines:{skuId:string;qty:number;unitCostMinor:number}[];createdAt:string;expectedAt?:string}
+export interface WorkOrder{id:string;orderId:string;productId:string;bomId:string;qty:number;status:WorkStatus;manufacturerId:string;operations:string[];dueAt?:string}
+export interface CustomerOrder{id:string;designId:string;productId:string;size:string;qty:number;paid:boolean;shippingCountry:string;createdAt:string}
+export interface InventoryPosition{skuId:string;onHand:number;reserved:number;available:number;demand:number;shortage:number}
+export interface SupplyPlan{positions:InventoryPosition[];purchaseOrders:PurchaseOrder[];workOrders:WorkOrder[]}
