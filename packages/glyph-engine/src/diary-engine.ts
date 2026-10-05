@@ -2,11 +2,11 @@ import { createHash } from "node:crypto";
 import { DiarySynthesisInput } from "./diary";
 import { synthesizeDiaryVector } from "./diary-vector";
 import { A5_DIARY_ZONES, DiaryZoneName, DiaryZoneSpec } from "./diary-family";
+import { evaluateProductionGate, ProductionGate } from "./production-contract";
 
 export interface SynthesisAdapter<TInput,TResult>{kind:string;run(input:TInput):TResult}
 export interface DiaryExport { zone:DiaryZoneName; filename:string; svg:string }
-export type ProductionValidationState="reference"|"sample-measured"|"manufacturer-validated"|"production-validated";
-export interface DiaryEngineResult {id:string;manifestSha256:string;exports:DiaryExport[];validation:{valid:boolean;errors:string[]};production:{state:ProductionValidationState;productionApproved:boolean;blockers:string[]}}
+export interface DiaryEngineResult {id:string;manifestSha256:string;exports:DiaryExport[];validation:{valid:boolean;errors:string[]};production:ProductionGate}
 
 const esc=(v:string)=>v.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;"}[c]!));
 function zonePaths(zone:DiaryZoneName,paths:string[]){
@@ -44,7 +44,7 @@ export function runDiaryEngine(input:DiarySynthesisInput):DiaryEngineResult{
  const requested=new Set(candidate.manifest.zones);
  const exports=A5_DIARY_ZONES.filter(zone=>requested.has(zone.name)).map(zone=>{const paths=zonePaths(zone.name,candidate.paths),svg=project(zone,paths,candidate.manifestSha256);errors.push(...validateProjectedSvg(zone,svg,candidate.manifestSha256,paths.length));return{zone:zone.name,filename:`${zone.name}-${candidate.manifestSha256.slice(0,12)}.svg`,svg}});
  const packageHash=createHash("sha256").update(exports.map(x=>x.svg).join("\n")).digest("hex");
- const blockers=["physical-sample-validation-required","manufacturer-production-specification-required"];
- return{id:`diary-${packageHash.slice(0,12)}`,manifestSha256:candidate.manifestSha256,exports,validation:{valid:!errors.length,errors},production:{state:"reference",productionApproved:false,blockers}};
+ const production=evaluateProductionGate();
+ return{id:`diary-${packageHash.slice(0,12)}`,manifestSha256:candidate.manifestSha256,exports,validation:{valid:!errors.length,errors},production};
 }
 export const diaryAdapter:SynthesisAdapter<DiarySynthesisInput,DiaryEngineResult>={kind:"diary",run:runDiaryEngine};
