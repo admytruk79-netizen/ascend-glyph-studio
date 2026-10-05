@@ -1,0 +1,2 @@
+import{strict as assert}from"node:assert";import{buildMeaningGraph,allProjections}from"./tesseract-meta-grammar";
+const g=buildMeaningGraph("oleksandr-ascend-v1"),p=allProjections(g);assert.equal(g.nodes.length,10);assert.equal(p.length,5);assert.equal(new Set(p.map(x=>x.semanticChecksum)).size,1);assert.ok(p.every(x=>x.points.length===g.nodes.length));assert.deepEqual(p,allProjections(buildMeaningGraph("oleksandr-ascend-v1")));

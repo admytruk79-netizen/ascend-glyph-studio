@@ -1,0 +1,1 @@
+import{strict as assert}from"node:assert";import{buildFirstDiaryProductionPackage}from"./first-diary-production";const p=buildFirstDiaryProductionPackage();assert.equal(p.validation.valid,true);assert.equal(p.status,"manufacturing-candidate");assert.ok(p.svg.includes('width="148mm"'));assert.ok(p.svg.includes('clip-path="url(#asc-safe)"'));

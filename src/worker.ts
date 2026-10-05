@@ -31,6 +31,6 @@ export default {
    if(!obj)return new Response("Not found",{status:404});
    return new Response(obj.body,{headers:{"etag":obj.httpEtag,"content-type":obj.httpMetadata?.contentType||"application/octet-stream","cache-control":"public,max-age=31536000,immutable"}});
   }
-  return new Response(`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ASCEND Glyph Studio</title><style>body{font-family:system-ui;background:#f5f2ea;color:#181713;margin:0;display:grid;place-items:center;min-height:100vh}main{max-width:720px;padding:32px}small{opacity:.55}</style></head><body><main><small>BUILD 0.4</small><h1>ASCEND Glyph Studio</h1><p>Five atlases. One living glyph language.</p><p>32 immutable source records · R2 registry connected.</p></main></body></html>`,{headers:{"content-type":"text/html;charset=UTF-8"}});
+  return new Response(`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ASCEND Glyph Studio</title><style>body{font-family:system-ui;background:#f5f2ea;color:#181713;margin:0;display:grid;place-items:center;min-height:100vh}main{max-width:720px;padding:32px}small{opacity:.55}</style></head><body><main><small>BUILD 0.4</small><h1>ASCEND Glyph Studio</h1><p>Research-driven glyph synthesis for production-ready diary systems.</p><p>Deterministic synthesis · provenance · review gates · manufacturing validation.</p></main></body></html>`,{headers:{"content-type":"text/html;charset=UTF-8"}});
  }
 };

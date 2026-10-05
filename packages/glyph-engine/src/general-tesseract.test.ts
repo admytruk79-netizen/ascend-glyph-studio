@@ -1,0 +1,2 @@
+import{strict as assert}from"node:assert";import{generateTesseractArtifact,DEFAULT_SUBSTRATES}from"./general-tesseract";
+for(const kind of Object.keys(DEFAULT_SUBSTRATES) as (keyof typeof DEFAULT_SUBSTRATES)[]){const a=generateTesseractArtifact("ascend-general-v1",kind,24),b=generateTesseractArtifact("ascend-general-v1",kind,24);assert.deepEqual(a,b);assert.equal(a.field.microCount,240);assert.ok(a.svg.startsWith("<svg"));assert.ok(a.projectionKinds.length>=2)}

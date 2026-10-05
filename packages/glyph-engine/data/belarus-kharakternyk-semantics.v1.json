@@ -1,0 +1,161 @@
+{
+  "schema": "ascend.research.lineage-expansion.v1",
+  "status": "evidence-seed",
+  "evidence": [
+    {
+      "id": "by-method-warning-katser",
+      "tradition": "Belarusian",
+      "media": [
+        "embroidery",
+        "weaving"
+      ],
+      "attested": "Modern scholarly critique finds M.S. Katser's widely circulated fixed symbol interpretations methodologically myth-making and unsuitable as uncritical scientific authority.",
+      "semanticEvidence": "Treat popular Belarusian symbol dictionaries derived from Katser as hypotheses/modern reception, not recovered ancient meanings.",
+      "confidence": 0.98,
+      "culturalAccess": "review",
+      "source": "Volha Labacheuskaya 2021, Patriotic Mythology of the Belarusian Ornament"
+    },
+    {
+      "id": "by-ritual-towel-stepped-rhombus",
+      "tradition": "Belarusian",
+      "media": [
+        "ritual-towel"
+      ],
+      "region": "Kapyl district, Minsk region",
+      "period": "20th c.",
+      "attested": "Study analyzes a stepped-rhombus motif and neighboring forms on a Belarusian ritual towel.",
+      "semanticEvidence": "Proposed meanings are explicitly hypotheses; object may have wedding and folk-medicine ritual contexts.",
+      "confidence": 0.78,
+      "culturalAccess": "review",
+      "source": "Aheyeva, Symbolics of Ritual in the Sign Space of the Towel"
+    },
+    {
+      "id": "by-embroidery-locality",
+      "tradition": "Belarusian",
+      "media": [
+        "embroidery",
+        "clothing",
+        "ritual-towel",
+        "textile"
+      ],
+      "period": "late 19th–early 20th c.",
+      "attested": "Ethnographic research documents local variation, materials and techniques; red wool terminology and Polissian usage are specifically recorded.",
+      "semanticEvidence": null,
+      "confidence": 0.86,
+      "culturalAccess": "low",
+      "source": "Belarusian Folk Embroidery: Development and Local Features"
+    },
+    {
+      "id": "by-podlasie-ritual-towel",
+      "tradition": "Belarusian/Podlasie",
+      "media": [
+        "ritual-towel"
+      ],
+      "region": "Podlasie",
+      "period": "ethnographic study",
+      "attested": "Ritual towel studied as material-culture object embedded in family rituals and customs.",
+      "semanticEvidence": "Meaning depends on ritual use and object context, not isolated motif alone.",
+      "confidence": 0.88,
+      "culturalAccess": "review",
+      "source": "Los czlowieka na plotnie wyhaftowany"
+    },
+    {
+      "id": "ua-kharakternyk-folklore",
+      "tradition": "Ukrainian Cossack folklore",
+      "media": [
+        "oral-history",
+        "legend"
+      ],
+      "period": "formation from late Zaporizhian Sich era through 19th c.",
+      "attested": "Folklore portrays exceptional Cossacks/kharakternyky with extraordinary strength, invulnerability, deception/metamorphosis and leader/ancestor associations.",
+      "semanticEvidence": "Scholarly folklorist describes the image as progressively mythologized; this is evidence for folklore identity, not proof of literal occult practices.",
+      "confidence": 0.96,
+      "culturalAccess": "review",
+      "source": "Liudmyla Ivannikova, Rylsky Institute of Art Studies, Folklore and Ethnology"
+    },
+    {
+      "id": "ua-kharakternyk-historical-caution",
+      "tradition": "Ukrainian Cossack folklore",
+      "media": [
+        "historical-reference",
+        "folklore"
+      ],
+      "period": "18th–19th c.",
+      "attested": "Early narratives record unusual abilities attributed to Cossacks; later literature and folklore elaborate the kharakternyk image.",
+      "semanticEvidence": "Do not manufacture a canonical 'kharakternyk symbol set' without artifact-level evidence.",
+      "confidence": 0.94,
+      "culturalAccess": "review",
+      "source": "National Historical Library of Ukraine, Kharakternyky bibliography/exhibition"
+    },
+    {
+      "id": "ua-cossack-goldsmithing",
+      "tradition": "Ukrainian Cossack-era material culture",
+      "media": [
+        "metalwork",
+        "goldsmithing"
+      ],
+      "period": "17th–18th c.",
+      "attested": "Museum research on Ukrainian Cossack-associated cups documents local Baroque decoration with acanthus leaves, flowers, fruits, garlands/bouquets and cryptonym letters.",
+      "semanticEvidence": "Useful evidence for period morphology and ornament density, not kharakternyk esoteric semantics.",
+      "confidence": 0.95,
+      "culturalAccess": "low",
+      "source": "Kharkiv Historical Museum research on Cossack cups"
+    }
+  ],
+  "ascendAbstractions": [
+    {
+      "id": "asc-belarus-ritual-register",
+      "derivedFrom": [
+        "by-ritual-towel-stepped-rhombus",
+        "by-podlasie-ritual-towel"
+      ],
+      "principle": "stepped geometric registers gain meaning through sequence, placement and ritual-object context rather than dictionary labels",
+      "meaning": [
+        "lineage",
+        "threshold",
+        "continuity"
+      ],
+      "claimType": "ASCEND interpretation"
+    },
+    {
+      "id": "asc-lineage-guard",
+      "derivedFrom": [
+        "ua-kharakternyk-folklore"
+      ],
+      "principle": "central guardian/leader presence surrounded by ordered protective field; express through hierarchy and enclosure, not invented occult sigils",
+      "meaning": [
+        "protection",
+        "discipline",
+        "ancestral-strength"
+      ],
+      "claimType": "ASCEND interpretation from folklore structure"
+    },
+    {
+      "id": "asc-character-ascent",
+      "derivedFrom": [
+        "ua-kharakternyk-folklore",
+        "ua-kharakternyk-historical-caution"
+      ],
+      "principle": "translate the legendary ideal into compositional qualities—clarity, resilience, command, transformation—without claiming secret historical signs",
+      "meaning": [
+        "strength",
+        "transformation",
+        "ascent"
+      ],
+      "claimType": "modern philosophical abstraction"
+    },
+    {
+      "id": "asc-cossack-baroque-counterpoint",
+      "derivedFrom": [
+        "ua-cossack-goldsmithing"
+      ],
+      "principle": "combine disciplined geometric framework with controlled vegetal/baroque counterpoint in secondary registers",
+      "meaning": [
+        "heritage",
+        "vitality",
+        "refinement"
+      ],
+      "claimType": "formal synthesis"
+    }
+  ]
+}

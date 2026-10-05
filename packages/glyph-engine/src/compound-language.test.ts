@@ -1,0 +1,3 @@
+import{strict as assert}from"node:assert";import{buildCompoundGlyph,buildGlyphPhrase,renderCompoundSvg,renderPhraseSvg}from"./compound-language";
+const a=buildCompoundGlyph("ascend-compound-v1",0,7),b=buildCompoundGlyph("ascend-compound-v1",0,7);assert.deepEqual(a,b);assert.equal(a.members.length,7);assert.equal(a.provenance.legacyAtlasRequired,false);assert.ok(a.members.every(x=>x.id.startsWith("asc-new-")));assert.ok(renderCompoundSvg(a).startsWith("<svg"));
+const p=buildGlyphPhrase("ascend-phrase-v1","flowering",6);assert.equal(p.compounds.length,6);assert.ok(renderPhraseSvg(p).startsWith("<svg"));assert.ok(p.compounds.every(x=>x.provenance.copiedHistoricalMotif===false));

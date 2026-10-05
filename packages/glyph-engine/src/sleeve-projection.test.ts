@@ -1,0 +1,2 @@
+import{strict as assert}from"node:assert";import{generateSleevePair}from"./sleeve-projection";
+for(const mode of ["mirror","complement","split-macro"] as const){const a=generateSleevePair("ascend-sleeves-v1",mode),b=generateSleevePair("ascend-sleeves-v1",mode);assert.deepEqual(a,b);assert.equal(a.left.points.length,10);assert.equal(a.right.points.length,10);assert.ok(a.left.points.some(x=>x.zone==="cuff"));assert.ok(a.left.points.some(x=>x.zone==="cap"))}

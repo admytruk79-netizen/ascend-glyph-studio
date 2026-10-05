@@ -1,0 +1,2 @@
+import{strict as assert}from"node:assert";import{buildGlyphPhrase}from"./compound-language";import{renderDualReadingField}from"./dual-reading-field";
+const r=renderDualReadingField([buildGlyphPhrase("dual-1","lineage",4),buildGlyphPhrase("dual-2","return",4)],"dual-v1");assert.equal(r.field.semanticChecksum,r.dual.semanticChecksum);assert.ok(r.svg.includes('mask="url(#asc-void)"'));assert.ok(r.svg.startsWith("<svg"));
