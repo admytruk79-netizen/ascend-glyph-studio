@@ -1,10 +1,8 @@
 name: web-ci
 on:
   pull_request:
-    paths: ['apps/web/**','packages/glyph-engine/**','.github/workflows/web.yml']
   push:
-    branches: [main]
-    paths: ['apps/web/**','packages/glyph-engine/**','.github/workflows/web.yml']
+    branches: [main, glyph-engine/diary-approved-package-bridge]
 jobs:
   typecheck:
     runs-on: ubuntu-latest
@@ -15,3 +13,6 @@ jobs:
       - run: npm install --no-audit --no-fund
       - run: npm run typecheck --workspace=@ascend/glyph-engine
       - run: npm run typecheck --workspace=@ascend/web
+      - run: npm test --workspace=@ascend/glyph-engine
+      - run: python3 tools/generate_semantic_pattern.py --seed ci --out /tmp/ascend-ci.svg
+      - run: test -s /tmp/ascend-ci.svg
