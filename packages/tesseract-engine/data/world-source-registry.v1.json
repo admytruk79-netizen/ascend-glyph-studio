@@ -1130,6 +1130,190 @@
         "study collection"
       ],
       "url": "https://www.arts.ac.uk/colleges/central-saint-martins/about-csm/museum-and-study-collection"
+    },
+    {
+      "id": "arizona-state-museum-textiles",
+      "name": "Arizona State Museum Southwest Textile Collection",
+      "kind": "collection",
+      "scale": "700 Southwestern U.S. + 900 northwestern Mexican textiles; technical/historical database work",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Diné",
+        "Pueblo",
+        "Ndéé",
+        "Ute",
+        "Paiute",
+        "O’odham",
+        "Yaqui",
+        "Cocopah",
+        "Tarahumara",
+        "Mayo",
+        "Seri",
+        "Southwest textiles"
+      ],
+      "url": "https://statemuseum.arizona.edu/textile-challenge"
+    },
+    {
+      "id": "ukrainian-museum-canada",
+      "name": "Ukrainian Museum of Canada Textile Collection",
+      "kind": "collection",
+      "scale": "extensive Ukrainian clothing, embroidery and weaving collection with regional identifications",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Ukraine",
+        "embroidery",
+        "weaving",
+        "regional dress"
+      ],
+      "url": "https://umcnational.ca/about/news/preserving-the-collection/"
+    },
+    {
+      "id": "ny-handweavers-directory",
+      "name": "New York Guild of Handweavers Online Museums Directory",
+      "kind": "discovery-directory",
+      "scale": "directory of textile museums and online collections",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "global",
+        "textiles",
+        "weaving",
+        "museum collections"
+      ],
+      "url": "https://www.nyhandweavers.org/online-museums"
+    },
+    {
+      "id": "risd-museum-textiles",
+      "name": "RISD Museum Textile Collection",
+      "kind": "collection",
+      "scale": "museum textile collection used for research into cross-cultural pattern systems",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "global",
+        "textiles",
+        "pattern",
+        "design research"
+      ],
+      "url": "https://risdmuseum.org/art-design/projects-publications/articles/weaving-memory-and-resistance"
+    },
+    {
+      "id": "met-embroidered-textiles",
+      "name": "Metropolitan Museum of Art — Textiles-Embroidered Classification",
+      "kind": "museum-api",
+      "scale": "Open Access object records and public-domain images for embroidered textiles",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "India",
+        "embroidered textiles",
+        "global"
+      ],
+      "url": "https://www.metmuseum.org/art/collection/search/69963"
+    },
+    {
+      "id": "met-indian-borders",
+      "name": "Metropolitan Museum of Art — Indian Embroidered Borders",
+      "kind": "museum-api",
+      "scale": "object-level embroidered border records with material, dimensions and provenance",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "India",
+        "Europe",
+        "embroidered borders",
+        "cross-cultural transmission"
+      ],
+      "url": "https://www.metmuseum.org/art/collection/search/229470"
+    },
+    {
+      "id": "met-british-samplers",
+      "name": "Metropolitan Museum of Art — British Embroidered Samplers",
+      "kind": "museum-api",
+      "scale": "object-level British sampler records",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Britain",
+        "embroidery",
+        "samplers",
+        "mapping motifs"
+      ],
+      "url": "https://www.metmuseum.org/art/collection/search/228708"
+    },
+    {
+      "id": "met-german-samplers",
+      "name": "Metropolitan Museum of Art — German Samplers",
+      "kind": "museum-api",
+      "scale": "object-level German sampler records",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Germany",
+        "embroidery",
+        "samplers",
+        "drawnwork"
+      ],
+      "url": "https://www.metmuseum.org/art/collection/search/228669"
+    },
+    {
+      "id": "textile-museum-canada-online",
+      "name": "Textile Museum of Canada Online Collection",
+      "kind": "collection",
+      "scale": "15000+ objects from 200+ regions",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "global",
+        "textiles",
+        "Indigenous",
+        "historic dress",
+        "weaving"
+      ],
+      "url": "https://collections.textilemuseum.ca/"
+    },
+    {
+      "id": "piecework-directory",
+      "name": "PieceWork International Needlework Museum Directory",
+      "kind": "discovery-directory",
+      "scale": "international directory of needlework and textile museums",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "global",
+        "needlework",
+        "embroidery",
+        "textiles"
+      ],
+      "url": "https://pieceworkmagazine.com/museums/"
+    },
+    {
+      "id": "textile-society-directory",
+      "name": "Textile Society Online Databases Directory",
+      "kind": "discovery-directory",
+      "scale": "curated links to textile databases and collections",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "global",
+        "textiles",
+        "archives",
+        "museum databases"
+      ],
+      "url": "https://www.textilesociety.org.uk/resources/online-databases"
     }
   ],
   "ingestRules": {
@@ -1154,8 +1338,8 @@
     "noCultureStyleSwitch": true
   },
   "progress": {
-    "verifiedRegistryEntries": 70,
+    "verifiedRegistryEntries": 81,
     "lastExpansion": "2026-10-05",
-    "note": "Distinct endpoints only; candidate object counts remain separate. Discovery directories are seeds, not automatically counted as child sources."
+    "note": "Distinct endpoints only; object records remain separate. Directory entries seed further verification and are not expanded into source count until individually verified."
   }
 }
