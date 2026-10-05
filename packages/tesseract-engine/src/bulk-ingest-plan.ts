@@ -1,0 +1,1 @@
+import{BULK_PATTERN_SOURCES}from"./bulk-corpus-ingest";console.log(JSON.stringify({sources:BULK_PATTERN_SOURCES.map(s=>({id:s.id,url:s.url,filters:s.filters})),instruction:"Fetch bulk datasets outside test runtime, filter locally, preserve provenance/rights, then pass eligible images to pattern-image-analyzer."},null,2));
