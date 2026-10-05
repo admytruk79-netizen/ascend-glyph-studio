@@ -14,6 +14,19 @@ Implemented foundations include the open pattern knowledge graph, object-level c
 
 The renderer is under active development. It is **not yet claimed production-beautiful or production-ready**. The next renderer milestone is recursive/fractal semantic clustering, multiscale LOD and aesthetic candidate selection.
 
+## Tesseract training-data targets
+
+These are the current quantitative corpus targets for the engine:
+
+- **250,000 analyzed image-bearing pattern instances** — first serious training milestone. This is the active `corpus-250k` program and counts only records that pass image analysis, deduplication, provenance, rights/access and cultural-safety gates.
+- **750,000 analyzed image-bearing pattern instances** — mature corpus target for broad structural coverage and stronger holdout evaluation.
+- **10,000 distinct source endpoints / institutional or collection sources** — source-diversity target. Individual museum objects do **not** count as separate sources.
+- **Millions of candidate object records** may need to be enumerated upstream to yield the 250k/750k usable analyzed instances after filtering.
+- Mature coverage gates: **>=300 named traditions, >=250 independent source groups, >=30 geographic regions, >=12 technique families**, no single tradition >2%, no single source >5%, and >=65% image-eligible records.
+- Holdout target: **10% provenance-aware holdout**, keeping related object families/source series out of both train and holdout.
+
+The counts are quality-gated, not raw scrape totals. Near-duplicates, inaccessible/restricted material, unusable imagery, uncertain provenance and records failing rights/cultural-safety checks do not count toward the analyzed-instance target.
+
 ## World-pattern library
 
 The target is **10,000 distinct source endpoints** and **millions of candidate object records**. These numbers are deliberately separate: an individual museum object never counts as a source.
