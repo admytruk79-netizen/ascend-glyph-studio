@@ -3,6 +3,17 @@
 ## Goal
 Feed Tesseract a broad research corpus without turning it into a motif-copying machine. Raw material is evidence; it is not automatically a design primitive.
 
+## Corpus scale targets
+- Active milestone: **250,000 analyzed image-bearing pattern instances**.
+- Mature target: **750,000 analyzed image-bearing pattern instances**.
+- Source-diversity target: **10,000 distinct source endpoints / collections / institutional sources**.
+- Expected upstream enumeration: **millions of candidate records**.
+- Mature coverage: **300+ named traditions, 250+ independent source groups, 30+ geographic regions, 12+ technique families**.
+- Balance limits: no single tradition >2%; no single source >5%.
+- Validation: 10% provenance-aware holdout.
+
+These are quality-gated analyzed-instance counts, not raw scrape totals.
+
 ## Corpus lanes
 1. ASCEND primary sources — Oleksandr's drawings, books, philosophy and canonical geometry.
 2. Ukrainian material culture — embroidery, woven skirts/zapasky, rushnyky, shirts, belts, metalwork, woodwork, ceramics, pysanky, sacred art and regional costume.
