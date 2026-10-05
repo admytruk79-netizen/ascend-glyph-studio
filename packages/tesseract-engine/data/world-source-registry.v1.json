@@ -845,6 +845,291 @@
         "textiles"
       ],
       "url": "https://pieceworkmagazine.com/museums/"
+    },
+    {
+      "id": "joe-ben-wheat",
+      "name": "Joe Ben Wheat Southwest Textile Database",
+      "kind": "database",
+      "scale": "1300+ Pueblo, Navajo and Spanish-American textiles from 50+ museums",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Pueblo",
+        "Navajo",
+        "Spanish-American",
+        "Southwest weaving"
+      ],
+      "url": "https://joebenwheat.org/"
+    },
+    {
+      "id": "va-collections",
+      "name": "Victoria and Albert Museum Collections",
+      "kind": "museum-api",
+      "scale": "global decorative arts and textile collection; API-accessible",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "global",
+        "embroidery",
+        "textiles",
+        "dress"
+      ],
+      "url": "https://collections.vam.ac.uk/"
+    },
+    {
+      "id": "getty-collection",
+      "name": "Getty Museum Collection",
+      "kind": "museum-api",
+      "scale": "open collection metadata and IIIF resources",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "global",
+        "decorative arts",
+        "textiles"
+      ],
+      "url": "https://www.getty.edu/art/collection/"
+    },
+    {
+      "id": "europeana",
+      "name": "Europeana Collections",
+      "kind": "aggregator-api",
+      "scale": "pan-European cultural heritage aggregation",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Europe",
+        "textiles",
+        "folk art",
+        "dress"
+      ],
+      "url": "https://www.europeana.eu/"
+    },
+    {
+      "id": "rijksmuseum",
+      "name": "Rijksmuseum Collection",
+      "kind": "museum-api",
+      "scale": "digitized decorative arts and textile holdings",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Netherlands",
+        "Europe",
+        "textiles",
+        "decorative arts"
+      ],
+      "url": "https://www.rijksmuseum.nl/en/collection"
+    },
+    {
+      "id": "british-museum",
+      "name": "British Museum Collection Online",
+      "kind": "collection",
+      "scale": "global museum collection database",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "global",
+        "textiles",
+        "ethnography",
+        "ornament"
+      ],
+      "url": "https://www.britishmuseum.org/collection"
+    },
+    {
+      "id": "louvre-collections",
+      "name": "Louvre Collections",
+      "kind": "collection",
+      "scale": "online museum collections database",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Europe",
+        "Middle East",
+        "decorative arts",
+        "textiles"
+      ],
+      "url": "https://collections.louvre.fr/en/"
+    },
+    {
+      "id": "stgallen-textile",
+      "name": "Textilmuseum St. Gallen Online Collection",
+      "kind": "collection",
+      "scale": "~2000 online textiles across centuries and regions",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Europe",
+        "global",
+        "embroidery",
+        "lace",
+        "textiles"
+      ],
+      "url": "https://www.textilmuseum.ch/en/the-textile-museums-collections-online/"
+    },
+    {
+      "id": "textielmuseum-nl",
+      "name": "TextielMuseum Netherlands Online Collection",
+      "kind": "collection",
+      "scale": "large online-registered textile collection",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Netherlands",
+        "industrial textiles",
+        "pattern",
+        "weaving"
+      ],
+      "url": "https://textielmuseum.nl/en/museum-collection"
+    },
+    {
+      "id": "delaware-fashion-textile",
+      "name": "University of Delaware Fashion & Textile Collection",
+      "kind": "collection",
+      "scale": "4000+ garments accessories and textiles",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "global dress",
+        "ethnic apparel",
+        "regional textiles"
+      ],
+      "url": "https://www.udel.edu/academics/colleges/cas/units/departments/fashion-apparel-studies/research-outreach/fashion-textile-collection/"
+    },
+    {
+      "id": "jefferson-tapestry",
+      "name": "Thomas Jefferson University Tapestry / Design Center",
+      "kind": "database",
+      "scale": "10000+ searchable fabric swatches; 200000-object textile/costume collection",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "global",
+        "fabric motifs",
+        "brocade",
+        "embroidery",
+        "kimono"
+      ],
+      "url": "https://library.jefferson.edu/gutman/special_collections/tapestry/about.cfm"
+    },
+    {
+      "id": "bahay-ugnayan",
+      "name": "Bahay Ugnayan Indigenous Philippine Textiles",
+      "kind": "collection",
+      "scale": "990 objects including 434 textiles and 54 beadworks",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Philippines",
+        "Ifugao",
+        "Kalinga",
+        "Isneg",
+        "textiles"
+      ],
+      "url": "https://www.bahayugnayan.org/collection"
+    },
+    {
+      "id": "cu-anthropology",
+      "name": "University of Colorado Museum Anthropology Collections",
+      "kind": "database",
+      "scale": "anthropology database plus Navajo textile holdings",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Navajo",
+        "Southwest",
+        "anthropology",
+        "textiles"
+      ],
+      "url": "https://www.colorado.edu/cumuseum/research-collections/anthropology/databases-research-tools"
+    },
+    {
+      "id": "cornell-costume",
+      "name": "Cornell Fashion + Textile Collection",
+      "kind": "collection",
+      "scale": "9000-piece costume/textile collection; ethnographic holdings",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "global",
+        "ethnographic textiles",
+        "dress"
+      ],
+      "url": "https://fashionandtextiles.cornell.edu/collections"
+    },
+    {
+      "id": "goldsmiths-textile",
+      "name": "Goldsmiths Textile Collection",
+      "kind": "collection",
+      "scale": "historical, ethnographic and contemporary textiles",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Britain",
+        "ethnographic textiles",
+        "design"
+      ],
+      "url": "https://www.gold.ac.uk/textile-collection/"
+    },
+    {
+      "id": "heriot-watt-textile",
+      "name": "Heriot-Watt University Textile Collection",
+      "kind": "collection",
+      "scale": "research collection focused on wool weaving, tweed, tartan and furnishing fabrics",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Britain",
+        "tweed",
+        "tartan",
+        "weaving"
+      ],
+      "url": "https://www.hw.ac.uk/uk/services/heritage-information-governance/archive-heritage-collections.htm"
+    },
+    {
+      "id": "glasgow-school-art-archives",
+      "name": "Glasgow School of Art Archives & Collections",
+      "kind": "archive",
+      "scale": "design-school archives and textile-related collections",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Scotland",
+        "design",
+        "textiles"
+      ],
+      "url": "https://gsaarchives.net/"
+    },
+    {
+      "id": "central-saint-martins-study",
+      "name": "Central Saint Martins Museum & Study Collection",
+      "kind": "collection",
+      "scale": "textile study holdings including Joyce Clissold and designer collections",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Britain",
+        "textile design",
+        "study collection"
+      ],
+      "url": "https://www.arts.ac.uk/colleges/central-saint-martins/about-csm/museum-and-study-collection"
     }
   ],
   "ingestRules": {
@@ -869,7 +1154,7 @@
     "noCultureStyleSwitch": true
   },
   "progress": {
-    "verifiedRegistryEntries": 52,
+    "verifiedRegistryEntries": 70,
     "lastExpansion": "2026-10-05",
     "note": "Distinct endpoints only; candidate object counts remain separate. Discovery directories are seeds, not automatically counted as child sources."
   }
