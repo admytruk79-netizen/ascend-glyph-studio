@@ -1,0 +1,2 @@
+import{strict as assert}from"node:assert";import{buildGlyphPhrase}from"./compound-language";import{composeField}from"./phrase-field";import{allFieldTransforms}from"./field-transform";
+const f=composeField([buildGlyphPhrase("contact-v1","transformation",5),buildGlyphPhrase("contact-v1b","return",5)],"contact-field");const x=allFieldTransforms(f);assert.equal(x.length,6);assert.ok(x.every(v=>v.semanticChecksum===f.semanticChecksum));assert.equal(x.find(v=>v.transform==="overlay")?.overlayOpacity,.42);
