@@ -1,0 +1,35 @@
+name: ASCEND Full Integrity
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/web/**"
+      - "packages/glyph-engine/**"
+      - "packages/tesseract-engine/**"
+      - ".github/workflows/full-integrity.yml"
+  workflow_dispatch:
+jobs:
+  integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - name: Glyph Engine typecheck
+        run: npm --workspace @ascend/glyph-engine run typecheck
+      - name: Glyph Engine tests
+        run: npm --workspace @ascend/glyph-engine test
+      - name: Tesseract typecheck
+        run: npm run typecheck --workspace=@ascend/tesseract-engine
+      - name: Tesseract build
+        run: npm run build --workspace=@ascend/tesseract-engine
+      - name: Tesseract tests
+        run: npm test --workspace=@ascend/tesseract-engine
+      - name: Tesseract pilot
+        run: npm run pilot --workspace=@ascend/tesseract-engine
+      - name: Web typecheck
+        run: npm run typecheck --workspace=@ascend/glyph-studio-web
+      - name: Web build
+        run: npm run build --workspace=@ascend/glyph-studio-web
