@@ -6,6 +6,8 @@ on:
       - "apps/web/**"
       - "packages/glyph-engine/**"
       - "packages/tesseract-engine/**"
+      - "packages/production-orchestrator/**"
+      - "packages/erp-core/**"
       - ".github/workflows/full-integrity.yml"
   workflow_dispatch:
 jobs:
