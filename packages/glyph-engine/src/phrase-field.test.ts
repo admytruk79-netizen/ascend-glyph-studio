@@ -1,0 +1,2 @@
+import{strict as assert}from"node:assert";import{buildGlyphPhrase}from"./compound-language";import{composeField,renderFieldSvg}from"./phrase-field";
+const ps=["root","flowering","flight","ascent","return"].map((m,i)=>buildGlyphPhrase("field-v1-"+i,m as any,4));const a=composeField(ps,"field-v1",3),b=composeField(ps,"field-v1",3);assert.deepEqual(a,b);assert.equal(a.bands.length,15);assert.equal(a.macroPath.length,24);assert.ok(a.microDensity>=.55);const svg=renderFieldSvg(a,ps);assert.ok(svg.startsWith("<svg"));assert.ok(svg.includes("data-semantic-checksum"));
