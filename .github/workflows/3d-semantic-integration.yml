@@ -21,6 +21,5 @@ jobs:
         with:
           name: tesseract-svg-specimens
           path: |
-            packages/tesseract-engine/dist/love.svg
-            packages/tesseract-engine/dist/growth.svg
-            packages/tesseract-engine/dist/return.svg
+            packages/tesseract-engine/dist/specimen-*.svg
+            packages/tesseract-engine/dist/specimen-*.json
