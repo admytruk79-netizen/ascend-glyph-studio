@@ -7,6 +7,7 @@ on:
     branches: [claude/tesseract-corpus-harvest]
     paths:
       - "scripts/build-research-corpus.ts"
+      - "scripts/analyze-research-corpus.ts"
       - "scripts/corpus/**"
       - ".github/workflows/corpus-harvest.yml"
   workflow_dispatch:
@@ -38,8 +39,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Gate tests
-        run: npx -y tsx@4 --test scripts/corpus/gates.test.ts
+      - name: Corpus tests
+        run: npx -y tsx@4 --test scripts/corpus/gates.test.ts scripts/corpus/features.test.ts
       - name: Harvest
         run: |
           mkdir -p out
@@ -66,3 +67,46 @@ jobs:
         run: |
           npm install --no-audit --no-fund
           npx -y tsx@4 scripts/import-research-corpus.ts
+
+  analyze:
+    # Image-analysis stage: download each candidate image, extract structural
+    # features, drop failed/low-information/near-duplicate images. Images are
+    # analyzed in memory and never stored.
+    needs: harvest
+    if: always() && needs.harvest.result != 'cancelled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env:
+      CORPUS_IN: out/corpus.ndjson
+      ANALYZED_OUT: out/analyzed.ndjson
+      ANALYSIS_SUMMARY_OUT: out/analysis-summary.json
+      ANALYSIS_CONCURRENCY: "24"
+      ANALYSIS_MAX_MINUTES: "320"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/download-artifact@v4
+        with:
+          name: tesseract-corpus-${{ github.run_id }}
+          path: out
+      - name: Install image decoder
+        run: npm install --no-save --no-audit --no-fund sharp@0.33
+      - name: Analyze images
+        run: |
+          gunzip -kf out/corpus.ndjson.gz
+          npx -y tsx@4 scripts/analyze-research-corpus.ts
+      - name: Summary
+        if: always()
+        run: |
+          test -f out/analysis-summary.json && cat out/analysis-summary.json || echo "no summary"
+          gzip -kf out/analyzed.ndjson || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tesseract-analyzed-${{ github.run_id }}
+          path: |
+            out/analyzed.ndjson.gz
+            out/analysis-summary.json
+          retention-days: 90
