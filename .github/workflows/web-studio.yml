@@ -1,0 +1,27 @@
+name: Glyph Studio Web
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/web/**"
+      - "packages/tesseract-engine/**"
+      - ".github/workflows/web-studio.yml"
+  pull_request:
+    paths:
+      - "apps/web/**"
+      - "packages/tesseract-engine/**"
+      - ".github/workflows/web-studio.yml"
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install --no-audit --no-fund
+      - name: Typecheck web
+        run: npm run typecheck --workspace=@ascend/glyph-studio-web
+      - name: Build web
+        run: npm run build --workspace=@ascend/glyph-studio-web
