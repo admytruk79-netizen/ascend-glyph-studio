@@ -8,6 +8,7 @@ on:
       - "packages/tesseract-engine/**"
       - "packages/production-orchestrator/**"
       - "packages/erp-core/**"
+      - "scripts/**"
       - ".github/workflows/full-integrity.yml"
   workflow_dispatch:
 jobs:
