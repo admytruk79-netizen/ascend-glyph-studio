@@ -1,4 +1,4 @@
-import pass1 from"../data/object-corpus.met.pass1.json";import pass2 from"../data/object-corpus.museum.pass2.json";import{legacyWorldLibraryGraph}from"./world-library-graph";import{mergeKnowledgeGraphs,type PatternKnowledgeGraph}from"./pattern-knowledge-graph";
+import pass1 from"../data/object-corpus.met.pass1.json";import pass2 from"../data/object-corpus.museum.pass2.json";import pass3 from"../data/object-corpus.culture.pass3.json";import pass4 from"../data/object-corpus.culture.pass4.json";import{legacyWorldLibraryGraph}from"./world-library-graph";import{mergeKnowledgeGraphs,type PatternKnowledgeGraph}from"./pattern-knowledge-graph";
 const asGraph=(x:any):PatternKnowledgeGraph=>({sources:x.sources??[],objects:x.objects??[],observations:x.observations??[]});
-export function worldPatternGraph():PatternKnowledgeGraph{return mergeKnowledgeGraphs(legacyWorldLibraryGraph(),asGraph(pass1),asGraph(pass2))}
+export function worldPatternGraph():PatternKnowledgeGraph{return mergeKnowledgeGraphs(legacyWorldLibraryGraph(),asGraph(pass1),asGraph(pass2),asGraph(pass3),asGraph(pass4))}
 export function corpusStats(){const g=worldPatternGraph();return{sources:g.sources.length,objects:g.objects.length,observations:g.observations.length,cultures:new Set(g.objects.flatMap(o=>o.cultureIds)).size,traditions:new Set(g.objects.flatMap(o=>o.traditionIds)).size}}
