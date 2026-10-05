@@ -73,7 +73,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   principles:[],niches:niche?[niche]:undefined,medium,
   population:Math.round(32+complexity*64),generations:Math.round(3+complexity*5),keep:variations
  });
- const ranked=candidates.map(c=>{const aesthetic=scoreTopologyComposition(c.topology),quality=qualityGate(c.topology,aesthetic,mode);return{c,aesthetic,quality,generatorScore:c.score+aesthetic.total*18+quality.sourcePrimitiveRatio*8}}).sort((a,b)=>b.generatorScore-a.generatorScore);
+ const ranked=candidates.map(c=>{const aesthetic=scoreTopologyComposition(c.topology),quality=qualityGate(c.topology,aesthetic,mode);return{c,aesthetic,quality,generatorScore:c.score+aesthetic.total*18+quality.sourcePrimitiveRatio*8-quality.genericRisk*14}}).sort((a,b)=>b.generatorScore-a.generatorScore);
  const accepted=ranked.filter(x=>x.quality.accepted).slice(0,variations);
  return accepted.map(({c,aesthetic,quality,generatorScore},i)=>{
   const g=genomeFromTopology(`pattern:${input.seed}:${i}`,c.topology);
