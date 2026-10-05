@@ -1,8 +1,6 @@
 import React,{useMemo,useState} from "react";
 import {generatePatterns,type PatternMode} from "../../../packages/tesseract-engine/src/pattern-generator";
 import {ASCEND_PALETTES} from "../../../packages/tesseract-engine/src/color-system";
-import {planSupply} from "../../../packages/erp-core/src/planning";
-import {bomFor,materials,suppliers} from "./operations-data";
 
 type ProductId="mens-shirt"|"womens-shirt"|"diary";
 type SizeId="XS"|"S"|"M"|"L"|"XL"|"XXL";
@@ -40,7 +38,6 @@ export default function GlyphStudio(){
  const patterns=useMemo(()=>generatePatterns({seed:seed+":"+revision,concepts,paletteId,mode,complexity,variations:12,width:960,height:260}),[seed,revision,concepts,paletteId,mode,complexity]);
  const active=patterns[Math.min(selected,Math.max(0,patterns.length-1))];
  const activeFabric=fabrics.find(x=>x.id===fabric)!;
- const supplyPlan=useMemo(()=>planSupply({order:{id:"CONFIG-"+seed+"-"+revision,designId:active?.lineageId??"pending",productId:product==="diary"?"diary":"shirt",size:product==="diary"?"A5":size,qty:1,paid:false,shippingCountry:"US",createdAt:"2026-10-05"},bom:bomFor(product,size,fabric),materials,suppliers,manufacturerId:"manufacturer-pilot-01",now:"2026-10-05"}),[product,size,fabric,seed,revision,active?.lineageId]);
  const toggleConcept=(c:string)=>setConcepts(xs=>xs.includes(c)?xs.length>1?xs.filter(x=>x!==c):xs:xs.length<6?[...xs,c]:xs);
 
  const next=()=>setStep(s=>Math.min(5,s+1) as Step);
@@ -62,7 +59,7 @@ export default function GlyphStudio(){
     {step===2&&<><h2>Choose size</h2><div className="sizeGrid">{sizes.map(s=><button key={s} onClick={()=>setSize(s)} className={size===s?"size active":"size"}>{s}</button>)}</div><p className="hint">Production sizing will use the garment specification, not visual scaling.</p></>}
     {step===3&&<><h2>Material & base colour</h2><div className="fabricList">{fabrics.map(f=><button key={f.id} onClick={()=>setFabric(f.id)} className={fabric===f.id?"fabric active":"fabric"}><i style={{background:f.hex}}/><span>{f.name}</span></button>)}</div><h2>Pattern palette</h2><select value={paletteId} onChange={e=>setPaletteId(e.target.value)}>{Object.values(ASCEND_PALETTES).map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></>}
     {step===4&&<><h2>Meaning</h2><div className="chips">{conceptOptions.map(c=><button key={c} className={concepts.includes(c)?"chip active":"chip"} onClick={()=>toggleConcept(c)}>{c}</button>)}</div><h2>Placement</h2><div className="chips">{modes.map(m=><button key={m} className={mode===m?"chip active":"chip"} onClick={()=>{setMode(m);setSelected(0)}}>{m}</button>)}</div><h2>Complexity</h2><input type="range" min="0" max="1" step=".01" value={complexity} onChange={e=>setComplexity(+e.target.value)}/><button className="generate wide" onClick={()=>{setRevision(x=>x+1);setSelected(0)}}>Generate new family</button><h2>Seed</h2><input value={seed} onChange={e=>setSeed(e.target.value)}/></>}
-    {step===5&&<><h2>Review design</h2><dl className="summary"><dt>Product</dt><dd>{products.find(p=>p.id===product)?.name}</dd><dt>Size</dt><dd>{size}</dd><dt>Material</dt><dd>{activeFabric.name}</dd><dt>Placement</dt><dd>{mode}</dd><dt>Palette</dt><dd>{ASCEND_PALETTES[paletteId]?.name}</dd><dt>Lineage</dt><dd>{active?.lineageId??"—"}</dd></dl><h2>ERP readiness</h2><div className="opsPanel"><p><strong>{supplyPlan.workOrders[0]?.status==="released"?"Ready for production":"Supply required"}</strong></p>{supplyPlan.positions.map(p=><div key={p.skuId} className="opsRow"><span>{p.skuId}</span><span>demand {p.demand}</span><span className={p.shortage>0?"shortage":"ok"}>{p.shortage>0?"short "+p.shortage:"in stock"}</span></div>)}<p>{supplyPlan.purchaseOrders.length} purchase order{supplyPlan.purchaseOrders.length===1?"":"s"} · work order {supplyPlan.workOrders[0]?.id}</p></div><button className="generate wide" onClick={()=>setCart(true)}>Add configured piece to cart</button></>}
+    {step===5&&<><h2>Review design</h2><dl className="summary"><dt>Product</dt><dd>{products.find(p=>p.id===product)?.name}</dd><dt>Size</dt><dd>{size}</dd><dt>Material</dt><dd>{activeFabric.name}</dd><dt>Placement</dt><dd>{mode}</dd><dt>Palette</dt><dd>{ASCEND_PALETTES[paletteId]?.name}</dd><dt>Lineage</dt><dd>{active?.lineageId??"—"}</dd></dl><button className="generate wide" onClick={()=>setCart(true)}>Add configured piece to cart</button></>}
     <div className="navButtons"><button disabled={step===1} onClick={back}>Back</button><button disabled={step===5} onClick={next}>Continue</button></div>
    </aside>
 
