@@ -1,6 +1,13 @@
-import{renderAscendSentence,type AscendSentence}from"./ascend-universal-language";
-const samples:AscendSentence[]=[
-{seed:"ascend-love-01",meaning:"love",operations:["approach","mirror","bind","continue"],topology:"bilateral",closure:"closed",rhythm:"steady"},
-{seed:"ascend-growth-01",meaning:"growth",operations:["branch","expand","continue"],topology:"branching",closure:"open",rhythm:"rising"},
-{seed:"ascend-return-01",meaning:"return",operations:["expand","converge","resume"],topology:"radial",closure:"returning",rhythm:"pulse"}];
-for(const s of samples){const svg=renderAscendSentence(s,1200,600);const name=s.meaning.replace(/[^a-z0-9]+/gi,"-").toLowerCase();require("node:fs").writeFileSync(`dist/${name}.svg`,svg);console.log(`dist/${name}.svg`)}
+import{generatePatterns,type PatternMode}from"./pattern-generator";
+import{writeFileSync}from"node:fs";
+const modes:PatternMode[]=["band","cuff","collar","sleeve","emblem","field"];
+const dims:Record<PatternMode,[number,number]>={band:[1200,220],cuff:[900,180],collar:[1000,180],sleeve:[700,1400],emblem:[800,800],field:[1200,900]};
+for(const mode of modes){
+ const [width,height]=dims[mode];
+ const patterns=generatePatterns({seed:`specimen-${mode}-01`,concepts:["ancestry","freedom","protection","return","ascent"],mode,complexity:.72,variations:8,width,height,paletteId:"underdog-heritage"});
+ if(!patterns.length)throw new Error(`No accepted specimen patterns for ${mode}`);
+ const best=patterns[0]!;
+ writeFileSync(`dist/specimen-${mode}.svg`,best.svg);
+ writeFileSync(`dist/specimen-${mode}.json`,JSON.stringify({mode,id:best.id,lineageId:best.lineageId,generatorScore:best.generatorScore,aesthetic:best.aesthetic,quality:best.quality},null,2));
+ console.log(`dist/specimen-${mode}.svg`);
+}
