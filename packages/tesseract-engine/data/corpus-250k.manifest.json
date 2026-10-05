@@ -1,0 +1,1 @@
+{"version":"corpus-250k-v1","target":250000,"batchSize":10000,"batches":25,"status":"started","checkpoints":[],"rules":{"countOnly":"successfully image-analyzed pattern instances","deduplicate":true,"preserveProvenance":true,"rightsGate":true,"restrictedSacredCommercialDerivation":false,"holdoutShare":0.1}}
