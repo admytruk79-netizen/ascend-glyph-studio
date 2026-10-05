@@ -14,5 +14,20 @@ const seen=new Set<string>();
 const sleep=(ms:number)=>new Promise(r=>setTimeout(r,ms));
 async function json(url:string){const r=await fetch(url,{headers:{"user-agent":"ASCEND-Research-Corpus/0.1"}});if(!r.ok)throw new Error(`${r.status} ${url}`);return r.json()}
 async function* met(s:Source){const q=await json(`${s.endpoint}?hasImages=true&q=${encodeURIComponent(s.query)}`);for(const id of q.objectIDs??[]){const x=await json(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`);yield{id:`met-${id}`,source:s.id,tradition:s.tradition,culturalAccess:s.culturalAccess,title:x.title,creator:x.artistDisplayName||undefined,date:x.objectDate||undefined,region:x.country||x.culture||undefined,material:x.medium||undefined,technique:x.classification||undefined,objectURL:x.objectURL,image:x.primaryImageSmall||undefined,rights:x.rightsAndReproduction||undefined,accession:x.accessionNumber,reliability:.98,raw:{department:x.department,culture:x.culture,period:x.period,dynasty:x.dynasty}};await sleep(35)}}
-async function main(){const stream=createWriteStream(out,{flags:"w"});let n=0;for(const s of sources){for await(const row of met(s)){stream.write(JSON.stringify(row)+"\n");if(++n>=target)break}if(n>=target)break}stream.end();console.log(JSON.stringify({written:n,target,out}))}
+async function main(){
+ const stream=createWriteStream(out,{flags:"w"});let n=0;
+ for(const s of sources){
+  for await(const row of met(s)){
+   if(seen.has(row.id))continue;
+   seen.add(row.id);
+   stream.write(JSON.stringify(row)+"\n");
+   n++;
+   if(n%checkpointEvery===0)console.log(JSON.stringify({checkpoint:n,target,out}));
+   if(n>=target)break;
+  }
+  if(n>=target)break;
+ }
+ stream.end();
+ console.log(JSON.stringify({written:n,target,out,unique:seen.size}))
+}
 main().catch(e=>{console.error(e);process.exitCode=1});
