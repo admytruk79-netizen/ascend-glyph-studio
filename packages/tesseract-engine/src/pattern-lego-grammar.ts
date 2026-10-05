@@ -1,0 +1,11 @@
+export type SocketKind="stem"|"branch"|"radial"|"edge"|"loop"|"void"; export type SocketPolarity="in"|"out"|"either";
+export interface LegoSocket{id:string;kind:SocketKind;polarity:SocketPolarity;x:number;y:number;angle:number;tolerance:number;scaleMin:number;scaleMax:number;tags:string[]}
+export interface PlacedBlock{blockId:string;x:number;y:number;rotation:number;scale:number;via?:{fromSocket:string;toSocket:string}}
+export interface LegoBlock{id:string;family:string;sourceInstanceIds:string[];semanticRoles:string[];symmetry:"none"|"mirror"|"radial"|"rotational";mutation:number;sockets:LegoSocket[];children?:PlacedBlock[]}
+export interface Assembly{root:string;placements:PlacedBlock[];semanticRoles:string[]}
+const ad=(a:number,b:number)=>Math.abs((((a-b)+540)%360)-180);
+export function socketsCompatible(a:LegoSocket,b:LegoSocket,scale:number){return(a.polarity==="either"||b.polarity==="either"||a.polarity!==b.polarity)&&a.kind===b.kind&&scale>=Math.max(a.scaleMin,b.scaleMin)&&scale<=Math.min(a.scaleMax,b.scaleMax)&&ad(a.angle,(b.angle+180)%360)<=Math.min(a.tolerance,b.tolerance)}
+export function compatibleConnections(a:LegoBlock,b:LegoBlock,scale=1){const r:{from:string;to:string}[]=[];for(const x of a.sockets)for(const y of b.sockets)if(socketsCompatible(x,y,scale))r.push({from:x.id,to:y.id});return r}
+export function assemble(root:LegoBlock,blocks:LegoBlock[],roles:string[],scale=1):Assembly{const p:PlacedBlock[]=[{blockId:root.id,x:0,y:0,rotation:0,scale}];let cur=root;for(const n of blocks){const c=compatibleConnections(cur,n,scale)[0];if(!c)continue;p.push({blockId:n.id,x:0,y:0,rotation:0,scale,via:{fromSocket:c.from,toSocket:c.to}});cur=n}return{root:root.id,placements:p,semanticRoles:roles}}
+export function clusterBlock(id:string,family:string,children:PlacedBlock[],sockets:LegoSocket[],roles:string[]):LegoBlock{return{id,family,sourceInstanceIds:[],semanticRoles:roles,symmetry:"none",mutation:.12,sockets,children}}
+export function recurseCluster(block:LegoBlock,depth:number,maxDepth=4):LegoBlock{if(depth>=maxDepth||!block.children?.length)return block;return{...block,children:block.children.map((c,i)=>({...c,scale:c.scale*Math.pow(.5,depth+1),rotation:c.rotation+(i%2?5:-5)}))}}
