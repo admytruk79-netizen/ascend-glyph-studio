@@ -4,7 +4,7 @@ const base={seed:"ascend-deep-lineage-v2",meanings:["lineage","protection","asce
 const raw=buildComplexPatternCorpus(base,{variantsPerArchetype:64,generations:8});
 assert.equal(raw.length,6144);
 assert.ok(raw.every(x=>x.registers.length>=3&&x.transitions.length>=2&&x.mutation.length>=2));
-assert.ok(raw.every(x=>x.atlas.glyphs.length===2));
+assert.ok(raw.every(x=>x.source.glyphs.length===4));\nassert.ok(raw.every(x=>x.source.provenance.legacyAtlasRequired===false));
 const unique=uniqueComplexPatterns(raw);
 assert.ok(unique.length>1000,`expected >1000 unique signatures, got ${unique.length}`);
 assert.deepEqual(raw,buildComplexPatternCorpus(base,{variantsPerArchetype:64,generations:8}));
