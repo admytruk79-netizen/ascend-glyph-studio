@@ -18,10 +18,13 @@ jobs:
         env: {TARGET: "25000"}
         run: node scripts/corpus/build-ukraine-candidates.mjs
         continue-on-error: true
+      - name: Normalize Ukrainian candidates
+        run: node scripts/corpus/normalize-ukraine.mjs
       - uses: actions/upload-artifact@v4
         with:
           name: ukraine-corpus-candidates
           path: |
             .corpus-out/ukraine/ukraine-candidates.jsonl
             .corpus-out/ukraine/ukraine-stats.json
+            .corpus-out/ukraine/ukraine-normalized.json
           retention-days: 90
