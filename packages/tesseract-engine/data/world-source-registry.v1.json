@@ -673,6 +673,178 @@
         "pattern"
       ],
       "url": "https://nationalcraftsmuseum.nic.in/"
+    },
+    {
+      "id": "burke-arts-cultures",
+      "name": "Burke Museum Arts & Cultures Collections Database",
+      "kind": "collection",
+      "scale": "57000+ cultural belongings; Americas Africa Asia Pacific",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "global",
+        "Indigenous Americas",
+        "textiles",
+        "material culture"
+      ],
+      "url": "https://www.burkemuseum.org/collections-and-research/heritage/artscultures/database/"
+    },
+    {
+      "id": "russian-ethnographic-siberia",
+      "name": "Russian Ethnographic Museum — Siberia & Far East",
+      "kind": "collection",
+      "scale": "~60000 exhibits + 25000 photos; 44 Indigenous peoples",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Evenki",
+        "Sakha",
+        "Chukchi",
+        "Koryak",
+        "Yukaghir",
+        "Nanai",
+        "Siberia"
+      ],
+      "url": "https://ethnomuseum.ru/en/resources/depositories/collections-on-the-culture-of-peoples-of-siberia-and-far-east/"
+    },
+    {
+      "id": "chukotka-ethnography",
+      "name": "Chukotka Heritage Museum Ethnography Collection",
+      "kind": "collection",
+      "scale": "Indigenous Chukotka ethnography and traditional clothing",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Chukchi",
+        "Yupik",
+        "Even",
+        "Yukaghir",
+        "Koryak",
+        "traditional clothing"
+      ],
+      "url": "https://www.chukotka-museum.ru/collection/etnografiya"
+    },
+    {
+      "id": "khabarovsk-ethnography",
+      "name": "Khabarovsk Regional Museum Ethnographic Collection",
+      "kind": "collection",
+      "scale": "5000+ Indigenous Russian Far East exhibits",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Evenk",
+        "Sakha",
+        "Nanai",
+        "Chukchi",
+        "Nivkh",
+        "Far East"
+      ],
+      "url": "https://hkm.ru/en/collection/etnografiya-korennyh-narodov/"
+    },
+    {
+      "id": "tomsk-siberia",
+      "name": "Tomsk Regional Museum — Ethnography of Siberian Peoples",
+      "kind": "collection",
+      "scale": "11000+ objects",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Khanty",
+        "Evenk",
+        "Sakha",
+        "Tuvan",
+        "Siberian textiles"
+      ],
+      "url": "https://tomskmuseum.ru/fond/fondnxo/fnxoetn/"
+    },
+    {
+      "id": "omsk-ethno-textiles",
+      "name": "Omsk Museum Ethnography & Textiles",
+      "kind": "collection",
+      "scale": "~5000 holdings; textile material from ~30 ethnic cultures/groups",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Ukrainian",
+        "Khanty",
+        "Siberian Tatar",
+        "Kazakh",
+        "Shor",
+        "textiles"
+      ],
+      "url": "https://sibmuseum.ru/collection/kollekcziya-2/"
+    },
+    {
+      "id": "oberlin-ethnographic",
+      "name": "Oberlin College Ethnographic Collection",
+      "kind": "collection",
+      "scale": "~1600 digitized ethnographic objects",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Africa",
+        "Asia",
+        "Pacific",
+        "North America"
+      ],
+      "url": "https://www2.oberlin.edu/library/digital/ocec/index.html"
+    },
+    {
+      "id": "cotsen-textile-traces",
+      "name": "GWU Cotsen Textile Traces Study Collection",
+      "kind": "collection",
+      "scale": "nearly 4000 textile fragments",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Japan",
+        "China",
+        "Peru",
+        "Europe",
+        "Africa",
+        "Oceania"
+      ],
+      "url": "https://museum.gwu.edu/cotsen-textile-traces-study-collection"
+    },
+    {
+      "id": "cameo-asian-textile",
+      "name": "CAMEO Asian Textile Database",
+      "kind": "database",
+      "scale": "nearly 1000 textile samples with technical pattern/weave metadata",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "East Asia",
+        "pattern type",
+        "weave structure",
+        "technical textile data"
+      ],
+      "url": "https://cameo.mfa.org/wiki/Category:Asian_Textile_Database"
+    },
+    {
+      "id": "piecework-museum-directory",
+      "name": "PieceWork International Needlework Museum Directory",
+      "kind": "discovery-directory",
+      "scale": "294 museums indexed",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "global",
+        "embroidery",
+        "needlework",
+        "textiles"
+      ],
+      "url": "https://pieceworkmagazine.com/museums/"
     }
   ],
   "ingestRules": {
@@ -697,8 +869,8 @@
     "noCultureStyleSwitch": true
   },
   "progress": {
-    "verifiedRegistryEntries": 42,
+    "verifiedRegistryEntries": 52,
     "lastExpansion": "2026-10-05",
-    "note": "Distinct endpoints; source/object/image/analyzed counts separate."
+    "note": "Distinct endpoints only; candidate object counts remain separate. Discovery directories are seeds, not automatically counted as child sources."
   }
 }
