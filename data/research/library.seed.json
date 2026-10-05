@@ -1,0 +1,145 @@
+{
+  "version": "0.1",
+  "policy": "Research evidence only. Do not copy source motifs. Nation-specific Indigenous records require cultural review before influence is eligible for synthesis.",
+  "sources": [
+    {
+      "id": "honchar-rushnyk-1653",
+      "tradition": "Ukrainian",
+      "title": "Embroidered rushnyk KN-614",
+      "institution": "Ivan Honchar Museum",
+      "period": "Late 19th–early 20th c.",
+      "region": "Middle Dnipro / Poltava",
+      "material": "cotton fabric",
+      "technique": [
+        "linen/factory weaving",
+        "chainstitch",
+        "hand embroidery"
+      ],
+      "ornament": [
+        "floral",
+        "zoomorphic"
+      ],
+      "locator": "https://honchar.org.ua/en/collections/detail/1653",
+      "reliability": 0.98,
+      "culturalAccess": "open"
+    },
+    {
+      "id": "honchar-rushnyk-331",
+      "tradition": "Ukrainian",
+      "title": "Embroidered rushnyk KN-331",
+      "institution": "Ivan Honchar Museum",
+      "period": "Early 20th c.",
+      "region": "Middle Dnipro / Poltava",
+      "material": "homemade hemp cloth",
+      "technique": [
+        "linen weaving",
+        "natural dye",
+        "straight satin stitch",
+        "rolled satin stitch",
+        "diagonal cross stitch",
+        "zanyzuvannia"
+      ],
+      "ornament": [
+        "geometric",
+        "zoomorphic"
+      ],
+      "locator": "https://honchar.org.ua/en/collections/detail/1063",
+      "reliability": 0.98,
+      "culturalAccess": "open"
+    },
+    {
+      "id": "honchar-rushnyk-163",
+      "tradition": "Ukrainian",
+      "title": "Embroidered rushnyk KN-163",
+      "institution": "Ivan Honchar Museum",
+      "period": "Early 20th c.",
+      "region": "Middle Dnipro / Kyiv; Subotiv, Cherkasy",
+      "material": "homemade linen cloth",
+      "technique": [
+        "linen weaving",
+        "straight satin stitch",
+        "diagonal cross stitch",
+        "plait cross stitch",
+        "cutwork"
+      ],
+      "ornament": [
+        "geometric"
+      ],
+      "locator": "https://honchar.org.ua/en/collections/detail/1193",
+      "reliability": 0.98,
+      "culturalAccess": "open"
+    },
+    {
+      "id": "honchar-rushnyk-70",
+      "tradition": "Ukrainian",
+      "title": "Embroidered rushnyk KN-70",
+      "institution": "Ivan Honchar Museum",
+      "period": "1st half 19th c.",
+      "region": "Middle Dnipro / Poltava; Sumy",
+      "material": "homemade linen cloth",
+      "technique": [
+        "linen weaving",
+        "rushnyk stitches",
+        "hand embroidery"
+      ],
+      "ornament": [
+        "floral",
+        "zoomorphic"
+      ],
+      "locator": "https://honchar.org.ua/en/collections/detail/2025",
+      "reliability": 0.98,
+      "culturalAccess": "open"
+    },
+    {
+      "id": "cowboy-american-gallery",
+      "tradition": "American Western",
+      "title": "American Cowboy Gallery",
+      "institution": "National Cowboy & Western Heritage Museum",
+      "period": "Spanish colonial–20th c.",
+      "region": "American West",
+      "material": "saddles, bits, spurs, chaps, braided rawhide",
+      "technique": [
+        "saddlery",
+        "leatherwork",
+        "braiding",
+        "metalwork"
+      ],
+      "locator": "https://nationalcowboymuseum.org/collections/galleries/american-cowboy/",
+      "reliability": 0.98,
+      "culturalAccess": "open"
+    },
+    {
+      "id": "dine-loom-8345504",
+      "tradition": "Diné",
+      "title": "Loom with Textile",
+      "institution": "Smithsonian Institution",
+      "region": "Navajo/Diné context",
+      "material": "commercial wool yarn",
+      "technique": [
+        "weaving"
+      ],
+      "structure": [
+        "stripes",
+        "zigzags"
+      ],
+      "locator": "https://www.si.edu/object/nmnhanthropology_8345504",
+      "reliability": 0.98,
+      "culturalAccess": "review"
+    },
+    {
+      "id": "dine-textile-270400",
+      "tradition": "Diné",
+      "title": "Textile by Daisey Cleveland",
+      "institution": "National Museum of the American Indian",
+      "period": "1980–1990",
+      "region": "Steamboat, Navajo Reservation, Arizona",
+      "material": "wool yarn",
+      "technique": [
+        "woven"
+      ],
+      "locator": "https://www.si.edu/object/textile%3ANMAI_270400",
+      "reliability": 0.98,
+      "culturalAccess": "review"
+    }
+  ]
+}
