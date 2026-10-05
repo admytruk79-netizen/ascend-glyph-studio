@@ -9,7 +9,8 @@
   },
   "devDependencies": {
     "typescript": "^5.9.3",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "@types/node": "^22.10.0"
   },
   "dependencies": {
     "@ascend/erp-core": "0.1.0"
