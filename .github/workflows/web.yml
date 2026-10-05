@@ -1,0 +1,17 @@
+name: web-ci
+on:
+  pull_request:
+    paths: ['apps/web/**','packages/glyph-engine/**','.github/workflows/web.yml']
+  push:
+    branches: [main]
+    paths: ['apps/web/**','packages/glyph-engine/**','.github/workflows/web.yml']
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm install --no-audit --no-fund
+      - run: npm run typecheck --workspace=@ascend/glyph-engine
+      - run: npm run typecheck --workspace=@ascend/web
