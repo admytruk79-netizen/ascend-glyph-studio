@@ -35,4 +35,4 @@ export function polygonInsideWithClearance(inner:PointMm[],outer:PointMm[],clear
  for(const p of inner)for(let j=0;j<outer.length;j++)if(distPointSegment(p,outer[j]!,outer[(j+1)%outer.length]!)+EPS<clearance)return false;
  return true;
 }
-export function polygonArea(poly:PointMm[]){let s=0;for(let i=0;i<poly.length;i++){const a=poly[i],b=poly[(i+1)%poly.length]!;s+=a.x*b.y-b.x*a.y}return Math.abs(s)/2}
+export function polygonArea(poly:PointMm[]){let s=0;for(let i=0;i<poly.length;i++){const a=poly[i]!,b=poly[(i+1)%poly.length]!;s+=a.x*b.y-b.x*a.y}return Math.abs(s)/2}
