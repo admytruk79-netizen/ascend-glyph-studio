@@ -1,6 +1,6 @@
 {
-  "version": "0.1",
-  "policy": "Research evidence only. Do not copy source motifs. Nation-specific Indigenous records require cultural review before influence is eligible for synthesis.",
+  "version": "0.2",
+  "policy": "Research evidence only. Do not copy source motifs. Nation-specific Indigenous records require provenance/context and cultural review before influence is eligible for synthesis.",
   "sources": [
     {
       "id": "honchar-rushnyk-1653",
@@ -140,6 +140,113 @@
       "locator": "https://www.si.edu/object/textile%3ANMAI_270400",
       "reliability": 0.98,
       "culturalAccess": "review"
+    },
+    {
+      "id": "honchar-rushnyk-1822",
+      "tradition": "Ukrainian",
+      "title": "Embroidered rushnyk KN-23013",
+      "institution": "Ivan Honchar Museum",
+      "period": "1st half 20th c.",
+      "region": "Podolia; Vinnytsia Oblast; Studena",
+      "material": "homemade cloth / serge",
+      "technique": "linen weaving",
+      "locator": "https://honchar.org.ua/en/collections/detail/1822",
+      "reliability": 0.98,
+      "culturalAccess": "open"
+    },
+    {
+      "id": "honchar-rushnyk-2618",
+      "tradition": "Ukrainian",
+      "title": "Embroidered rushnyk KN-1616",
+      "institution": "Ivan Honchar Museum",
+      "period": "Late 19th c.",
+      "region": "Eastern Polissia; Chernihiv Oblast; Makyshyn",
+      "material": "homemade linen cloth",
+      "technique": "linen weaving",
+      "locator": "https://honchar.org.ua/en/collections/detail/2618",
+      "reliability": 0.98,
+      "culturalAccess": "open"
+    },
+    {
+      "id": "honchar-rushnyk-2275",
+      "tradition": "Ukrainian",
+      "title": "Woven and embroidered rushnyk KN-21774",
+      "institution": "Ivan Honchar Museum",
+      "period": "Mid. 20th c.",
+      "region": "Western Polissia; Volyn Oblast; Prokhody",
+      "material": "cotton thread / linen thread",
+      "technique": "linen weaving; shaft weaving; satin stitch; stem stitch; hand embroidery",
+      "ornament": "floral",
+      "locator": "https://honchar.org.ua/en/collections/detail/2275",
+      "reliability": 0.98,
+      "culturalAccess": "open"
+    },
+    {
+      "id": "honchar-rushnyk-2473",
+      "tradition": "Ukrainian",
+      "title": "Embroidered rushnyk KN-617",
+      "institution": "Ivan Honchar Museum",
+      "period": "1910",
+      "region": "Sloboda Ukraine; Kharkiv Oblast; Korbyni Ivany",
+      "material": "cotton fabric",
+      "technique": "linen weaving; factory weaving",
+      "locator": "https://honchar.org.ua/en/collections/detail/2473",
+      "reliability": 0.98,
+      "culturalAccess": "open"
+    },
+    {
+      "id": "honchar-rushnyk-2314",
+      "tradition": "Ukrainian",
+      "title": "Woven rushnyk KN-1438",
+      "institution": "Ivan Honchar Museum",
+      "period": "Mid. 19th c.",
+      "region": "Eastern Polissia; Chernihiv Oblast; Makyshyn",
+      "material": "cotton thread / linen thread",
+      "technique": "linen weaving; shaft weaving; pereborom; domestic weaving",
+      "ornament": "geometric / zoomorphic",
+      "locator": "https://honchar.org.ua/en/collections/detail/2314",
+      "reliability": 0.98,
+      "culturalAccess": "open"
+    },
+    {
+      "id": "smithsonian-paniolo-stamp-2012-0205-08",
+      "tradition": "American Western / Hawaiian paniolo",
+      "title": "Leatherworking design stamp 2012.0205.08",
+      "institution": "Smithsonian National Museum of American History",
+      "period": "ca. 1940",
+      "region": "Hawaii",
+      "material": "metal",
+      "technique": "leatherworking impression tool for saddle decoration",
+      "locator": "https://americanhistory.si.edu/collections/object/nmah_1427193",
+      "reliability": 0.98,
+      "culturalAccess": "open"
+    },
+    {
+      "id": "smithsonian-paniolo-stamp-2012-0205-09",
+      "tradition": "American Western / Hawaiian paniolo",
+      "title": "Leatherworking stamp tool 2012.0205.09",
+      "institution": "Smithsonian National Museum of American History",
+      "period": "ca. 1940",
+      "region": "Hawaii",
+      "material": "metal",
+      "technique": "leatherworking impression tool for saddle decoration",
+      "locator": "https://americanhistory.si.edu/collections/object/nmah_1427196",
+      "reliability": 0.98,
+      "culturalAccess": "open"
+    },
+    {
+      "id": "smithsonian-yakama-side-saddle",
+      "tradition": "Yakama / Western imposed vocational context",
+      "title": "Side saddle nmah_659666",
+      "institution": "Smithsonian National Museum of American History",
+      "region": "Yakama Indian Agency",
+      "material": "leather / saddle structure",
+      "technique": "Mexican-style embossed leatherwork on Western-style saddle",
+      "locator": "https://americanhistory.si.edu/collections/object/nmah_659666",
+      "reliability": 0.98,
+      "culturalAccess": "review",
+      "notes": "Research context includes federal Indian vocational schooling and cultural imposition; do not treat as generic Indigenous design source."
     }
-  ]
+  ],
+  "updated": "2026-10-05"
 }
