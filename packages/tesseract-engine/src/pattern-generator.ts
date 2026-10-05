@@ -4,7 +4,7 @@ import {projectSemanticGeometry} from "./semantic-projector";
 import {ASCEND_PALETTES,ASCEND_COLORS} from "./color-system";
 import type {DesignNicheId} from "./niches";
 import {deriveSignals} from "./pattern-knowledge-graph";
-import {legacyWorldLibraryGraph} from "./world-library-graph";
+import {worldPatternGraph} from "./world-pattern-graph";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
@@ -38,21 +38,22 @@ function colorize(svg:string,paletteId:string){
  return out;
 }
 
-function culturalSignals(cultureIds:string[]){const signals=deriveSignals(legacyWorldLibraryGraph(),{cultureIds,minSupport:.25});return{features:signals.filter(s=>s.kind!=="semantic").slice(0,16).map(s=>[s.value,s.support] as [string,number])};}
+function culturalSignals(cultureIds:string[],objectTypes?:string[]){const signals=deriveSignals(worldPatternGraph(),{cultureIds,objectTypes,minSupport:.25});return{features:signals.filter(s=>s.kind!=="semantic").slice(0,24).map(s=>[s.value,s.support] as [string,number])};}
 
 export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]{
  const concepts=(input.concepts.length?input.concepts:["ancestry","freedom","protection"]).slice(0,8);
  const mode=input.mode??"band",niche=nicheForMode(mode),variations=Math.max(4,Math.min(input.variations??12,32));
  const complexity=Math.max(0,Math.min(1,input.complexity??.65));
  const cultureIds=input.cultureIds?.length?input.cultureIds:["ukraine","japan","britain","china","western-craft"];
- const cultural=culturalSignals(cultureIds);
+ const placementTypes=input.placement?[input.placement,"garment","shirt","tunic","textile","textile-family","design-cloth","wrapper","sash","leather"]:undefined;
+ const cultural=culturalSignals(cultureIds,placementTypes);
  const culturalConcepts=cultural.features.map(([id,w])=>({id:`structure:${id}`,weight:Math.min(1,.3+w/4)}));
  const candidates=searchDesignSpace({
   seed:input.seed,
   intent:{
    concepts:[...concepts.map((id,i)=>({id,weight:Math.max(.35,1-i*.09)})),...culturalConcepts],
    traditions:[{id:"ascend-universal",weight:1},...cultureIds.map((id,i)=>({id:`evidence:${id}`,weight:Math.max(.35,.75-i*.05)}))],
-   character:[{id:"ordered-organic",weight:.55+complexity*.35},{id:"minimal-complex",weight:complexity}]
+   character:[{id:"ordered-organic",weight:.55+complexity*.35},{id:"minimal-complex",weight:complexity},...(input.medium?[{id:`medium:${input.medium}`,weight:.9}]:[]),...(input.placement?[{id:`placement:${input.placement}`,weight:.95}]:[])]
   },
   principles:[],niches:niche?[niche]:undefined,
   population:Math.round(32+complexity*64),generations:Math.round(3+complexity*5),keep:variations
