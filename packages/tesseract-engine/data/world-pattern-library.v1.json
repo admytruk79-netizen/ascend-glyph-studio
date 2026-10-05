@@ -1,0 +1,278 @@
+{
+  "schema": "ascend.world-pattern-library.v1",
+  "records": [
+    {
+      "id": "ua-counted-band",
+      "cultureId": "ukraine",
+      "region": "Ukraine",
+      "tradition": "counted-embroidery",
+      "objectType": "shirt",
+      "features": [
+        {
+          "id": "counted-grid",
+          "family": "geometry",
+          "value": "counted-grid",
+          "weight": 1
+        },
+        {
+          "id": "edge-band",
+          "family": "placement",
+          "value": "garment-edge-band",
+          "weight": 1
+        },
+        {
+          "id": "mirror-repeat",
+          "family": "rhythm",
+          "value": "mirrored-repeat",
+          "weight": 0.9
+        }
+      ],
+      "meanings": [
+        "lineage",
+        "protection"
+      ],
+      "sourceIds": [
+        "corpus-ua-01"
+      ],
+      "confidence": 0.82,
+      "access": "open-principle"
+    },
+    {
+      "id": "jp-kogin",
+      "cultureId": "japan",
+      "region": "Tsugaru",
+      "tradition": "kogin",
+      "objectType": "garment",
+      "features": [
+        {
+          "id": "counted-lozenge",
+          "family": "geometry",
+          "value": "nested-lozenge-grid",
+          "weight": 1
+        },
+        {
+          "id": "stitch-field",
+          "family": "technique",
+          "value": "counted-running-stitch",
+          "weight": 1
+        },
+        {
+          "id": "micro-macro",
+          "family": "scale",
+          "value": "micro-units-macro-field",
+          "weight": 1
+        }
+      ],
+      "meanings": [],
+      "sourceIds": [
+        "corpus-jp-01"
+      ],
+      "confidence": 0.9,
+      "access": "open-principle"
+    },
+    {
+      "id": "gb-crewel",
+      "cultureId": "britain",
+      "region": "England",
+      "tradition": "crewelwork",
+      "objectType": "textile",
+      "features": [
+        {
+          "id": "branch-scroll",
+          "family": "composition",
+          "value": "branching-scroll-field",
+          "weight": 1
+        },
+        {
+          "id": "micro-fill",
+          "family": "scale",
+          "value": "micro-fill-in-macro-form",
+          "weight": 0.9
+        },
+        {
+          "id": "organic-repeat",
+          "family": "rhythm",
+          "value": "organic-repeat",
+          "weight": 0.8
+        }
+      ],
+      "meanings": [],
+      "sourceIds": [
+        "corpus-gb-01"
+      ],
+      "confidence": 0.88,
+      "access": "open-principle"
+    },
+    {
+      "id": "gb-arts-crafts",
+      "cultureId": "britain",
+      "region": "England",
+      "tradition": "arts-and-crafts-textile",
+      "objectType": "textile",
+      "features": [
+        {
+          "id": "meander",
+          "family": "composition",
+          "value": "meandering-branch",
+          "weight": 1
+        },
+        {
+          "id": "hierarchy",
+          "family": "scale",
+          "value": "hierarchical-repeat",
+          "weight": 1
+        }
+      ],
+      "meanings": [],
+      "sourceIds": [
+        "corpus-gb-02"
+      ],
+      "confidence": 0.9,
+      "access": "open-principle"
+    },
+    {
+      "id": "cn-auspicious",
+      "cultureId": "china",
+      "region": "China",
+      "tradition": "auspicious-textile",
+      "objectType": "garment",
+      "features": [
+        {
+          "id": "semantic-combination",
+          "family": "semantics",
+          "value": "combined-auspicious-elements",
+          "weight": 1
+        },
+        {
+          "id": "sleeve-band",
+          "family": "placement",
+          "value": "contrasting-sleeve-band",
+          "weight": 0.9
+        }
+      ],
+      "meanings": [
+        "longevity",
+        "prosperity"
+      ],
+      "sourceIds": [
+        "corpus-cn-01"
+      ],
+      "confidence": 0.9,
+      "access": "open-principle"
+    },
+    {
+      "id": "sakha-garment",
+      "cultureId": "sakha",
+      "region": "Sakha",
+      "tradition": "garment-ornament",
+      "objectType": "garment",
+      "features": [
+        {
+          "id": "edge-structure",
+          "family": "placement",
+          "value": "edge-and-opening-emphasis",
+          "weight": 1
+        },
+        {
+          "id": "material-layer",
+          "family": "material",
+          "value": "layered-material-ornament",
+          "weight": 0.8
+        }
+      ],
+      "meanings": [],
+      "sourceIds": [
+        "corpus-sakha-01"
+      ],
+      "confidence": 0.75,
+      "access": "review"
+    },
+    {
+      "id": "evenk-garment",
+      "cultureId": "evenk",
+      "region": "Siberia",
+      "tradition": "garment-ornament",
+      "objectType": "garment",
+      "features": [
+        {
+          "id": "zone",
+          "family": "placement",
+          "value": "garment-zone-organization",
+          "weight": 1
+        },
+        {
+          "id": "repeat",
+          "family": "rhythm",
+          "value": "edge-repeat",
+          "weight": 0.8
+        }
+      ],
+      "meanings": [],
+      "sourceIds": [
+        "corpus-evenk-01"
+      ],
+      "confidence": 0.75,
+      "access": "review"
+    },
+    {
+      "id": "western-tooling",
+      "cultureId": "western-craft",
+      "region": "North America",
+      "tradition": "saddle-leather-tooling",
+      "objectType": "leather",
+      "features": [
+        {
+          "id": "floral-scroll",
+          "family": "composition",
+          "value": "floral-scroll",
+          "weight": 1
+        },
+        {
+          "id": "relief",
+          "family": "technique",
+          "value": "carved-relief",
+          "weight": 1
+        },
+        {
+          "id": "border",
+          "family": "placement",
+          "value": "border-and-field",
+          "weight": 0.8
+        }
+      ],
+      "meanings": [],
+      "sourceIds": [
+        "corpus-west-01"
+      ],
+      "confidence": 0.8,
+      "access": "open-principle"
+    },
+    {
+      "id": "plains-geometric",
+      "cultureId": "plains-nations",
+      "region": "North America",
+      "tradition": "geometric-bead-quillwork",
+      "objectType": "garment",
+      "features": [
+        {
+          "id": "geometric-band",
+          "family": "geometry",
+          "value": "repeated-geometric-band",
+          "weight": 1
+        },
+        {
+          "id": "surface-density",
+          "family": "scale",
+          "value": "dense-surface-module",
+          "weight": 0.8
+        }
+      ],
+      "meanings": [],
+      "sourceIds": [
+        "corpus-plains-01"
+      ],
+      "confidence": 0.72,
+      "access": "review"
+    }
+  ]
+}
