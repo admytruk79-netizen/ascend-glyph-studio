@@ -29,12 +29,15 @@ function colorize(svg:string,paletteId:string){
  const bg=`<rect width="100%" height="100%" fill="${ground}"/>`;
  let out=svg.replace(/<svg([^>]*)>/,`<svg$1 data-palette="${p.id}">${bg}`);
  out=out.replace(/currentColor/g,structure);
- const paths=[...out.matchAll(/<path /g)];
- for(let i=0;i<Math.min(paths.length,accents.length*2);i++){
-  const c=accents[i%Math.max(1,accents.length)];
-  if(!c)break;
-  out=out.replace(/<path ([^>]*?)>/,`<path $1 data-accent="${i}" stroke="${c}">`);
- }
+ let pathIndex=0;
+ out=out.replace(/<path ([^>]*?)>/g,(tag,attrs:string)=>{
+  if(!accents.length)return tag;
+  const limit=accents.length*2;
+  if(pathIndex>=limit){pathIndex++;return tag;}
+  const i=pathIndex++;
+  const c=accents[i%accents.length]!;
+  return `<path ${attrs} data-accent="${i}" stroke="${c}">`;
+ });
  return out;
 }
 
