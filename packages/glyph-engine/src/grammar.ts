@@ -55,7 +55,8 @@ const RELATION_SIGNALS:Array<{kind:RelationKind;from:string;to:string;signals:st
 ];
 export function deriveRelationalGrammar(principles:PrincipleSignal[],base:Grammar=deriveGrammar(principles)):RelationalGrammar{
  const safe=principles.filter(p=>p.confidence>=.55&&!["restricted","sacred","prohibited"].includes(p.culturalAccess.toLowerCase()));
- const relations=RELATION_SIGNALS.map(spec=>{const matched=safe.filter(p=>spec.signals.some(s=>words(p).includes(s)));return{from:spec.from,to:spec.to,kind:spec.kind,weight:Number(Math.min(1,matched.reduce((n,p)=>n+p.confidence*.22,.35)).toFixed(4)),evidencePrincipleIds:matched.map(p=>p.id)}}).filter(r=>r.evidencePrincipleIds.length>0);
+ const active=new Set(base.rules.map(r=>r.id));
+ const relations=RELATION_SIGNALS.map(spec=>{const matched=safe.filter(p=>spec.signals.some(s=>words(p).includes(s)));return{from:spec.from,to:spec.to,kind:spec.kind,weight:Number(Math.min(1,matched.reduce((n,p)=>n+p.confidence*.22,.35)).toFixed(4)),evidencePrincipleIds:matched.map(p=>p.id)}}).filter(r=>r.evidencePrincipleIds.length>0&&active.has(r.from)&&active.has(r.to));
  return{...base,relations};
 }
 export function validateRelationalGrammar(g:RelationalGrammar):string[]{const ids=new Set(g.rules.map(r=>r.id)),e:string[]=[];for(const r of g.relations){if(!ids.has(r.from))e.push(`relation source missing: ${r.from}`);if(!ids.has(r.to))e.push(`relation target missing: ${r.to}`);if(!r.evidencePrincipleIds.length)e.push(`relation lacks evidence: ${r.kind}`)}return e}
