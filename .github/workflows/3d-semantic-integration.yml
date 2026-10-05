@@ -14,3 +14,13 @@ jobs:
       - run: npm run build --workspace=@ascend/glyph-studio-web
       - run: npm run typecheck --workspace=@ascend/tesseract-engine
       - run: npm test --workspace=@ascend/tesseract-engine
+      - name: Build Tesseract specimens
+        run: npm run build --workspace=@ascend/tesseract-engine && node packages/tesseract-engine/dist/src/render-specimens.js
+      - name: Upload real engine SVG specimens
+        uses: actions/upload-artifact@v4
+        with:
+          name: tesseract-svg-specimens
+          path: |
+            packages/tesseract-engine/dist/love.svg
+            packages/tesseract-engine/dist/growth.svg
+            packages/tesseract-engine/dist/return.svg
