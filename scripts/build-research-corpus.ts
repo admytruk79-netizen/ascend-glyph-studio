@@ -23,7 +23,8 @@ const summaryOut = process.env.CORPUS_SUMMARY_OUT ?? "data/research/corpus-summa
 const maxShare = Number(process.env.CORPUS_MAX_SOURCE_SHARE ?? 0.4);
 const deadline = Date.now() + Number(process.env.CORPUS_MAX_MINUTES ?? 330) * 60_000;
 const checkpointEvery = Number(process.env.CORPUS_CHECKPOINT_EVERY ?? 1000);
-const only = process.env.CORPUS_SOURCES?.split(",").map((s) => s.trim()).filter(Boolean);
+const sourceList = (process.env.CORPUS_SOURCES ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+const only = sourceList.length ? sourceList : undefined;
 const WORKERS: Record<string, number> = { met: 6, aic: 2, cma: 2, vam: 2, si: 2 };
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -69,6 +70,7 @@ async function main() {
   const stream = createWriteStream(out, { flags: "w" });
   const review = createWriteStream(reviewOut, { flags: "w" });
   const adapters = ADAPTERS.filter((a) => a.enabled() && (!only || only.includes(a.source)));
+  if (!adapters.length) throw new Error(`no corpus sources enabled (CORPUS_SOURCES=${process.env.CORPUS_SOURCES ?? ""})`);
   const sourceCap = Math.ceil(target * Math.max(maxShare, 1 / adapters.length));
   let stop = false;
 
