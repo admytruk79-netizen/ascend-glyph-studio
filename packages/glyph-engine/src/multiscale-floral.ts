@@ -9,10 +9,10 @@ const MESO:MesoKind[]=["vine","floral-chain","rosette-band","branch-register","o
 const hash=(s:string)=>{let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
 export function buildMultiscaleField(g:TesseractMeaningGraph,microPerNode=24):MultiscaleField{
  if(microPerNode<8||microPerNode>256)throw new Error("microPerNode must be 8-256");
- const meso=g.nodes.map((node,i)=>{const h=hash(g.seed+"|micro|"+node.id),kind=MESO[(h+i)%MESO.length],marks:MicroMark[]=[];
+ const meso=g.nodes.map((node,i)=>{const h=hash(g.seed+"|micro|"+node.id),kind=MESO[(h+i)%MESO.length]!,marks:MicroMark[]=[];
   for(let j=0;j<microPerNode;j++){const t=j/Math.max(1,microPerNode-1),wave=Math.sin(t*Math.PI*2*(2+(h%4))+i),baseX=10+80*t,baseY=12+76*i/Math.max(1,g.nodes.length-1);
    const radial=kind==="rosette-band"||kind==="orbital-chain",a=t*Math.PI*2;
-   marks.push({id:`${node.id}-m${j+1}`,kind:MICRO[(h+j*5+i)%MICRO.length],
+   marks.push({id:`${node.id}-m${j+1}`,kind:MICRO[(h+j*5+i)%MICRO.length]!,
     x:Number((radial?50+(14+i%3*4)*Math.cos(a):baseX).toFixed(3)),
     y:Number((radial?baseY+(7+i%2*3)*Math.sin(a):baseY+wave*(2+(h%4))).toFixed(3)),
     scale:Number((.12+((h>>>j%16)%13)/100).toFixed(3)),rotation:(h+j*37)%360});
