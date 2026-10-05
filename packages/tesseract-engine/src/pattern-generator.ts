@@ -3,7 +3,8 @@ import {genomeFromTopology} from "./genome";
 import {projectSemanticGeometry} from "./semantic-projector";
 import {ASCEND_PALETTES,ASCEND_COLORS} from "./color-system";
 import type {DesignNicheId} from "./niches";
-import worldLibrary from "../data/world-pattern-library.v1.json";
+import {deriveSignals} from "./pattern-knowledge-graph";
+import {legacyWorldLibraryGraph} from "./world-library-graph";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
@@ -37,13 +38,7 @@ function colorize(svg:string,paletteId:string){
  return out;
 }
 
-type LibraryRecord=(typeof worldLibrary.records)[number];
-function culturalSignals(cultureIds:string[]){
- const selected=(worldLibrary.records as LibraryRecord[]).filter(r=>cultureIds.includes(r.cultureId)&&r.access!=="restricted"&&r.access!=="prohibited");
- const features=new Map<string,number>();
- for(const r of selected)for(const f of r.features)features.set(f.value,(features.get(f.value)??0)+f.weight*r.confidence);
- return {records:selected,features:[...features].sort((a,b)=>b[1]-a[1]).slice(0,12)};
-}
+function culturalSignals(cultureIds:string[]){const signals=deriveSignals(legacyWorldLibraryGraph(),{cultureIds,minSupport:.25});return{features:signals.filter(s=>s.kind!=="semantic").slice(0,16).map(s=>[s.value,s.support] as [string,number])};}
 
 export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]{
  const concepts=(input.concepts.length?input.concepts:["ancestry","freedom","protection"]).slice(0,8);
