@@ -1314,6 +1314,63 @@
         "museum databases"
       ],
       "url": "https://www.textilesociety.org.uk/resources/online-databases"
+    },
+    {
+      "id": "ukraine-museum-fund",
+      "name": "Museum Fund of Ukraine — Ministry of Culture",
+      "kind": "national-collection",
+      "scale": "national museum collection portal with object-level records",
+      "machineAccess": [
+        "catalog",
+        "search"
+      ],
+      "focus": [
+        "Ukraine",
+        "rushnyk",
+        "embroidery",
+        "folk art",
+        "regional museum collections"
+      ],
+      "url": "https://museum.mincult.gov.ua/"
+    },
+    {
+      "id": "sloboda-ukraine-code",
+      "name": "Sloboda Ukraine Code — Ukrainian Embroidery",
+      "kind": "digital-collection",
+      "scale": "digitized embroidered rushnyks, shirts and clothing from Kharkiv Historical Museum",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Slobozhanshchyna",
+        "Kharkiv",
+        "rushnyk",
+        "vyshyvanka",
+        "embroidery"
+      ],
+      "url": "https://slobocode.art/en-US/"
+    },
+    {
+      "id": "krovets-ukraine",
+      "name": "Krovets Online Museum of Traditional Ukrainian Art",
+      "kind": "digital-collection",
+      "scale": "large digitized Ukrainian traditional-art collection organized by ethnoregion and object category",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "Ukraine",
+        "Poltavshchyna",
+        "Hutsulshchyna",
+        "Bukovyna",
+        "Pokuttia",
+        "Zakarpattia",
+        "Podillia",
+        "Polissia",
+        "rushnyk",
+        "shirts"
+      ],
+      "url": "https://krovets.ua/en"
     }
   ],
   "ingestRules": {
@@ -1338,7 +1395,7 @@
     "noCultureStyleSwitch": true
   },
   "progress": {
-    "verifiedRegistryEntries": 81,
+    "verifiedRegistryEntries": 84,
     "lastExpansion": "2026-10-05",
     "note": "Distinct endpoints only; object records remain separate. Directory entries seed further verification and are not expanded into source count until individually verified."
   }
