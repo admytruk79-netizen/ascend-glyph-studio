@@ -6,6 +6,8 @@ import type {DesignNicheId} from "./niches";
 import {deriveSignals} from "./pattern-knowledge-graph";
 import {worldPatternGraph} from "./world-pattern-graph";
 import {scoreTopologyComposition,type CompositionScore} from "./aesthetic-critic";
+import type {GarmentZone} from "./garment";
+import type {MediumId} from "./medium-compiler";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
@@ -22,6 +24,13 @@ export type GeneratedPattern={
 const nicheForMode=(mode:PatternMode):DesignNicheId|undefined=>({
  band:"hem-band",field:"back-field",emblem:"chest",sleeve:"sleeve",cuff:"cuff-wrap",collar:"collar"
 }[mode] as DesignNicheId|undefined);
+
+function mediumForMode(mode:PatternMode):MediumId{return mode==="field"?"print":"embroidery";}
+function projectionZone(mode:PatternMode,width:number,height:number):GarmentZone{
+ const wrap=mode==="band"||mode==="cuff"||mode==="collar"||mode==="sleeve";
+ const kind=mode==="band"?"hem":mode==="field"?"back":mode==="emblem"?"chest":mode;
+ return{id:`generator:${mode}`,kind,surface:mode==="sleeve"?"tapered-cylinder":wrap?"cylinder":"flat",widthMm:width,heightMm:height,editable:true,wrapAllowed:wrap};
+}
 
 function colorize(svg:string,paletteId:string){
  const p=ASCEND_PALETTES[paletteId]??ASCEND_PALETTES["underdog-heritage"]!;
@@ -48,6 +57,7 @@ function culturalSignals(cultureIds:string[],objectTypes?:string[]){const signal
 export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]{
  const concepts=(input.concepts.length?input.concepts:["ancestry","freedom","protection"]).slice(0,8);
  const mode=input.mode??"band",niche=nicheForMode(mode),variations=Math.max(4,Math.min(input.variations??12,32));
+ const width=input.width??960,height=input.height??260,medium=mediumForMode(mode),zone=projectionZone(mode,width,height);
  const complexity=Math.max(0,Math.min(1,input.complexity??.65));
  const cultureIds=input.cultureIds?.length?input.cultureIds:["ukraine","japan","britain","china","western-craft"];
  const placementTypes=input.placement?[input.placement,"garment","shirt","tunic","textile","textile-family","design-cloth","wrapper","sash","leather"]:undefined;
@@ -60,13 +70,13 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
    traditions:[{id:"ascend-universal",weight:1},...cultureIds.map((id,i)=>({id:`evidence:${id}`,weight:Math.max(.35,.75-i*.05)}))],
    character:[{id:"ordered-organic",weight:.55+complexity*.35},{id:"minimal-complex",weight:complexity},...(input.medium?[{id:`medium:${input.medium}`,weight:.9}]:[]),...(input.placement?[{id:`placement:${input.placement}`,weight:.95}]:[])]
   },
-  principles:[],niches:niche?[niche]:undefined,
+  principles:[],niches:niche?[niche]:undefined,medium,
   population:Math.round(32+complexity*64),generations:Math.round(3+complexity*5),keep:variations
  });
  const ranked=candidates.map(c=>{const aesthetic=scoreTopologyComposition(c.topology);return{c,aesthetic,generatorScore:c.score+aesthetic.total*18}}).sort((a,b)=>b.generatorScore-a.generatorScore);
  return ranked.map(({c,aesthetic,generatorScore},i)=>{
   const g=genomeFromTopology(`pattern:${input.seed}:${i}`,c.topology);
-  const p=projectSemanticGeometry(g,input.width??960,input.height??260);
+  const p=projectSemanticGeometry(g,width,height,zone);
   return {id:`pat-${input.seed}-${i+1}`,lineageId:c.lineageId,score:c.score,novelty:c.novelty,objectives:c.objectives,aesthetic,generatorScore,svg:colorize(p.svg,input.paletteId??"underdog-heritage")};
  });
 }
