@@ -1,2 +1,2 @@
-import test from "node:test";import assert from "node:assert/strict";import {readFileSync} from "node:fs";
-test("bulk corpus builder keeps 250k default target and dedupe/checkpoints",()=>{const s=readFileSync(new URL("../../scripts/build-research-corpus.ts",import.meta.url),"utf8");assert.match(s,/250000/);assert.match(s,/seen\.has/);assert.match(s,/checkpoint/);});
+import test from "node:test";import assert from "node:assert/strict";import {readFileSync} from "node:fs";import {resolve} from "node:path";
+test("bulk corpus builder keeps 250k default target and dedupe/checkpoints",()=>{const s=readFileSync(resolve(process.cwd(),"../../scripts/build-research-corpus.ts"),"utf8");assert.match(s,/250000/);assert.match(s,/seen\.has/);assert.match(s,/checkpoint/);});
