@@ -1,0 +1,32 @@
+name: corpus-250k-batch
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: Source adapter
+        required: true
+        default: cma
+        type: choice
+        options: [cma,aic]
+      limit:
+        description: Maximum accepted candidates
+        required: true
+        default: "10000"
+jobs:
+  enumerate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 20}
+      - name: Enumerate open-access candidates
+        env:
+          SOURCE: ${{ inputs.source }}
+          LIMIT: ${{ inputs.limit }}
+        run: node scripts/corpus/enumerate-open-access.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: corpus-${{ inputs.source }}-${{ github.run_id }}
+          path: .corpus-out/*.jsonl
+          retention-days: 90
