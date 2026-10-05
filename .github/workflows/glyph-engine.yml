@@ -4,6 +4,8 @@ on:
     branches: [main, ci-integrity-check]
     paths:
       - 'packages/glyph-engine/**'
+      - 'packages/tesseract-engine/**'
+      - 'apps/web/**'
       - '.github/workflows/glyph-engine.yml'
   pull_request:
     branches: [main]
@@ -11,17 +13,14 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: packages/glyph-engine
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: packages/glyph-engine/package-lock.json
       - run: npm install --no-audit --no-fund
-      - run: npm run typecheck
-      - run: npm test
-      - name: Verify web application\n        working-directory: .\n        run: |\n          npm install --no-audit --no-fund\n          npm --workspace @ascend/glyph-studio-web run typecheck\n          npm --workspace @ascend/glyph-studio-web run build\n
+      - run: npm --workspace @ascend/glyph-engine run typecheck
+      - run: npm --workspace @ascend/glyph-engine test
+      - run: npm --workspace @ascend/glyph-studio-web run typecheck
+      - run: npm --workspace @ascend/glyph-studio-web run build
