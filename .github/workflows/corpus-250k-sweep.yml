@@ -1,4 +1,5 @@
 name: corpus-250k-sweep
+# v2: Met bulk + Rijks harvest
 on:
   workflow_dispatch:
   push:
