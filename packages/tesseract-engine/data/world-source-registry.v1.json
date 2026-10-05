@@ -449,6 +449,230 @@
         "pattern"
       ],
       "url": "https://www.chinastitches.com/en/repositories"
+    },
+    {
+      "id": "ukrainian-museum-ny",
+      "name": "The Ukrainian Museum Collections",
+      "kind": "collection",
+      "scale": "46000+ holdings; 8000+ folk art incl embroidered/woven textiles",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "pattern"
+      ],
+      "url": "https://www.theukrainianmuseum.org/collections/"
+    },
+    {
+      "id": "muccs",
+      "name": "Museum of Ukrainian Craft and Culture Scotland",
+      "kind": "collection",
+      "scale": "Ukrainian craft; vyshyvanka research/samplers",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "pattern"
+      ],
+      "url": "https://www.muccs.org/"
+    },
+    {
+      "id": "umc-ontario",
+      "name": "Ukrainian Museum of Canada Ontario",
+      "kind": "collection",
+      "scale": "artifact-derived embroidery resources",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "pattern"
+      ],
+      "url": "https://www.umcontario.com/resources"
+    },
+    {
+      "id": "field-latin-textiles",
+      "name": "Field Museum Latin American Textile Collections",
+      "kind": "collection",
+      "scale": "Peru Bolivia Guatemala textile corpus",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "pattern"
+      ],
+      "url": "https://www.fieldmuseum.org/project-narrative/science/latin-american-textile-collections"
+    },
+    {
+      "id": "portal-peru",
+      "name": "Portal to Peru / Center for Traditional Textiles",
+      "kind": "collection",
+      "scale": "Andean designs techniques textile types",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "pattern"
+      ],
+      "url": "https://projects.cah.ucf.edu/portaltoperu/"
+    },
+    {
+      "id": "trc-stans",
+      "name": "Textile Research Centre Dressing the Stans",
+      "kind": "collection",
+      "scale": "Afghanistan Kazakhstan Kyrgyzstan Tajikistan Turkmenistan Uzbekistan",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "pattern"
+      ],
+      "url": "https://www.trc-leiden.nl/trc-digital-exhibition/index.php/dressing-the-stans"
+    },
+    {
+      "id": "dundee-nds",
+      "name": "University of Dundee Needlework Development Scheme",
+      "kind": "collection",
+      "scale": "international historic/contemporary embroidery database",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "pattern"
+      ],
+      "url": "https://app.dundee.ac.uk/museum/collections/textiles/index.html"
+    },
+    {
+      "id": "embroidery-sa",
+      "name": "Embroiderers Guild of South Australia Museum",
+      "kind": "collection",
+      "scale": "global embroidery study collection; 67+ result pages",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "pattern"
+      ],
+      "url": "https://embroiderymuseum.org.au/collection/"
+    },
+    {
+      "id": "textile-hive",
+      "name": "Textile Hive / Andrea Aranow Collection",
+      "kind": "collection",
+      "scale": "40000+ digitized independent textile objects",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "pattern"
+      ],
+      "url": "https://textilehive.com/"
+    },
+    {
+      "id": "trc-leiden",
+      "name": "Textile Research Centre Leiden",
+      "kind": "collection",
+      "scale": "nearly 25000 objects reported in digital collection",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "pattern"
+      ],
+      "url": "https://www.trc-leiden.nl/"
+    },
+    {
+      "id": "met-textile-conservation",
+      "name": "Met Textile Collection Research",
+      "kind": "collection",
+      "scale": "~36000 textiles across 12 curatorial departments",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "pattern"
+      ],
+      "url": "https://www.metmuseum.org/about-the-met/conservation-and-scientific-research/textile-conservation"
+    },
+    {
+      "id": "gw-textile-library",
+      "name": "GW Textile Museum Jenkins Library",
+      "kind": "collection",
+      "scale": "global textiles/traditional dress research corpus",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "pattern"
+      ],
+      "url": "https://museum.gwu.edu/arthur-d-jenkins-library"
+    },
+    {
+      "id": "china-silk-museum",
+      "name": "China National Silk Museum collections",
+      "kind": "collection",
+      "scale": "Chinese historic/contemporary/ethnographic textiles",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "pattern"
+      ],
+      "url": "https://www.chinasilkmuseum.com/"
+    },
+    {
+      "id": "nmc-india-textiles",
+      "name": "National Crafts Museum & Hastkala Academy Textiles",
+      "kind": "collection",
+      "scale": "Indian weaving embroidery ikat printing textile traditions",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "pattern"
+      ],
+      "url": "https://nationalcraftsmuseum.nic.in/"
     }
   ],
   "ingestRules": {
@@ -473,8 +697,8 @@
     "noCultureStyleSwitch": true
   },
   "progress": {
-    "verifiedRegistryEntries": 28,
+    "verifiedRegistryEntries": 42,
     "lastExpansion": "2026-10-05",
-    "note": "Distinct source endpoints only; object/image/analyzed-instance counts remain separate."
+    "note": "Distinct endpoints; source/object/image/analyzed counts separate."
   }
 }
