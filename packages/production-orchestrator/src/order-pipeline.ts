@@ -1,6 +1,7 @@
 import {createWorkOrder,planInventory,type BillOfMaterials,type CustomerOrder,type MaterialSku,type Supplier,type WorkOrder,type PurchaseOrder,type InventoryPosition} from "@ascend/erp-core";
 import {assertLockedManifest,type ProductionDesignManifest} from "./production-manifest";
 import {manufacturerEligibility,type ManufacturerCapabilityProfile,type ProductionRequirements} from "./manufacturer-eligibility";
+import {appendLedgerEvent,type LedgerEvent} from "./event-ledger";
 
 export type OrderPipelineStage=
  "storefront-configured"|
@@ -24,6 +25,7 @@ export interface OperationalPlan{
  manufacturerId:string;
  workOrder:WorkOrder;
  events:PipelineEvent[];
+ ledger:LedgerEvent[];
 }
 
 function push(events:PipelineEvent[],stage:OrderPipelineStage,at:string,detail?:string){events.push({stage,at,detail});}
@@ -40,29 +42,31 @@ export function createOperationalPlan(input:{
 }):OperationalPlan{
  const now=input.now??new Date().toISOString();
  const events:PipelineEvent[]=[];
- push(events,"storefront-configured",now,input.order.designId);
+ const ledger:LedgerEvent[]=[];
+ const record=(stage:OrderPipelineStage,actorId:string,payload:unknown)=>ledger.push(appendLedgerEvent(ledger,{streamId:`order:${input.order.id}`,eventType:stage,at:now,actorId,payload}));
+ push(events,"storefront-configured",now,input.order.designId);record("storefront-configured","system:ascend",{designId:input.order.designId});
 
  if(!input.order.id||input.order.qty<1)throw new Error("valid customer order required");
  if(!input.order.paid)throw new Error("order must be paid before production planning");
- push(events,"order-created",now,input.order.id);
+ push(events,"order-created",now,input.order.id);record("order-created","system:ascend",{orderId:input.order.id,qty:input.order.qty,productId:input.order.productId});
 
  assertLockedManifest(input.manifest);
  if(input.manifest.designId!==input.order.designId)throw new Error("order/design manifest mismatch");
- push(events,"production-manifest-locked",now,`${input.manifest.designId}:v${input.manifest.designVersion}`);
+ push(events,"production-manifest-locked",now,`${input.manifest.designId}:v${input.manifest.designVersion}`);record("production-manifest-locked","system:ascend",{designId:input.manifest.designId,designVersion:input.manifest.designVersion,stateHash:input.manifest.tesseract.stateHash});
 
  const inventory=planInventory({order:input.order,bom:input.bom,materials:input.materials,suppliers:input.suppliers,now});
- push(events,"inventory-checked",now,`${inventory.positions.length} material positions`);
+ push(events,"inventory-checked",now,`${inventory.positions.length} material positions`);record("inventory-checked","system:operations",{positions:inventory.positions});
 
  const eligible=input.manufacturers.find(m=>manufacturerEligibility(m,input.requirements).eligible);
  if(!eligible)throw new Error("no eligible manufacturer");
- push(events,"manufacturer-eligible",now,eligible.manufacturerId);
+ push(events,"manufacturer-eligible",now,eligible.manufacturerId);record("manufacturer-eligible","system:routing",{manufacturerId:eligible.manufacturerId,capabilityVersion:eligible.version});
 
- for(const po of inventory.purchaseOrders)push(events,"purchase-order-created",now,po.id);
+ for(const po of inventory.purchaseOrders){push(events,"purchase-order-created",now,po.id);record("purchase-order-created","system:procurement",{purchaseOrderId:po.id,supplierId:po.supplierId,lines:po.lines});}
 
  const workOrder=createWorkOrder({order:input.order,bom:input.bom,manufacturerId:eligible.manufacturerId,positions:inventory.positions});
- push(events,"work-order-created",now,workOrder.id);
+ push(events,"work-order-created",now,workOrder.id);record("work-order-created","system:operations",{workOrderId:workOrder.id,manufacturerId:eligible.manufacturerId,status:workOrder.status});
 
- return{order:input.order,manifest:input.manifest,inventory:inventory.positions,purchaseOrders:inventory.purchaseOrders,manufacturerId:eligible.manufacturerId,workOrder,events};
+ return{order:input.order,manifest:input.manifest,inventory:inventory.positions,purchaseOrders:inventory.purchaseOrders,manufacturerId:eligible.manufacturerId,workOrder,events,ledger};
 }
 
 const NEXT:Record<OrderPipelineStage,OrderPipelineStage[]>={
