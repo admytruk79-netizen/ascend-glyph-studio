@@ -1,0 +1,88 @@
+{
+  "version": "0.1",
+  "targetObjects": 250000,
+  "sources": [
+    {
+      "id": "ivan-honchar",
+      "name": "Ivan Honchar Museum",
+      "kind": "museum-digital-collection",
+      "scope": "Ukrainian folk art/textiles/rushnyky/costume",
+      "availableObjects": 2337,
+      "rushnykyOnline": 200,
+      "priority": "highest",
+      "access": "public-web",
+      "url": "https://honchar.org.ua/en/collections/search",
+      "notes": "Museum states broader holdings near 30,000 artifacts; textile holdings include >1,000 rushnyky and >700 embroidery research samples."
+    },
+    {
+      "id": "ukrainian-museum-nyc",
+      "name": "The Ukrainian Museum",
+      "kind": "museum-collection",
+      "scope": "Ukrainian folk art/fine art/archive",
+      "availableObjects": 46000,
+      "folkArtObjects": 8000,
+      "priority": "highest",
+      "access": "public-collection-pages",
+      "url": "https://www.theukrainianmuseum.org/collections/"
+    },
+    {
+      "id": "smithsonian-open-access",
+      "name": "Smithsonian Open Access",
+      "kind": "bulk-json-api",
+      "scope": "textiles, leatherwork, saddlery, Indigenous nation-specific records",
+      "availableObjects": "millions",
+      "priority": "highest",
+      "access": "weekly JSON + API",
+      "url": "https://www.si.edu/openaccess/devtools",
+      "culturalPolicy": "Nation-specific Indigenous records default to review; restricted/sacred context blocked from synthesis."
+    },
+    {
+      "id": "met-open-access",
+      "name": "The Metropolitan Museum of Art",
+      "kind": "REST-api",
+      "scope": "textiles, embroidery, ornament, leatherwork, historical decorative arts",
+      "priority": "high",
+      "access": "public API; no key; paginated v1.1",
+      "url": "https://metmuseum.github.io/"
+    },
+    {
+      "id": "cooper-hewitt",
+      "name": "Cooper Hewitt Smithsonian Design Museum",
+      "kind": "GraphQL-api",
+      "scope": "patterns, textiles, wallcoverings, ornament, product/decorative design",
+      "availableObjects": 215000,
+      "priority": "high",
+      "access": "open GraphQL API",
+      "url": "https://apidocs.cooperhewitt.org/getting-started/"
+    },
+    {
+      "id": "national-cowboy",
+      "name": "National Cowboy & Western Heritage Museum",
+      "kind": "museum-collection",
+      "scope": "saddles, bits, spurs, chaps, rawhide, leatherwork, Western regional styles",
+      "priority": "high",
+      "access": "public collection/search + research center",
+      "url": "https://nationalcowboymuseum.org/collections/objects/"
+    },
+    {
+      "id": "national-cowboy-drc",
+      "name": "Dickinson Research Center",
+      "kind": "archive-library",
+      "scope": "American West archival/library context and trade catalogs",
+      "priority": "medium",
+      "access": "public research access",
+      "url": "https://nationalcowboymuseum.org/drc/"
+    }
+  ],
+  "ingestionPolicy": {
+    "rawMetadataFirst": true,
+    "imagesOnlyWhenRightsPermit": true,
+    "dedupeKeys": [
+      "institution",
+      "accession",
+      "canonicalUrl"
+    ],
+    "synthesisEligibility": "verified object + provenance + cultural gate + extracted morphology",
+    "discoveryRecordsEligibleForSynthesis": false
+  }
+}
