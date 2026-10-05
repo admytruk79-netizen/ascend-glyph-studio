@@ -32,7 +32,7 @@ export function compose(intent:EngineIntent,grammar:Grammar=DEFAULT_GRAMMAR):Com
  if(validation.length)return{seed:intent.seed,productKind:intent.product.kind,rules:[],sequence:[],validation,evidencePrincipleIds:intent.principleIds};
  const ranked=[...grammar.rules].sort((a,b)=>b.weight-a.weight||a.id.localeCompare(b.id)),count=Math.min(grammar.rules.length,intent.density==="restrained"?3:intent.density==="complex"?7:5),h=hash(intent.seed+"|"+intent.meanings.join("|")+"|"+intent.principleIds.join("|"));
  const pool=ranked.slice(0,Math.max(count,Math.min(ranked.length,8))),rules:GrammarRule[]=[];
- for(let i=0;i<pool.length&&rules.length<count;i++){const r=pool[(h+i*3)%pool.length];if(!rules.some(x=>x.id===r.id))rules.push(r)}
+ for(let i=0;i<pool.length&&rules.length<count;i++){const r=pool[(h+i*3)%pool.length];if(r&&!rules.some(x=>x.id===r.id))rules.push(r)}
  const axis=ranked.find(r=>r.id==="axis");if(axis&&!rules.some(r=>r.id==="axis"))rules.unshift(axis);
  const sequence=rules.flatMap(r=>Array(Math.max(r.repeatMin,Math.min(r.repeatMax,r.repeatMin+(hash(intent.seed+r.id)%(r.repeatMax-r.repeatMin+1))))).fill(r.id));
  return{seed:intent.seed,productKind:intent.product.kind,rules,sequence,validation:[],evidencePrincipleIds:intent.principleIds};
