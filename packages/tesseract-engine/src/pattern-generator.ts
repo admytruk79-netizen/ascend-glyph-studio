@@ -68,9 +68,9 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  const candidates=searchDesignSpace({
   seed:input.seed,
   intent:{
-   concepts:[...concepts.map((id,i)=>({id,weight:Math.max(.35,1-i*.09)})),...culturalConcepts],
+   concepts:concepts.map((id,i)=>({id,weight:Math.max(.35,1-i*.09)})),
    traditions:[{id:"ascend-universal",weight:1},...cultureIds.map((id,i)=>({id:`evidence:${id}`,weight:Math.max(.35,.75-i*.05)}))],
-   character:[{id:"ordered-organic",weight:.55+complexity*.35},{id:"minimal-complex",weight:complexity},...(input.medium?[{id:`medium:${input.medium}`,weight:.9}]:[]),...(input.placement?[{id:`placement:${input.placement}`,weight:.95}]:[])]
+   character:[{id:"ordered-organic",weight:.55+complexity*.35},{id:"minimal-complex",weight:complexity},...culturalConcepts,...(input.medium?[{id:`medium:${input.medium}`,weight:.9}]:[]),...(input.placement?[{id:`placement:${input.placement}`,weight:.95}]:[])]
   },
   principles:[],niches:niche?[niche]:undefined,medium,
   population:Math.round(32+complexity*64),generations:Math.round(3+complexity*5),keep:variations
