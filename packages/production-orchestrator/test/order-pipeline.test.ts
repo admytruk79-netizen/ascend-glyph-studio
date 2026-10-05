@@ -1,5 +1,6 @@
 import{describe,it,expect}from"vitest";
 import{createOperationalPlan,advanceOperationalStage}from"../src/order-pipeline";
+import{verifyLedger,createProvenancePassport}from"../src/event-ledger";
 
 const manifest={
  schemaVersion:"1" as const,designId:"design-1",designVersion:1,lockedAt:"2026-10-05T00:00:00Z",
@@ -27,6 +28,8 @@ describe("ordered operational pipeline",()=>{
   ]);
   expect(p.purchaseOrders).toHaveLength(1);
   expect(p.workOrder.status).toBe("planned");
+  expect(verifyLedger(p.ledger)).toEqual({valid:true});
+  expect(createProvenancePassport(p.ledger).eventCount).toBe(p.events.length);
  });
  it("continues only production -> QC -> shipping -> delivery",()=>{
   const p=createOperationalPlan({order,manifest,bom:{...bom,lines:[{skuId:"thread",qty:1,scrapRate:0}]},materials,suppliers,manufacturers,requirements,now:"2026-10-05T00:00:00Z"});
