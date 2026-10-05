@@ -1,0 +1,3 @@
+import{describe,it,expect}from"vitest";import{buildPatternInstance}from"../src/pattern-fragment-graph";import{discoverBlocks,discoverVocabulary}from"../src/pattern-vocabulary-discovery";
+const rec=(id:string)=>{const fs=Array.from({length:10},(_,i)=>({id:id+i,kind:"node" as const,points:[{x:.1+(i%5)*.02,y:.2+Math.floor(i/5)*.02}],parentIds:[id],weight:.8}));return buildPatternInstance({instanceId:id,sourceId:id,sourceUrl:"u",fragments:fs,reconstruction:fs.map(f=>f.id)})};
+describe("vocabulary discovery",()=>{it("turns analyzed instances into reusable blocks",()=>expect(discoverBlocks(rec("a")).length).toBeGreaterThan(0));it("clusters discovered blocks into vocabulary families",()=>expect(discoverVocabulary([rec("a"),rec("b")])[0].support).toBeGreaterThan(1))});
