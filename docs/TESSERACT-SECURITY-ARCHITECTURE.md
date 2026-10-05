@@ -20,7 +20,7 @@ Current implementation: `packages/tesseract-engine/src/secure-payload.ts`.
 
 The v1 envelope uses AES-256-GCM, a random 96-bit IV/nonce, a 256-bit key supplied by the caller, and authenticated additional data binding `ASCEND-TESSERACT`, envelope version, access tier and key ID. The authentication tag is mandatory. Wrong keys or modified authenticated data fail decryption.
 
-The engine does not generate or persist a universal master key. Production keys must be created and held by an external KMS/HSM or equivalent approved key-custody system.
+The engine does not generate or persist a universal master key. Production keys must be created and held by an external KMS/HSM or equivalent approved key-custody system. Envelope-key support is now implemented: 256-bit data-encryption keys can be wrapped under a separate 256-bit key-encryption key using authenticated AES-256-GCM and rotated to a new KEK without changing the DEK.
 
 ## Restricted policy
 
@@ -28,7 +28,7 @@ The current policy contract requires external KMS, hardware-backed keys, MFA, si
 
 ## Required next controls
 
-Key-envelope support must bind encrypted content keys to tenant/mission/role policy. Add signing/provenance for generated messages and reader packages; rotation/re-encryption workflows; explicit revocation records; replay-resistant message context where protocols require it; secure audit event schema; mobile secure-storage adapters; server-side KMS adapters; threat-model tests; fuzzing of parser/envelope boundaries; and independent security review.
+Bind key envelopes to tenant/mission/role policy and external KMS identifiers. Add signing/provenance for generated messages and reader packages; rotation/re-encryption workflows; explicit revocation records; replay-resistant message context where protocols require it; secure audit event schema; mobile secure-storage adapters; server-side KMS adapters; threat-model tests; fuzzing of parser/envelope boundaries; and independent security review.
 
 ## Defense deployment boundary
 
