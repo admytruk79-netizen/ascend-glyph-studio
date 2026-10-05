@@ -1,16 +1,293 @@
 {
-"version":"world-source-registry-v2","countingPolicy":{"source":"distinct institution/site/catalog/API endpoint","object":"individual catalog record; never counted as source"},"scaleTargets":{"sources":10000,"candidateObjects":"millions"},
-"sources":[
-{"id":"smithsonian-csc","name":"Smithsonian Collections Search Center","kind":"aggregator","scale":"18.7M+ records; 8.4M+ online media","machineAccess":["IIIF","search"],"focus":["global","art-design","history-culture"],"url":"https://collections.si.edu/search/"},
-{"id":"smithsonian-iiif","name":"Smithsonian IIIF","kind":"iiif","machineAccess":["IIIF manifests"],"focus":["global collections"],"url":"https://collections.si.edu/search/results.htm?q=&iiif.enabled=true"},
-{"id":"field-schuster","name":"Field Museum Carl Schuster Chinese Textile Collection","kind":"museum-collection","scale":"1000 objects plus several hundred specimens","focus":["China","folk embroidery","cross-stitch","symbolism"],"url":"https://www.fieldmuseum.org/project-narrative/science/schuster-collection"},
-{"id":"amnh-asian-ethnography","name":"AMNH Asian Ethnographic Collection","kind":"museum-collection","focus":["Nivkhi","Evenk","Ainu","Nanai","Chukchi","Yupik","Koryak","Yukaghir","Sakha"],"url":"https://www.amnh.org/research/anthropology/collections/collections-history/asian-ethnography"},
-{"id":"amnh-digital","name":"AMNH Digital Collections","kind":"digital-archive","focus":["Jesup North Pacific Expedition","Siberia","Evenki","Yukaghir","Chukchi","Koryak"],"url":"https://digitalcollections.amnh.org/"},
-{"id":"tomuco","name":"Tokyo Museum Collection","kind":"aggregator-api","machineAccess":["search API","JSON metadata","bulk metadata"],"focus":["Japan","Tokyo metropolitan museum collections"],"url":"https://museumcollection.tokyo/en/developer/"},
-{"id":"met-open-access","name":"Metropolitan Museum of Art Open Access","kind":"museum-api","machineAccess":["Open Access API"],"focus":["global","textiles","embroidered textiles"],"url":"https://www.metmuseum.org/art/collection"},
-{"id":"cooper-hewitt-smithsonian","name":"Cooper Hewitt / Smithsonian","kind":"museum-collection","machineAccess":["IIIF"],"focus":["embroidery","samplers","textile pattern","global"],"url":"https://collection.cooperhewitt.org/"},
-{"id":"loc-wdl","name":"Library of Congress / World Digital Library","kind":"library-archive","focus":["global heritage","Sakha","ornament","historic books"],"url":"https://www.loc.gov/collections/world-digital-library/"},
-{"id":"iiif-network","name":"IIIF cultural heritage network","kind":"discovery-network","machineAccess":["Presentation API","Image API","Change Discovery"],"focus":["global cultural heritage repositories"],"url":"https://iiif.io/"}
-],
-"ingestRules":{"preserve":["institution","objectId","peopleOrTradition","place","period","technique","materials","placement","composition","color","rights","sourceUrl","confidence"],"restrictedSacred":"exclude from automatic commercial derivation","unknownMeaning":"preserve as unknown; never invent","transmission":"track separately from independent recurrence","noCultureStyleSwitch":true}
+  "version": "world-source-registry-v2",
+  "countingPolicy": {
+    "source": "distinct institution/site/catalog/API endpoint",
+    "object": "individual catalog record; never counted as source"
+  },
+  "scaleTargets": {
+    "sources": 10000,
+    "candidateObjects": "millions"
+  },
+  "sources": [
+    {
+      "id": "smithsonian-csc",
+      "name": "Smithsonian Collections Search Center",
+      "kind": "aggregator",
+      "scale": "18.7M+ records; 8.4M+ online media",
+      "machineAccess": [
+        "IIIF",
+        "search"
+      ],
+      "focus": [
+        "global",
+        "art-design",
+        "history-culture"
+      ],
+      "url": "https://collections.si.edu/search/"
+    },
+    {
+      "id": "smithsonian-iiif",
+      "name": "Smithsonian IIIF",
+      "kind": "iiif",
+      "machineAccess": [
+        "IIIF manifests"
+      ],
+      "focus": [
+        "global collections"
+      ],
+      "url": "https://collections.si.edu/search/results.htm?q=&iiif.enabled=true"
+    },
+    {
+      "id": "field-schuster",
+      "name": "Field Museum Carl Schuster Chinese Textile Collection",
+      "kind": "museum-collection",
+      "scale": "1000 objects plus several hundred specimens",
+      "focus": [
+        "China",
+        "folk embroidery",
+        "cross-stitch",
+        "symbolism"
+      ],
+      "url": "https://www.fieldmuseum.org/project-narrative/science/schuster-collection"
+    },
+    {
+      "id": "amnh-asian-ethnography",
+      "name": "AMNH Asian Ethnographic Collection",
+      "kind": "museum-collection",
+      "focus": [
+        "Nivkhi",
+        "Evenk",
+        "Ainu",
+        "Nanai",
+        "Chukchi",
+        "Yupik",
+        "Koryak",
+        "Yukaghir",
+        "Sakha"
+      ],
+      "url": "https://www.amnh.org/research/anthropology/collections/collections-history/asian-ethnography"
+    },
+    {
+      "id": "amnh-digital",
+      "name": "AMNH Digital Collections",
+      "kind": "digital-archive",
+      "focus": [
+        "Jesup North Pacific Expedition",
+        "Siberia",
+        "Evenki",
+        "Yukaghir",
+        "Chukchi",
+        "Koryak"
+      ],
+      "url": "https://digitalcollections.amnh.org/"
+    },
+    {
+      "id": "tomuco",
+      "name": "Tokyo Museum Collection",
+      "kind": "aggregator-api",
+      "machineAccess": [
+        "search API",
+        "JSON metadata",
+        "bulk metadata"
+      ],
+      "focus": [
+        "Japan",
+        "Tokyo metropolitan museum collections"
+      ],
+      "url": "https://museumcollection.tokyo/en/developer/"
+    },
+    {
+      "id": "met-open-access",
+      "name": "Metropolitan Museum of Art Open Access",
+      "kind": "museum-api",
+      "machineAccess": [
+        "Open Access API"
+      ],
+      "focus": [
+        "global",
+        "textiles",
+        "embroidered textiles"
+      ],
+      "url": "https://www.metmuseum.org/art/collection"
+    },
+    {
+      "id": "cooper-hewitt-smithsonian",
+      "name": "Cooper Hewitt / Smithsonian",
+      "kind": "museum-collection",
+      "machineAccess": [
+        "IIIF"
+      ],
+      "focus": [
+        "embroidery",
+        "samplers",
+        "textile pattern",
+        "global"
+      ],
+      "url": "https://collection.cooperhewitt.org/"
+    },
+    {
+      "id": "loc-wdl",
+      "name": "Library of Congress / World Digital Library",
+      "kind": "library-archive",
+      "focus": [
+        "global heritage",
+        "Sakha",
+        "ornament",
+        "historic books"
+      ],
+      "url": "https://www.loc.gov/collections/world-digital-library/"
+    },
+    {
+      "id": "iiif-network",
+      "name": "IIIF cultural heritage network",
+      "kind": "discovery-network",
+      "machineAccess": [
+        "Presentation API",
+        "Image API",
+        "Change Discovery"
+      ],
+      "focus": [
+        "global cultural heritage repositories"
+      ],
+      "url": "https://iiif.io/"
+    },
+    {
+      "id": "artic-api",
+      "name": "Art Institute of Chicago API",
+      "kind": "museum-api",
+      "scale": "133000+ artwork records; IIIF images",
+      "machineAccess": [
+        "API"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "ornament",
+        "global collections"
+      ],
+      "url": "https://api.artic.edu/docs/"
+    },
+    {
+      "id": "artic-dump",
+      "name": "Art Institute of Chicago Full Data Dump",
+      "kind": "museum-api",
+      "scale": "full public API bulk dataset",
+      "machineAccess": [
+        "API"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "ornament",
+        "global collections"
+      ],
+      "url": "https://github.com/art-institute-of-chicago/api-data"
+    },
+    {
+      "id": "cleveland-open-access",
+      "name": "Cleveland Museum of Art Open Access",
+      "kind": "museum-api",
+      "scale": "64000+ artwork records; 37000+ image assets",
+      "machineAccess": [
+        "API"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "ornament",
+        "global collections"
+      ],
+      "url": "https://www.clevelandart.org/open-access-api"
+    },
+    {
+      "id": "cleveland-dataset",
+      "name": "Cleveland Museum of Art Open Access Dataset",
+      "kind": "museum-api",
+      "scale": "JSON/CSV bulk dataset",
+      "machineAccess": [
+        "API"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "ornament",
+        "global collections"
+      ],
+      "url": "https://github.com/ClevelandMuseumArt/openaccess"
+    },
+    {
+      "id": "museums-victoria-api",
+      "name": "Museums Victoria Collections API",
+      "kind": "museum-api",
+      "scale": "JSON collection API",
+      "machineAccess": [
+        "API"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "ornament",
+        "global collections"
+      ],
+      "url": "https://collections.museumsvictoria.com.au/developers"
+    },
+    {
+      "id": "national-museum-australia-api",
+      "name": "National Museum of Australia Collection API",
+      "kind": "museum-api",
+      "scale": "85000+ objects; ~20000 reusable images",
+      "machineAccess": [
+        "API"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "ornament",
+        "global collections"
+      ],
+      "url": "https://www.nma.gov.au/about/our-collection/museum-api"
+    },
+    {
+      "id": "harvard-art-museums-api",
+      "name": "Harvard Art Museums API",
+      "kind": "museum-api",
+      "scale": "REST collection API; key required",
+      "machineAccess": [
+        "API"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "ornament",
+        "global collections"
+      ],
+      "url": "https://github.com/harvardartmuseums/api-docs"
+    }
+  ],
+  "ingestRules": {
+    "preserve": [
+      "institution",
+      "objectId",
+      "peopleOrTradition",
+      "place",
+      "period",
+      "technique",
+      "materials",
+      "placement",
+      "composition",
+      "color",
+      "rights",
+      "sourceUrl",
+      "confidence"
+    ],
+    "restrictedSacred": "exclude from automatic commercial derivation",
+    "unknownMeaning": "preserve as unknown; never invent",
+    "transmission": "track separately from independent recurrence",
+    "noCultureStyleSwitch": true
+  },
+  "progress": {
+    "verifiedRegistryEntries": 17,
+    "lastExpansion": "2026-10-05",
+    "note": "Source, object, image, and analyzed-instance counts remain separate."
+  }
 }
