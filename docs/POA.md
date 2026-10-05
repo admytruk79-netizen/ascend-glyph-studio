@@ -3,13 +3,19 @@
 ## Mission
 Build an independent research-driven glyph synthesis engine for ASCEND. The engine studies ancestry, material culture, ornament structure and semantics, then generates original, traceable design candidates. It does not copy source motifs.
 
-## First production target: Diaries
-Diaries are the first proving ground. The engine must generate production-usable systems for:
+## System scope and first validation substrate
+ASCEND Glyph Engine is a product-independent working system. Its core research, evidence, morphology, grammar, synthesis, provenance, cultural/originality review, vector rendering and validation layers MUST NOT depend on diaries, apparel, footwear or any other merchandise class.
+
+Diaries are only the first validation substrate and adapter. They prove that the universal engine can project a generated visual language into a physical product without becoming the engine architecture.
+
+Universal engine output must be reusable by any product adapter. The diary adapter currently validates:
 - hero cover composition
 - spine
 - border/frame
 - endpaper and divider
 - small emblem/mark
+
+Future adapters consume the same approved engine output rather than defining separate glyph systems.
 
 ## Source intelligence
 The knowledge layer stores evidence and analysis from:
@@ -47,9 +53,10 @@ Research source → evidence → tradition/context → concept/meaning → form 
 - Produce multiple candidates without directly copying research artifacts.
 - Score provenance completeness, originality and cultural risk.
 
-### P4 — Diary generator
-- Add diary as a first-class substrate/product context.
-- Generate coordinated cover/spine/border/divider/emblem families.
+### P4 — Universal engine + diary adapter
+- Keep synthesis product-independent; product geometry enters only through an adapter/projection boundary.
+- Add diary as the first validation substrate/product adapter.
+- Generate coordinated cover/spine/border/divider/emblem projections from the same universal candidate family.
 - Support masculine/feminine and restrained/complex grammar without changing semantic identity.
 - Export vector-ready design manifests and SVG.
 
@@ -65,9 +72,10 @@ Research source → evidence → tradition/context → concept/meaning → form 
 
 ## Immediate build sequence
 1. Audit existing Neon ontology and synthesis tables.
-2. Add diary product/substrate model only where current schema does not already cover it.
-3. Implement the first deterministic diary synthesis manifest.
-4. Populate verified research evidence.
-5. Generate first candidate family.
-6. Review visually and semantically.
-7. Export first diary production artwork package.
+2. Complete the universal evidence → morphology → grammar → synthesis → provenance pipeline with no product dependency.
+3. Populate verified research evidence and fail closed when evidence is insufficient.
+4. Generate and analytically validate universal candidate families.
+5. Implement product-adapter contracts for geometry, placement, material/process constraints and export.
+6. Use diary as the first adapter/integration test, not as the engine's scope.
+7. Review universal candidates visually, semantically, culturally and for originality.
+8. Export the first diary production artwork package as proof that the universal engine projects correctly into merchandise.
