@@ -1,0 +1,25 @@
+name: wikidata-source-discovery
+on:
+  workflow_dispatch:
+  push:
+    branches: [glyph-studio/3d-semantic-integration]
+    paths:
+      - 'scripts/corpus/discover-wikidata-museums.mjs'
+      - '.github/workflows/wikidata-source-discovery.yml'
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 20}
+      - name: Enumerate up to 10k distinct museum websites
+        env: {TARGET: "10000"}
+        run: node scripts/corpus/discover-wikidata-museums.mjs
+        continue-on-error: true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wikidata-world-source-candidates
+          path: packages/tesseract-engine/data/generated/world-source-candidates.wikidata.json
+          retention-days: 90
