@@ -24,3 +24,4 @@ jobs:
       - run: npm install --no-audit --no-fund
       - run: npm run typecheck
       - run: npm test
+      - name: Verify web application\n        working-directory: .\n        run: |\n          npm install --no-audit --no-fund\n          npm --workspace @ascend/glyph-studio-web run typecheck\n          npm --workspace @ascend/glyph-studio-web run build\n
