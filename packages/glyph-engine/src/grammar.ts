@@ -21,19 +21,19 @@ const RULES:GrammarRule[]=[
 export const DEFAULT_GRAMMAR:Grammar={version:"0.2",rules:RULES};
 const hash=(s:string)=>{let h=2166136261;for(const ch of s){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
 const words=(p:PrincipleSignal)=>`${p.kind} ${p.label} ${JSON.stringify(p.abstraction??{})}`.toLowerCase();
-export function deriveGrammar(principles:PrincipleSignal[],fallback=DEFAULT_GRAMMAR):Grammar{
+export function deriveGrammar(principles:PrincipleSignal[],fallback:Grammar=DEFAULT_GRAMMAR):Grammar{
  const eligible=principles.filter(p=>p.confidence>=.55&&!["restricted","sacred","prohibited"].includes(p.culturalAccess.toLowerCase()));
  if(!eligible.length)return fallback;
- const rules=fallback.rules.map(r=>{const matches=eligible.filter(p=>p.confidence>=r.minConfidence&&r.signals.some(s=>words(p).includes(s)));const boost=matches.reduce((n,p)=>n+p.confidence*.18,0);return{...r,weight:Number((r.weight+boost).toFixed(4))}}).filter(r=>r.weight>=.6);
- return{version:"0.2",rules};
+ const rules=fallback.rules.map(r=>{const matches=eligible.filter(p=>p.confidence>=r.minConfidence&&r.signals.some(s=>words(p).includes(s)));if(!matches.length)return null;const support=matches.reduce((n,p)=>n+p.confidence,0)/matches.length;return{...r,weight:Number(Math.min(1.5,r.weight*.45+support*.85).toFixed(4))}}).filter((r):r is GrammarRule=>r!==null);
+ return{version:"0.2",rules:rules.length?rules:[fallback.rules[0]]};
 }
 export function compose(intent:EngineIntent,grammar:Grammar=DEFAULT_GRAMMAR):CompositionPlan{
  const validation:string[]=[];if(!intent.seed.trim())validation.push("seed required");if(!intent.meanings.length)validation.push("semantic intent required");if(!intent.principleIds.length)validation.push("evidence-backed principles required");if(!intent.product.zones.length)validation.push("product zones required");
  if(validation.length)return{seed:intent.seed,productKind:intent.product.kind,rules:[],sequence:[],validation,evidencePrincipleIds:intent.principleIds};
- const ranked=[...grammar.rules].sort((a,b)=>b.weight-a.weight||a.id.localeCompare(b.id)),count=intent.density==="restrained"?3:intent.density==="complex"?7:5,h=hash(intent.seed+"|"+intent.meanings.join("|")+"|"+intent.principleIds.join("|"));
+ const ranked=[...grammar.rules].sort((a,b)=>b.weight-a.weight||a.id.localeCompare(b.id)),count=Math.min(grammar.rules.length,intent.density==="restrained"?3:intent.density==="complex"?7:5),h=hash(intent.seed+"|"+intent.meanings.join("|")+"|"+intent.principleIds.join("|"));
  const pool=ranked.slice(0,Math.max(count,Math.min(ranked.length,8))),rules:GrammarRule[]=[];
  for(let i=0;i<pool.length&&rules.length<count;i++){const r=pool[(h+i*3)%pool.length];if(!rules.some(x=>x.id===r.id))rules.push(r)}
- if(!rules.some(r=>r.id==="axis"))rules.unshift(ranked.find(r=>r.id==="axis")??DEFAULT_GRAMMAR.rules[0]);
+ const axis=ranked.find(r=>r.id==="axis");if(axis&&!rules.some(r=>r.id==="axis"))rules.unshift(axis);
  const sequence=rules.flatMap(r=>Array(Math.max(r.repeatMin,Math.min(r.repeatMax,r.repeatMin+(hash(intent.seed+r.id)%(r.repeatMax-r.repeatMin+1))))).fill(r.id));
  return{seed:intent.seed,productKind:intent.product.kind,rules,sequence,validation:[],evidencePrincipleIds:intent.principleIds};
 }
