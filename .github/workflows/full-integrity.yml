@@ -29,6 +29,14 @@ jobs:
         run: npm test --workspace=@ascend/tesseract-engine
       - name: Tesseract pilot
         run: npm run pilot --workspace=@ascend/tesseract-engine
+      - name: Production Orchestrator typecheck
+        run: npm run typecheck --workspace=@ascend/production-orchestrator
+      - name: Production Orchestrator tests
+        run: npm test --workspace=@ascend/production-orchestrator
+      - name: ERP Core typecheck
+        run: npm run typecheck --workspace=@ascend/erp-core
+      - name: ERP Core tests
+        run: npm test --workspace=@ascend/erp-core
       - name: Web typecheck
         run: npm run typecheck --workspace=@ascend/glyph-studio-web
       - name: Web build
