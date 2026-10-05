@@ -1,0 +1,6 @@
+export const CORPUS_250K={target:250000,batches:25,batchSize:10000,minNamedTraditions:150,minIndependentSources:100,minTechniqueFamilies:10,maxSourceShare:.08,holdoutShare:.1} as const;
+export interface IngestCheckpoint{batch:number;accepted:number;rejected:number;duplicates:number;imageAnalyzed:number;fragments:number;families:number}
+export interface Corpus250kState{version:"corpus-250k-v1";target:number;checkpoints:IngestCheckpoint[]}
+export const empty250kState=():Corpus250kState=>({version:"corpus-250k-v1",target:CORPUS_250K.target,checkpoints:[]});
+export function addCheckpoint(s:Corpus250kState,c:IngestCheckpoint):Corpus250kState{if(c.batch<1||c.batch>CORPUS_250K.batches)throw new Error("invalid batch");return{...s,checkpoints:[...s.checkpoints.filter(x=>x.batch!==c.batch),c].sort((a,b)=>a.batch-b.batch)}}
+export function corpus250kStats(s:Corpus250kState){const sum=(k:keyof IngestCheckpoint)=>s.checkpoints.reduce((n,c)=>n+(typeof c[k]==="number"?c[k] as number:0),0);const analyzed=sum("imageAnalyzed");return{target:s.target,batchesComplete:s.checkpoints.length,accepted:sum("accepted"),rejected:sum("rejected"),duplicates:sum("duplicates"),imageAnalyzed:analyzed,fragments:sum("fragments"),families:s.checkpoints.at(-1)?.families??0,progress:analyzed/s.target,remaining:Math.max(0,s.target-analyzed)}}
