@@ -6,6 +6,7 @@ on:
       - 'packages/glyph-engine/**'
       - 'packages/tesseract-engine/**'
       - 'apps/web/**'
+      - 'scripts/**'
       - '.github/workflows/glyph-engine.yml'
   pull_request:
     branches: [main]
