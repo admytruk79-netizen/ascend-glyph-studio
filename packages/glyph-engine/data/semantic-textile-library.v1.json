@@ -1,0 +1,285 @@
+{
+  "schema": "ascend.semantic-textile-library.v1",
+  "policy": {
+    "copyHistoricalGeometry": false,
+    "mergeMeaningsAcrossCultures": false,
+    "restrictedExcluded": true
+  },
+  "records": [
+    {
+      "id": "UA-RUSHNYK-PATH",
+      "culture": "Ukrainian",
+      "object": "rushnyk",
+      "principles": [
+        "life-path-sequence",
+        "threshold-edge",
+        "ritual-register"
+      ],
+      "meanings": [
+        "path",
+        "lineage",
+        "return"
+      ],
+      "risk": "context"
+    },
+    {
+      "id": "UA-REGIONAL-CORPUS",
+      "culture": "Ukrainian",
+      "object": "regional shirts/rushnyky",
+      "principles": [
+        "regional-variation",
+        "woven-embroidered-contrast",
+        "dense-register"
+      ],
+      "meanings": [
+        "lineage",
+        "place",
+        "boundary"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "UA-POLTAVA-WHITEWORK",
+      "culture": "Ukrainian/Poltava",
+      "object": "shirt",
+      "principles": [
+        "tonal-relief",
+        "negative-space",
+        "micro-detail"
+      ],
+      "meanings": [
+        "clarity",
+        "integration"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "UA-PODILLIA-BANDS",
+      "culture": "Ukrainian/Podillia",
+      "object": "shirt/rushnyk",
+      "principles": [
+        "parallel-register",
+        "rhythmic-band",
+        "dense-repeat"
+      ],
+      "meanings": [
+        "path",
+        "discipline"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "UA-CARPATHIAN-DENSITY",
+      "culture": "Ukrainian/Carpathian",
+      "object": "shirt/textile",
+      "principles": [
+        "polychrome-hierarchy",
+        "nested-geometry",
+        "high-density-register"
+      ],
+      "meanings": [
+        "vitality",
+        "transformation"
+      ],
+      "risk": "context"
+    },
+    {
+      "id": "SAKHA-WING-SLEEVE",
+      "culture": "Sakha/Yakut",
+      "object": "ritual robe",
+      "principles": [
+        "wing-sleeve",
+        "kinetic-appendage",
+        "metal-punctuation"
+      ],
+      "meanings": [
+        "flight",
+        "transformation",
+        "journey"
+      ],
+      "risk": "context"
+    },
+    {
+      "id": "SAKHA-METAL-REGALIA",
+      "culture": "Sakha/Yakut",
+      "object": "ritual coat",
+      "principles": [
+        "metal-node",
+        "layered-regalia",
+        "back-emphasis"
+      ],
+      "meanings": [
+        "axis",
+        "journey"
+      ],
+      "risk": "context"
+    },
+    {
+      "id": "EVENK-GARMENT-ZONES",
+      "culture": "Evenk",
+      "object": "ritual clothing",
+      "principles": [
+        "garment-zone-hierarchy",
+        "pendant-rhythm",
+        "vertical-appendage"
+      ],
+      "meanings": [
+        "journey",
+        "guardian"
+      ],
+      "risk": "context"
+    },
+    {
+      "id": "YUKAGHIR-WHOLE-GARMENT",
+      "culture": "Yukaghir",
+      "object": "ceremonial dress",
+      "principles": [
+        "whole-garment-system",
+        "material-hierarchy",
+        "appendage-rhythm"
+      ],
+      "meanings": [
+        "transformation",
+        "journey"
+      ],
+      "risk": "context"
+    },
+    {
+      "id": "CHUKCHI-MATERIAL-LAYER",
+      "culture": "Chukchi",
+      "object": "clothing/material culture",
+      "principles": [
+        "fur-hide-contrast",
+        "edge-definition",
+        "material-zoning"
+      ],
+      "meanings": [
+        "boundary",
+        "protection"
+      ],
+      "risk": "context"
+    },
+    {
+      "id": "KORYAK-MATERIAL-LAYER",
+      "culture": "Koryak",
+      "object": "clothing/material culture",
+      "principles": [
+        "surface-zoning",
+        "edge-rhythm",
+        "material-contrast"
+      ],
+      "meanings": [
+        "boundary",
+        "journey"
+      ],
+      "risk": "context"
+    },
+    {
+      "id": "WEST-FLORAL-TOOLING",
+      "culture": "Western cowboy craft",
+      "object": "saddle/leatherwork",
+      "principles": [
+        "scroll-flow",
+        "floral-tooling",
+        "surface-following",
+        "functional-zone-frame"
+      ],
+      "meanings": [
+        "strength",
+        "journey",
+        "grounding"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "WEST-SILVER-NODES",
+      "culture": "Western cowboy craft",
+      "object": "tack/silverwork",
+      "principles": [
+        "metal-node",
+        "rhythmic-punctuation",
+        "hardware-emblem"
+      ],
+      "meanings": [
+        "guardian",
+        "strength"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "WEST-STITCH-BORDER",
+      "culture": "Western cowboy craft",
+      "object": "leather/textile",
+      "principles": [
+        "stitch-border",
+        "double-line-frame",
+        "corner-transition"
+      ],
+      "meanings": [
+        "boundary",
+        "craft"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "ENG-CREWEL-BRANCH",
+      "culture": "English textile",
+      "object": "crewel embroidery",
+      "principles": [
+        "branching-flora",
+        "outline-fill-contrast",
+        "dense-sparse-balance"
+      ],
+      "meanings": [
+        "flowering",
+        "flow"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "ENG-ARTS-CRAFTS",
+      "culture": "British Arts and Crafts",
+      "object": "printed/woven textile",
+      "principles": [
+        "botanical-repeat",
+        "interlocking-growth",
+        "continuous-field"
+      ],
+      "meanings": [
+        "flowering",
+        "integration"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "ENG-METAL-THREAD",
+      "culture": "English textile",
+      "object": "ceremonial embroidery",
+      "principles": [
+        "material-aware-density",
+        "metal-highlight",
+        "ground-reveal"
+      ],
+      "meanings": [
+        "crown",
+        "integration"
+      ],
+      "risk": "context"
+    },
+    {
+      "id": "ENG-SMALL-REPEAT",
+      "culture": "British textile",
+      "object": "printed/woven textile",
+      "principles": [
+        "micro-repeat",
+        "scale-rhythm",
+        "geometric-field"
+      ],
+      "meanings": [
+        "order",
+        "rhythm"
+      ],
+      "risk": "low"
+    }
+  ]
+}
