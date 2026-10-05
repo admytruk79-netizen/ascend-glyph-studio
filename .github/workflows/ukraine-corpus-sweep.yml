@@ -1,0 +1,27 @@
+name: ukraine-corpus-sweep
+on:
+  workflow_dispatch:
+  push:
+    branches: [glyph-studio/3d-semantic-integration]
+    paths:
+      - 'scripts/corpus/build-ukraine-candidates.mjs'
+      - '.github/workflows/ukraine-corpus-sweep.yml'
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 20}
+      - name: Build dedicated Ukrainian candidate corpus
+        env: {TARGET: "25000"}
+        run: node scripts/corpus/build-ukraine-candidates.mjs
+        continue-on-error: true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ukraine-corpus-candidates
+          path: |
+            .corpus-out/ukraine/ukraine-candidates.jsonl
+            .corpus-out/ukraine/ukraine-stats.json
+          retention-days: 90
