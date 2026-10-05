@@ -1,6 +1,7 @@
 import React,{useMemo,useState} from "react";
 import {generatePatterns,type PatternMode} from "../../../packages/tesseract-engine/src/pattern-generator";
 import {ASCEND_PALETTES} from "../../../packages/tesseract-engine/src/color-system";
+import {Garment3D} from "./Garment3D";
 
 type ProductId="mens-shirt"|"womens-shirt"|"diary";
 type SizeId="XS"|"S"|"M"|"L"|"XL"|"XXL";
@@ -66,7 +67,7 @@ export default function GlyphStudio(){
    <section className="previewColumn">
     <div className="productStage">
      {product==="diary"?<div className="diary3d" style={{background:activeFabric.hex}}><div className={"diaryPattern "+mode} dangerouslySetInnerHTML={{__html:active?.svg??""}}/><div className="diaryBrand">ASCEND</div></div>:
-     <div className="shirt3d" style={{background:`linear-gradient(105deg,${activeFabric.hex},color-mix(in srgb,${activeFabric.hex} 75%,white),${activeFabric.hex})`}}><div className="neck"/><div className="placket"/><div className={"patternZone "+mode} dangerouslySetInnerHTML={{__html:active?.svg??""}}/></div>}
+     <Garment3D svg={active?.svg??""} fabric={activeFabric.hex} mode={mode}/>} 
     </div>
     <div className="meta"><strong>{active?.lineageId??"No lineage"}</strong><span>{active?("score "+active.score.toFixed(1)+" · novelty "+active.novelty.toFixed(2)):""}</span></div>
     <div className="selectionStrip"><span>{products.find(p=>p.id===product)?.name}</span><span>{size}</span><span>{activeFabric.name}</span><span>{mode}</span></div>

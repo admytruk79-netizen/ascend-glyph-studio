@@ -1,0 +1,168 @@
+{
+  "schema": "ascend.cultural-corpus.v1",
+  "records": [
+    {
+      "id": "cn-nantong-blue-calico-blessing",
+      "cultureId": "china",
+      "region": "Nantong, Jiangsu",
+      "tradition": "blue-calico",
+      "objectType": "cloth-and-garment",
+      "features": [
+        {
+          "id": "resist",
+          "family": "technique",
+          "value": "stencil-resist-indigo",
+          "weight": 1
+        },
+        {
+          "id": "two-tone",
+          "family": "color",
+          "value": "indigo-white",
+          "weight": 1
+        },
+        {
+          "id": "encoded",
+          "family": "semantics",
+          "value": "blessing-through-pattern",
+          "weight": 1
+        },
+        {
+          "id": "repeat",
+          "family": "rhythm",
+          "value": "stencilled-repeat",
+          "weight": 0.8
+        }
+      ],
+      "meanings": [
+        "blessing",
+        "longevity",
+        "health",
+        "family"
+      ],
+      "sourceIds": [
+        "smithsonian-nantong-2020"
+      ],
+      "confidence": 0.9,
+      "access": "open-principle"
+    },
+    {
+      "id": "cn-qing-shou-peony-sleeve",
+      "cultureId": "china",
+      "region": "China",
+      "tradition": "Qing auspicious dress",
+      "period": "late-19c-early-20c",
+      "objectType": "robe",
+      "features": [
+        {
+          "id": "shou",
+          "family": "semantics",
+          "value": "longevity",
+          "weight": 1
+        },
+        {
+          "id": "peony",
+          "family": "semantics",
+          "value": "spring-seasonality",
+          "weight": 0.8
+        },
+        {
+          "id": "sleeve-band",
+          "family": "placement",
+          "value": "contrasting-sleeve-band",
+          "weight": 1
+        },
+        {
+          "id": "kesi",
+          "family": "technique",
+          "value": "silk-metal-thread-tapestry",
+          "weight": 0.8
+        }
+      ],
+      "meanings": [
+        "longevity",
+        "spring"
+      ],
+      "sourceIds": [
+        "met-69855"
+      ],
+      "confidence": 0.95,
+      "access": "open-principle"
+    },
+    {
+      "id": "cn-regional-embroidery",
+      "cultureId": "china",
+      "region": "multiple",
+      "tradition": "regional silk embroidery",
+      "objectType": "embroidered-textile",
+      "features": [
+        {
+          "id": "shu",
+          "family": "geometry",
+          "value": "natural-world-figuration",
+          "weight": 0.7
+        },
+        {
+          "id": "su",
+          "family": "color",
+          "value": "naturalistic-color",
+          "weight": 0.7
+        },
+        {
+          "id": "xiang",
+          "family": "composition",
+          "value": "pictorial-calligraphic",
+          "weight": 0.8
+        },
+        {
+          "id": "yue",
+          "family": "color",
+          "value": "strong-color-flat-depth",
+          "weight": 0.8
+        },
+        {
+          "id": "flat-silk",
+          "family": "material",
+          "value": "flat-silk-sheen",
+          "weight": 0.8
+        }
+      ],
+      "meanings": [],
+      "sourceIds": [
+        "va-embroidery-guide"
+      ],
+      "confidence": 0.85,
+      "access": "open-principle"
+    },
+    {
+      "id": "cn-imperial-rank-restricted",
+      "cultureId": "china",
+      "region": "China",
+      "tradition": "imperial-court-rank",
+      "objectType": "court-robe",
+      "features": [
+        {
+          "id": "rank",
+          "family": "semantics",
+          "value": "status-rank-encoding",
+          "weight": 1
+        },
+        {
+          "id": "dragon",
+          "family": "semantics",
+          "value": "imperial-ruler-association",
+          "weight": 1
+        }
+      ],
+      "meanings": [
+        "rank",
+        "imperial-authority"
+      ],
+      "sourceIds": [
+        "va-encoded-textiles",
+        "met-lee-mingwei"
+      ],
+      "confidence": 0.95,
+      "access": "restricted"
+    }
+  ]
+}

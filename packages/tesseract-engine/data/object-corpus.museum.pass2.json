@@ -1,0 +1,499 @@
+{
+  "schema": "ascend.object-corpus.v2",
+  "sources": [
+    {
+      "id": "si-nmafa-88-6-6",
+      "institution": "Smithsonian NMAfA",
+      "title": "Kuba design cloth 88-6-6",
+      "url": "https://africa.si.edu/collection/object/nmafa_88-6-6",
+      "authority": 1
+    },
+    {
+      "id": "si-nmafa-88-6-4",
+      "institution": "Smithsonian NMAfA",
+      "title": "Kuba design cloth 88-6-4",
+      "url": "https://www.si.edu/object/nmafa_88-6-4",
+      "authority": 1
+    },
+    {
+      "id": "si-nmafa-96-1-2",
+      "institution": "Smithsonian NMAfA",
+      "title": "Yoruba adire wrapper 96-1-2",
+      "url": "https://www.si.edu/object/nmafa_96-1-2",
+      "authority": 1
+    },
+    {
+      "id": "si-nmafa-96-1-20",
+      "institution": "Smithsonian NMAfA",
+      "title": "Yoruba sun bebe wrapper",
+      "url": "https://www.si.edu/object/nmafa_96-1-20",
+      "authority": 1
+    },
+    {
+      "id": "si-nmafa-96-1-18",
+      "institution": "Smithsonian NMAfA",
+      "title": "Yoruba Ibadan Dun wrapper",
+      "url": "https://www.si.edu/object/nmafa_96-1-18",
+      "authority": 1
+    },
+    {
+      "id": "si-nmafa-96-1-15",
+      "institution": "Smithsonian NMAfA",
+      "title": "Yoruba igi oye wrapper",
+      "url": "https://www.si.edu/object/wrapper:nmafa_96-1-15",
+      "authority": 1
+    },
+    {
+      "id": "met-446645",
+      "institution": "Metropolitan Museum of Art",
+      "title": "Silk Kashan Carpet",
+      "url": "https://www.metmuseum.org/art/collection/search/446645",
+      "authority": 1
+    },
+    {
+      "id": "met-452921",
+      "institution": "Metropolitan Museum of Art",
+      "title": "Seley Carpet",
+      "url": "https://www.metmuseum.org/art/collection/search/452921",
+      "authority": 1
+    },
+    {
+      "id": "met-833953",
+      "institution": "Metropolitan Museum of Art",
+      "title": "Wari Tapestry Tunic",
+      "url": "https://www.metmuseum.org/art/collection/search/833953",
+      "authority": 1
+    },
+    {
+      "id": "met-indonesia-ikat",
+      "institution": "Metropolitan Museum of Art",
+      "title": "Fabric of Life: Ikat Textiles of Indonesia",
+      "url": "https://www.metmuseum.org/exhibitions/listings/2006/ikat-textiles",
+      "authority": 1
+    },
+    {
+      "id": "vam-indian-textiles",
+      "institution": "Victoria and Albert Museum",
+      "title": "Indian textiles",
+      "url": "https://www.vam.ac.uk/articles/indian-textiles",
+      "authority": 1
+    }
+  ],
+  "objects": [
+    {
+      "id": "kuba-shoowa-8866",
+      "sourceIds": [
+        "si-nmafa-88-6-6"
+      ],
+      "cultureIds": [
+        "kuba",
+        "shoowa"
+      ],
+      "traditionIds": [
+        "raffia-embroidery"
+      ],
+      "regionIds": [
+        "central-africa"
+      ],
+      "objectType": "design-cloth",
+      "access": "open-principle"
+    },
+    {
+      "id": "kuba-shoowa-8864",
+      "sourceIds": [
+        "si-nmafa-88-6-4"
+      ],
+      "cultureIds": [
+        "kuba",
+        "shoowa"
+      ],
+      "traditionIds": [
+        "raffia-embroidery"
+      ],
+      "regionIds": [
+        "central-africa"
+      ],
+      "objectType": "design-cloth",
+      "access": "open-principle"
+    },
+    {
+      "id": "yoruba-alakete",
+      "sourceIds": [
+        "si-nmafa-96-1-2"
+      ],
+      "cultureIds": [
+        "yoruba"
+      ],
+      "traditionIds": [
+        "adire"
+      ],
+      "regionIds": [
+        "west-africa"
+      ],
+      "objectType": "wrapper",
+      "access": "open-principle"
+    },
+    {
+      "id": "yoruba-sun-bebe",
+      "sourceIds": [
+        "si-nmafa-96-1-20"
+      ],
+      "cultureIds": [
+        "yoruba"
+      ],
+      "traditionIds": [
+        "adire-eleko"
+      ],
+      "regionIds": [
+        "west-africa"
+      ],
+      "objectType": "wrapper",
+      "access": "open-principle"
+    },
+    {
+      "id": "yoruba-ibadan-dun",
+      "sourceIds": [
+        "si-nmafa-96-1-18"
+      ],
+      "cultureIds": [
+        "yoruba"
+      ],
+      "traditionIds": [
+        "adire-eleko"
+      ],
+      "regionIds": [
+        "west-africa"
+      ],
+      "objectType": "wrapper",
+      "access": "open-principle"
+    },
+    {
+      "id": "yoruba-igi-oye",
+      "sourceIds": [
+        "si-nmafa-96-1-15"
+      ],
+      "cultureIds": [
+        "yoruba"
+      ],
+      "traditionIds": [
+        "adire"
+      ],
+      "regionIds": [
+        "west-africa"
+      ],
+      "objectType": "wrapper",
+      "access": "open-principle"
+    },
+    {
+      "id": "safavid-kashan-carpet",
+      "sourceIds": [
+        "met-446645"
+      ],
+      "cultureIds": [
+        "safavid"
+      ],
+      "traditionIds": [
+        "carpet-weaving"
+      ],
+      "regionIds": [
+        "iran"
+      ],
+      "objectType": "carpet",
+      "access": "open-principle"
+    },
+    {
+      "id": "safavid-seley-carpet",
+      "sourceIds": [
+        "met-452921"
+      ],
+      "cultureIds": [
+        "safavid"
+      ],
+      "traditionIds": [
+        "carpet-weaving"
+      ],
+      "regionIds": [
+        "iran"
+      ],
+      "objectType": "carpet",
+      "access": "open-principle"
+    },
+    {
+      "id": "wari-tunic-met",
+      "sourceIds": [
+        "met-833953"
+      ],
+      "cultureIds": [
+        "wari"
+      ],
+      "traditionIds": [
+        "tapestry-weaving"
+      ],
+      "regionIds": [
+        "andes"
+      ],
+      "objectType": "tunic",
+      "access": "review"
+    },
+    {
+      "id": "indonesia-ikat-family",
+      "sourceIds": [
+        "met-indonesia-ikat"
+      ],
+      "cultureIds": [
+        "indonesia-multiple"
+      ],
+      "traditionIds": [
+        "ikat"
+      ],
+      "regionIds": [
+        "indonesia"
+      ],
+      "objectType": "textile-family",
+      "access": "review"
+    },
+    {
+      "id": "india-regional-textile-family",
+      "sourceIds": [
+        "vam-indian-textiles"
+      ],
+      "cultureIds": [
+        "india-multiple"
+      ],
+      "traditionIds": [
+        "kantha",
+        "phulkari",
+        "chikan",
+        "ari",
+        "block-print"
+      ],
+      "regionIds": [
+        "south-asia"
+      ],
+      "objectType": "textile-family",
+      "access": "review"
+    }
+  ],
+  "observations": [
+    {
+      "id": "k66-geom",
+      "objectId": "kuba-shoowa-8866",
+      "kind": "geometry",
+      "value": "chevron-diamond-triangle",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "si-nmafa-88-6-6"
+      ]
+    },
+    {
+      "id": "k66-nest",
+      "objectId": "kuba-shoowa-8866",
+      "kind": "composition",
+      "value": "checkerboard-nested-inside-border",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "si-nmafa-88-6-6"
+      ]
+    },
+    {
+      "id": "k64-geom",
+      "objectId": "kuba-shoowa-8864",
+      "kind": "geometry",
+      "value": "triangle-diamond-rectangle",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "si-nmafa-88-6-4"
+      ]
+    },
+    {
+      "id": "k64-balance",
+      "objectId": "kuba-shoowa-8864",
+      "kind": "composition",
+      "value": "overall-balanced-pattern",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "si-nmafa-88-6-4"
+      ]
+    },
+    {
+      "id": "ya-circle",
+      "objectId": "yoruba-alakete",
+      "kind": "rhythm",
+      "value": "rows-of-continuous-circles",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "si-nmafa-96-1-2"
+      ]
+    },
+    {
+      "id": "ys-grid",
+      "objectId": "yoruba-sun-bebe",
+      "kind": "composition",
+      "value": "eight-by-seven-semantic-square-grid",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "si-nmafa-96-1-20"
+      ]
+    },
+    {
+      "id": "ys-meaning",
+      "objectId": "yoruba-sun-bebe",
+      "kind": "semantic",
+      "value": "sun-bebe-marriage-dance-beads",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "si-nmafa-96-1-20"
+      ]
+    },
+    {
+      "id": "yi-grid",
+      "objectId": "yoruba-ibadan-dun",
+      "kind": "composition",
+      "value": "rows-of-semantic-squares",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "si-nmafa-96-1-18"
+      ]
+    },
+    {
+      "id": "yi-meaning",
+      "objectId": "yoruba-ibadan-dun",
+      "kind": "semantic",
+      "value": "civic-pride-ibadan",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "si-nmafa-96-1-18"
+      ]
+    },
+    {
+      "id": "yo-band",
+      "objectId": "yoruba-igi-oye",
+      "kind": "rhythm",
+      "value": "parallel-lines-alternating-v-branches",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "si-nmafa-96-1-15"
+      ]
+    },
+    {
+      "id": "yo-meaning",
+      "objectId": "yoruba-igi-oye",
+      "kind": "semantic",
+      "value": "chieftaincy-tree",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "si-nmafa-96-1-15"
+      ]
+    },
+    {
+      "id": "sk-medallion",
+      "objectId": "safavid-kashan-carpet",
+      "kind": "composition",
+      "value": "central-and-corner-medallions",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-446645"
+      ]
+    },
+    {
+      "id": "sk-transfer",
+      "objectId": "safavid-kashan-carpet",
+      "kind": "composition",
+      "value": "cross-media-pattern-book-transfer",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-446645"
+      ]
+    },
+    {
+      "id": "sk-china",
+      "objectId": "safavid-kashan-carpet",
+      "kind": "composition",
+      "value": "assimilated-chinese-cloud-band-peony",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-446645"
+      ]
+    },
+    {
+      "id": "ss-field",
+      "objectId": "safavid-seley-carpet",
+      "kind": "composition",
+      "value": "medallion-plus-scrolling-floral-field",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-452921"
+      ]
+    },
+    {
+      "id": "ss-transfer",
+      "objectId": "safavid-seley-carpet",
+      "kind": "composition",
+      "value": "bookbinding-plus-chinese-derived-cloud-band",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-452921"
+      ]
+    },
+    {
+      "id": "wari-standard",
+      "objectId": "wari-tunic-met",
+      "kind": "composition",
+      "value": "standardized-format-color-design",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-833953"
+      ]
+    },
+    {
+      "id": "wari-tech",
+      "objectId": "wari-tunic-met",
+      "kind": "technique",
+      "value": "fine-tapestry-weaving",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-833953"
+      ]
+    },
+    {
+      "id": "ikat-range",
+      "objectId": "indonesia-ikat-family",
+      "kind": "geometry",
+      "value": "geometric-to-figural-regional-range",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-indonesia-ikat"
+      ]
+    },
+    {
+      "id": "india-diversity",
+      "objectId": "india-regional-textile-family",
+      "kind": "technique",
+      "value": "regional-stitch-and-dye-diversity",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "vam-indian-textiles"
+      ]
+    }
+  ]
+}

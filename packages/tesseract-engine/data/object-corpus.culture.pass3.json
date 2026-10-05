@@ -1,0 +1,406 @@
+{
+  "schema": "ascend.object-corpus.v2",
+  "sources": [
+    {
+      "id": "nmai-120542",
+      "institution": "Smithsonian NMAI",
+      "title": "Lakota robe, ca. 1865",
+      "url": "https://americanindian.si.edu/collections-search/object/NMAI_120542",
+      "authority": 1
+    },
+    {
+      "id": "nmai-13077",
+      "institution": "Smithsonian NMAI",
+      "title": "Apsaalooke robe collected from Plains Cree, ca. 1850",
+      "url": "https://americanindian.si.edu/collections-search/object/NMAI_13077",
+      "authority": 1
+    },
+    {
+      "id": "nmai-48213",
+      "institution": "Smithsonian NMAI",
+      "title": "Anishinaabe breechcloth panel",
+      "url": "https://americanindian.si.edu/collections-search/object/NMAI_48213",
+      "authority": 1
+    },
+    {
+      "id": "nmai-224782",
+      "institution": "Smithsonian NMAI",
+      "title": "Anishinaabe sash/belt",
+      "url": "https://americanindian.si.edu/collections-search/object/NMAI_224782",
+      "authority": 1
+    },
+    {
+      "id": "nmai-foster",
+      "institution": "Smithsonian NMAI",
+      "title": "Anishinaabe outfit collected by Andrew Foster, ca. 1790",
+      "url": "https://americanindian.si.edu/exhibitions/infinityofnations/woodlands/242000.html",
+      "authority": 1
+    },
+    {
+      "id": "amnh-asian",
+      "institution": "AMNH",
+      "title": "Asian Ethnographic Collection",
+      "url": "https://www.amnh.org/research/anthropology/collections/collections-history/asian-ethnography",
+      "authority": 1
+    },
+    {
+      "id": "amnh-jesup-digital",
+      "institution": "AMNH Research Library",
+      "title": "Jesup North Pacific Expedition Digital Collection",
+      "url": "https://lbry-web-007.amnh.org/digital/index.php/collections/show/3",
+      "authority": 1
+    },
+    {
+      "id": "vam-embroidery",
+      "institution": "Victoria and Albert Museum",
+      "title": "Embroidery styles: an illustrated guide",
+      "url": "https://www.vam.ac.uk/articles/embroidery-styles-an-illustrated-guide",
+      "authority": 1
+    }
+  ],
+  "objects": [
+    {
+      "id": "lakota-robe-1865",
+      "sourceIds": [
+        "nmai-120542"
+      ],
+      "cultureIds": [
+        "lakota"
+      ],
+      "traditionIds": [
+        "lane-stitch-beadwork"
+      ],
+      "regionIds": [
+        "north-american-plains"
+      ],
+      "period": "ca. 1865",
+      "objectType": "robe",
+      "access": "review"
+    },
+    {
+      "id": "apsaalooke-cree-robe-1850",
+      "sourceIds": [
+        "nmai-13077"
+      ],
+      "cultureIds": [
+        "apsaalooke",
+        "plains-cree"
+      ],
+      "traditionIds": [
+        "quillwork",
+        "lane-stitch-beadwork"
+      ],
+      "regionIds": [
+        "north-american-plains"
+      ],
+      "period": "ca. 1850",
+      "objectType": "robe",
+      "access": "review"
+    },
+    {
+      "id": "anishinaabe-breechcloth",
+      "sourceIds": [
+        "nmai-48213"
+      ],
+      "cultureIds": [
+        "anishinaabe"
+      ],
+      "traditionIds": [
+        "overlay-beadwork"
+      ],
+      "regionIds": [
+        "great-lakes"
+      ],
+      "objectType": "garment-panel",
+      "access": "review"
+    },
+    {
+      "id": "anishinaabe-sash",
+      "sourceIds": [
+        "nmai-224782"
+      ],
+      "cultureIds": [
+        "anishinaabe"
+      ],
+      "traditionIds": [
+        "loom-beadwork"
+      ],
+      "regionIds": [
+        "great-lakes"
+      ],
+      "objectType": "sash",
+      "access": "review"
+    },
+    {
+      "id": "anishinaabe-foster-outfit",
+      "sourceIds": [
+        "nmai-foster"
+      ],
+      "cultureIds": [
+        "anishinaabe"
+      ],
+      "traditionIds": [
+        "quillwork",
+        "garment-ensemble"
+      ],
+      "regionIds": [
+        "great-lakes"
+      ],
+      "period": "ca. 1790",
+      "objectType": "garment-ensemble",
+      "access": "review"
+    },
+    {
+      "id": "yukaghir-ceremonial-dress",
+      "sourceIds": [
+        "amnh-jesup-digital",
+        "amnh-asian"
+      ],
+      "cultureIds": [
+        "yukaghir"
+      ],
+      "traditionIds": [
+        "ceremonial-dress"
+      ],
+      "regionIds": [
+        "siberia"
+      ],
+      "objectType": "ceremonial-dress",
+      "access": "restricted"
+    },
+    {
+      "id": "evenki-cradle-decoration",
+      "sourceIds": [
+        "amnh-jesup-digital",
+        "amnh-asian"
+      ],
+      "cultureIds": [
+        "evenki"
+      ],
+      "traditionIds": [
+        "decorated-object"
+      ],
+      "regionIds": [
+        "siberia"
+      ],
+      "period": "1944",
+      "objectType": "cradle",
+      "access": "review"
+    },
+    {
+      "id": "sakha-fur-coat-documentation",
+      "sourceIds": [
+        "amnh-jesup-digital",
+        "amnh-asian"
+      ],
+      "cultureIds": [
+        "sakha"
+      ],
+      "traditionIds": [
+        "fur-garment"
+      ],
+      "regionIds": [
+        "siberia"
+      ],
+      "period": "1900",
+      "objectType": "garment-documentation",
+      "access": "review"
+    },
+    {
+      "id": "japan-kogin-family",
+      "sourceIds": [
+        "vam-embroidery"
+      ],
+      "cultureIds": [
+        "japan"
+      ],
+      "traditionIds": [
+        "kogin"
+      ],
+      "regionIds": [
+        "aomori-tsugaru"
+      ],
+      "period": "Edo onward",
+      "objectType": "workwear-embroidery",
+      "access": "open-principle"
+    }
+  ],
+  "observations": [
+    {
+      "id": "lakota-tech",
+      "objectId": "lakota-robe-1865",
+      "kind": "technique",
+      "value": "lazy-lane-stitch-beadwork",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "nmai-120542"
+      ]
+    },
+    {
+      "id": "lakota-mat",
+      "objectId": "lakota-robe-1865",
+      "kind": "material",
+      "value": "buffalo-hide-glass-beads-sinew",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "nmai-120542"
+      ]
+    },
+    {
+      "id": "crowcree-multi",
+      "objectId": "apsaalooke-cree-robe-1850",
+      "kind": "technique",
+      "value": "quill-plait-wrap-lane-stitch-paint",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "nmai-13077"
+      ]
+    },
+    {
+      "id": "crowcree-prov",
+      "objectId": "apsaalooke-cree-robe-1850",
+      "kind": "relation",
+      "value": "cross-community-object-provenance",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "nmai-13077"
+      ]
+    },
+    {
+      "id": "anish-overlay",
+      "objectId": "anishinaabe-breechcloth",
+      "kind": "technique",
+      "value": "overlay-beadwork",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "nmai-48213"
+      ]
+    },
+    {
+      "id": "anish-panel",
+      "objectId": "anishinaabe-breechcloth",
+      "kind": "placement",
+      "value": "garment-panel",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "nmai-48213"
+      ]
+    },
+    {
+      "id": "anish-sash",
+      "objectId": "anishinaabe-sash",
+      "kind": "technique",
+      "value": "loom-beadwork",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "nmai-224782"
+      ]
+    },
+    {
+      "id": "anish-ensemble",
+      "objectId": "anishinaabe-foster-outfit",
+      "kind": "composition",
+      "value": "whole-garment-ensemble-multiple-materials",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "nmai-foster"
+      ]
+    },
+    {
+      "id": "anish-contact",
+      "objectId": "anishinaabe-foster-outfit",
+      "kind": "relation",
+      "value": "multi-nation-great-lakes-contact-context",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "nmai-foster"
+      ]
+    },
+    {
+      "id": "yuk-restrict",
+      "objectId": "yukaghir-ceremonial-dress",
+      "kind": "placement",
+      "value": "whole-ceremonial-garment",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "amnh-jesup-digital"
+      ]
+    },
+    {
+      "id": "evenki-fringe",
+      "objectId": "evenki-cradle-decoration",
+      "kind": "composition",
+      "value": "decoration-plus-fringe",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "amnh-jesup-digital"
+      ]
+    },
+    {
+      "id": "sakha-coat",
+      "objectId": "sakha-fur-coat-documentation",
+      "kind": "material",
+      "value": "fur-coat",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "amnh-jesup-digital"
+      ]
+    },
+    {
+      "id": "kogin-grid",
+      "objectId": "japan-kogin-family",
+      "kind": "geometry",
+      "value": "counted-diamond-geometric-grid",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "vam-embroidery"
+      ]
+    },
+    {
+      "id": "kogin-tech",
+      "objectId": "japan-kogin-family",
+      "kind": "technique",
+      "value": "parallel-counted-darning-stitch",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "vam-embroidery"
+      ]
+    },
+    {
+      "id": "kogin-material",
+      "objectId": "japan-kogin-family",
+      "kind": "color",
+      "value": "white-cotton-on-indigo",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "vam-embroidery"
+      ]
+    },
+    {
+      "id": "kogin-function",
+      "objectId": "japan-kogin-family",
+      "kind": "semantic",
+      "value": "workwear-durability-warmth",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "vam-embroidery"
+      ]
+    }
+  ]
+}

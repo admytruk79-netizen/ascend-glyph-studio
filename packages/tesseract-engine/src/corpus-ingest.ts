@@ -1,0 +1,4 @@
+import type{PatternKnowledgeGraph,SourceNode,ObjectNode,ObservationNode}from"./pattern-knowledge-graph";
+export interface IngestRecord{source:SourceNode;object:ObjectNode;observations:Omit<ObservationNode,"objectId"|"sourceIds">[]}
+export function ingest(records:IngestRecord[]):PatternKnowledgeGraph{return{sources:records.map(r=>r.source),objects:records.map(r=>r.object),observations:records.flatMap(r=>r.observations.map(o=>({...o,objectId:r.object.id,sourceIds:[r.source.id]})))}}
+export function validateGraph(g:PatternKnowledgeGraph){const s=new Set(g.sources.map(x=>x.id)),o=new Set(g.objects.map(x=>x.id));return{orphanObjects:g.objects.filter(x=>x.sourceIds.some(id=>!s.has(id))).map(x=>x.id),orphanObservations:g.observations.filter(x=>!o.has(x.objectId)||x.sourceIds.some(id=>!s.has(id))).map(x=>x.id),restricted:g.objects.filter(x=>x.access==="restricted"||x.access==="prohibited").map(x=>x.id)}}

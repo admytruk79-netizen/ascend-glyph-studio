@@ -1,0 +1,9 @@
+export type EvidenceLevel="museum-primary"|"museum-secondary"|"scholarly"|"community-reviewed"|"unverified";
+export type CulturalAccess="open-principle"|"review"|"restricted"|"prohibited";
+export interface CulturalEvidence{cultureId:string;region:string;tradition:string;objectType:string;technique?:string;placement?:string;meaning:string;principles:string[];evidenceLevel:EvidenceLevel;confidence:number;access:CulturalAccess;sourceLabel:string;sourceUrl:string;notes?:string}
+export interface CulturalIntent{cultureIds:string[];meanings:string[];objectType?:string;commercial?:boolean}
+const safe=(e:CulturalEvidence,i:CulturalIntent)=>e.access!=="prohibited"&&e.access!=="restricted"&&(!i.commercial||e.access==="open-principle");
+export function scoreCulturalEvidence(e:CulturalEvidence,i:CulturalIntent){let n=0;if(i.cultureIds.includes(e.cultureId))n+=5;if(i.meanings.includes(e.meaning))n+=6;if(i.objectType&&e.objectType===i.objectType)n+=2;n+=e.confidence*2;return n}
+export function resolveCulturalPrinciples(evidence:CulturalEvidence[],intent:CulturalIntent){return evidence.filter(e=>safe(e,intent)).map(e=>({evidence:e,score:scoreCulturalEvidence(e,intent)})).filter(x=>x.score>=7).sort((a,b)=>b.score-a.score).slice(0,24)}
+export function culturalCoverage(evidence:CulturalEvidence[],cultures:string[],meanings:string[]){return cultures.flatMap(c=>meanings.map(m=>{const xs=evidence.filter(e=>e.cultureId===c&&e.meaning===m);return{cultureId:c,meaning:m,count:xs.length,strong:xs.filter(e=>e.confidence>=.75&&["museum-primary","museum-secondary","scholarly","community-reviewed"].includes(e.evidenceLevel)).length,commercialSafe:xs.some(e=>e.access==="open-principle")}}))}
+export function culturalGaps(evidence:CulturalEvidence[],cultures:string[],meanings:string[]){return culturalCoverage(evidence,cultures,meanings).filter(x=>x.strong===0||!x.commercialSafe)}

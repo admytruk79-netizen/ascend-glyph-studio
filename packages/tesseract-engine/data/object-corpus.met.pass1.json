@@ -1,0 +1,457 @@
+{
+  "schema": "ascend.object-corpus.v2",
+  "sources": [
+    {
+      "id": "met-844523",
+      "institution": "Metropolitan Museum of Art",
+      "title": "Headdress, Eastern Woodlands or Great Lakes, ca. 1800",
+      "url": "https://www.metmuseum.org/art/collection/search/844523",
+      "authority": 1
+    },
+    {
+      "id": "met-844519",
+      "institution": "Metropolitan Museum of Art",
+      "title": "Shot pouch, Cree or Anishinaabe, c. 1820",
+      "url": "https://www.metmuseum.org/art/collection/search/844519",
+      "authority": 1
+    },
+    {
+      "id": "met-751503",
+      "institution": "Metropolitan Museum of Art",
+      "title": "Sash, Western Great Lakes, ca. 1800",
+      "url": "https://www.metmuseum.org/art/collection/search/751503",
+      "authority": 1
+    },
+    {
+      "id": "met-318398",
+      "institution": "Metropolitan Museum of Art",
+      "title": "Double Prestige Panel, Kuba",
+      "url": "https://www.metmuseum.org/art/collection/search/318398",
+      "authority": 1
+    },
+    {
+      "id": "met-768373",
+      "institution": "Metropolitan Museum of Art",
+      "title": "Man's Prestige Cloth, Kuba",
+      "url": "https://www.metmuseum.org/art/collection/search/768373",
+      "authority": 1
+    },
+    {
+      "id": "met-african-adire",
+      "institution": "Metropolitan Museum of Art",
+      "title": "Essential Art of African Textiles: Yoruba Adire Olokun",
+      "url": "https://www.metmuseum.org/exhibitions/listings/2008/african-textiles/photo-gallery",
+      "authority": 1
+    },
+    {
+      "id": "met-andean",
+      "institution": "Metropolitan Museum of Art",
+      "title": "Andean Textiles",
+      "url": "https://www.metmuseum.org/essays/andean-textiles",
+      "authority": 1
+    },
+    {
+      "id": "met-445264",
+      "institution": "Metropolitan Museum of Art",
+      "title": "Ottoman textile fragment, Bursa, 16th century",
+      "url": "https://www.metmuseum.org/art/collection/search/445264",
+      "authority": 1
+    },
+    {
+      "id": "met-451091",
+      "institution": "Metropolitan Museum of Art",
+      "title": "Safavid Velvet with Figural Imagery",
+      "url": "https://www.metmuseum.org/art/collection/search/451091",
+      "authority": 1
+    },
+    {
+      "id": "met-safavid-silk",
+      "institution": "Metropolitan Museum of Art",
+      "title": "Silk Textiles from Safavid Iran",
+      "url": "https://www.metmuseum.org/essays/silk-textiles-from-safavid-iran-1501-1722",
+      "authority": 1
+    }
+  ],
+  "objects": [
+    {
+      "id": "greatlakes-headdress-1800",
+      "sourceIds": [
+        "met-844523"
+      ],
+      "cultureIds": [
+        "eastern-woodlands",
+        "great-lakes"
+      ],
+      "traditionIds": [
+        "quillwork"
+      ],
+      "regionIds": [
+        "north-america"
+      ],
+      "objectType": "headdress",
+      "access": "review"
+    },
+    {
+      "id": "anishinaabe-cree-pouch-1820",
+      "sourceIds": [
+        "met-844519"
+      ],
+      "cultureIds": [
+        "anishinaabe",
+        "cree"
+      ],
+      "traditionIds": [
+        "quillwork"
+      ],
+      "regionIds": [
+        "north-america"
+      ],
+      "objectType": "pouch",
+      "access": "review"
+    },
+    {
+      "id": "greatlakes-sash-1800",
+      "sourceIds": [
+        "met-751503"
+      ],
+      "cultureIds": [
+        "western-great-lakes"
+      ],
+      "traditionIds": [
+        "beadwork",
+        "weaving"
+      ],
+      "regionIds": [
+        "north-america"
+      ],
+      "objectType": "sash",
+      "access": "review"
+    },
+    {
+      "id": "kuba-double-prestige",
+      "sourceIds": [
+        "met-318398"
+      ],
+      "cultureIds": [
+        "kuba"
+      ],
+      "traditionIds": [
+        "raffia-embroidery"
+      ],
+      "regionIds": [
+        "central-africa"
+      ],
+      "objectType": "wrapper-panel",
+      "access": "open-principle"
+    },
+    {
+      "id": "kuba-mans-prestige",
+      "sourceIds": [
+        "met-768373"
+      ],
+      "cultureIds": [
+        "kuba"
+      ],
+      "traditionIds": [
+        "raffia-embroidery"
+      ],
+      "regionIds": [
+        "central-africa"
+      ],
+      "objectType": "prestige-cloth",
+      "access": "open-principle"
+    },
+    {
+      "id": "yoruba-adire-olokun",
+      "sourceIds": [
+        "met-african-adire"
+      ],
+      "cultureIds": [
+        "yoruba"
+      ],
+      "traditionIds": [
+        "adire-eleko"
+      ],
+      "regionIds": [
+        "west-africa"
+      ],
+      "objectType": "wrapper",
+      "access": "open-principle"
+    },
+    {
+      "id": "inca-tocapu-system",
+      "sourceIds": [
+        "met-andean"
+      ],
+      "cultureIds": [
+        "inca"
+      ],
+      "traditionIds": [
+        "tocapu",
+        "cumbi"
+      ],
+      "regionIds": [
+        "andes"
+      ],
+      "objectType": "tunic",
+      "access": "review"
+    },
+    {
+      "id": "ottoman-ogival-sleeve",
+      "sourceIds": [
+        "met-445264"
+      ],
+      "cultureIds": [
+        "ottoman"
+      ],
+      "traditionIds": [
+        "court-silk"
+      ],
+      "regionIds": [
+        "anatolia"
+      ],
+      "objectType": "garment-fragment",
+      "access": "open-principle"
+    },
+    {
+      "id": "safavid-lobed-velvet",
+      "sourceIds": [
+        "met-451091",
+        "met-safavid-silk"
+      ],
+      "cultureIds": [
+        "safavid"
+      ],
+      "traditionIds": [
+        "court-velvet"
+      ],
+      "regionIds": [
+        "iran"
+      ],
+      "objectType": "textile",
+      "access": "open-principle"
+    }
+  ],
+  "observations": [
+    {
+      "id": "gl-h-q-tech",
+      "objectId": "greatlakes-headdress-1800",
+      "kind": "technique",
+      "value": "quill-plait-wrap-fold-layer",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-844523"
+      ]
+    },
+    {
+      "id": "gl-h-q-geom",
+      "objectId": "greatlakes-headdress-1800",
+      "kind": "geometry",
+      "value": "geometric-quill-composition",
+      "weight": 0.9,
+      "status": "documented",
+      "sourceIds": [
+        "met-844523"
+      ]
+    },
+    {
+      "id": "ac-p-q-tech",
+      "objectId": "anishinaabe-cree-pouch-1820",
+      "kind": "technique",
+      "value": "quill-plait-wrap-fold-layer",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-844519"
+      ]
+    },
+    {
+      "id": "gl-s-asym",
+      "objectId": "greatlakes-sash-1800",
+      "kind": "rhythm",
+      "value": "asymmetric-repeated-geometric-motifs",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-751503"
+      ]
+    },
+    {
+      "id": "gl-s-meaning",
+      "objectId": "greatlakes-sash-1800",
+      "kind": "semantic",
+      "value": "exact-meaning",
+      "weight": 1,
+      "status": "unknown",
+      "sourceIds": [
+        "met-751503"
+      ]
+    },
+    {
+      "id": "kuba-panel",
+      "objectId": "kuba-double-prestige",
+      "kind": "composition",
+      "value": "assembled-decorated-panels",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-318398"
+      ]
+    },
+    {
+      "id": "kuba-geom",
+      "objectId": "kuba-double-prestige",
+      "kind": "geometry",
+      "value": "embroidered-geometric-design",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-318398"
+      ]
+    },
+    {
+      "id": "kuba-body",
+      "objectId": "kuba-double-prestige",
+      "kind": "placement",
+      "value": "pattern-interacts-with-wrapped-body-movement",
+      "weight": 0.9,
+      "status": "documented",
+      "sourceIds": [
+        "met-318398"
+      ]
+    },
+    {
+      "id": "kuba-memory",
+      "objectId": "kuba-mans-prestige",
+      "kind": "composition",
+      "value": "patterns-elaborated-from-memory",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-768373"
+      ]
+    },
+    {
+      "id": "kuba-name",
+      "objectId": "kuba-mans-prestige",
+      "kind": "semantic",
+      "value": "motifs-may-have-evocative-wearer-significance",
+      "weight": 0.8,
+      "status": "documented",
+      "sourceIds": [
+        "met-768373"
+      ]
+    },
+    {
+      "id": "adire-dense",
+      "objectId": "yoruba-adire-olokun",
+      "kind": "composition",
+      "value": "dense-juxtaposed-motif-vocabulary",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-african-adire"
+      ]
+    },
+    {
+      "id": "adire-variation",
+      "objectId": "yoruba-adire-olokun",
+      "kind": "rhythm",
+      "value": "inherited-vocabulary-individual-variation",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-african-adire"
+      ]
+    },
+    {
+      "id": "inca-grid",
+      "objectId": "inca-tocapu-system",
+      "kind": "composition",
+      "value": "border-or-all-over-geometric-grid",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-andean"
+      ]
+    },
+    {
+      "id": "inca-diamond",
+      "objectId": "inca-tocapu-system",
+      "kind": "geometry",
+      "value": "diamond-banded-waistband",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-andean"
+      ]
+    },
+    {
+      "id": "inca-status",
+      "objectId": "inca-tocapu-system",
+      "kind": "semantic",
+      "value": "regulated-status-and-diplomatic-association",
+      "weight": 0.9,
+      "status": "documented",
+      "sourceIds": [
+        "met-andean"
+      ]
+    },
+    {
+      "id": "ottoman-ogive",
+      "objectId": "ottoman-ogival-sleeve",
+      "kind": "geometry",
+      "value": "ogival-lattice-plus-floral",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-445264"
+      ]
+    },
+    {
+      "id": "ottoman-transfer",
+      "objectId": "ottoman-ogival-sleeve",
+      "kind": "composition",
+      "value": "cross-cultural-pattern-transfer-and-recombination",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-445264"
+      ]
+    },
+    {
+      "id": "ottoman-place",
+      "objectId": "ottoman-ogival-sleeve",
+      "kind": "placement",
+      "value": "robe-sleeve-shaped-fragment",
+      "weight": 0.9,
+      "status": "documented",
+      "sourceIds": [
+        "met-445264"
+      ]
+    },
+    {
+      "id": "safavid-lattice",
+      "objectId": "safavid-lobed-velvet",
+      "kind": "composition",
+      "value": "staggered-lobed-medallion-lattice",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-451091"
+      ]
+    },
+    {
+      "id": "safavid-repeat",
+      "objectId": "safavid-lobed-velvet",
+      "kind": "rhythm",
+      "value": "continuous-repeat-obscures-repeat-boundary",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-safavid-silk"
+      ]
+    }
+  ]
+}
