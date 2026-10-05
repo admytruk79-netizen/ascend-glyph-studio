@@ -262,6 +262,193 @@
         "global collections"
       ],
       "url": "https://github.com/harvardartmuseums/api-docs"
+    },
+    {
+      "id": "heard-digital",
+      "name": "Heard Museum Digital Library",
+      "kind": "collection",
+      "scale": "41000+ objects; 1300 textiles; 600+ beadwork/quillwork",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "beadwork",
+        "pattern"
+      ],
+      "url": "https://heard.contentdm.oclc.org/digital/about"
+    },
+    {
+      "id": "gwu-textile",
+      "name": "GWU Textile Museum",
+      "kind": "collection",
+      "scale": "21000+ textiles + 4000 study fragments",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "beadwork",
+        "pattern"
+      ],
+      "url": "https://museum.gwu.edu/collections"
+    },
+    {
+      "id": "nmai-objects",
+      "name": "NMAI Object Collections",
+      "kind": "collection",
+      "scale": "266000 catalog records; 88000 North American ethnology",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "beadwork",
+        "pattern"
+      ],
+      "url": "https://americanindian.si.edu/main/explore/collections/object-collections/"
+    },
+    {
+      "id": "amnh-anthro",
+      "name": "AMNH Anthropology Database",
+      "kind": "collection",
+      "scale": "250000+ digitally imaged ethnographic/archaeological objects",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "beadwork",
+        "pattern"
+      ],
+      "url": "https://www.amnh.org/research/anthropology/collections"
+    },
+    {
+      "id": "tmc",
+      "name": "Textile Museum of Canada",
+      "kind": "collection",
+      "scale": "15000+ objects; 200+ world regions",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "beadwork",
+        "pattern"
+      ],
+      "url": "https://collections.textilemuseum.ca/"
+    },
+    {
+      "id": "palace-museum-embroidery",
+      "name": "Palace Museum Beijing Textile & Embroidery",
+      "kind": "collection",
+      "scale": "130000+ textile and embroidery objects",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "beadwork",
+        "pattern"
+      ],
+      "url": "https://www.dpm.org.cn/collection/embroiders.html"
+    },
+    {
+      "id": "ucl-ethcat",
+      "name": "UCL Ethnographic Collections",
+      "kind": "collection",
+      "scale": "2500+ objects across Africa Oceania Americas Asia",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "beadwork",
+        "pattern"
+      ],
+      "url": "https://ethcat.museums.ucl.ac.uk/"
+    },
+    {
+      "id": "uoregon-ethnography",
+      "name": "University of Oregon MNCH Ethnography",
+      "kind": "collection",
+      "scale": "global textiles; searchable anthropology collections",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "beadwork",
+        "pattern"
+      ],
+      "url": "https://natural-history.uoregon.edu/collections/ethnography-collections"
+    },
+    {
+      "id": "princeton-iiif",
+      "name": "Princeton University Art Museum IIIF objects",
+      "kind": "collection",
+      "scale": "IIIF-enabled collection objects",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "beadwork",
+        "pattern"
+      ],
+      "url": "https://artmuseum.princeton.edu/art/collections"
+    },
+    {
+      "id": "field-north-america",
+      "name": "Field Museum North American Anthropology",
+      "kind": "collection",
+      "scale": "70000+ historic and 700000 archaeological items; 300+ Indigenous communities",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "beadwork",
+        "pattern"
+      ],
+      "url": "https://www.fieldmuseum.org/project-narrative/science/north-america-collections"
+    },
+    {
+      "id": "chinese-textile-archive",
+      "name": "Chinese Textile Archive Repository Index",
+      "kind": "collection",
+      "scale": "cross-repository index; 25 object categories; 21 periods",
+      "machineAccess": [
+        "catalog"
+      ],
+      "focus": [
+        "textiles",
+        "embroidery",
+        "weaving",
+        "beadwork",
+        "pattern"
+      ],
+      "url": "https://www.chinastitches.com/en/repositories"
     }
   ],
   "ingestRules": {
@@ -286,8 +473,8 @@
     "noCultureStyleSwitch": true
   },
   "progress": {
-    "verifiedRegistryEntries": 17,
+    "verifiedRegistryEntries": 28,
     "lastExpansion": "2026-10-05",
-    "note": "Source, object, image, and analyzed-instance counts remain separate."
+    "note": "Distinct source endpoints only; object/image/analyzed-instance counts remain separate."
   }
 }
