@@ -1,65 +1,91 @@
-# ASCEND Glyph Studio
+# ASCEND Glyph Studio / Tesseract
 
-ASCEND Glyph Studio is a research-driven procedural design system that turns evidence-backed cultural, historical and personal design principles into original, reproducible visual language.
+ASCEND Glyph Studio is a research-driven procedural design and visual-language system. Tesseract derives original multiscale pattern grammar from evidence-backed structural principles, renders deterministic SVG patterns, and projects approved designs to products and reader applications.
 
-**ROOTS → MEANING → GRAMMAR → FORM**
+**EVIDENCE → MORPHOLOGY → SEMANTICS → RELATIONAL GRAMMAR → MULTISCALE FORM → VALIDATION → PRODUCTION / READING**
 
-The system studies sources; it does not treat historical motifs as a clip-art library. Research artifacts, generated candidates and production-approved designs remain distinct.
+Historical and living traditions are evidence, not a clip-art vocabulary. Restricted or sacred material is excluded from automatic commercial derivation. Unknown meanings remain unknown.
 
-## First production target: Diaries
+## Current build status — 2026-10-05
 
-The first complete application is a coordinated diary system:
-- cover composition
-- spine
-- border/frame
-- endpaper/divider
-- emblem/mark
+Active integration branch: `glyph-studio/3d-semantic-integration`.
 
-## Architecture
+Implemented foundations include the open pattern knowledge graph, object-level cultural evidence passes, cross-cultural morphology, semantic/media grammar, ASCEND universal-language renderer, WebGL garment preview architecture, real SVG specimen generation in CI, and an authenticated restricted-payload security foundation.
 
-Research source → evidence → tradition/context → concept → form analysis → design principle → deterministic synthesis → candidate → provenance/cultural/originality review → production projection → physical validation → approved design/version.
+The renderer is under active development. It is **not yet claimed production-beautiful or production-ready**. The next renderer milestone is recursive/fractal semantic clustering, multiscale LOD and aesthetic candidate selection.
 
-### Source intelligence
-The research corpus may include:
-- Ukrainian ancestry, embroidery, rushnyk/vyshyvanka structure and documented semantics
-- Cossack history and material culture
-- American Western/cowboy material culture, leatherwork, tooling, stitching and horsemanship
-- nation-specific Indigenous American references only with provenance, context and cultural-risk review
-- ASCEND identity and intended concepts such as lineage, freedom, guardian, journey and transformation
+## World-pattern library
 
-Claims must carry evidence and confidence. Inference must not be presented as documented tradition.
+The target is **10,000 distinct source endpoints** and **millions of candidate object records**. These numbers are deliberately separate: an individual museum object never counts as a source.
 
-### Synthesis
-- deterministic seeded generation
-- parameterized composition grammar
-- reproducible manifests and SHA-256 fingerprints
-- vector-first SVG output
-- provenance links from generated features to evidence-backed principles
-- originality and cultural-risk gates
+The source registry lives at `packages/tesseract-engine/data/world-source-registry.v1.json`. Object evidence currently lives in `object-corpus.*.json`; `world-pattern-graph.ts` merges normalized evidence used by generation. `corpus-250k.manifest.json` tracks the first large analyzed-pattern milestone. The registry/corpus is **in progress, not complete**.
 
-### Production
-Manufacturing validity is separate from artistic approval and from physical production approval. New materials, processes and placement recipes require physical sampling before Production Approved.
+Corpus rules: preserve provenance and rights; deduplicate; distinguish documented/interpretive/contested/unknown evidence; track transmission separately from independent recurrence; use named traditions rather than generic culture switches; exclude restricted/prohibited material from derivation.
 
-## Non-negotiables
-1. No 108-card/Key dependency in the redesigned glyph language.
-2. No legacy five-atlas system as the root vocabulary.
-3. Do not directly copy research artifacts or restricted/sacred motifs.
-4. Same approved manifest must recreate the same geometry.
-5. Human approval is mandatory.
-6. Sensitive/nation-specific influence requires cultural review.
-7. Physical validation is required before Production Approved.
-8. Product Engine consumes approved design/version outputs; research and synthesis remain owned here.
+See `docs/CORPUS-INGESTION.md`, `docs/MATURE-CORPUS-RUNBOOK.md`, `docs/UNIVERSAL-PATTERN-DERIVATION.md`, and `docs/CULTURAL-SEMANTIC-GAP-MATRIX.md`.
 
-## Repository structure
-- `apps/web` — studio/customer interface
+## Tesseract language and renderer
+
+The language is relational rather than alphabetic. Meaning is carried through topology and operations such as repetition, interruption, symmetry, direction, enclosure, branching, adjacency, density, inversion, nesting, mirroring, rotation, interlock, expansion/contraction and negative space.
+
+The intended scale hierarchy is:
+
+`micro carrier → motif cluster → semantic cluster → sentence-pattern → recursively clustered field`
+
+A complete pattern may become a reduced motif inside a larger pattern while preserving semantic identity and macro topology. Fine detail must collapse at small scale without destroying the readable structural relationships.
+
+Real engine specimens are generated by `packages/tesseract-engine/src/render-specimens.ts` and uploaded by CI as `tesseract-svg-specimens`. Do not substitute AI concept art for engine output.
+
+See `docs/ASCEND-UNIVERSAL-LANGUAGE-V1.md`, `docs/UNIVERSAL-ORNAMENT-LANGUAGE.md`, `docs/SPATIAL-GLYPH-TESSERACT.md`, and `docs/TESSERACT-8D-ARCHITECTURE.md`.
+
+## Reader architecture
+
+Planned product navigation is **CREATE · READ · LEARN · COLLECTION**. READ will share one semantic decoder across web, Android and iOS: camera acquisition is platform-specific, while normalization, structural recognition, semantic decoding, authentication and localization belong to shared Tesseract reader logic.
+
+## Security architecture
+
+Security is layered separately from visual semantics. Public meaning may remain human-readable while private/restricted payloads are cryptographically protected.
+
+Current engine code: `packages/tesseract-engine/src/secure-payload.ts`.
+
+Implemented foundation:
+- AES-256-GCM authenticated encryption with random 96-bit nonce
+- authenticated version/access-tier/key-ID metadata
+- explicit key identifiers
+- authorization gate
+- restricted deployment policy requiring external KMS/HSM-backed keys, MFA, device attestation, signed reader software, audit logging, key rotation policy and bounded offline revocation state
+
+This is **not a proprietary cipher and is not represented as certified military cryptography**. A defense deployment must use approved external identity/key infrastructure, independently reviewed cryptography, platform hardening, audit/revocation controls and any applicable certification/accreditation process. There is no ASCEND master backdoor.
+
+See `docs/TESSERACT-SECURITY-ARCHITECTURE.md` and existing `docs/TESSERACT-SECURE-TS1.md`.
+
+## Production architecture
+
+Manufacturing validity is separate from artistic approval and physical-production approval. The target flow is:
+
+`semantic intent → generated candidates → evidence/originality/cultural-risk review → production projection → manufacturing validation → physical proof → approved design/version → SKU/order`.
+
+Diary and garment projections share the canonical semantic pattern but apply different placement/material/manufacturing constraints. See `docs/PRODUCTION-ENGINE-POA.md`, `docs/GARMENT-ENGINE-0.1.md`, and `docs/ORDER-TO-DELIVERY.md`.
+
+## Repository map
+
+- `apps/web` — Studio/customer interface and 3D preview
+- `packages/tesseract-engine` — language, corpus graph, renderer, analytics and security foundation
 - `packages/design-schema` — design contracts
-- `packages/glyph-engine` — deterministic synthesis
-- `packages/glyph-registry` — approved generated glyph/design registry
-- `packages/garment-spec` — garment specifications
-- `packages/material-spec` — material specifications
+- `packages/glyph-engine` — deterministic synthesis infrastructure
+- `packages/glyph-registry` — approved generated design registry
+- `packages/garment-spec` / `packages/material-spec` — production specifications
 - `packages/production-validator` — production constraints
 - `packages/renderer` — vector/rendering pipeline
-- `services/api` — persistence and integration API
-- `docs` — architecture, research policy and POA
+- `docs` — architecture, corpus, security, production and verification documentation
 
-See `docs/POA.md` for the current diary-first build sequence.
+## Non-negotiables
+
+1. Do not copy research artifacts or restricted/sacred motifs.
+2. Do not invent historical meanings.
+3. Do not count objects as distinct sources.
+4. Same approved manifest must recreate the same geometry.
+5. Generated output must retain provenance to evidence-backed structural principles.
+6. Security must use established authenticated cryptography; visual obscurity is not encryption.
+7. Human/cultural review and physical validation remain mandatory before Production Approved.
+8. Current 108-card/Key art and legacy atlases are not the root vocabulary for the new universal language.
