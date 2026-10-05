@@ -5,7 +5,7 @@ import {ASCEND_PALETTES,ASCEND_COLORS} from "./color-system";
 import type {DesignNicheId} from "./niches";
 import {deriveSignals} from "./pattern-knowledge-graph";
 import {worldPatternGraph} from "./world-pattern-graph";
-import {scoreTopologyComposition,type CompositionScore} from "./aesthetic-critic";
+import {scoreTopologyComposition,qualityGate,type CompositionScore,type QualityGateResult} from "./aesthetic-critic";
 import type {GarmentZone} from "./garment";
 import type {MediumId} from "./medium-compiler";
 
@@ -18,7 +18,7 @@ export type PatternGeneratorInput={
 export type GeneratedPattern={
  id:string;lineageId:string;score:number;novelty:number;svg:string;
  objectives:ReturnType<typeof searchDesignSpace>[number]["objectives"];
- aesthetic:CompositionScore;generatorScore:number;
+ aesthetic:CompositionScore;quality:QualityGateResult;generatorScore:number;
 };
 
 const nicheForMode=(mode:PatternMode):DesignNicheId|undefined=>({
@@ -73,10 +73,11 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   principles:[],niches:niche?[niche]:undefined,medium,
   population:Math.round(32+complexity*64),generations:Math.round(3+complexity*5),keep:variations
  });
- const ranked=candidates.map(c=>{const aesthetic=scoreTopologyComposition(c.topology);return{c,aesthetic,generatorScore:c.score+aesthetic.total*18}}).sort((a,b)=>b.generatorScore-a.generatorScore);
- return ranked.map(({c,aesthetic,generatorScore},i)=>{
+ const ranked=candidates.map(c=>{const aesthetic=scoreTopologyComposition(c.topology),quality=qualityGate(c.topology,aesthetic,mode);return{c,aesthetic,quality,generatorScore:c.score+aesthetic.total*18+quality.sourcePrimitiveRatio*8}}).sort((a,b)=>b.generatorScore-a.generatorScore);
+ const accepted=ranked.filter(x=>x.quality.accepted).slice(0,variations);
+ return accepted.map(({c,aesthetic,quality,generatorScore},i)=>{
   const g=genomeFromTopology(`pattern:${input.seed}:${i}`,c.topology);
   const p=projectSemanticGeometry(g,width,height,zone);
-  return {id:`pat-${input.seed}-${i+1}`,lineageId:c.lineageId,score:c.score,novelty:c.novelty,objectives:c.objectives,aesthetic,generatorScore,svg:colorize(p.svg,input.paletteId??"underdog-heritage")};
+  return {id:`pat-${input.seed}-${i+1}`,lineageId:c.lineageId,score:c.score,novelty:c.novelty,objectives:c.objectives,aesthetic,quality,generatorScore,svg:colorize(p.svg,input.paletteId??"underdog-heritage")};
  });
 }
