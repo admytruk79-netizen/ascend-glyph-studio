@@ -25,7 +25,7 @@ export function deriveGrammar(principles:PrincipleSignal[],fallback:Grammar=DEFA
  const eligible=principles.filter(p=>p.confidence>=.55&&!["restricted","sacred","prohibited"].includes(p.culturalAccess.toLowerCase()));
  if(!eligible.length)return fallback;
  const rules=fallback.rules.map(r=>{const matches=eligible.filter(p=>p.confidence>=r.minConfidence&&r.signals.some(s=>words(p).includes(s)));if(!matches.length)return null;const support=matches.reduce((n,p)=>n+p.confidence,0)/matches.length;return{...r,weight:Number(Math.min(1.5,r.weight*.45+support*.85).toFixed(4))}}).filter((r):r is GrammarRule=>r!==null);
- const first=fallback.rules[0];return{version:"0.2",rules:rules.length?rules:first?[first]:[]};
+ const first=fallback.rules[0];const active=rules.length?[...rules]:first?[first]:[];const axis=fallback.rules.find(r=>r.id==="axis");if(axis&&active.length&&!active.some(r=>r.id==="axis"))active.unshift(axis);return{version:"0.2",rules:active};
 }
 export function compose(intent:EngineIntent,grammar:Grammar=DEFAULT_GRAMMAR):CompositionPlan{
  const validation:string[]=[];if(!intent.seed.trim())validation.push("seed required");if(!intent.meanings.length)validation.push("semantic intent required");if(!intent.principleIds.length)validation.push("evidence-backed principles required");if(!intent.product.zones.length)validation.push("product zones required");
