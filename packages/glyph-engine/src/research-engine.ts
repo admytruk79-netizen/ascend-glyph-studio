@@ -9,6 +9,6 @@ export function runResearchDrivenEngine(intent:EngineIntent,research:ResearchSna
  const grammar=deriveAuditedGrammar(eligible,research.observations);
  // Force one generation pass here so integration fails loudly if research grammar cannot render.
  generateCandidates(filteredIntent,1,grammar);
- const candidates=evaluateCandidates(filteredIntent,research.sources,count,grammar);
+ const candidates=evaluateCandidates(filteredIntent,research.sources,count,grammar,eligible,research.observations);
  return{eligiblePrincipleIds:filteredIntent.principleIds,rejectedPrinciples:audits.filter(a=>!a.eligible).map(a=>({id:a.principle.id,reasons:a.reasons})),grammarRuleIds:grammar.rules.map(r=>r.id),relationCount:grammar.relations.length,candidates};
 }
