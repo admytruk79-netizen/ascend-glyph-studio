@@ -1,0 +1,455 @@
+{
+  "schema": "ascend.object-corpus.v2",
+  "sources": [
+    {
+      "id": "met-228961",
+      "institution": "Metropolitan Museum of Art",
+      "title": "British Coif, early 17th century",
+      "url": "https://www.metmuseum.org/art/collection/search/228961",
+      "authority": 1
+    },
+    {
+      "id": "met-746489",
+      "institution": "Metropolitan Museum of Art",
+      "title": "British crewel bed curtains, early 18th century",
+      "url": "https://www.metmuseum.org/art/collection/search/746489",
+      "authority": 1
+    },
+    {
+      "id": "met-229936",
+      "institution": "Metropolitan Museum of Art",
+      "title": "British quilt, 1820–50",
+      "url": "https://www.metmuseum.org/art/collection/search/229936",
+      "authority": 1
+    },
+    {
+      "id": "vam-morris-textiles",
+      "institution": "Victoria and Albert Museum",
+      "title": "William Morris textiles",
+      "url": "https://www.vam.ac.uk/articles/willam-morris-textiles",
+      "authority": 1
+    },
+    {
+      "id": "met-45405",
+      "institution": "Metropolitan Museum of Art",
+      "title": "Japanese kasuri length with roundels",
+      "url": "https://www.metmuseum.org/art/collection/search/45405",
+      "authority": 1
+    },
+    {
+      "id": "met-633553",
+      "institution": "Metropolitan Museum of Art",
+      "title": "Mori Yoshitoshi stencil print and katazome context",
+      "url": "https://www.metmuseum.org/art/collection/search/633553",
+      "authority": 1
+    },
+    {
+      "id": "nmai-209497",
+      "institution": "Smithsonian NMAI",
+      "title": "Chilkat Tlingit robe",
+      "url": "https://americanindian.si.edu/collections-search/object/NMAI_209497",
+      "authority": 1
+    },
+    {
+      "id": "nmai-88055",
+      "institution": "Smithsonian NMAI",
+      "title": "Tlingit robe 1875–1890",
+      "url": "https://americanindian.si.edu/collections-search/object/NMAI_88055",
+      "authority": 1
+    },
+    {
+      "id": "vam-opus",
+      "institution": "Victoria and Albert Museum",
+      "title": "Introducing Opus Anglicanum",
+      "url": "https://www.vam.ac.uk/articles/about-opus-anglicanum/",
+      "authority": 1
+    },
+    {
+      "id": "vam-jesse",
+      "institution": "Victoria and Albert Museum",
+      "title": "Tree of Jesse Cope",
+      "url": "https://www.vam.ac.uk/articles/the-tree-of-jesse-cope",
+      "authority": 1
+    }
+  ],
+  "objects": [
+    {
+      "id": "british-coif-17c",
+      "sourceIds": [
+        "met-228961"
+      ],
+      "cultureIds": [
+        "britain"
+      ],
+      "traditionIds": [
+        "blackwork",
+        "silk-metal-embroidery"
+      ],
+      "regionIds": [
+        "england"
+      ],
+      "period": "early 17th century",
+      "objectType": "headwear",
+      "access": "open-principle"
+    },
+    {
+      "id": "british-crewel-curtains",
+      "sourceIds": [
+        "met-746489"
+      ],
+      "cultureIds": [
+        "britain"
+      ],
+      "traditionIds": [
+        "crewel"
+      ],
+      "regionIds": [
+        "england"
+      ],
+      "period": "early 18th century",
+      "objectType": "furnishing-textile",
+      "access": "open-principle"
+    },
+    {
+      "id": "british-quilt-1820",
+      "sourceIds": [
+        "met-229936"
+      ],
+      "cultureIds": [
+        "britain"
+      ],
+      "traditionIds": [
+        "patchwork",
+        "broderie-perse",
+        "crewel"
+      ],
+      "regionIds": [
+        "britain"
+      ],
+      "period": "1820–50",
+      "objectType": "quilt",
+      "access": "open-principle"
+    },
+    {
+      "id": "morris-wandle",
+      "sourceIds": [
+        "vam-morris-textiles"
+      ],
+      "cultureIds": [
+        "britain"
+      ],
+      "traditionIds": [
+        "arts-and-crafts",
+        "indigo-discharge-print"
+      ],
+      "regionIds": [
+        "england"
+      ],
+      "period": "1884",
+      "objectType": "printed-textile",
+      "access": "open-principle"
+    },
+    {
+      "id": "japan-kasuri-roundels",
+      "sourceIds": [
+        "met-45405"
+      ],
+      "cultureIds": [
+        "japan"
+      ],
+      "traditionIds": [
+        "kasuri"
+      ],
+      "regionIds": [
+        "japan"
+      ],
+      "period": "first half 20th century",
+      "objectType": "textile-length",
+      "access": "open-principle"
+    },
+    {
+      "id": "japan-katazome-context",
+      "sourceIds": [
+        "met-633553"
+      ],
+      "cultureIds": [
+        "japan"
+      ],
+      "traditionIds": [
+        "katazome",
+        "kappazuri"
+      ],
+      "regionIds": [
+        "japan"
+      ],
+      "period": "20th century",
+      "objectType": "stencil-work",
+      "access": "open-principle"
+    },
+    {
+      "id": "chilkat-tlingit-robe",
+      "sourceIds": [
+        "nmai-209497"
+      ],
+      "cultureIds": [
+        "tlingit"
+      ],
+      "traditionIds": [
+        "chilkat"
+      ],
+      "regionIds": [
+        "northwest-coast"
+      ],
+      "objectType": "robe",
+      "access": "review"
+    },
+    {
+      "id": "tlingit-robe-1875",
+      "sourceIds": [
+        "nmai-88055"
+      ],
+      "cultureIds": [
+        "tlingit"
+      ],
+      "traditionIds": [
+        "painted-hide-garment"
+      ],
+      "regionIds": [
+        "alaska"
+      ],
+      "period": "1875–1890",
+      "objectType": "robe",
+      "access": "review"
+    },
+    {
+      "id": "opus-anglicanum-family",
+      "sourceIds": [
+        "vam-opus",
+        "vam-jesse"
+      ],
+      "cultureIds": [
+        "britain"
+      ],
+      "traditionIds": [
+        "opus-anglicanum"
+      ],
+      "regionIds": [
+        "england"
+      ],
+      "period": "13th–14th century",
+      "objectType": "ecclesiastical-embroidery",
+      "access": "review"
+    }
+  ],
+  "observations": [
+    {
+      "id": "coif-scroll",
+      "objectId": "british-coif-17c",
+      "kind": "composition",
+      "value": "scrolling-vines-with-flowers-birds-insects",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-228961"
+      ]
+    },
+    {
+      "id": "coif-micro",
+      "objectId": "british-coif-17c",
+      "kind": "composition",
+      "value": "micro-diaper-fill-inside-leaves-petals",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-228961"
+      ]
+    },
+    {
+      "id": "coif-transfer",
+      "objectId": "british-coif-17c",
+      "kind": "relation",
+      "value": "possible-islamic-spain-motif-derivation",
+      "weight": 0.8,
+      "status": "interpretive",
+      "sourceIds": [
+        "met-228961"
+      ]
+    },
+    {
+      "id": "crewel-tree",
+      "objectId": "british-crewel-curtains",
+      "kind": "composition",
+      "value": "tree-of-life-large-scale-field",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-746489"
+      ]
+    },
+    {
+      "id": "crewel-transfer",
+      "objectId": "british-crewel-curtains",
+      "kind": "relation",
+      "value": "indian-palampore-influence",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-746489"
+      ]
+    },
+    {
+      "id": "crewel-china",
+      "objectId": "british-crewel-curtains",
+      "kind": "color",
+      "value": "blue-white-chinese-export-delft-influence",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-746489"
+      ]
+    },
+    {
+      "id": "quilt-hex",
+      "objectId": "british-quilt-1820",
+      "kind": "geometry",
+      "value": "hexagonal-patchwork-kaleidoscopic-composition",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-229936"
+      ]
+    },
+    {
+      "id": "quilt-recombine",
+      "objectId": "british-quilt-1820",
+      "kind": "composition",
+      "value": "sample-fragments-recombined-controlled-kaleidoscope",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-229936"
+      ]
+    },
+    {
+      "id": "morris-repeat",
+      "objectId": "morris-wandle",
+      "kind": "scale",
+      "value": "large-repeat-98.4x44.5cm",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "vam-morris-textiles"
+      ]
+    },
+    {
+      "id": "morris-tech",
+      "objectId": "morris-wandle",
+      "kind": "technique",
+      "value": "indigo-discharge-print-complex-repeat",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "vam-morris-textiles"
+      ]
+    },
+    {
+      "id": "kasuri-roundel",
+      "objectId": "japan-kasuri-roundels",
+      "kind": "geometry",
+      "value": "roundel-repeat",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-45405"
+      ]
+    },
+    {
+      "id": "kasuri-tech",
+      "objectId": "japan-kasuri-roundels",
+      "kind": "technique",
+      "value": "weft-ikat-plain-weave-ramie",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-45405"
+      ]
+    },
+    {
+      "id": "katazome-tech",
+      "objectId": "japan-katazome-context",
+      "kind": "technique",
+      "value": "stencil-dyeing-transfer-to-print",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "met-633553"
+      ]
+    },
+    {
+      "id": "chilkat-object",
+      "objectId": "chilkat-tlingit-robe",
+      "kind": "placement",
+      "value": "whole-robe-field",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "nmai-209497"
+      ]
+    },
+    {
+      "id": "chilkat-reuse",
+      "objectId": "chilkat-tlingit-robe",
+      "kind": "material",
+      "value": "cotton-canvas-painted",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "nmai-209497"
+      ]
+    },
+    {
+      "id": "tlingit-mixed",
+      "objectId": "tlingit-robe-1875",
+      "kind": "material",
+      "value": "deerskin-wool-paint-caribou-fringe",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "nmai-88055"
+      ]
+    },
+    {
+      "id": "opus-material",
+      "objectId": "opus-anglicanum-family",
+      "kind": "material",
+      "value": "silk-gold-silver-thread",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "vam-opus"
+      ]
+    },
+    {
+      "id": "opus-scale",
+      "objectId": "opus-anglicanum-family",
+      "kind": "composition",
+      "value": "dense-elaborate-figural-imagery",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "vam-opus"
+      ]
+    },
+    {
+      "id": "cope-shape",
+      "objectId": "opus-anglicanum-family",
+      "kind": "placement",
+      "value": "semicircular-ceremonial-cloak",
+      "weight": 1,
+      "status": "documented",
+      "sourceIds": [
+        "vam-jesse"
+      ]
+    }
+  ]
+}
