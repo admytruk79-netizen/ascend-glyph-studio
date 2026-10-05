@@ -33,7 +33,7 @@ const hash=(s:string)=>{let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=
 const archetypes=Object.keys(ARCHETYPES) as PatternArchetype[];
 const selectOriginal=(seed:string,count=4):OriginalGlyphSelection=>{
  const vocabulary=generateNewGlyphVocabulary(seed+"|vocabulary",108),h=hash(seed+"|selection"),glyphs:NewGlyphCandidate[]=[];
- for(let i=0;i<count;i++)glyphs.push(vocabulary[(h+i*29)%vocabulary.length]);
+ for(let i=0;i<count;i++)glyphs.push(vocabulary[(h+i*29)%vocabulary.length]!);
  return{vocabularySeed:seed+"|vocabulary",glyphs,provenance:{kind:"original-synthesis",legacyAtlasRequired:false,copiedHistoricalMotif:false}};
 };
 export function buildPatternTrainingCorpus(base:DiarySynthesisInput,variantsPerArchetype=8):PatternTrainingCase[]{
@@ -41,7 +41,7 @@ export function buildPatternTrainingCorpus(base:DiarySynthesisInput,variantsPerA
  const out:PatternTrainingCase[]=[];
  for(const archetype of archetypes)for(let i=0;i<variantsPerArchetype;i++){
   const seed=`${base.seed}|${archetype}|${String(i+1).padStart(2,"0")}`,h=hash(seed);
-  const density=(["restrained","balanced","complex"] as const)[h%3],symmetry=(["none","bilateral","radial"] as const)[(h>>>3)%3];
+  const density=(["restrained","balanced","complex"] as const)[h%3]!,symmetry=(["none","bilateral","radial"] as const)[(h>>>3)%3]!;
   const source=selectOriginal(seed,4),n=(shift:number,min=.55,span=.4)=>Number((min+((h>>>shift)%1000)/1000*span).toFixed(3));
   out.push({id:`pattern-${archetype}-${i+1}`,seed,archetype,density,symmetry,operators:ARCHETYPES[archetype],source,
    objectives:{traceability:1,negativeSpace:n(2),rhythm:n(5),complexity:n(8),manufacturability:n(11,.7,.29)}});
@@ -56,7 +56,7 @@ const MUTATIONS=["scale-alternate","mirror-alternate","rotate-quarter","offset-p
 export function buildComplexPatternCorpus(base:DiarySynthesisInput,opts:{variantsPerArchetype?:number;generations?:number}={}):ComplexPatternCase[]{
  const variants=opts.variantsPerArchetype??32,generations=opts.generations??4;if(variants<1||variants>128)throw new Error("variantsPerArchetype must be 1-128");if(generations<1||generations>12)throw new Error("generations must be 1-12");
  const out:ComplexPatternCase[]=[];for(let generation=1;generation<=generations;generation++){const generationBase=buildPatternTrainingCorpus({...base,seed:`${base.seed}|g${generation}`},variants);
-  for(const item of generationBase){const h=hash(item.seed+"|complex|"+generation),registerCount=3+(h%6),registers=Array.from({length:registerCount},(_,i)=>REGISTERS[(h+i*5+generation)%REGISTERS.length]),transitionCount=2+((h>>>4)%5),transitions=Array.from({length:transitionCount},(_,i)=>TRANSITIONS[(h+i*7)%TRANSITIONS.length]),mutationCount=2+((h>>>8)%7),mutation=Array.from({length:mutationCount},(_,i)=>MUTATIONS[(h+i*11+generation)%MUTATIONS.length]),complexitySignature=[item.archetype,item.density,item.symmetry,...item.source.glyphs.map(g=>g.id),...registers,...transitions,...mutation].join("|");out.push({...item,id:`${item.id}-g${generation}`,generation,registers,transitions,mutation,complexitySignature});}}
+  for(const item of generationBase){const h=hash(item.seed+"|complex|"+generation),registerCount=3+(h%6),registers=Array.from({length:registerCount},(_,i)=>REGISTERS[(h+i*5+generation)%REGISTERS.length]!),transitionCount=2+((h>>>4)%5),transitions=Array.from({length:transitionCount},(_,i)=>TRANSITIONS[(h+i*7)%TRANSITIONS.length]!),mutationCount=2+((h>>>8)%7),mutation=Array.from({length:mutationCount},(_,i)=>MUTATIONS[(h+i*11+generation)%MUTATIONS.length]!),complexitySignature=[item.archetype,item.density,item.symmetry,...item.source.glyphs.map(g=>g.id),...registers,...transitions,...mutation].join("|");out.push({...item,id:`${item.id}-g${generation}`,generation,registers,transitions,mutation,complexitySignature});}}
  return out;
 }
 export function uniqueComplexPatterns(cases:ComplexPatternCase[]):ComplexPatternCase[]{const seen=new Set<string>();return cases.filter(x=>{if(seen.has(x.complexitySignature))return false;seen.add(x.complexitySignature);return true})}
