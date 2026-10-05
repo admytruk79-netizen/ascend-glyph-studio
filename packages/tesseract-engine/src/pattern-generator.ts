@@ -47,7 +47,9 @@ function colorize(svg:string,paletteId:string){
   if(pathIndex>=limit){pathIndex++;return tag;}
   const i=pathIndex++;
   const c=accents[i%accents.length]!;
-  const cleanAttrs=attrs.replace(/\\s*\\/\\s*$/,"");\n  const selfClosing=/\\/\\s*$/.test(attrs);\n  return `<path ${cleanAttrs} data-accent="${i}" stroke="${c}"${selfClosing?"/>":">"}`;
+  const selfClosing=/\/\s*$/.test(attrs);
+  const cleanAttrs=attrs.replace(/\s*\/\s*$/,"");
+  return `<path ${cleanAttrs} data-accent="${i}" stroke="${c}"${selfClosing?"/>":">"}`;
  });
  return out;
 }
