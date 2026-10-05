@@ -1,0 +1,12 @@
+export interface BulkSource{id:string;kind:"csv"|"json"|"jsonl"|"api";url:string;imageMode:"iiif"|"field"|"object-page";license:string;filters:string[]}
+export const BULK_PATTERN_SOURCES:BulkSource[]=[
+{id:"met-openaccess",kind:"csv",url:"https://raw.githubusercontent.com/metmuseum/openaccess/master/MetObjects.csv",imageMode:"field",license:"CC0 metadata; image rights object-specific",filters:["textile","embroidery","embroidered","weaving","woven","beadwork","quillwork","costume","cloth","tapestry"]},
+{id:"cleveland-openaccess",kind:"csv",url:"https://raw.githubusercontent.com/ClevelandMuseumArt/openaccess/master/data.csv",imageMode:"field",license:"CC0 dataset and designated image assets",filters:["textile","embroidery","woven","weaving","costume","cloth","tapestry"]},
+{id:"artic-dump",kind:"json",url:"https://artic-api-data.s3.amazonaws.com/artic-api-data.tar.bz2",imageMode:"iiif",license:"object-specific; prefer public-domain image flag",filters:["textile","embroidery","woven","weaving","costume","cloth","tapestry"]},
+{id:"smithsonian-openaccess",kind:"json",url:"https://github.com/Smithsonian/OpenAccess",imageMode:"field",license:"CC0 Open Access subset",filters:["textile","embroidery","beadwork","quillwork","weaving","woven","costume","cloth"]}
+];
+export interface CandidateRecord{sourceId:string;objectId:string;title:string;text:string;image?:string;rights?:string;raw:unknown}
+const norm=(x:unknown)=>String(x??"").toLowerCase();
+export function isPatternCandidate(raw:any,source:BulkSource){const text=norm([raw.title,raw.Title,raw.objectName,raw.ObjectName,raw.classification,raw.Classification,raw.medium,raw.Medium,raw.description,raw.Description,raw.department,raw.Department].join(" "));return source.filters.some(k=>text.includes(k))}
+export function normalizeCandidate(raw:any,source:BulkSource):CandidateRecord{return{sourceId:source.id,objectId:String(raw.id??raw["Object ID"]??raw.objectid??raw.object_id??""),title:String(raw.title??raw.Title??raw["Object Name"]??""),text:[raw.classification,raw.Classification,raw.medium,raw.Medium,raw.description,raw.Description].filter(Boolean).join(" "),image:raw.image_id??raw.primaryImage??raw.primary_image??raw.images?.web?.url,rights:String(raw.is_public_domain??raw.share_license_status??raw.rights_type??""),raw}}
+export function filterCandidates(records:any[],source:BulkSource){return records.filter(r=>isPatternCandidate(r,source)).map(r=>normalizeCandidate(r,source))}
