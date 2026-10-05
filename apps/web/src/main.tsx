@@ -1,0 +1,1 @@
+import React from "react";import{createRoot}from"react-dom/client";import GlyphStudio from "./GlyphStudio";import "./studio.css";createRoot(document.getElementById("root")!).render(<React.StrictMode><GlyphStudio/></React.StrictMode>);
