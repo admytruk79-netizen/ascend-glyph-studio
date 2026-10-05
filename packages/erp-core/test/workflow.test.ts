@@ -1,0 +1,2 @@
+import{describe,it,expect}from"vitest";import{advancePurchase,advanceWork}from"../src/workflow";
+describe("ERP guarded workflows",()=>{it("advances valid production",()=>expect(advanceWork("released","cutting")).toBe("cutting"));it("rejects skipping QC",()=>expect(()=>advanceWork("sewing","complete")).toThrow());it("guards purchasing",()=>expect(()=>advancePurchase("draft","received")).toThrow())});
