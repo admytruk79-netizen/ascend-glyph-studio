@@ -1,0 +1,16 @@
+name: 3d-semantic-integration-ci
+on:
+  push:
+    branches: [glyph-studio/3d-semantic-integration]
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 22}
+      - run: npm install --no-audit --no-fund
+      - run: npm run typecheck --workspace=@ascend/glyph-studio-web
+      - run: npm run build --workspace=@ascend/glyph-studio-web
+      - run: npm run typecheck --workspace=@ascend/tesseract-engine
+      - run: npm test --workspace=@ascend/tesseract-engine
