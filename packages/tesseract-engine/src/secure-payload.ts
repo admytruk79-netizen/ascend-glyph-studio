@@ -44,3 +44,33 @@ export function authorizeRestricted(ctx:AuthorizationContext,requiredRole:string
  if(ctx.revocationAgeHours>policy.offlineRevocationMaxAgeHours)throw new Error("revocation state stale");
  return true;
 }
+
+
+export interface KeyEnvelope{
+ v:1;
+ alg:"aes-256-gcm";
+ kekId:string;
+ iv:string;
+ tag:string;
+ wrappedDek:string;
+}
+export function wrapDataKey(dek:Uint8Array,kek:Uint8Array,kekId:string):KeyEnvelope{
+ if(dek.byteLength!==32||kek.byteLength!==32)throw new Error("DEK and KEK must be 32 bytes");
+ if(!kekId)throw new Error("kekId required");
+ const iv=randomBytes(12),c=createCipheriv("aes-256-gcm",kek,iv);
+ c.setAAD(Buffer.from("ASCEND-TESSERACT|key-envelope|v1|"+kekId));
+ const wrapped=Buffer.concat([c.update(dek),c.final()]);
+ return{v:1,alg:"aes-256-gcm",kekId,iv:b64(iv),tag:b64(c.getAuthTag()),wrappedDek:b64(wrapped)};
+}
+export function unwrapDataKey(e:KeyEnvelope,kek:Uint8Array):Buffer{
+ if(e.v!==1||e.alg!=="aes-256-gcm")throw new Error("unsupported key envelope");
+ if(kek.byteLength!==32)throw new Error("KEK must be 32 bytes");
+ const d=createDecipheriv("aes-256-gcm",kek,unb64(e.iv));
+ d.setAAD(Buffer.from("ASCEND-TESSERACT|key-envelope|v1|"+e.kekId));d.setAuthTag(unb64(e.tag));
+ const dek=Buffer.concat([d.update(unb64(e.wrappedDek)),d.final()]);
+ if(dek.byteLength!==32)throw new Error("invalid data key length");
+ return dek;
+}
+export function rotateKeyEnvelope(e:KeyEnvelope,oldKek:Uint8Array,newKek:Uint8Array,newKekId:string){
+ return wrapDataKey(unwrapDataKey(e,oldKek),newKek,newKekId);
+}
