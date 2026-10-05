@@ -1,0 +1,13 @@
+{
+"version":"source-registry-v1","goal":{"distinctSources":10000,"candidateObjects":"millions"},
+"sources":[
+{"id":"met-open-access","institution":"The Metropolitan Museum of Art","scope":["Ukraine","Central Asia","East Asia","South Asia","Middle East","Africa","Americas","Europe"],"access":"open-api","rights":"object-specific; public-domain images where marked","url":"https://www.metmuseum.org/art/collection"},
+{"id":"nmai-collections","institution":"Smithsonian National Museum of the American Indian","scope":["named Indigenous peoples of the Western Hemisphere"],"access":"collection-search+IIIF","rights":"metadata CC0; image usage object-specific","url":"https://americanindian.si.edu/collections-search/"},
+{"id":"smithsonian-open-access","institution":"Smithsonian Institution","scope":["global collections"],"access":"open-access/API","rights":"object-specific","url":"https://www.si.edu/openaccess"},
+{"id":"tepapa-collections","institution":"Museum of New Zealand Te Papa Tongarewa","scope":["Maori","Pacific","global"],"access":"collection-search","rights":"object-specific","url":"https://collections.tepapa.govt.nz/"},
+{"id":"british-museum-collection","institution":"British Museum","scope":["global"],"access":"collection-search","rights":"object-specific","url":"https://www.britishmuseum.org/collection"},
+{"id":"vam-collections","institution":"Victoria and Albert Museum","scope":["global textiles","embroidery","fashion"],"access":"collection-search/API","rights":"object-specific","url":"https://www.vam.ac.uk/collections"},
+{"id":"cooper-hewitt","institution":"Cooper Hewitt Smithsonian Design Museum","scope":["textiles","patterns","design"],"access":"collection-data","rights":"object-specific","url":"https://collection.cooperhewitt.org/"}
+],
+"rules":{"sourceCountMeans":"distinct websites/institutions/endpoints, never object records","objectCountMeans":"individual catalogued artifacts/records","restrictedSacred":"exclude from automatic commercial derivation","attribution":"retain people/tradition/place/date/technique/source/rights/confidence","noCultureStyleSwitch":true}
+}
