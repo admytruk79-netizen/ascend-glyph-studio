@@ -22,6 +22,21 @@ The v1 envelope uses AES-256-GCM, a random 96-bit IV/nonce, a 256-bit key suppli
 
 The engine does not generate or persist a universal master key. Production keys must be created and held by an external KMS/HSM or equivalent approved key-custody system. Envelope-key support is now implemented: 256-bit data-encryption keys can be wrapped under a separate 256-bit key-encryption key using authenticated AES-256-GCM and rotated to a new KEK without changing the DEK.
 
+## Implemented cryptographic controls
+
+Current code in `packages/tesseract-engine/src/secure-payload.ts` implements:
+- AES-256-GCM authenticated encryption for restricted payloads.
+- 32-byte caller-supplied data-encryption keys.
+- Random 96-bit IV/nonce per encryption operation.
+- Additional authenticated data binding product namespace, envelope version, access tier and key ID.
+- Authentication-tag verification on decrypt.
+- Key-envelope wrapping of 256-bit DEKs under separate 256-bit KEKs using AES-256-GCM.
+- KEK rotation by unwrap/re-wrap without changing the protected DEK.
+- Explicit key identifiers and authorization gates.
+- Restricted-policy checks for MFA, hardware-backed/device-attested execution, signed reader software, role membership and revocation freshness.
+
+Not yet implemented in this repository: real external KMS/HSM adapters, deployed device attestation, production audit sink, signing PKI, revocation service, mobile secure-storage adapters, replay-state service, FIPS-validated provider integration or any classified-system accreditation.
+
 ## Restricted policy
 
 The current policy contract requires external KMS, hardware-backed keys, MFA, signed reader software, device attestation, audit logging, bounded offline revocation freshness and a maximum key-age policy. Authorization checks role membership and reader/device state before restricted content is opened.
