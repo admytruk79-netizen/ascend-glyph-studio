@@ -18,3 +18,29 @@ export function openPayload(p:ProtectedPayload,key:Uint8Array):Buffer{
  return Buffer.concat([d.update(unb64(p.ciphertext)),d.final()]);
 }
 export function assertAuthorized(p:ProtectedPayload,allowedKeyIds:ReadonlySet<string>){if(!allowedKeyIds.has(p.keyId))throw new Error("access denied")}
+
+
+export interface RestrictedSecurityPolicy{
+ version:1;
+ classification:"restricted";
+ requireExternalKms:true;
+ requireHardwareBackedKeys:true;
+ requireMfa:true;
+ requireSignedReader:true;
+ requireAuditLog:true;
+ offlineRevocationMaxAgeHours:number;
+ maxKeyAgeDays:number;
+}
+export const RESTRICTED_SECURITY_POLICY:RestrictedSecurityPolicy={
+ version:1,classification:"restricted",requireExternalKms:true,requireHardwareBackedKeys:true,
+ requireMfa:true,requireSignedReader:true,requireAuditLog:true,offlineRevocationMaxAgeHours:24,maxKeyAgeDays:30
+};
+export interface AuthorizationContext{subjectId:string;roles:string[];deviceAttested:boolean;mfa:boolean;readerSigned:boolean;revocationAgeHours:number}
+export function authorizeRestricted(ctx:AuthorizationContext,requiredRole:string,policy=RESTRICTED_SECURITY_POLICY){
+ if(!ctx.roles.includes(requiredRole))throw new Error("required role missing");
+ if(policy.requireMfa&&!ctx.mfa)throw new Error("MFA required");
+ if(policy.requireHardwareBackedKeys&&!ctx.deviceAttested)throw new Error("device attestation required");
+ if(policy.requireSignedReader&&!ctx.readerSigned)throw new Error("signed reader required");
+ if(ctx.revocationAgeHours>policy.offlineRevocationMaxAgeHours)throw new Error("revocation state stale");
+ return true;
+}
