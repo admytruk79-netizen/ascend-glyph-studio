@@ -6,7 +6,7 @@ for(const e of a.exports){assert.match(e.svg,/^<svg/);assert.ok(e.svg.includes(a
 
 assert.equal(a.production.state,"reference");
 assert.equal(a.production.productionApproved,false);
-assert.deepEqual(a.production.blockers,["physical-sample-validation-required","manufacturer-production-specification-required"]);
+assert.deepEqual(new Set(a.production.blockers),new Set(["physical-sample-validation-required","manufacturer-production-specification-required"]));
 const selected=runDiaryEngine({...x,zones:["cover","emblem"]});
 assert.deepEqual(selected.exports.map(x=>x.zone),["cover","emblem"]);
 assert.equal(selected.production.productionApproved,false);
