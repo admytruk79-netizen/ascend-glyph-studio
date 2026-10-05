@@ -5,10 +5,11 @@
 import {createWriteStream} from "node:fs";
 type Source={id:string;endpoint:string;query:string;tradition:string;culturalAccess:"open"|"review"};
 const sources:Source[]=[
- {id:"met-ukrainian",endpoint:"https://collectionapi.metmuseum.org/public/collection/v1/search",query:"Ukrainian textile embroidery",tradition:"Ukrainian",culturalAccess:"open"},
- {id:"met-western",endpoint:"https://collectionapi.metmuseum.org/public/collection/v1/search",query:"American saddle leather",tradition:"American Western",culturalAccess:"open"}
+ {id:"met-ukrainian",endpoint:"https://collectionapi.metmuseum.org/public/collection/v1/search",query:"Ukraine Ukrainian embroidery textile weaving folk art",tradition:"Ukrainian",culturalAccess:"open"},
+ {id:"met-western",endpoint:"https://collectionapi.metmuseum.org/public/collection/v1/search",query:"American West western saddle leatherwork cowboy horse tack",tradition:"American Western",culturalAccess:"open"}
 ];
 const target=Number(process.env.CORPUS_TARGET??250000),out=process.env.CORPUS_OUT??"data/research/corpus.ndjson";
+const mode=process.env.CORPUS_MODE??"broad";
 const checkpointEvery=Number(process.env.CORPUS_CHECKPOINT_EVERY??1000);
 const seen=new Set<string>();
 const sleep=(ms:number)=>new Promise(r=>setTimeout(r,ms));
