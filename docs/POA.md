@@ -79,3 +79,33 @@ Research source → evidence → tradition/context → concept/meaning → form 
 6. Use diary as the first adapter/integration test, not as the engine's scope.
 7. Review universal candidates visually, semantically, culturally and for originality.
 8. Export the first diary production artwork package as proof that the universal engine projects correctly into merchandise.
+
+
+## Current implementation status — 2026-10-05
+### Confirmed working in repository
+- Product-independent `SynthesisIntent` boundary exists; product attachment is explicit.
+- Persisted morphology is loaded into research originality analysis instead of zero feature vectors.
+- Morphology decomposition/analyzer exists for primitive strength, symmetry, relationships, confidence and cultural-risk state.
+- Universal deterministic SVG synthesis core exists with normalized `0 0 1000 1000` coordinates and reproducible recipe/provenance fields.
+- Bulk corpus builder is wired into project scripts with deduplication/checkpoints and a 250,000-object target.
+- High-volume source registry exists for Ukrainian, Western and design collections.
+- Latest corpus-script CI/integrity runs are green: `f3e39512`, `2c8efc27`, `794f2c39`.
+
+### Not complete / do not claim complete
+- The 250,000-object corpus has NOT yet been ingested into Neon.
+- Current verified seed data is not the production-scale research library.
+- Universal synthesis is not yet fully wired through the deployed web UI.
+- Live deployment has not yet been verified to contain the latest engine commits.
+- Cross-corpus statistics/evidence graph, stronger topology/originality analysis, persistence of synthesis runs/candidates/provenance, and interactive analytical UI remain incomplete.
+
+## Execution order from here
+1. Populate the real research corpus at scale from registered public collections; retain raw provenance and deduplicate.
+2. Persist verified source/artifact/form/relation/evidence records into Neon; never count discovery placeholders as evidence.
+3. Run morphology extraction over the corpus and persist feature/topology/relationship observations with confidence.
+4. Build cross-corpus recurrence/diversity/contradiction statistics and evidence-backed grammar.
+5. Refactor remaining product-coupled grammar/candidate/evaluation paths onto universal `SynthesisIntent`.
+6. Generate reproducible universal candidate families and persist recipe, evidence IDs, grammar version and hashes.
+7. Run ablation, originality, cultural and integrity gates; fail closed.
+8. Wire research browser, analyzer, candidate gallery, provenance and live SVG controls into the web application.
+9. Build/test/deploy the web app and verify the public deployment against the exact Git commit.
+10. Only after universal approval, project candidates through diary/apparel/boot adapters.
