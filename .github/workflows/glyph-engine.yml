@@ -1,10 +1,13 @@
 name: glyph-engine-ci
 on:
   push:
-    branches: [main]
-    paths: ['packages/glyph-engine/**','.github/workflows/glyph-engine.yml']
+    branches: [main, ci-integrity-check]
+    paths:
+      - 'packages/glyph-engine/**'
+      - '.github/workflows/glyph-engine.yml'
   pull_request:
-    paths: ['packages/glyph-engine/**']
+    branches: [main]
+  workflow_dispatch:
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -14,7 +17,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm, cache-dependency-path: packages/glyph-engine/package.json }
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: packages/glyph-engine/package-lock.json
       - run: npm install --no-audit --no-fund
       - run: npm run typecheck
       - run: npm test
