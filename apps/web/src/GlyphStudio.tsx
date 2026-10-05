@@ -2,6 +2,8 @@ import React,{useMemo,useState} from "react";
 import {generatePatterns,type PatternMode} from "../../../packages/tesseract-engine/src/pattern-generator";
 import {ASCEND_PALETTES} from "../../../packages/tesseract-engine/src/color-system";
 import {Garment3D} from "./Garment3D";
+import {synthesizeUniversal} from "../../../packages/glyph-engine/src/universal";
+import {DEFAULT_GRAMMAR} from "../../../packages/glyph-engine/src/grammar";
 
 type ProductId="mens-shirt"|"womens-shirt"|"diary";
 type SizeId="XS"|"S"|"M"|"L"|"XL"|"XXL";
@@ -38,6 +40,7 @@ export default function GlyphStudio(){
 
  const patterns=useMemo(()=>generatePatterns({seed:seed+":"+revision,concepts,paletteId,mode,complexity,variations:12,width:960,height:260}),[seed,revision,concepts,paletteId,mode,complexity]);
  const active=patterns[Math.min(selected,Math.max(0,patterns.length-1))];
+ const universal=useMemo(()=>synthesizeUniversal({seed:seed+":"+revision,meanings:concepts,principleIds:["verified-research"],density:complexity<.34?"restrained":complexity>.7?"complex":"balanced",symmetry:"bilateral"},DEFAULT_GRAMMAR),[seed,revision,concepts,complexity]);
  const activeFabric=fabrics.find(x=>x.id===fabric)!;
  const toggleConcept=(c:string)=>setConcepts(xs=>xs.includes(c)?xs.length>1?xs.filter(x=>x!==c):xs:xs.length<6?[...xs,c]:xs);
 
@@ -46,7 +49,7 @@ export default function GlyphStudio(){
 
  return <main className="studioApp">
   <header className="topbar">
-   <div><div className="eyebrow">ASCEND</div><h1>Glyph Studio</h1></div>
+   <div><div className="eyebrow">ASCEND</div><h1>Glyph Studio</h1><small>Universal engine · {universal.id}</small></div>
    <div className="topActions"><span className="liveBadge">LIVE GENERATOR</span><button className="cartBtn" onClick={()=>setCart(v=>!v)}>Cart {cart?"1":"0"}</button></div>
   </header>
 
@@ -69,7 +72,7 @@ export default function GlyphStudio(){
      {product==="diary"?<div className="diary3d" style={{background:activeFabric.hex}}><div className={"diaryPattern "+mode} dangerouslySetInnerHTML={{__html:active?.svg??""}}/><div className="diaryBrand">ASCEND</div></div>:
      <Garment3D svg={active?.svg??""} fabric={activeFabric.hex} mode={mode}/>} 
     </div>
-    <div className="meta"><strong>{active?.lineageId??"No lineage"}</strong><span>{active?("score "+active.score.toFixed(1)+" · novelty "+active.novelty.toFixed(2)):""}</span></div>
+    <div className="meta"><strong>{active?.lineageId??"No lineage"}</strong><span>universal rules {universal.recipe.ruleIds.length} · seed {universal.seed}</span><span>{active?("score "+active.score.toFixed(1)+" · novelty "+active.novelty.toFixed(2)):""}</span></div>
     <div className="selectionStrip"><span>{products.find(p=>p.id===product)?.name}</span><span>{size}</span><span>{activeFabric.name}</span><span>{mode}</span></div>
    </section>
 
