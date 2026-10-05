@@ -1,0 +1,27 @@
+name: corpus-250k-sweep
+on:
+  workflow_dispatch:
+  push:
+    branches: [glyph-studio/3d-semantic-integration]
+    paths:
+      - 'scripts/corpus/build-250k-candidates.mjs'
+      - '.github/workflows/corpus-250k-sweep.yml'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 20}
+      - name: Build 250k deduplicated open-access candidate corpus
+        env: {TARGET: "250000"}
+        run: node scripts/corpus/build-250k-candidates.mjs
+        continue-on-error: true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: corpus-250k-candidates
+          path: |
+            .corpus-out/candidate-250k.jsonl
+            .corpus-out/candidate-250k-stats.json
+          retention-days: 90
