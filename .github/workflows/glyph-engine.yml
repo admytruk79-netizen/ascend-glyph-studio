@@ -1,7 +1,7 @@
 name: glyph-engine-ci
 on:
   push:
-    branches: [main]
+    branches: [main, glyph-engine/diary-approved-package-bridge]
     paths: ['packages/glyph-engine/**','.github/workflows/glyph-engine.yml']
   pull_request:
     paths: ['packages/glyph-engine/**']
