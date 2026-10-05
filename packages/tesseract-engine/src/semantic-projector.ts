@@ -3,22 +3,22 @@ import type {SvgProjection} from "./svg-projector";
 import type {GarmentTrajectory} from "./garment-trajectory";
 import type {GarmentZone} from "./garment";
 import {solveRelationalLayout} from "./relational-layout";
+import {primitiveForForm} from "./ascend-primitives";
 
 const esc=(s:string)=>s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&apos;"}[c]!));
 const f=(x:number)=>Number(x.toFixed(2));
 type Point={x:number;y:number};
 
 function geometry(form:string,p:Point,r:number,id:string):string{
+ const primitive=primitiveForForm(form);
  const x=p.x,y=p.y,k=f(r),a=`data-form="${esc(form)}" data-node="${esc(id)}"`;
+ if(primitive){
+  const scale=f((k*2)/100),tx=f(x-k),ty=f(y-k);
+  const paths=primitive.paths.map((d,i)=>`<path d="${esc(d)}" data-source-path="${i}" vector-effect="non-scaling-stroke"/>`).join("");
+  return `<g ${a} data-primitive="${primitive.id}" data-source-status="${primitive.status}" transform="translate(${tx} ${ty}) scale(${scale})">${paths}</g>`;
+ }
  switch(form){
-  case "seed": return `<path ${a} d="M ${f(x)} ${f(y-k)} C ${f(x+k*.9)} ${f(y-k*.65)} ${f(x+k*.7)} ${f(y+k*.8)} ${f(x)} ${f(y+k)} C ${f(x-k*.7)} ${f(y+k*.8)} ${f(x-k*.9)} ${f(y-k*.65)} ${f(x)} ${f(y-k)} Z"/>`;
-  case "axis": return `<path ${a} d="M ${f(x)} ${f(y-k)} L ${f(x)} ${f(y+k)} M ${f(x-k*.4)} ${f(y)} L ${f(x+k*.4)} ${f(y)}"/>`;
-  case "torus": case "orbit": return `<g ${a}><ellipse cx="${f(x)}" cy="${f(y)}" rx="${k}" ry="${f(k*.58)}"/><path d="M ${f(x-k*.85)} ${f(y)} Q ${f(x)} ${f(y+k*.35)} ${f(x+k*.85)} ${f(y)}"/></g>`;
-  case "bifurcation": case "branch": return `<path ${a} d="M ${f(x)} ${f(y+k)} L ${f(x)} ${f(y-k*.12)} Q ${f(x-k*.12)} ${f(y-k*.48)} ${f(x-k*.85)} ${f(y-k)} M ${f(x)} ${f(y-k*.12)} Q ${f(x+k*.16)} ${f(y-k*.6)} ${f(x+k*.7)} ${f(y-k*.9)}"/>`;
-  case "opposition": return `<path ${a} d="M ${f(x-k)} ${f(y-k*.65)} L ${f(x-k*.22)} ${f(y)} L ${f(x-k)} ${f(y+k*.65)} M ${f(x+k)} ${f(y-k*.65)} L ${f(x+k*.22)} ${f(y)} L ${f(x+k)} ${f(y+k*.65)}"/>`;
-  case "crossing": return `<path ${a} d="M ${f(x-k)} ${f(y-k*.65)} L ${f(x+k)} ${f(y+k*.65)} M ${f(x-k)} ${f(y+k*.65)} L ${f(x-k*.12)} ${f(y+k*.08)} M ${f(x+k*.12)} ${f(y-k*.08)} L ${f(x+k)} ${f(y-k*.65)}"/>`;
   case "enclosure": return `<path ${a} d="M ${f(x-k*.25)} ${f(y-k)} C ${f(x-k*1.3)} ${f(y-k)} ${f(x-k*1.2)} ${f(y+k)} ${f(x)} ${f(y+k)} C ${f(x+k*1.2)} ${f(y+k)} ${f(x+k*1.3)} ${f(y-k)} ${f(x+k*.25)} ${f(y-k)}"/>`;
-  case "void": return `<path ${a} d="M ${f(x-k)} ${f(y)} L ${f(x-k*.3)} ${f(y)} M ${f(x+k*.3)} ${f(y)} L ${f(x+k)} ${f(y)}"/>`;
   case "mutation": return `<path ${a} d="M ${f(x-k)} ${f(y+k*.65)} Q ${f(x-k*.2)} ${f(y-k)} ${f(x+k*.12)} ${f(y)} Q ${f(x+k*.45)} ${f(y+k*.8)} ${f(x+k)} ${f(y-k*.8)}"/>`;
   default: return `<path ${a} d="M ${f(x-k*.5)} ${f(y+k*.6)} L ${f(x)} ${f(y-k*.7)} L ${f(x+k*.5)} ${f(y+k*.6)}"/>`;
  }
