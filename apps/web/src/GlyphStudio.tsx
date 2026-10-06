@@ -7,7 +7,7 @@ import {DEFAULT_GRAMMAR} from "../../../packages/glyph-engine/src/grammar";
 
 type ProductId="mens-shirt"|"womens-shirt"|"diary";
 type SizeId="XS"|"S"|"M"|"L"|"XL"|"XXL";
-type FabricId="natural-linen"|"midnight-linen"|"black-linen";
+type FabricId="natural-linen"|"midnight-linen"|"black-linen"|"saddle-brown"|"cognac-leather"|"dark-brown";
 type MediumId="embroidery"|"print"|"emboss"|"leather-tooling";
 type Step=1|2|3|4|5;
 
@@ -20,7 +20,10 @@ const sizes:SizeId[]=["XS","S","M","L","XL","XXL"];
 const fabrics:{id:FabricId;name:string;hex:string}[]=[
  {id:"natural-linen",name:"Natural Linen",hex:"#ded1ba"},
  {id:"midnight-linen",name:"Midnight Navy",hex:"#0f1b2d"},
- {id:"black-linen",name:"Raven Black",hex:"#111111"}
+ {id:"black-linen",name:"Raven Black",hex:"#111111"},
+ {id:"saddle-brown",name:"Saddle Brown",hex:"#8A5A3A"},
+ {id:"cognac-leather",name:"Cognac Leather",hex:"#9A5B32"},
+ {id:"dark-brown",name:"Dark Brown",hex:"#3B2921"}
 ];
 const conceptOptions=["ancestry","freedom","protection","return","ascent","lineage","courage","transformation","healing","knowledge","spirit","earth","cosmos","choice","journey"];
 const modes:PatternMode[]=["band","field","emblem","sleeve","cuff","collar"];
