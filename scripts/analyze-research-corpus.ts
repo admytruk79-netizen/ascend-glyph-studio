@@ -31,29 +31,54 @@ type Row = { id: string; source: string; image?: string; objectURL?: string; acc
 
 const stats = {
   analyzerVersion: ANALYZER_VERSION, read: 0, analyzed: 0,
-  rejected: {} as Record<string, number>, bySource: {} as Record<string, number>,
+  rejected: {} as Record<string, number>, rejectedBySource: {} as Record<string, number>, bySource: {} as Record<string, number>,
   dominantAxis: {} as Record<string, number>, startedAt: new Date().toISOString(), finishedAt: "", stopReason: "",
 };
 const bump = (m: Record<string, number>, k: string) => { m[k] = (m[k] ?? 0) + 1; };
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+// Image hosts throttle or reset bursts from one client, so cap in-flight downloads per host.
+const PER_HOST = Number(process.env.ANALYSIS_PER_HOST ?? 6);
+const hostSlots = new Map<string, { active: number; waiting: (() => void)[] }>();
+async function withHostSlot<T>(host: string, fn: () => Promise<T>): Promise<T> {
+  let h = hostSlots.get(host);
+  if (!h) hostSlots.set(host, (h = { active: 0, waiting: [] }));
+  if (h.active >= PER_HOST) await new Promise<void>((r) => h!.waiting.push(r));
+  h.active++;
+  try { return await fn(); } finally { h.active--; h.waiting.shift()?.(); }
+}
+
+function headersFor(url: string): Record<string, string> {
+  const h: Record<string, string> = { "user-agent": USER_AGENT, accept: "image/avif,image/webp,image/jpeg,image/png,image/*;q=0.8" };
+  // The Art Institute of Chicago asks API and IIIF clients to identify themselves with this header.
+  if (url.includes("artic.edu")) h["AIC-User-Agent"] = USER_AGENT;
+  return h;
+}
 
 async function download(url: string): Promise<Buffer> {
-  for (let attempt = 0; ; attempt++) {
-    try {
-      const r = await fetch(url, { headers: { "user-agent": USER_AGENT }, signal: AbortSignal.timeout(45_000) });
-      if (!r.ok) {
-        if (attempt < 2 && (r.status === 429 || r.status >= 500)) { await new Promise((s) => setTimeout(s, 3000 * 2 ** attempt)); continue; }
-        throw new Error(`http-${r.status}`);
+  const host = new URL(url).host;
+  return withHostSlot(host, async () => {
+    for (let attempt = 0; ; attempt++) {
+      try {
+        const r = await fetch(url, { headers: headersFor(url), signal: AbortSignal.timeout(45_000) });
+        if (!r.ok) {
+          if (attempt < 3 && (r.status === 429 || r.status >= 500)) { await sleep(3000 * 2 ** attempt); continue; }
+          throw new Error(`http-${r.status}`);
+        }
+        const len = Number(r.headers.get("content-length") ?? 0);
+        if (len > MAX_BYTES) throw new Error("too-large");
+        const buf = Buffer.from(await r.arrayBuffer());
+        if (buf.length > MAX_BYTES) throw new Error("too-large");
+        return buf;
+      } catch (e) {
+        const err = e as Error & { cause?: { code?: string } };
+        if (err.message.startsWith("http-") || err.message === "too-large") throw err;
+        // Network-level failures (resets, DNS, timeouts) get a backoff and retry, then report their cause code.
+        if (attempt < 3) { await sleep(2000 * 2 ** attempt); continue; }
+        throw new Error(`net-${err.cause?.code ?? err.name ?? "error"}`);
       }
-      const len = Number(r.headers.get("content-length") ?? 0);
-      if (len > MAX_BYTES) throw new Error("too-large");
-      const buf = Buffer.from(await r.arrayBuffer());
-      if (buf.length > MAX_BYTES) throw new Error("too-large");
-      return buf;
-    } catch (e) {
-      if (attempt < 2 && (e as Error).name === "TimeoutError") continue;
-      throw e;
     }
-  }
+  });
 }
 
 async function analyze(row: Row, dupes: NearDuplicateIndex) {
@@ -97,7 +122,10 @@ async function main() {
       }) + "\n");
       stats.analyzed++; bump(stats.bySource, row.source); bump(stats.dominantAxis, a.features.dominantAxis);
       if (stats.analyzed % 1000 === 0) console.log(JSON.stringify({ checkpoint: stats.analyzed, read: stats.read }));
-    }).catch((e) => bump(stats.rejected, String((e as Error).message ?? e).slice(0, 40)))
+    }).catch((e) => {
+      const reason = String((e as Error).message ?? e).slice(0, 40);
+      bump(stats.rejected, reason); bump(stats.rejectedBySource, `${row.source}:${reason}`);
+    })
       .finally(() => inflight.delete(p));
     inflight.add(p);
     if (inflight.size >= concurrency) await Promise.race(inflight);

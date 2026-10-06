@@ -103,7 +103,7 @@ async function main() {
   await Promise.all(adapters.map(async (a) => {
     stats.bySource[a.source] = { enumerated: 0, accepted: 0, review: 0, rejected: 0, errors: 0 };
     const queue: Query[] = [...QUERIES];
-    const perQuery = Math.max(100, Math.ceil((sourceCap / QUERIES.length) * 3));
+    const perQuery = Math.max(250, Math.ceil((sourceCap / QUERIES.length) * 8));
     const worker = async () => {
       for (let q = queue.shift(); q && !stop; q = queue.shift()) {
         let fromQuery = 0;
@@ -130,7 +130,9 @@ async function main() {
   const unique = stats.enumerated - stats.duplicates;
   writeFileSync(summaryOut, JSON.stringify({ ...stats, unique, out, reviewOut }, null, 2));
   console.log(JSON.stringify({ written: stats.accepted, target, out, unique, stopReason: stats.stopReason }));
-  console.log("SUMMARY " + JSON.stringify(stats));
+  const { culture, ...compact } = stats;
+  const topCultures = Object.entries(culture).sort((a, b) => b[1] - a[1]).slice(0, 25);
+  console.log("SUMMARY " + JSON.stringify({ ...compact, distinctCultures: Object.keys(culture).length, topCultures }));
 }
 
 main().catch((e) => { console.error(e); process.exitCode = 1; });

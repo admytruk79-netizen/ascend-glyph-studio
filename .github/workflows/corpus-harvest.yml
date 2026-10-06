@@ -48,7 +48,7 @@ jobs:
       - name: Summary
         if: always()
         run: |
-          test -f out/corpus-summary.json && cat out/corpus-summary.json || echo "no summary"
+          test -f out/corpus-summary.json && jq 'del(.culture)' out/corpus-summary.json || echo "no summary"
           wc -l out/*.ndjson || true
           gzip -kf out/corpus.ndjson out/corpus-review.ndjson || true
       - uses: actions/upload-artifact@v4
