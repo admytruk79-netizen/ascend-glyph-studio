@@ -24,7 +24,7 @@ describe("pilot production provenance",()=>{
  it("accepts a complete sourced block and promotes only its supplied geometry",()=>{
   const size=PILOT_SIZE_PROFILES[1]!;
   const reference=buildPilotShirtPattern(size);
-  const pieces=Object.fromEntries(reference.pieces.map(p=>[p.kind,{kind:p.kind,outline:p.outline.map(q=>({...q})),grainline:{from:{...p.grainline.from},to:{...p.grainline.to}}}])) as PilotBlockSpec["pieces"];
+  const pieces=Object.fromEntries(reference.pieces.map(p=>[p.kind,{kind:p.kind,outline:p.outline.map(q=>({...q})),grainline:{from:{...p.grainline.from},to:{...p.grainline.to}},designZones:p.designZones.map(z=>({...z,polygon:z.polygon.map(q=>({...q}))}))}])) as PilotBlockSpec["pieces"];
   const block:PilotBlockSpec={id:"test-tech-pack",revision:"1",sourceId:"test-fixture",sourceState:"pattern-specified",pieces};
   const pattern=buildPilotShirtPattern(size,block);
   expect(validatePattern(pattern)).toEqual([]);
