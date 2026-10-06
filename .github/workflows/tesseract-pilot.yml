@@ -16,6 +16,8 @@ jobs:
       - run: npm install
       - name: Typecheck Tesseract
         run: npm run typecheck --workspace=@ascend/tesseract-engine
+      - name: Test Tesseract
+        run: npm test --workspace=@ascend/tesseract-engine
       - name: Build Tesseract
         run: npm run build --workspace=@ascend/tesseract-engine
       - name: Run pilot production
