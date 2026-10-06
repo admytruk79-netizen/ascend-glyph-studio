@@ -49,3 +49,22 @@ test("Ukrainian-language descriptions count as structurally relevant", () => {
   assert.equal(g.accepted, true);
   if (g.accepted) assert.ok(g.relevance.includes("ukrainian"));
 });
+
+test("Belarusian, Lithuanian and other European catalogue text counts as pattern-bearing", async () => {
+  const { relevanceOf } = await import("./gates.ts");
+  const t = (title: string) => relevanceOf({ ...base, title, material: undefined, culture: undefined });
+  assert.ok(t("Ручнік з вышыўкай").includes("belarusian"));
+  assert.ok(t("Rinktinė juosta").includes("lithuanian"));
+  assert.ok(t("Ukrainische Stickerei auf Leinen").includes("european"));
+});
+
+test("Europeana rights statements: PD/CC0/CC BY open, BY-SA and NC go to review", async () => {
+  const { europeanaRights } = await import("./sources.ts");
+  assert.equal(europeanaRights("http://creativecommons.org/publicdomain/mark/1.0/"), "open");
+  assert.equal(europeanaRights("http://creativecommons.org/publicdomain/zero/1.0/"), "open");
+  assert.equal(europeanaRights("http://creativecommons.org/licenses/by/4.0/"), "open");
+  assert.equal(europeanaRights("http://creativecommons.org/licenses/by-sa/4.0/"), "review");
+  assert.equal(europeanaRights("http://creativecommons.org/licenses/by-nc/4.0/"), "review");
+  assert.equal(europeanaRights("http://rightsstatements.org/vocab/InC/1.0/"), "review");
+  assert.equal(europeanaRights(undefined), "unknown");
+});

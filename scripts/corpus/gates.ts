@@ -59,6 +59,10 @@ const RELEVANCE: Record<string, RegExp> = {
   bead: /\b(bead\w*|quillwork)\b/i,
   // Ukrainian-language catalogue and Commons descriptions.
   ukrainian: /(вишив|вишиван|рушник|сорочк|килим|плахт|запаск|крайк|орнамент|візерун|мережк|ткан|писанк|кераміч)/i,
+  // Belarusian, Lithuanian, Polish and German catalogue text (Europeana).
+  belarusian: /(вышыў|ручнік|кашул|тканін|узор|арнамент|дыван|паяс)/i,
+  lithuanian: /\b(juost\w*|audin\w*|audim\w*|rinktin\w*|siuvin\w*|rašt\w*|tautin\w* kostium\w*|rankšluost\w*)/i,
+  european: /\b(haft\w*|tkanin\w*|stickerei\w*|gewebe|tracht\w*|webarbeit|broderie|tissu)\b/i,
 };
 
 // Nation-specific Indigenous North American provenance always goes to human review:

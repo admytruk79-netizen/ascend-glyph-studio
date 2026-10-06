@@ -46,6 +46,7 @@ jobs:
       CORPUS_REVIEW_OUT: out/corpus-review.ndjson
       CORPUS_SUMMARY_OUT: out/corpus-summary.json
       SMITHSONIAN_API_KEY: ${{ secrets.SMITHSONIAN_API_KEY }}
+      EUROPEANA_API_KEY: ${{ secrets.EUROPEANA_API_KEY }}
       DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
     steps:
       - uses: actions/checkout@v4

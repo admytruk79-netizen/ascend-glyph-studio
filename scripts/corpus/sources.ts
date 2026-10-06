@@ -252,7 +252,59 @@ const commons: Adapter = {
   },
 };
 
-export const ADAPTERS: Adapter[] = [met, aic, cleveland, vam, smithsonian, commons];
+// Europeana: the EU's aggregated museum network. Holds Ukrainian, Belarusian and
+// Lithuanian textiles from many European museums. Needs a free API key
+// (EUROPEANA_API_KEY, from pro.europeana.eu). Rights come as rights-statement URLs.
+export function europeanaRights(url: string | undefined): RightsStatus {
+  const u = (url ?? "").toLowerCase();
+  if (!u) return "unknown";
+  if (/creativecommons\.org\/publicdomain\/(mark|zero)/.test(u)) return "open";
+  if (/creativecommons\.org\/licenses\/by-sa\//.test(u)) return process.env.COMMONS_ACCEPT_SHAREALIKE === "1" ? "open" : "review";
+  if (/creativecommons\.org\/licenses\/by\//.test(u)) return "open";
+  return "review"; // NC, ND, in-copyright and rightsstatements.org terms
+}
+const first = (v: unknown) => (Array.isArray(v) ? str(v[0]) : str(v));
+const europeana: Adapter = {
+  institution: "Europeana",
+  source: "europeana",
+  enabled: () => Boolean(process.env.EUROPEANA_API_KEY),
+  queries: [
+    ...["Ukrainian embroidery", "вишивка", "рушник", "сорочка", "вишиванка", "Ukrainian folk costume", "Hutsul", "Ruthenian embroidery",
+      "Ukrainian textile", "Ukrainian kilim", "плахта", "Bukovina embroidery", "Galicia folk costume", "Lemko", "Boyko", "крайка", "пояс тканий",
+      "ukraińska haftowana", "ukrainischer Stickerei"].map((q) => ({ q, tradition: "Ukrainian" })),
+    ...["Belarusian embroidery", "вышыўка", "ручнік", "Belarus textile", "Slutsk sash", "białoruski haft"].map((q) => ({ q, tradition: "Belarusian" })),
+    ...["juosta", "Lithuanian sash", "lietuvių tautinis kostiumas", "Lithuanian textile", "rinktinė juosta", "audinys"].map((q) => ({ q, tradition: "Lithuanian" })),
+    ...["blackwork embroidery", "crewelwork", "English sampler", "Jacobean embroidery"].map((q) => ({ q, tradition: "English (16th–19th c.)" })),
+  ],
+  async *search({ q, tradition }, fetchJson) {
+    const key = process.env.EUROPEANA_API_KEY!;
+    let cursor = "*";
+    for (let page = 0; page < 100 && cursor; page++) {
+      const params = new URLSearchParams({ wskey: key, query: q, qf: "TYPE:IMAGE", media: "true", rows: "100", profile: "rich", cursor });
+      let res: any;
+      try { res = await fetchJson(`https://api.europeana.eu/record/v2/search.json?${params}`); } catch { return; }
+      const items: any[] = res?.items ?? [];
+      if (!items.length) return;
+      for (const x of items) {
+        const rightsUrl = first(x.rights);
+        yield {
+          id: `europeana-${String(x.id).replace(/^\//, "").replace(/\//g, "-")}`, institution: first(x.dataProvider) ?? europeana.institution,
+          source: europeana.source, query: q, tradition,
+          title: first(x.title), creator: first(x.dcCreator), date: first(x.year),
+          region: join(x.country), culture: join(x.edmPlaceLabel) ?? join(x.country),
+          objectType: join(x.dcTypeLangAware?.def ?? x.dcType), material: join(x.dcFormat),
+          objectURL: first(x.edmIsShownAt) ?? str(x.guid), image: first(x.edmIsShownBy) ?? first(x.edmPreview),
+          rights: rightsUrl ?? "No rights statement", rightsStatus: europeanaRights(rightsUrl),
+          accession: `europeana:${x.id}`, reliability: 0.85,
+          description: str([first(x.dcDescription), first(x.provider)].filter(Boolean).join(" ")),
+        };
+      }
+      cursor = res?.nextCursor ?? "";
+    }
+  },
+};
+
+export const ADAPTERS: Adapter[] = [met, aic, cleveland, vam, smithsonian, commons, europeana];
 
 const UKRAINIAN = [
   "Ukrainian embroidery", "Ukrainian textile", "Ukrainian costume", "rushnyk", "Ukrainian kilim", "Hutsul", "Ukrainian folk art", "Ukrainian ceramics",
@@ -264,6 +316,7 @@ const UKRAINIAN = [
   "вишивка", "вишиванка", "рушник", "сорочка", "килим", "орнамент",
 ];
 const BELARUSIAN = ["Belarusian embroidery", "Belarusian textile", "Belarusian towel", "Belarus weaving", "Slutsk sash", "Byelorussian", "White Russian embroidery", "Belarusian costume"];
+const LITHUANIAN = ["Lithuanian sash", "Lithuanian textile", "Lithuanian costume", "Lithuanian weaving", "juosta", "Baltic sash"];
 const ENGLISH = [
   "English embroidery", "blackwork", "crewelwork", "Jacobean embroidery", "English sampler", "needlework sampler 17th century",
   "Elizabethan embroidery", "stumpwork", "Berlin woolwork", "Spitalfields silk", "English needlework", "embroidered coif", "English quilt",
@@ -293,6 +346,7 @@ const GLOBAL = [
 export const QUERIES: Query[] = [
   ...UKRAINIAN.map((q) => ({ q, tradition: "Ukrainian" })),
   ...BELARUSIAN.map((q) => ({ q, tradition: "Belarusian" })),
+  ...LITHUANIAN.map((q) => ({ q, tradition: "Lithuanian" })),
   ...ENGLISH.map((q) => ({ q, tradition: "English (16th–19th c.)" })),
   ...WESTERN.map((q) => ({ q, tradition: "Western / cowboy material culture" })),
   ...GLOBAL.map((q) => ({ q, tradition: "Global" })),
