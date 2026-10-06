@@ -47,6 +47,9 @@ jobs:
       CORPUS_SUMMARY_OUT: out/corpus-summary.json
       SMITHSONIAN_API_KEY: ${{ secrets.SMITHSONIAN_API_KEY }}
       EUROPEANA_API_KEY: ${{ secrets.EUROPEANA_API_KEY }}
+      # Owner decision 2026-10-06: CC BY-SA images are accepted for structural measurement only
+      # (no image is stored or republished; source and licence are kept in lineage).
+      COMMONS_ACCEPT_SHAREALIKE: "1"
       DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
     steps:
       - uses: actions/checkout@v4

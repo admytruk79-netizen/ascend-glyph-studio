@@ -54,3 +54,12 @@ These are read by people. Facts from them go into `data/semantics/motif-semantic
 | Yu. Melnychuk, "Семантика українських вишитих рушників", *Народне мистецтво* 3–4, 2004 | Towel semantics | Journal |
 | Ye. Prychepii, interview "Подільський рушник подібний до мандали" | Cosmological reading of Podillia towels (scholarly-interpretive; Dmytruk treats it as myth-making) | [honchar.org.ua](http://honchar.org.ua/p/podilskyj-rushnyk-podibnyj-do-mandaly-evhen-prychepij/) |
 | *Українська вишивка: хрестоматія* (UDPU) | Collected readings | [UDPU PDF](https://dspace.udpu.edu.ua/bitstream/123456789/16475/1/Ukrainska_vyshyvka_Khrestomatiia.pdf) |
+
+## Licence decision: share-alike images (2026-10-06)
+
+The owner decided that **CC BY-SA** images (mainly Wikimedia Commons) are accepted into the research corpus. The conditions:
+- Tesseract stores only structural measurements and a link to the source, never the image.
+- No design copies any single image.
+- Source, author and licence stay in each design's lineage.
+
+Non-commercial (NC) and no-derivatives (ND) licences still go to review. Set by `COMMONS_ACCEPT_SHAREALIKE=1` in the corpus workflow.

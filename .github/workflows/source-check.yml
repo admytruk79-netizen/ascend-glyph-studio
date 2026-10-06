@@ -24,6 +24,7 @@ jobs:
     timeout-minutes: 20
     env:
       TRY_SOURCES: ${{ inputs.sources || 'loc,ia,finna,commons' }}
+      COMMONS_ACCEPT_SHAREALIKE: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
