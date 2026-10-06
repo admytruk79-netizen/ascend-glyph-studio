@@ -64,6 +64,8 @@ ASCEND products are limited to forms that are **easy to embroider or print**:
 | **Diaries and paper goods**: diaries, notebooks, journals | Print, foil, embossing/debossing on covers | Cover field, spine band, corner mark, endpapers |
 | **Boots**: Western boots | Shaft stitching, leather tooling, inlay/overlay | Shaft panels, collar band, toe and vamp stitching |
 
+This scope decision (2026-10-06) narrows the wider product list in the project description, and it takes precedence for the current build.
+
 **Out of scope:** ceramics, metalwork, architecture and other fabrication. The language can extend there later, but the build, the validation rules and the manufacturing partners serve these three lines only. The first product stays the **ASCEND linen shirt**.
 
 ## Manufacturing and production
