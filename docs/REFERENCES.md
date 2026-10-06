@@ -24,5 +24,5 @@ These sites are studied as **product and domain references**. Their content is n
 ## krovets.ua: online museum of traditional Ukrainian art
 
 - **Site:** https://krovets.ua/
-- **Status:** under review. Its robots.txt allows public pages and blocks its data interface (`/api/`). Its terms of use are being read via the probe before any collection decision.
-- No content is collected unless its terms allow automated collection and reuse.
+- **Status: excluded from collection.** Its terms of use (§2.12) grant site content for **personal non-commercial use only**. They also forbid using the exhibits' designs to make items for sale or for mass production. Its robots.txt also blocks the data interface (`/api/`).
+- **How we use it:** as a human reference for browsing regional Ukrainian material, for example while forming the regional taxonomy. No images, designs or data are harvested, traced or used as Tesseract input.

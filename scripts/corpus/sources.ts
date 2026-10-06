@@ -203,7 +203,10 @@ const commons: Adapter = {
   source: "commons",
   enabled: () => true,
   queries: [
-    "Embroidery of Ukraine", "Traditional Ukrainian embroidery", "Ukrainian embroidery by region", "Ukrainian embroidery by date",
+    "Embroidery of Ukraine", "Traditional Ukrainian embroidery", "Ukrainian embroidery by region",
+    "Rushnyks in Ukraine by region", "Embroidery of Northern Bukovina", "Embroidery of Chernihiv Oblast", "Embroidery of Lviv Oblast",
+    "Embroidery of Podolia", "Embroidery of Pokuttya", "Embroidery of Polissya", "Embroidery of Poltavshchyna",
+    "Embroidery of Ternopil Oblast", "Embroidery of Volhynia", "Embroidery of Zakarpattia", "Ukrainian embroidery by date",
     "Ukrainian rushnyk", "Sorochka (Ukraine)", "Nyz'", "Cross-stitching in Ukraine", "Pillows of Ukraine", "Vyshyvanka in Ukraine",
     "Ukrainian embroidery", "Vyshyvanka", "Rushnyky",
     "Ukrainian folk costume", "Folk costumes of Ukraine", "Hutsul embroidery", "Hutsul costume", "Boyko costume", "Lemko costume",

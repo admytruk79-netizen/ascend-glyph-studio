@@ -25,17 +25,42 @@ const deadline = Date.now() + Number(process.env.CORPUS_MAX_MINUTES ?? 330) * 60
 const checkpointEvery = Number(process.env.CORPUS_CHECKPOINT_EVERY ?? 1000);
 const sourceList = (process.env.CORPUS_SOURCES ?? "").split(",").map((s) => s.trim()).filter(Boolean);
 const only = sourceList.length ? sourceList : undefined;
-const WORKERS: Record<string, number> = { met: 6, aic: 2, cma: 2, vam: 2, si: 2, commons: 2 };
+const WORKERS: Record<string, number> = { met: 2, aic: 2, cma: 2, vam: 2, si: 2, commons: 1 };
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+// Minimum spacing between requests to the same host. The Met sits behind bot
+// protection that answers bursts with HTTP 403 pages; Commons answers with 429.
+const PACE_MS: Record<string, number> = {
+  "collectionapi.metmuseum.org": 400, "commons.wikimedia.org": 300, "api.vam.ac.uk": 100,
+};
+const nextSlot = new Map<string, number>();
+async function pace(host: string) {
+  const gap = PACE_MS[host] ?? 0;
+  if (!gap) return;
+  const now = Date.now(), at = Math.max(now, nextSlot.get(host) ?? 0);
+  nextSlot.set(host, at + gap);
+  if (at > now) await sleep(at - now);
+}
+
 export const fetchJson: FetchJson = async (url, headers = {}) => {
+  const host = new URL(url).host;
   for (let attempt = 0; ; attempt++) {
     try {
+      await pace(host);
       const r = await fetch(url, { headers: { "user-agent": USER_AGENT, accept: "application/json", ...headers }, signal: AbortSignal.timeout(30_000) });
       if (r.ok) return r.json();
       if (r.status === 404) return null;
-      if (attempt < 3 && (r.status === 429 || r.status >= 500)) { await sleep(2000 * 2 ** attempt); continue; }
+      // Rate limiting: 429, 5xx, or a bot-protection 403 page. Honour Retry-After, else back off hard.
+      const throttled = r.status === 429 || r.status >= 500 || (r.status === 403 && (r.headers.get("content-type") ?? "").includes("html"));
+      if (attempt < 4 && throttled) {
+        const retryAfter = Number(r.headers.get("retry-after"));
+        const wait = Number.isFinite(retryAfter) && retryAfter > 0 ? Math.min(retryAfter, 120) * 1000 : 5000 * 2 ** attempt;
+        nextSlot.set(host, Date.now() + wait);
+        await r.body?.cancel().catch(() => {});
+        await sleep(wait);
+        continue;
+      }
       // Include the start of the body: retired or moved APIs usually say where they went.
       const body = (await r.text().catch(() => "")).replace(/\s+/g, " ").slice(0, 160);
       throw new Error(`${r.status} ${url} ${body}`);

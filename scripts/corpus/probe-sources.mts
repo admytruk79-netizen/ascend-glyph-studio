@@ -8,11 +8,9 @@ import { USER_AGENT } from "./sources.ts";
 const URLS = [
   // Reference only (product benchmark): read access rules and terms, never harvested.
   "https://vytvory.ua/robots.txt",
-  "https://krovets.ua/en/terms-of-use",
   "https://kyiv.ua.museum-digital.org/json/object/12655",
   "https://kyiv.ua.museum-digital.org/json/objects?s=" + encodeURIComponent("вишивка") + "&startwert=24",
   "https://collectionapi.metmuseum.org/public/collection/v1.1/search?hasImages=true&q=embroidery&offset=0&limit=5",
-  "https://krovets.ua/sitemap.xml",
   "https://kyiv.ua.museum-digital.org/json/objects?s=" + encodeURIComponent("вишивка"),
   "https://ua.museum-digital.org/",
   "https://honchar.org.ua/robots.txt",
@@ -24,6 +22,14 @@ for (const url of URLS) {
   try {
     const r = await fetch(url, { headers: { "user-agent": USER_AGENT }, redirect: "follow", signal: AbortSignal.timeout(30_000) });
     let text = (await r.text()).replace(/\s+/g, " ");
+    // museum-digital object detail: show the field names and image/licence records, not the description.
+    if (url.includes("/json/object/")) {
+      try {
+        const o = JSON.parse(text);
+        const imgs = Object.entries(o).filter(([k]) => /image|licen|right/i.test(k));
+        text = `keys=${Object.keys(o).join(",")} :: ${JSON.stringify(Object.fromEntries(imgs)).slice(0, 2500)}`;
+      } catch { /* print raw */ }
+    }
     const html = (r.headers.get("content-type") ?? "").includes("html");
     // For HTML pages print readable text (terms, descriptions) rather than markup.
     if (html) text = text.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, " ").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
