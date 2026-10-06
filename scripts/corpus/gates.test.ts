@@ -63,7 +63,12 @@ test("Europeana rights statements: PD/CC0/CC BY open, BY-SA and NC go to review"
   assert.equal(europeanaRights("http://creativecommons.org/publicdomain/mark/1.0/"), "open");
   assert.equal(europeanaRights("http://creativecommons.org/publicdomain/zero/1.0/"), "open");
   assert.equal(europeanaRights("http://creativecommons.org/licenses/by/4.0/"), "open");
+  const saved = process.env.COMMONS_ACCEPT_SHAREALIKE;
+  delete process.env.COMMONS_ACCEPT_SHAREALIKE;
   assert.equal(europeanaRights("http://creativecommons.org/licenses/by-sa/4.0/"), "review");
+  process.env.COMMONS_ACCEPT_SHAREALIKE = "1";
+  assert.equal(europeanaRights("http://creativecommons.org/licenses/by-sa/4.0/"), "open");
+  if (saved === undefined) delete process.env.COMMONS_ACCEPT_SHAREALIKE; else process.env.COMMONS_ACCEPT_SHAREALIKE = saved;
   assert.equal(europeanaRights("http://creativecommons.org/licenses/by-nc/4.0/"), "review");
   assert.equal(europeanaRights("http://rightsstatements.org/vocab/InC/1.0/"), "review");
   assert.equal(europeanaRights(undefined), "unknown");

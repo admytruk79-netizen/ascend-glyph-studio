@@ -66,7 +66,13 @@ test("Commons licences: PD, CC0 and CC BY are open; share-alike and NC go to rev
   assert.equal(commonsRights("Public domain"), "open");
   assert.equal(commonsRights("CC0"), "open");
   assert.equal(commonsRights("CC BY 4.0"), "open");
+  const saved = process.env.COMMONS_ACCEPT_SHAREALIKE;
+  delete process.env.COMMONS_ACCEPT_SHAREALIKE;
   assert.equal(commonsRights("CC BY-SA 4.0"), "review");
+  process.env.COMMONS_ACCEPT_SHAREALIKE = "1";
+  assert.equal(commonsRights("CC BY-SA 4.0"), "open");
+  assert.equal(commonsRights("CC BY-NC-SA 4.0"), "review"); // non-commercial stays in review either way
+  if (saved === undefined) delete process.env.COMMONS_ACCEPT_SHAREALIKE; else process.env.COMMONS_ACCEPT_SHAREALIKE = saved;
   assert.equal(commonsRights("CC BY-NC 2.0"), "review");
   assert.equal(commonsRights(undefined), "unknown");
 });
