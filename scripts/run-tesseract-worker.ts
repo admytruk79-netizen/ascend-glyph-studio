@@ -36,19 +36,36 @@ async function loadCorpusSignals(seed:string){
  }
  return [...m.entries()].sort((a,b)=>b[1].score-a[1].score).slice(0,96).map(([id,v])=>({id,weight:Math.min(1,.15+Math.log1p(v.score)/8),sourceIds:v.ids}));
 }
+async function loadVisualCorpus(seed:string){
+ const q=await pool.query(`select a.id,a.source_key,a.tradition,a.kind,a.features,a.deconstruction,o.cultural_access,o.reliability
+ from research_corpus_analysis a join research_corpus_object o on o.id=a.id
+ where o.cultural_access in ('open','structure-only') and a.features <> '{}'::jsonb
+ order by md5(a.id || $1)`,[seed]);
+ return q.rows.map((r:any)=>{const f=r.features||{},d=r.deconstruction||{},dirs:string[]=[];
+  if(f.dominantAxis==="horizontal")dirs.push("horizontal"); else if(f.dominantAxis==="vertical")dirs.push("vertical"); else dirs.push("field");
+  if(Number(f.radiality||0)>.48)dirs.push("radial"); if(r.kind==="frieze"||r.kind==="band")dirs.push("wrap");
+  const ops:string[]=[]; if(Math.max(Number(f.repetitionX||0),Number(f.repetitionY||0))>.45)ops.push("repeat");
+  if(Math.abs(Number(f.mirrorX||0)-Number(f.mirrorY||0))>.12||Number(f.densityVariation||0)>.55)ops.push("interrupt");
+  if(Number(f.radiality||0)>.5)ops.push("branch");
+  const scale=Array.isArray(f.scaleHierarchy)?f.scaleHierarchy.length:1;
+  return {id:r.id,sourceRef:r.source_key,class:"real-historical" as const,evidenceTier:Number(r.reliability||0)>=.85?"A" as const:"B" as const,verifiedReal:true,trainingUse:"composition" as const,
+   features:{symmetry:(Number(f.mirrorX||.5)+Number(f.mirrorY||.5)+Number(f.rotation180||.5))/3,density:Number(f.edgeDensity||.5),voidRatio:Number(f.voidRatio||.5),scaleLevels:scale,dominantDirection:dirs,operations:ops},notes:[r.kind||"unknown",r.tradition||"unknown"],provenance:r.id};
+ });
+}
 async function execute(run:any){
  const intent=(run.intent??{}) as Intent;
  const concepts=(intent.concepts??[]).sort((a,b)=>b.weight-a.weight).map(x=>x.id);
  const mode=(intent.mode??(intent.zoneId?.includes("sleeve")?"sleeve":"band")) as PatternMode;
  const corpusSignals=await loadCorpusSignals(run.seed);
- const patterns=generatePatterns({seed:run.seed,concepts,paletteId:intent.paletteId,mode,complexity:intent.complexity??.72,variations:run.batch_size??12,width:960,height:260,population:run.population,generations:run.generations,corpusSignals});
+ const visualCorpus=await loadVisualCorpus(run.seed);
+ const patterns=generatePatterns({seed:run.seed,concepts,paletteId:intent.paletteId,mode,complexity:intent.complexity??.72,variations:run.batch_size??12,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus});
  const c=await pool.connect();
  try{
   await c.query("begin");
   await c.query("delete from synthesis_candidate where run_id=$1",[run.id]);
   for(let i=0;i<patterns.length;i++){
    const p=patterns[i]!;
-   const state={patternId:p.id,lineageId:p.lineageId,svg:p.svg,objectives:p.objectives,mode,concepts,corpusSignals,corpusObjectCount:28265};
+   const state={patternId:p.id,lineageId:p.lineageId,svg:p.svg,objectives:p.objectives,mode,concepts,corpusSignals,visualCorpusCount:visualCorpus.length,corpusObjectCount:28265};
    const complexity={target:intent.complexity??.72,novelty:p.novelty};
    await c.query(`insert into synthesis_candidate(id,run_id,ordinal,state,complexity,score,disposition)
     values(gen_random_uuid(),$1,$2,$3::jsonb,$4::jsonb,$5,'candidate')`,[run.id,i,JSON.stringify(state),JSON.stringify(complexity),p.score]);
