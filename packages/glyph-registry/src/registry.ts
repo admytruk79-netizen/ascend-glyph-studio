@@ -12,7 +12,7 @@ export const glyphRegistry:GlyphRecord[]=Object.entries(GLYPH_COUNTS).flatMap(([
  return {id,family:family as GlyphFamily,sourceIndex:i+1,sourceVersion:1,
   displayName:family==="fire"?FIRE_NAMES[i]:null,immutable:true,
   sourceRasterKey:`glyphs/${family}/${id}/source/v1.png`,
-  vectorAssetKey:`glyphs/${family}/${id}/vector/v1.svg`,
+  vectorAssetKey:`glyphs/${family}/${id}/v1.svg`,
   status:(verified?"canonical-digital":"source-raster-approved") as GlyphStatus,
   vectorStatus:(verified?"geometry-verified":"needs-review") as "geometry-verified"|"needs-review"};
 }));
