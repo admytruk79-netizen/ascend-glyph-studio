@@ -175,3 +175,9 @@ test("gate: a seed layered on a petal is an overlap, a separate 0.4 mm neighbour
   assert.equal(minGap([petal, seed]).pass, true);
   assert.equal(minGap([petal, seed, { kind: "fill", id: "near", color: "#0a0", polygon: sq(12.4, 0, 6) }]).pass, false);
 });
+
+test("tatami: the turn between rows of very different width is split, never a long stitch", () => {
+  // a notched shape (like a heart's top): row ends jump sideways across the notch
+  const poly = [{ x: 0, y: 0 }, { x: 14, y: 0 }, { x: 14, y: 6 }, { x: 2, y: 6 }, { x: 2, y: 8 }, { x: 14, y: 8 }, { x: 14, y: 20 }, { x: 0, y: 20 }];
+  for (const ang of [0, 30, 45, 90]) for (const run of tatamiFill(poly, { angle: ang, rowSpacing: 0.45, stitchLength: 3.5, underlay: false })) for (let i = 1; i < run.length; i++) assert.ok(dist(run[i - 1]!, run[i]!) <= 3.5 + 0.2, `angle ${ang}: stitch ${dist(run[i - 1]!, run[i]!).toFixed(2)} mm`);
+});

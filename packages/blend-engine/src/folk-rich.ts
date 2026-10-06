@@ -196,14 +196,14 @@ export class Kit {
 
   /** Kalyna «калина» berry cluster: a rounded bunch of separate berries. */
   kalyna(cx: number, cy: number, r: number, color: string) {
-    const step = 2 * r + 0.95;
+    const step = 2 * r + 1.15;
     this.disc(color, cx, cy, r);
     for (let k = 0; k < 6; k++) { const a = (k * Math.PI) / 3 + Math.PI / 6; this.disc(color, cx + step * Math.cos(a), cy + step * Math.sin(a), r); }
   }
 
   /** Grape «виноград» cluster: rows of berries tapering downward. */
   grapes(cx: number, yTop: number, r: number, color: string, rows = [4, 3, 2, 1]) {
-    const step = 2 * r + 0.95;
+    const step = 2 * r + 1.15;
     rows.forEach((n, i) => { for (let j = 0; j < n; j++) this.disc(color, cx + (j - (n - 1) / 2) * step, yTop + i * step * 0.87, r, "grape"); });
   }
 
@@ -246,11 +246,12 @@ export class Kit {
       // tier 2: branch to a small rose, kalyna hanging under it
       const y2 = yBase - h * 0.5, e2 = P(cx + s * h * 0.17, y2 - h * 0.1);
       this.satin("branch", c.trunk, this.curve([P(cx, y2), P(cx + s * h * 0.12, y2 - h * 0.01), e2], 12), 1.2);
-      this.rose(e2.x, e2.y, Math.max(3.6, h * 0.08), c.rose);
-      this.kalyna(cx + s * h * 0.115, y2 + h * 0.075, Math.max(1.05, h * 0.024), c.berry);
+      // a tall tree carries a rose with kalyna hanging under it; a small one (under 40 mm) has room for the kalyna only
+      if (h >= 40) { this.rose(e2.x, e2.y, Math.max(3.6, h * 0.08), c.rose); this.kalyna(cx + s * h * 0.115, y2 + h * 0.075, Math.max(1.05, h * 0.024), c.berry); }
+      else this.kalyna(e2.x + s * 1.2, e2.y + 1.6, 1.05, c.berry);
       // tier 3: buds and leaves under the crown
       this.leaf(c.leaf, P(cx, top + h * 0.28), -Math.PI / 2 + s * 1.0, h * 0.13, h * 0.032, -s * 0.15);
-      this.bud(P(cx + s * h * 0.025, top + h * 0.2), -Math.PI / 2 + s * 0.75, h * 0.1, c.bud, c.sepal);
+      this.bud(P(cx, top + h * 0.2), -Math.PI / 2 + s * 0.75, h * 0.1, c.bud, c.sepal); // based on the trunk so its sepals join it
     }
     this.rose(cx, top + h * 0.1, h * 0.11, c.rose);
   }

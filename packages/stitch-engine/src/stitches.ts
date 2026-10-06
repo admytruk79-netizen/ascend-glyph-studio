@@ -176,6 +176,9 @@ function rawFill(poly: Pt[], ang: number, rs: number, sl: number, pc: number, in
         }
       }
       if (!ltr) xs.reverse();
+      // the turn into this row: where consecutive rows differ greatly in width, split the step so no stitch exceeds sl
+      const first = rotate({ x: xs[0]!, y: s.y }, ang), last = out[out.length - 1];
+      if (last) { const d = Math.hypot(first.x - last.x, first.y - last.y), parts = Math.ceil(d / sl); for (let q = 1; q < parts; q++) out.push({ x: last.x + ((first.x - last.x) * q) / parts, y: last.y + ((first.y - last.y) * q) / parts, ...(q === 1 ? { turn: true } : {}) }); }
       xs.forEach((x, k) => out.push({ ...rotate({ x, y: s.y }, ang), ...(k === 0 && i > 0 ? { turn: true } : {}) }));
     });
     regions.push(out);

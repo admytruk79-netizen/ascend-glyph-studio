@@ -91,35 +91,96 @@ function build(card: Card) {
   const ev = eventFor(card.title, card.phase);
   let x = 0;
   for (const seg of segs) {
-    if (seg.kind === "hold") { const w = holdW(seg, wb); event(k, seg.count === 0 ? "axis" : ev, x + w / 2, w, C, rose); x += w; continue; }
+    if (seg.kind === "hold") {
+      const w = holdW(seg, wb), core = Math.min(w, 44);
+      event(k, seg.count === 0 ? "axis" : ev, x + w / 2, core, C, rose);
+      // a long hold is the richest panel (sash rule): the event flanked by mirrored clusters filling the hold
+      const side = (w - core) / 2, h = 2 * FIELD - 5, n = Math.floor(side / (h * 0.62));
+      for (let j = 0; j < n; j++) for (const d of [-1, 1]) {
+        const cw = side / n, cx = x + w / 2 + d * (core / 2 + cw * (j + 0.5)), start = k.objs.length;
+        cluster(k, card.phase === 3 ? "rhombStar" : "leafStar", cx, CY, h, -1, C, j);
+        for (const o of k.objs.slice(start)) for (const p of o.kind === "fill" ? o.polygon : o.path) p.x = cx + (p.x - cx) * Math.min(1, (cw * 0.95) / h);
+      }
+      x += w; continue;
+    }
     for (let i = 0; i < seg.count; i++) {
-      beat(k, card.phase, seg.kind, x + wb / 2, wb, C, i);
-      // density: grains above and below each beat, a small star at every second boundary
-      for (const d of [-1, 1]) k.rhomb(i % 2 ? C.e : C.b, x + wb / 2, CY + d * (FIELD - 1.2), 1.1, 1.1, "grain");
-      if (i > 0 && i % 2 === 0 && wb > 9) k.star4(x, CY + (i % 4 ? -1 : 1) * (FIELD - 3.5), 2.3, C.c, 0.2);
+      beat(k, clustersFor(card), seg.kind, x + wb / 2, wb, C, i);
+      // density: a half-drop star at each boundary between beats, alternating above and below the clusters
+      if (i > 0) k.star4(x, CY + (i % 2 ? -1 : 1) * (FIELD - 2.6), Math.min(2.6, wb * 0.22), C.c, 0.2);
       x += wb;
     }
   }
   return { k, C, ev };
 }
 
-/** One breath beat: inhale beats rise, exhale beats settle. */
-function beat(k: Kit, phase: number, kind: "in" | "out", cx: number, w: number, C: typeof PHASE[1], i: number) {
-  const s = Math.min(w * 0.9, 2 * FIELD - 9), up = kind === "in";
-  switch (phase) {
-    case 1: up ? (k.rhomb(C.b, cx, CY, s * 0.32, s * 0.5, "rhomb"), k.rhomb(C.e, cx, CY, s * 0.1, s * 0.14, "seed"))
-              : k.place(ASCEND_UNITS.orbit!.polys, cx - s * 0.45, CY - s * 0.45, s * 0.9, [C.a, C.d], i % 2 === 1); break;
-    case 2: if (up) {
-              k.satin("stem", C.a, [{ x: cx, y: CY + s * 0.7 }, { x: cx, y: CY - s * 0.55 }], 1.2);
-              for (const [f, l] of [[0.4, 0.45], [0, 0.4], [-0.35, 0.32]] as const) for (const d of [-1, 1]) k.leaf(C.a, { x: cx, y: CY + f * s }, -Math.PI / 2 + d * 0.8, s * l, Math.max(0.8, s * 0.06));
-              k.bud({ x: cx, y: CY - s * 0.55 }, -Math.PI / 2, s * 0.3, C.c, C.b);
-            } else k.place(ASCEND_UNITS.rootAxis!.polys, cx - s * 0.5, CY - s * 0.5, s, [C.b, C.c], i % 2 === 1); break;
-    case 3: if (up) for (const d of [-1, 1]) k.leaf(d < 0 ? C.a : C.b, { x: cx, y: CY + s * 0.45 }, -Math.PI / 2 + d * 0.38, s * 0.95, Math.max(0.9, s * 0.13), -d * 0.35);
-            else k.place(ASCEND_UNITS.eyeSeed!.polys, cx - s * 0.45, CY - s * 0.45, s * 0.9, [C.d, C.c], i % 2 === 1); break;
-    case 4: up ? k.star4(cx, CY + (i % 2 ? -1 : 1) * s * 0.25, s * 0.42, C.a, (i % 3) * 0.2)
-              : k.star8(cx, CY - (i % 2 ? -1 : 1) * s * 0.2, s * 0.38, C.b, C.d, C.c); break;
-    default: up ? k.bud({ x: cx, y: CY + s * 0.55 }, -Math.PI / 2, s * 0.9, C.a, C.e)
-                : k.kalyna(cx, CY, Math.max(1.05, s * 0.09), C.a);
+/**
+ * One breath beat: a composite cluster that fills its cell (centre, radiating parts, seeds at the tips).
+ * Inhale beats point upward, exhale beats downward. Narrow beats get a simpler cluster so they still stitch.
+ */
+// each phase has a family of clusters; the card number picks its inhale and exhale pair, so cards in a phase differ
+const FAMILY: Record<number, { in: string[]; out: string[] }> = {
+  1: { in: ["rhombStar", "leafStar", "starRing"], out: ["orbitPair", "eyePair"] },
+  2: { in: ["sprigPair", "budCross"], out: ["budCross", "rhombStar", "sprigPair"] },
+  3: { in: ["leafStar", "rhombStar", "roseBuds"], out: ["eyePair", "orbitPair"] },
+  4: { in: ["starRing", "leafStar"], out: ["leafStar", "starRing", "orbitPair"] },
+  5: { in: ["roseBuds", "sprigPair", "rhombStar"], out: ["rhombStar", "budCross", "leafStar"] },
+};
+function clustersFor(card: Card): [string, string] {
+  const f = FAMILY[card.phase] ?? FAMILY[5]!, a = f.in[card.num % f.in.length]!;
+  let b = f.out[Math.floor(card.num / 2) % f.out.length]!;
+  if (b === a) b = f.out[(f.out.indexOf(b) + 1) % f.out.length]!;
+  return [a, b];
+}
+function beat(k: Kit, pair: [string, string], kind: "in" | "out", cx: number, w: number, C: typeof PHASE[1], i: number) {
+  const type = pair[kind === "in" ? 0 : 1];
+  // draw at the full field height, then narrow it to the beat's width: tall, upright clusters that fill the band
+  const h = 2 * FIELD - 5, sx = Math.max(0.5, Math.min(1, (w * 0.96) / h)), start = k.objs.length;
+  cluster(k, w < 9 ? "small" : type, cx, CY, h, kind === "in" ? -1 : 1, C, i);
+  for (const o of k.objs.slice(start)) for (const p of o.kind === "fill" ? o.polygon : o.path) p.x = cx + (p.x - cx) * sx;
+}
+
+function cluster(k: Kit, type: string, cx: number, cy: number, s: number, dir: -1 | 1, C: typeof PHASE[1], i: number) {
+  const r = s / 2, up = -Math.PI / 2;
+  switch (type) {
+    case "small": // a seeded rhomb with two grains: legible at 6–12 mm
+      k.rhomb(i % 2 ? C.a : C.b, cx, cy, r * 0.5, r * 0.82, "rhomb"); k.rhomb(C.e, cx, cy, Math.max(0.9, r * 0.16), Math.max(0.9, r * 0.24), "seed");
+      for (const d of [-1, 1]) k.rhomb(C.d, cx, cy + d * r * 1.15, 0.95, 0.95, "grain"); return;
+    case "rhombStar": // nested rhomb, ASCEND-style four-point star inside, four leaves off the sides, seeds on the axes
+      k.rhomb(C.b, cx, cy, r * 0.62, r * 0.62, "rhomb"); k.rhomb(C.d, cx, cy, r * 0.44, r * 0.44, "rhomb"); k.star4(cx, cy, r * 0.4, C.a, 0);
+      for (let q = 0; q < 4; q++) { const a = Math.PI / 4 + (q * Math.PI) / 2; k.leaf(C.e, { x: cx + Math.cos(a) * r * 0.36, y: cy + Math.sin(a) * r * 0.36 }, a, r * 0.6, Math.max(0.8, r * 0.1), 0, 0.45, "leaf"); }
+      // seeds above and below only: side seeds would meet the neighbouring cluster once it is narrowed to the beat
+      for (const d of [-1, 1]) k.rhomb(C.c, cx, cy + d * r * 0.86, Math.max(0.9, r * 0.09), Math.max(0.9, r * 0.09), "seed");
+      return;
+    case "orbitPair": // two ASCEND orbits facing each other around a seed
+      k.place(ASCEND_UNITS.orbit!.polys, cx - r * 0.98, cy - r * 0.55, r * 1.05, [C.a, C.d]);
+      k.place(ASCEND_UNITS.orbit!.polys, cx - r * 0.07, cy - r * 0.5, r * 1.05, [C.a, C.d], true);
+      k.rhomb(C.e, cx, cy + dir * r * 0.78, Math.max(0.9, r * 0.12), Math.max(0.9, r * 0.12), "seed"); return;
+    case "sprigPair": { // «ялинка» growing from the centre in the beat's direction, a smaller one mirrored behind it
+      for (const [d, f] of [[dir, 1], [-dir, 0.6]] as const) {
+        // d = -1 grows upward, +1 downward
+        const L = r * 0.92 * f, ang = d < 0 ? up : -up; k.satin("stem", C.a, [{ x: cx, y: cy }, { x: cx, y: cy + d * L }], 1.1);
+        for (const t of f === 1 ? [0.3, 0.62] : [0.45]) for (const sd of [-1, 1]) k.leaf(C.a, { x: cx, y: cy + d * L * t }, ang + sd * 0.75, r * 0.5 * f, Math.max(0.8, r * 0.075));
+        if (f === 1) k.bud({ x: cx, y: cy + d * L }, ang, r * 0.42, C.c, C.b);
+      }
+      k.rhomb(C.e, cx, cy, Math.max(0.95, r * 0.14), Math.max(0.95, r * 0.14), "seed"); return;
+    }
+    case "budCross": // four buds in a cross, the beat's direction longest, rhomb centre
+      for (let q = 0; q < 4; q++) { const a = (q * Math.PI) / 2, long = Math.abs(Math.sin(a) + dir) < 0.01 ? 1 : 0.72; k.bud({ x: cx + Math.cos(a) * r * 0.2, y: cy + Math.sin(a) * r * 0.2 }, a, r * 0.72 * long, q % 2 ? C.c : C.b, C.a); }
+      k.rhomb(C.d, cx, cy, r * 0.22, r * 0.22, "rhomb"); return;
+    case "leafStar": // eight leaves radiating (the board's leaf-star), two colours, rhomb centre with seed
+      for (let q = 0; q < 8; q++) { const a = (q * Math.PI) / 4; k.leaf(q % 2 ? C.b : C.a, { x: cx + Math.cos(a) * r * 0.1, y: cy + Math.sin(a) * r * 0.1 }, a, r * (q % 2 ? 0.62 : 0.82), Math.max(0.85, r * 0.11), 0, 0.45, "leaf"); }
+      k.rhomb(C.d, cx, cy, r * 0.2, r * 0.2, "rhomb"); k.rhomb(C.c, cx, cy, Math.max(0.9, r * 0.08), Math.max(0.9, r * 0.08), "seed"); return;
+    case "eyePair": // ASCEND eye-seed and its mirror, stacked, with grains
+      k.place(ASCEND_UNITS.eyeSeed!.polys, cx - r * 0.5, cy - r * 0.98, r, [C.d, C.a]);
+      k.place(ASCEND_UNITS.eyeSeed!.polys, cx - r * 0.5, cy - r * 0.02, r, [C.d, C.a], true);
+      for (const d of [-1, 1]) k.rhomb(C.e, cx + d * r * 0.8, cy, Math.max(0.9, r * 0.1), Math.max(0.9, r * 0.1), "seed"); return;
+    case "starRing": // eight-point star with a ring of seeds
+      k.star8(cx, cy, r * 0.6, C.a, C.b, C.c);
+      for (let q = 0; q < 8; q++) { const a = Math.PI / 8 + (q * Math.PI) / 4; k.disc(q % 2 ? C.d : C.c, cx + Math.cos(a) * r * 0.82, cy + Math.sin(a) * r * 0.82, Math.max(0.9, r * 0.07), "seed"); }
+      return;
+    default: // roseBuds: a small rose with two buds opening in the beat's direction
+      k.rose(cx, cy + dir * r * 0.12, Math.min(5.9, r * 0.5), { petal: C.a, inner: C.b, centre: C.c, seed: C.b });
+      for (const d of [-1, 1]) k.bud({ x: cx + d * r * 0.42, y: cy - dir * r * 0.38 }, (dir < 0 ? up : -up) + d * 0.55, r * 0.5, C.b, C.e);
   }
 }
 
@@ -151,6 +212,8 @@ function event(k: Kit, ev: string, cx: number, w: number, C: typeof PHASE[1], ro
   }
   // events that do not already hold it get the ASCEND star at their centre or crown
   if (ev === "field" || ev === "enclosure") k.ascendStar(cx, CY, R * 0.3, C.a, C.e);
+  // the tree's crown is a rose: the ASCEND star becomes its heart, layered on top
+  else if (ev === "tree") k.star4(cx, CY + FIELD - 0.5 - FIELD * 1.85 * 0.9, 1.9, C.c);
   else k.ascendStar(cx, CY - FIELD + 4.5, 3.4, C.c, C.b);
 }
 
@@ -162,7 +225,7 @@ const report: unknown[] = [];
 for (const card of cards) {
   if (pick && !pick.has(card.num)) continue;
   const { k, C, ev } = build(card);
-  k.resolveGaps();
+  k.resolveGaps(0.9, 16);
   const name = `${String(card.num).padStart(3, "0")}-${slug(card.title)}`;
   writeFileSync(`${out}/${name}.svg`, svgOf(k.objs, C.ground));
   const p = plan(k.objs, r), min = estimateMinutes(p, r.speedSpm);

@@ -19,9 +19,9 @@
       60
     ],
     "objects": 458,
-    "stitches": 11910,
+    "stitches": 12301,
     "colors": 5,
-    "minutes": 35.5,
+    "minutes": 36.2,
     "failed": [
       "recipe-validated: recipe linen-180-prewashed has no sew-out yet: prototype only"
     ]
@@ -70,9 +70,9 @@
       60
     ],
     "objects": 214,
-    "stitches": 8347,
+    "stitches": 8308,
     "colors": 5,
-    "minutes": 24.3,
+    "minutes": 24.1,
     "failed": [
       "recipe-validated: recipe linen-180-prewashed has no sew-out yet: prototype only"
     ]
@@ -119,7 +119,7 @@
       60
     ],
     "objects": 232,
-    "stitches": 11672,
+    "stitches": 11692,
     "colors": 6,
     "minutes": 34,
     "failed": [
@@ -145,7 +145,7 @@
       60
     ],
     "objects": 266,
-    "stitches": 10916,
+    "stitches": 10924,
     "colors": 4,
     "minutes": 30.7,
     "failed": [
