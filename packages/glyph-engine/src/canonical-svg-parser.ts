@@ -11,7 +11,7 @@ export function parseCanonicalSvg(svg:string):ParsedCanonicalSvg{
  if(!paths.length)throw new Error("canonical-svg-path-required");
  const polygons:PointMm[][]=[];
  for(const d of paths){
-  if(/[CQASTHVcqast hv]/.test(d))throw new Error("unsupported-canonical-svg-path-command");
+  if(/[CQASTHVcqasthv]/.test(d))throw new Error("unsupported-canonical-svg-path-command");
   const tokens=d.match(/[MLZmlz]|-?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?/gi)??[];let i=0,x=0,y=0,start:PointMm|undefined,poly:PointMm[]=[];
   const flush=()=>{if(poly.length>=3)polygons.push(poly);poly=[];start=undefined};
   while(i<tokens.length){const cmd=tokens[i++]!;if(!/[MLZmlz]/.test(cmd))throw new Error("canonical-svg-command-required");
