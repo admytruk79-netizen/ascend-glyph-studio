@@ -31,7 +31,17 @@ export function adjacentPieces(p:ShirtPattern,pieceId:string){
 export function validatePattern(p:ShirtPattern):string[]{
  const errors:string[]=[];
  const ids=new Set(p.pieces.map(x=>x.id));
- for(const e of p.seamGraph)if(!ids.has(e.fromPiece)||!ids.has(e.toPiece))errors.push(`dangling-seam:${e.fromPiece}->${e.toPiece}`);
+ for(const e of p.seamGraph){
+  if(!ids.has(e.fromPiece)||!ids.has(e.toPiece)){errors.push(`dangling-seam:${e.fromPiece}->${e.toPiece}`);continue}
+  const from=p.pieces.find(x=>x.id===e.fromPiece)!;
+  const to=p.pieces.find(x=>x.id===e.toPiece)!;
+  const fs=from.seams.find(s=>s.id===e.fromSeam);
+  const ts=to.seams.find(s=>s.id===e.toSeam);
+  if(!fs)errors.push(`missing-seam:${e.fromPiece}:${e.fromSeam}`);
+  if(!ts)errors.push(`missing-seam:${e.toPiece}:${e.toSeam}`);
+  if(fs?.joins&&(fs.joins.pieceId!==e.toPiece||fs.joins.seamId!==e.toSeam))errors.push(`seam-join-mismatch:${e.fromPiece}:${e.fromSeam}`);
+  if(ts?.joins&&(ts.joins.pieceId!==e.fromPiece||ts.joins.seamId!==e.fromSeam))errors.push(`seam-join-mismatch:${e.toPiece}:${e.toSeam}`);
+ }
  for(const piece of p.pieces){
   if(piece.outline.length<3)errors.push(`invalid-outline:${piece.id}`);
   if(piece.seams.some(s=>s.allowanceMm<0))errors.push(`negative-seam-allowance:${piece.id}`);
