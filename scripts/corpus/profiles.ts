@@ -4,8 +4,13 @@
  */
 import type { AnalyzedRow } from "./store.ts";
 
-/** Traditions the blend engine can be asked for. Native American material is structure-only and never selectable. */
-export const SELECTABLE = ["Ukrainian", "Belarusian", "Lithuanian", "English (16th–19th c.)", "Western / cowboy material culture"] as const;
+/**
+ * Traditions the blend engine can be asked for. Profiles are numbers only (symmetry, rhythm, density),
+ * so a structure-only tradition contributes structure targets and never motifs; nation-specific
+ * selection (a named tribe) is not offered.
+ */
+export const SELECTABLE = ["Ukrainian", "Belarusian", "Lithuanian", "English (16th–19th c.)", "Western / cowboy material culture", "Native American (structure only)"] as const;
+export const STRUCTURE_ONLY = new Set(["Native American (structure only)"]);
 
 const CULTURE_RULES: [RegExp, string][] = [
   [/ukrain|hutsul|ruthen|galici|bukovin|podil|podol|volhyn|poltava|lemko|boyk|transcarpath|zakarpat|pokut|україн|гуцул/i, "Ukrainian"],
@@ -134,6 +139,7 @@ export function blend(profiles: StyleProfile[], weights: Record<string, number>,
     if (!p) throw new Error(`blend: no profile for "${t}" yet`);
     if (p.n < minN) warnings.push(`${t}: only ${p.n} analysed objects; profile is provisional`);
     if (p.labelConfidence < 0.5) warnings.push(`${t}: most labels come from search queries, not catalogue text`);
+    if (STRUCTURE_ONLY.has(t)) warnings.push(`${t}: contributes symmetry, rhythm and density only — no motifs, no tribal names, never marketed as Native-made`);
     picked.push([p, w / total]);
   }
   const mix = (get: (p: StyleProfile) => Dist): Dist => {

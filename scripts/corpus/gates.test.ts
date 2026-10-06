@@ -25,10 +25,13 @@ test("missing provenance and unresolved rights are rejected", () => {
   assert.equal((gate({ ...base, rightsStatus: "review" }) as any).reason, "rights-unresolved");
 });
 
-test("nation-specific Indigenous North American provenance goes to review, never auto-accepted", () => {
+test("Indigenous North American provenance is accepted for structure only; sacred material is excluded", () => {
   const c = { ...base, culture: "Lakota", title: "Beaded vest" };
-  assert.equal(culturalAccessOf(c), "review");
-  assert.equal((gate(c) as any).reason, "cultural-review");
+  assert.equal(culturalAccessOf(c), "structure-only");
+  const g = gate(c);
+  assert.ok(g.accepted && g.culturalAccess === "structure-only");
+  assert.equal((gate({ ...c, title: "Beaded medicine bag" }) as any).reason, "cultural-review");
+  assert.equal((gate({ ...c, culture: "Lakota, Sun Dance" }) as any).reason, "cultural-review");
 });
 
 test("sacred or ceremonial context goes to review regardless of culture", () => {

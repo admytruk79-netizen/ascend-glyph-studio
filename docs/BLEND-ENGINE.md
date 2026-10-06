@@ -25,7 +25,10 @@ Each tradition is summarised from the corpus as numbers, never images. For examp
 - **English 17th c. crewel:** non-periodic all-over growth (no lattice), large asymmetric scrolls, high void ratio.
 - **English samplers:** stacked horizontal bands with many short repeats, `p1`/`p1m1`.
 - **Western boot stitching and leather carving:** parallel stitch rows, scroll orbits, flame and rose curves, mirror pairs across the shaft.
-- **Native American (nation-specific):** structure statistics only, for diversity. Never a selectable "style" for motif-level derivation, and never marketed as Native-made (Indian Arts and Crafts Act).
+- **Native American (structure only):** decided 2026-10-06 as one of the three training focuses, with Ukrainian and cowboy/Western (`data/training/focus.json`).
+  - It contributes symmetry, rhythm, density and banding statistics only.
+  - It never contributes motifs. There is no nation-specific selection, and no tribal names appear in designs or marketing. It is never marketed as Native-made (Indian Arts and Crafts Act).
+  - Sacred, ceremonial and funerary objects are excluded at the corpus gate.
 
 - **West Ukrainian sashes** (Nykorak, Herus, Kutsyr 2022): vertical-axis symmetry, static rhythm; 1-, 3-, 5- or 7-part layouts with the richest band in the centre and finer bands outward, framed by thin stripes; half-motifs in neighbouring bands joining into a whole; rhomb / oblique-cross alternation; close-hue colour "shimmer".
 - **Lithuanian sashes** (same source): diagonal axes, S-motifs, rotation without mirror (`p2`, `p11g`), motifs cut by the edge, dark-on-light contrast; "hundred-pattern" sashes where no motif repeats.

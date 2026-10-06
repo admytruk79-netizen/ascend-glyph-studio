@@ -7,7 +7,8 @@
  */
 
 export type RightsStatus = "open" | "review" | "unknown";
-export type CulturalAccess = "open" | "review";
+/** "structure-only": usable for structural statistics (symmetry, rhythm, density), never for motifs. */
+export type CulturalAccess = "open" | "structure-only" | "review";
 
 export type Candidate = {
   id: string;
@@ -65,9 +66,9 @@ const RELEVANCE: Record<string, RegExp> = {
   european: /\b(haft\w*|tkanin\w*|stickerei\w*|gewebe|tracht\w*|webarbeit|broderie|tissu)\b/i,
 };
 
-// Nation-specific Indigenous North American provenance always goes to human review:
-// provenance, community specificity, access restrictions and commercial-use risk
-// must be recorded before any structural learning.
+// Indigenous North American provenance (owner decision 2026-10-06): accepted for structural statistics
+// only — symmetry, rhythm, density, banding — never motifs, never tribal names, never marketed as
+// Native-made (Indian Arts and Crafts Act). Sacred, ceremonial and funerary material is excluded below.
 const INDIGENOUS_NA = /\b(native american|american indian|first nations?|indigenous|inuit|m[eé]tis|lakota|dakota|nakota|sioux|din[eé]|navajo|hopi|zuni|pueblo|apache|cheyenne|arapaho|crow|blackfoot|kiowa|comanche|osage|pawnee|shoshone|ute|paiute|haida|tlingit|tsimshian|kwakwaka.wakw|kwakiutl|nuu.chah.nulth|salish|ojibw?e|anishinaabe|chippewa|cree|haudenosaunee|iroquois|mohawk|seneca|onondaga|oneida|cayuga|tuscarora|cherokee|choctaw|chickasaw|muscogee|creek|seminole|potawatomi|menominee|ho.chunk|winnebago|mi.kmaq|abenaki|wampanoag|tlicho|dene|yup.ik|inupiaq|aleut|unangan|plains|great lakes|northwest coast|eastern woodlands|southwest)\b/i;
 
 // Sacred, ceremonial or funerary context goes to human review regardless of culture.
@@ -89,8 +90,8 @@ export function relevanceOf(c: Candidate): string[] {
 }
 
 export function culturalAccessOf(c: Candidate): CulturalAccess {
-  if (INDIGENOUS_NA.test(provenanceText(c))) return "review";
   if (RESTRICTED_CONTEXT.test(text(c))) return "review";
+  if (INDIGENOUS_NA.test(provenanceText(c))) return RESTRICTED_CONTEXT.test(provenanceText(c)) ? "review" : "structure-only";
   return "open";
 }
 

@@ -83,9 +83,9 @@ const stats = {
 };
 const bump = (m: Record<string, number>, k: string) => { m[k] = (m[k] ?? 0) + 1; };
 
-function row(c: Candidate, relevance: string[]) {
+function row(c: Candidate, relevance: string[], culturalAccess: string) {
   return {
-    id: c.id, source: c.source, tradition: c.culture ?? c.region ?? "unattributed", culturalAccess: "open",
+    id: c.id, source: c.source, tradition: c.culture ?? c.region ?? "unattributed", culturalAccess,
     title: c.title, creator: c.creator, date: c.date, region: c.region, material: c.material, technique: c.technique,
     objectURL: c.objectURL, image: c.image, rights: c.rights, accession: c.accession, reliability: c.reliability,
     raw: { institution: c.institution, query: c.query, queryGroup: c.tradition, culture: c.culture, objectType: c.objectType,
@@ -118,7 +118,7 @@ async function main() {
       return;
     }
     if (stats.accepted >= target || s.accepted >= sourceCap) return;
-    stream.write(JSON.stringify(row(c, g.relevance)) + "\n");
+    stream.write(JSON.stringify(row(c, g.relevance, g.culturalAccess)) + "\n");
     stats.accepted++; s.accepted++;
     g.relevance.forEach((r) => bump(stats.relevance, r));
     bump(stats.queryGroup, c.tradition ?? "Global");

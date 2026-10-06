@@ -464,12 +464,18 @@ const UKRAINIAN = [
   "вишивка", "вишиванка", "рушник", "сорочка", "килим", "орнамент",
 ];
 const BELARUSIAN = ["Belarusian embroidery", "Belarusian textile", "Belarusian towel", "Belarus weaving", "Slutsk sash", "Byelorussian", "White Russian embroidery", "Belarusian costume"];
+// American Indian material: structure-only (see gates.ts). Generic technique queries; sacred material is excluded by the gate.
+const NATIVE_STRUCTURE = [
+  "Native American beadwork", "Plains beadwork", "quillwork", "parfleche", "Navajo weaving", "Navajo textile", "Pueblo pottery",
+  "Native American basket", "Apache basket", "Pomo basket", "Seminole patchwork", "Ojibwe beadwork", "Great Lakes beadwork",
+  "Native American textile", "beaded moccasins", "beaded bag Native American", "Chilkat", "Hopi pottery", "Acoma pottery",
+];
 const LITHUANIAN = ["Lithuanian sash", "Lithuanian textile", "Lithuanian costume", "Lithuanian weaving", "juosta", "Baltic sash"];
 const ENGLISH = [
   "English embroidery", "blackwork", "crewelwork", "Jacobean embroidery", "English sampler", "needlework sampler 17th century",
   "Elizabethan embroidery", "stumpwork", "Berlin woolwork", "Spitalfields silk", "English needlework", "embroidered coif", "English quilt",
 ];
-const WESTERN = ["saddle", "spurs", "leather tooling", "cowboy", "bridle", "chaps", "western boots", "charro", "saddle blanket", "horse tack", "silver concho", "belt buckle", "cowboy boots", "boot stitching", "tooled leather", "vaquero", "saddlery", "Western saddle"];
+const WESTERN = ["cowboy hat", "bandana", "western shirt", "rodeo", "saddle maker", "boot maker", "Texas boots", "Mexican saddle", "pitiado", "leather carving", "saddle", "spurs", "leather tooling", "cowboy", "bridle", "chaps", "western boots", "charro", "saddle blanket", "horse tack", "silver concho", "belt buckle", "cowboy boots", "boot stitching", "tooled leather", "vaquero", "saddlery", "Western saddle"];
 const GLOBAL = [
   "embroidery", "embroidered linen", "needlework sampler", "weaving", "tapestry", "brocade", "damask", "lace", "kilim", "carpet", "rug",
   "ikat", "batik", "block printed textile", "chintz", "quilt", "jacquard", "shawl", "sash", "textile fragment", "textile design",
@@ -495,6 +501,7 @@ export const QUERIES: Query[] = [
   ...UKRAINIAN.map((q) => ({ q, tradition: "Ukrainian" })),
   ...BELARUSIAN.map((q) => ({ q, tradition: "Belarusian" })),
   ...LITHUANIAN.map((q) => ({ q, tradition: "Lithuanian" })),
+  ...NATIVE_STRUCTURE.map((q) => ({ q, tradition: "Native American (structure only)" })),
   ...ENGLISH.map((q) => ({ q, tradition: "English (16th–19th c.)" })),
   ...WESTERN.map((q) => ({ q, tradition: "Western / cowboy material culture" })),
   ...GLOBAL.map((q) => ({ q, tradition: "Global" })),

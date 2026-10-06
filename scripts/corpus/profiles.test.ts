@@ -32,6 +32,6 @@ test("profiles and blend: distributions, medians, dominant symmetry, fail closed
   assert.equal(b.friezeGroup, "p2mm");
   assert.equal(b.median.voidRatio, 0.225); // 0.75×0.1 + 0.25×0.6
   assert.ok(b.warnings.some((w) => w.startsWith("English")), "English has < 30 objects → provisional");
-  assert.throws(() => blend(ps, { "Native American (structure only)": 1 }), /not a selectable/);
+  assert.throws(() => blend(ps, { Navajo: 1 } as any), /not a selectable/); // no nation-specific selection
   assert.throws(() => blend(ps, { Belarusian: 1 }), /no profile/);
 });
