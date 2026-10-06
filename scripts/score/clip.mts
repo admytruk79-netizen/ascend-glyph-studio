@@ -33,4 +33,5 @@ export function centroid(vs: Float32Array[]): Float32Array {
 }
 
 export const toB64 = (v: Float32Array) => Buffer.from(new Float32Array(v).buffer).toString("base64");
-export const fromB64 = (s: string) => new Float32Array(Buffer.from(s, "base64").buffer.slice(0));
+// Copy the exact byte range: small Buffers live inside Node's shared pool, so .buffer alone is the whole pool.
+export const fromB64 = (s: string) => { const b = Buffer.from(s, "base64"); return new Float32Array(b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength)); };
