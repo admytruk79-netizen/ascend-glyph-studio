@@ -2,7 +2,7 @@
  * Fail-closed release gate (docs/EMBROIDERY-PRODUCTION-ENGINE.md §7). A file is released only when every
  * check passes; a check that cannot be evaluated counts as a failure.
  */
-import { type Pt, bounds, dist, pointSegDist, resample } from "./geometry.js";
+import { type Pt, bounds, dist, pointInPolygon, pointSegDist, resample } from "./geometry.js";
 import type { Command } from "./dst.js";
 import type { DesignObject } from "./plan.js";
 import type { StitchRecipe } from "./recipes.js";
@@ -69,14 +69,31 @@ function outline(o: DesignObject): { pts: Pt[]; half: number } {
 function minGap(objects: DesignObject[]): { value: number; pair: string } {
   let best = Infinity, pair = "";
   const outs = objects.map(outline);
+  const boxes = outs.map((o) => { const b = bounds(o.pts); return { minX: b.minX - o.half, minY: b.minY - o.half, maxX: b.maxX + o.half, maxY: b.maxY + o.half }; });
+  // A point of one object inside the other's fill means one is layered on top of the other: an overlap, not a gap.
+  const inside = (P: Pt[], o: DesignObject) => o.kind === "fill" && P.some((p) => pointInPolygon(p, o.polygon));
   for (let i = 0; i < objects.length; i++)
     for (let j = i + 1; j < objects.length; j++) {
-      const A = outs[i]!, B = outs[j]!;
-      let d = Infinity;
-      for (const p of A.pts) for (let k = 1; k < B.pts.length; k++) d = Math.min(d, pointSegDist(p, B.pts[k - 1]!, B.pts[k]!));
+      const A = outs[i]!, B = outs[j]!, a = boxes[i]!, b = boxes[j]!;
+      if (Math.max(a.minX - b.maxX, b.minX - a.maxX, a.minY - b.maxY, b.minY - a.maxY) >= best) continue; // cannot beat the current best
+      if (inside(A.pts, objects[j]!) || inside(B.pts, objects[i]!)) continue;
+      let d = Infinity, near: [Pt, Pt] = [A.pts[0]!, A.pts[0]!];
+      for (const p of A.pts) for (let k = 1; k < B.pts.length; k++) { const e = pointSegDist(p, B.pts[k - 1]!, B.pts[k]!); if (e < d) { d = e; near = [p, closestOnSeg(p, B.pts[k - 1]!, B.pts[k]!)]; } }
       const g = d - A.half - B.half;
       if (g <= 0) continue; // overlapping or touching objects are intentional joins
+      if (coveredByFill(near, objects, i, j)) continue; // the gap lies on top of another fill, so no fabric shows
       if (g < best) { best = g; pair = `${objects[i]!.id}/${objects[j]!.id}`; }
     }
   return { value: best, pair };
+}
+
+function closestOnSeg(p: Pt, a: Pt, b: Pt): Pt {
+  const dx = b.x - a.x, dy = b.y - a.y, L2 = dx * dx + dy * dy || 1, t = Math.max(0, Math.min(1, ((p.x - a.x) * dx + (p.y - a.y) * dy) / L2));
+  return { x: a.x + t * dx, y: a.y + t * dy };
+}
+
+/** True when the space between two near objects is stitched over by a third fill (e.g. a seed and a branch both on a flower centre). */
+export function coveredByFill(near: [Pt, Pt], objects: DesignObject[], i: number, j: number): boolean {
+  const samples = [0.25, 0.5, 0.75].map((t) => ({ x: near[0].x + (near[1].x - near[0].x) * t, y: near[0].y + (near[1].y - near[0].y) * t }));
+  return objects.some((o, k) => k !== i && k !== j && o.kind === "fill" && samples.every((p) => pointInPolygon(p, o.polygon)));
 }

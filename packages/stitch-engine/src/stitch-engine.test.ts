@@ -166,3 +166,12 @@ test("calibration strip: every item stitched, fits a 200x200 hoop, and the gate 
   assert.equal(g.checks.find((c) => c.id === "hoop-fit")!.pass, true);
   assert.equal(readDst(writeDst(p.commands)).commands.filter((c) => c.cmd === "stitch").length, p.commands.filter((c) => c.cmd === "stitch").length);
 });
+
+test("gate: a seed layered on a petal is an overlap, a separate 0.4 mm neighbour is a gap", () => {
+  const sq = (x: number, y: number, s: number) => [{ x, y }, { x: x + s, y }, { x: x + s, y: y + s }, { x, y: y + s }];
+  const minGap = (objs: DesignObject[]) => runGate(objs, plan(objs, linen).commands, linen, { hoop: { name: "200x200", width: 200, height: 200 } }, 1).checks.find((c) => c.id === "min-gap")!;
+  const petal: DesignObject = { kind: "fill", id: "petal", color: "#a00", polygon: sq(0, 0, 12) };
+  const seed: DesignObject = { kind: "fill", id: "seed", color: "#00a", polygon: sq(5, 5, 2) };
+  assert.equal(minGap([petal, seed]).pass, true);
+  assert.equal(minGap([petal, seed, { kind: "fill", id: "near", color: "#0a0", polygon: sq(12.4, 0, 6) }]).pass, false);
+});

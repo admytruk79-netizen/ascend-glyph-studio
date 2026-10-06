@@ -26,6 +26,7 @@ The designs are prototypes. The linen recipe has no sew-out yet, so the producti
 | `sheet2/` | Coloured sketch sheet: `drawn` is as drawn, `rich` is elaborated; `rich-13131e` is on the night ground. | `sheet2.mts <out> [drawn\|rich] [ground]` |
 | `emblem/` | Personal emblem: roots, axis, heart, twin peaks ("A"), open orbit ("O"), star with no downward ray, 10 sequins. Includes the run sheet. | `emblem.mts` |
 | `choice/` | A band of the pattern elements picked from the research. | `choice.mts` |
+| `rich-bands/` | The six named bands from the design board (Ascend Roots, Mountain Path, River Lineage, Sky Horizon, Fire Within, Earth Anchor), built from the rich folk vocabulary: tree of life with birds, ram's horns, hop vine with grapes, roses, star clusters, crosses, lily, kalyna. 250 × 60 mm, wrap-around, all pass the stitch gate. First pass: foundation, not yet ASCEND-distinct. | `rich-bands.mts` |
 | `ascend-bands/` | Ten generated bands in the ASCEND vocabulary (blend engine). | `gen-ascend.mts` |
 
 To regenerate, run this from the repo root:
