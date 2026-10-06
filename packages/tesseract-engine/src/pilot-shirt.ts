@@ -40,7 +40,7 @@ export function buildPilotShirtPattern(size:SizeProfile,block?:PilotBlockSpec):S
  ];
  const pieces=[frontL,frontR,back,yoke,sl,sr,cl,cr,collar].map(p=>{
   const supplied=block?.pieces[p.kind];
-  const resolved=supplied?{...p,outline:supplied.outline.map(q=>({...q})),grainline:{from:{...supplied.grainline.from},to:{...supplied.grainline.to}},sourceState:block!.sourceState}:p;
+  const resolved=supplied?{...p,outline:supplied.outline.map(q=>({...q})),grainline:{from:{...supplied.grainline.from},to:{...supplied.grainline.to}},designZones:supplied.designZones.map(z=>({...z,polygon:z.polygon.map(q=>({...q}))})),sourceState:block!.sourceState}:p;
   return addConstructionNoGoZones(resolved);
  });
  return {id:`pilot-shirt:${size.id}:${block?.id??"reference"}`,size,pieces,seamGraph};
