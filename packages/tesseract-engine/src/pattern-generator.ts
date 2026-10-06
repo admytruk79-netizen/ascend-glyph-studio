@@ -7,6 +7,7 @@ import {deriveSignals} from "./pattern-knowledge-graph";
 import {worldPatternGraph} from "./world-pattern-graph";
 import type {GarmentZone} from "./garment";
 import {adaptForProduction,type MediumId} from "./medium-compiler";
+import type {ImageObservation} from "./image-corpus";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
@@ -14,7 +15,7 @@ export type PatternGeneratorInput={
  width?:number;height?:number;variations?:number;complexity?:number;
  cultureIds?:string[];medium?:string;placement?:string;
  corpusSignals?:{id:string;weight:number;sourceIds?:string[]}[];
- population?:number;generations?:number;
+ population?:number;generations?:number;visualCorpus?:ImageObservation[];
 };
 export type GeneratedPattern={
  id:string;lineageId:string;score:number;novelty:number;svg:string;
@@ -115,7 +116,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
    traditions:[{id:"ascend-universal",weight:1},...cultureIds.map((id,i)=>({id:`evidence:${id}`,weight:Math.max(.35,.75-i*.05)}))],
    character:[{id:"ordered-organic",weight:.55+complexity*.35},{id:"minimal-complex",weight:complexity},...(input.medium?[{id:`medium:${input.medium}`,weight:.9}]:[]),...(input.placement?[{id:`placement:${input.placement}`,weight:.95}]:[])]
   },
-  principles:[],niches:niche?[niche]:undefined,medium,
+  principles:[],niches:niche?[niche]:undefined,medium,visualCorpus:input.visualCorpus,
   population:input.population??Math.round(32+complexity*64),generations:input.generations??Math.round(3+complexity*5),keep:variations
  });
  return candidates.map((c,i)=>{
