@@ -2,11 +2,16 @@
  * Image-analysis stage of the research corpus.
  *
  * Reads metadata-accepted candidates, downloads each image, converts it into
- * structural observations (see scripts/corpus/features.ts) and drops failed,
+ * structural observations (see scripts/corpus/features.ts), deconstructs it
+ * into crop, bands, repeat unit, frieze/wallpaper symmetry, breaks and grammar
+ * (see scripts/corpus/deconstruct.ts), and drops failed,
  * low-information and near-duplicate images. Images are analyzed in memory and
  * never stored; only features, a perceptual hash and provenance are written.
  * Rows written here are the accepted, analyzed instances that count toward the
  * corpus milestones.
+ *
+ * Input rows may be harvest candidates or master-corpus rows queued for
+ * re-analysis (rows analyzed before deconstruction existed).
  *
  * Env: CORPUS_IN, ANALYZED_OUT, ANALYSIS_SUMMARY_OUT, ANALYSIS_CONCURRENCY (16),
  * ANALYSIS_LIMIT, ANALYSIS_MAX_MINUTES (300).
@@ -14,6 +19,7 @@
 import { createReadStream, createWriteStream, writeFileSync } from "node:fs";
 import { createInterface } from "node:readline";
 import sharp from "sharp";
+import { deconstruct, DECONSTRUCTION_VERSION, type Deconstruction } from "./corpus/deconstruct.ts";
 import { dHash, dHashVertical, NearDuplicateIndex, structuralFeatures } from "./corpus/features.ts";
 import { USER_AGENT } from "./corpus/sources.ts";
 
@@ -23,16 +29,20 @@ const summaryOut = process.env.ANALYSIS_SUMMARY_OUT ?? "data/research/analysis-s
 const concurrency = Number(process.env.ANALYSIS_CONCURRENCY ?? 16);
 const limit = Number(process.env.ANALYSIS_LIMIT ?? Infinity);
 const deadline = Date.now() + Number(process.env.ANALYSIS_MAX_MINUTES ?? 300) * 60_000;
-const ANALYZER_VERSION = "structural-features/0.1";
+const ANALYZER_VERSION = `structural-features/0.1+${DECONSTRUCTION_VERSION}`;
 const MAX_BYTES = 20 * 1024 * 1024;
-const MIN_EDGE = 600, ANALYSIS_EDGE = 160;
+const MIN_EDGE = 600, ANALYSIS_EDGE = 160, DECONSTRUCT_EDGE = 512;
 
-type Row = { id: string; source: string; image?: string; objectURL?: string; accession?: string; tradition?: string; raw?: Record<string, unknown> };
+type Row = {
+  id: string; source: string; image?: string; objectURL?: string; accession?: string; tradition?: string;
+  institution?: string; relevance?: string[]; raw?: Record<string, unknown>;
+};
 
 const stats = {
   analyzerVersion: ANALYZER_VERSION, read: 0, analyzed: 0,
   rejected: {} as Record<string, number>, rejectedBySource: {} as Record<string, number>, bySource: {} as Record<string, number>,
-  dominantAxis: {} as Record<string, number>, startedAt: new Date().toISOString(), finishedAt: "", stopReason: "",
+  dominantAxis: {} as Record<string, number>, kind: {} as Record<string, number>, friezeGroups: {} as Record<string, number>,
+  wallpaperRotation: {} as Record<string, number>, deconstructErrors: 0, skippedRepeats: 0, startedAt: new Date().toISOString(), finishedAt: "", stopReason: "",
 };
 const bump = (m: Record<string, number>, k: string) => { m[k] = (m[k] ?? 0) + 1; };
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -99,7 +109,12 @@ async function analyze(row: Row, dupes: NearDuplicateIndex) {
   // 128-bit hash (horizontal + vertical gradients) so banded and striped patterns don't collide.
   const hash = dHash({ data: hRaster, width: 9, height: 8 }) + dHashVertical({ data: vRaster, width: 8, height: 9 });
   if (dupes.findOrAdd(hash)) throw new Error("near-duplicate");
-  return { width, height, features, dhash: hash };
+  let deconstruction: Deconstruction | null = null;
+  try {
+    const big = await sharp(buf).rotate().grayscale().resize(DECONSTRUCT_EDGE, DECONSTRUCT_EDGE, { fit: "inside", withoutEnlargement: true }).raw().toBuffer({ resolveWithObject: true });
+    deconstruction = deconstruct({ data: big.data, width: big.info.width, height: big.info.height });
+  } catch { stats.deconstructErrors++; }
+  return { width, height, features, dhash: hash, deconstruction };
 }
 
 async function main() {
@@ -107,20 +122,29 @@ async function main() {
   const stream = createWriteStream(out, { flags: "w" });
   const dupes = new NearDuplicateIndex(6);
   const inflight = new Set<Promise<void>>();
+  const seenIds = new Set<string>();
 
   for await (const line of rl) {
     if (!line.trim()) continue;
     if (stats.read >= limit) { stats.stopReason = "limit reached"; break; }
     if (Date.now() > deadline) { stats.stopReason = "time budget reached"; break; }
     const row = JSON.parse(line) as Row;
+    if (seenIds.has(row.id)) { stats.skippedRepeats++; continue; }
+    seenIds.add(row.id);
     stats.read++;
     const p = analyze(row, dupes).then((a) => {
       stream.write(JSON.stringify({
-        id: row.id, source: row.source, institution: row.raw?.institution, objectURL: row.objectURL, accession: row.accession,
-        tradition: row.tradition, image: row.image, relevance: row.raw?.relevance, width: a.width, height: a.height,
-        dhash: a.dhash, features: a.features, stage: "analyzed", analyzerVersion: ANALYZER_VERSION, analyzedAt: new Date().toISOString(),
+        id: row.id, source: row.source, institution: row.institution ?? row.raw?.institution, objectURL: row.objectURL, accession: row.accession,
+        tradition: row.tradition, image: row.image, relevance: row.relevance ?? row.raw?.relevance, width: a.width, height: a.height,
+        dhash: a.dhash, features: a.features, deconstruction: a.deconstruction, stage: "analyzed", analyzerVersion: ANALYZER_VERSION, analyzedAt: new Date().toISOString(),
       }) + "\n");
       stats.analyzed++; bump(stats.bySource, row.source); bump(stats.dominantAxis, a.features.dominantAxis);
+      const d = a.deconstruction;
+      if (d) {
+        bump(stats.kind, d.kind);
+        for (const b of d.bands) bump(stats.friezeGroups, b.frieze.group);
+        if (d.wallpaper) bump(stats.wallpaperRotation, String(d.wallpaper.rotationOrder));
+      }
       if (stats.analyzed % 1000 === 0) console.log(JSON.stringify({ checkpoint: stats.analyzed, read: stats.read }));
     }).catch((e) => {
       const reason = String((e as Error).message ?? e).slice(0, 40);
