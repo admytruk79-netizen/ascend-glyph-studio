@@ -3,13 +3,14 @@ import assert from "node:assert/strict";
 import { generate, mixFrieze, type Request } from "./generate.js";
 import { friezeCell, FRIEZE_GROUPS } from "./symmetry.js";
 import { UNIT_MOTIFS } from "./motifs.js";
+import { ASCEND_UNITS } from "./ascend.js";
 import { readBackGroup, feasibility } from "./check.js";
 
 const cuff = { name: "cuff band", finishedLength: 250, height: 30, seamAllowance: 10, closureOverlap: 18 };
 
 test("every frieze group built by the generator is read back as the same group by the analyser", () => {
   const bad: string[] = [];
-  for (const [name, m] of Object.entries(UNIT_MOTIFS)) for (const g of FRIEZE_GROUPS) {
+  for (const [name, m] of Object.entries({ ...UNIT_MOTIFS, ...ASCEND_UNITS })) for (const g of FRIEZE_GROUPS) {
     const cell = friezeCell(m.polys, g);
     const period = 24, inner = 24;
     const shapes = Array.from({ length: 8 }, (_, i) => cell.map((p) => ({ id: "a", role: "motif" as const, color: "#000", poly: p.map((q) => ({ x: i * period + q.x * period, y: q.y * inner })) }))).flat();
@@ -49,7 +50,10 @@ test("measured profiles override priors once a tradition has 30+ objects", () =>
 });
 
 test("generated cuff candidates read back correctly and pass the stitch gate except the pending sew-out", () => {
-  const cands = generate({ weights: { Ukrainian: 3, "Western / cowboy material culture": 1 }, meanings: ["protection", "fertility"], zone: cuff, seed: 3 }, 4);
+  const cands = [
+    ...generate({ weights: { Ukrainian: 3, "Western / cowboy material culture": 1 }, meanings: ["protection", "fertility"], zone: cuff, seed: 3, vocabulary: "folk" }, 4),
+    ...generate({ weights: { Ukrainian: 3, "Western / cowboy material culture": 1 }, meanings: ["protection", "growth", "light", "family", "ascent"], zone: cuff, seed: 5 }, 8),
+  ];
   for (const c of cands) {
     assert.equal(readBackGroup(c, 30).group, c.group, `${c.id} ${c.group}`);
     const f = feasibility(c);

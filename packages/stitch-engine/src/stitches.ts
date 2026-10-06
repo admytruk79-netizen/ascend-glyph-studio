@@ -112,7 +112,12 @@ export function tatamiFill(poly: Pt[], o: FillOptions = {}): Stitch[][] {
   const small = Math.min(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)) < 4;
   if ((o.underlay ?? true) && !small) {
     const edge = inset(poly, 0.5);
-    if (edge.length >= 3) regions.push(resample([...edge, edge[0]!], 2.5));
+    if (edge.length >= 3) {
+      // underlay needs no corner points; where a thin shape's inset folds back, drop points closer than 1.2 mm
+      const run: Stitch[] = [];
+      for (const p of resample([...edge, edge[0]!], 2.5, 181)) if (!run.length || dist(run[run.length - 1]!, p) >= 1.2) run.push(p);
+      if (run.length >= 3) regions.push(run);
+    };
     for (const r of rawFill(poly, ang + Math.PI / 2, 2.0, 4, 0, 1)) regions.push(r);
   }
   for (const r of rawFill(poly, ang, rs, sl, pc, 0)) regions.push(r);
