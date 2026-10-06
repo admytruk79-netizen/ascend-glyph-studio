@@ -6,7 +6,7 @@ import type {DesignNicheId} from "./niches";
 import {deriveSignals} from "./pattern-knowledge-graph";
 import {worldPatternGraph} from "./world-pattern-graph";
 import type {GarmentZone} from "./garment";
-import type {MediumId} from "./medium-compiler";
+import {adaptForProduction,type MediumId} from "./medium-compiler";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
@@ -23,8 +23,38 @@ const nicheForMode=(mode:PatternMode):DesignNicheId|undefined=>({
  band:"hem-band",field:"back-field",emblem:"chest",sleeve:"sleeve",cuff:"cuff-wrap",collar:"collar"
 }[mode] as DesignNicheId|undefined);
 
-function mediumForMode(mode:PatternMode):MediumId{
+function mediumForMode(mode:PatternMode,requested?:string):MediumId{
+ if(requested==="print"||requested==="embroidery"||requested==="emboss"||requested==="leather-tooling")return requested;
  return mode==="field"?"print":"embroidery";
+}
+
+function richOrnament(svg:string,mode:PatternMode,complexity:number,medium:MediumId,width:number,height:number){
+ const body=svg.match(/<svg[^>]*>([\\s\\S]*)<\\/svg>/)?.[1]??"";
+ const withoutMeta=body.replace(/<metadata[\\s\\S]*?<\\/metadata>/g,"");
+ const levels=complexity>.78?4:complexity>.52?3:2;
+ const repeat=mode==="band"||mode==="cuff"||mode==="collar"||mode==="sleeve";
+ const transforms:string[]=[];
+ transforms.push(`<g data-rich-layer="primary">${withoutMeta}</g>`);
+ if(repeat){
+  const count=levels+1,step=width/count;
+  for(let i=1;i<count;i++){
+   const mirror=i%2?-1:1;
+   const tx=i*step+(mirror<0?step:0);
+   transforms.push(`<g data-rich-layer="rhythm-${i}" transform="translate(${tx.toFixed(2)} 0) scale(${mirror} 1) translate(${(-i*step).toFixed(2)} 0)" opacity="${(0.82-i*.07).toFixed(2)}">${withoutMeta}</g>`);
+  }
+ }else{
+  for(let i=1;i<levels;i++){
+   const s=1-i*.14,dx=width*(1-s)/2,dy=height*(1-s)/2;
+   transforms.push(`<g data-rich-layer="nested-${i}" transform="translate(${dx.toFixed(2)} ${dy.toFixed(2)}) scale(${s.toFixed(3)})" opacity="${(0.72-i*.1).toFixed(2)}">${withoutMeta}</g>`);
+  }
+ }
+ if(complexity>.7){
+  transforms.push(`<g data-rich-layer="interruption" transform="translate(${(width*.035).toFixed(2)} ${(height*.055).toFixed(2)}) scale(.93)" opacity=".42">${withoutMeta}</g>`);
+ }
+ const stroke=medium==="print"?1.8:medium==="embroidery"?2.8:medium==="emboss"?3.2:3.5;
+ const filter=medium==="emboss"||medium==="leather-tooling"?` filter="url(#rich-relief)"`:"";
+ const defs=(medium==="emboss"||medium==="leather-tooling")?`<defs><filter id="rich-relief"><feGaussianBlur in="SourceAlpha" stdDeviation="1.2" result="b"/><feSpecularLighting in="b" surfaceScale="3" specularConstant=".55" specularExponent="18" lighting-color="white" result="s"><feDistantLight azimuth="225" elevation="45"/></feSpecularLighting><feComposite in="s" in2="SourceAlpha" operator="in" result="si"/><feMerge><feMergeNode in="si"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`:"";
+ return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" data-rich-composition="true" data-medium="${medium}" data-levels="${levels}">${defs}<g fill="none" stroke="currentColor" stroke-width="${stroke}" stroke-linecap="round" stroke-linejoin="round"${filter}>${transforms.join("")}</g></svg>`;
 }
 
 function projectionZone(mode:PatternMode,width:number,height:number):GarmentZone{
@@ -66,7 +96,7 @@ function culturalSignals(cultureIds:string[],objectTypes?:string[]){const signal
 export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]{
  const concepts=(input.concepts.length?input.concepts:["ancestry","freedom","protection"]).slice(0,8);
  const mode=input.mode??"band",niche=nicheForMode(mode),variations=Math.max(4,Math.min(input.variations??12,32));
- const width=input.width??960,height=input.height??260,medium=mediumForMode(mode),zone=projectionZone(mode,width,height);
+ const width=input.width??960,height=input.height??260,medium=mediumForMode(mode,input.medium),zone=projectionZone(mode,width,height);
  const complexity=Math.max(0,Math.min(1,input.complexity??.65));
  const cultureIds=input.cultureIds?.length?input.cultureIds:["ukraine","japan","britain","china","western-craft"];
  const placementTypes=input.placement?[input.placement,"garment","shirt","tunic","textile","textile-family","design-cloth","wrapper","sash","leather"]:undefined;
@@ -83,8 +113,10 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   population:Math.round(32+complexity*64),generations:Math.round(3+complexity*5),keep:variations
  });
  return candidates.map((c,i)=>{
-  const g=genomeFromTopology(`pattern:${input.seed}:${i}`,c.topology);
+  const adapted=adaptForProduction(c.topology,medium,niche);
+  const g=genomeFromTopology(`pattern:${input.seed}:${i}`,adapted.topology);
   const p=projectSemanticGeometry(g,width,height,zone);
-  return {id:`pat-${input.seed}-${i+1}`,lineageId:c.lineageId,score:c.score,novelty:c.novelty,objectives:c.objectives,svg:colorize(p.svg,input.paletteId??"underdog-heritage")};
+  const rich=richOrnament(p.svg,mode,complexity,medium,width,height);
+  return {id:`pat-${input.seed}-${i+1}`,lineageId:c.lineageId,score:c.score,novelty:c.novelty,objectives:c.objectives,svg:colorize(rich,input.paletteId??"underdog-heritage")};
  });
 }
