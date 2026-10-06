@@ -54,13 +54,25 @@ Pipeline: discover sources → enumerate candidate records → retrieve imagery 
 
 See `docs/CORPUS-INGESTION.md`, `docs/MATURE-CORPUS-RUNBOOK.md`, `docs/UNIVERSAL-PATTERN-DERIVATION.md` and `docs/CULTURAL-SEMANTIC-GAP-MATRIX.md`.
 
+## Product scope
+
+ASCEND products are limited to forms that are **easy to embroider or print**:
+
+| Product line | Production methods | Example placements |
+|---|---|---|
+| **Apparel**: shirts (linen first), overshirts, rushnyky/towels and other textiles | Machine embroidery, print (DTG, screen, sublimation) | Collar, cuff, placket, sleeve, chest, yoke; towel ends and borders |
+| **Diaries and paper goods**: diaries, notebooks, journals | Print, foil, embossing/debossing on covers | Cover field, spine band, corner mark, endpapers |
+| **Boots**: Western boots | Shaft stitching, leather tooling, inlay/overlay | Shaft panels, collar band, toe and vamp stitching |
+
+**Out of scope:** ceramics, metalwork, architecture and other fabrication. The language can extend there later, but the build, the validation rules and the manufacturing partners serve these three lines only. The first product stays the **ASCEND linen shirt**.
+
 ## Manufacturing and production
 
 Manufacturing is one of the final layers of the language itself, not an export step. A design that cannot be reliably manufactured is not complete.
 
 **meaning → language → geometry → material rules → production-valid design → manufacturing package → physical object**
 
-- Material- and capability-aware generation: process constraints (embroidery, print, jacquard, leather, laser, CNC, ceramics, …) apply during generation, not only after.
+- Material- and capability-aware generation: process constraints (embroidery, print, leather tooling and stitching) apply during generation, not only after.
 - A manufacturing compiler projects one approved construction into process-specific geometry while preserving semantic lineage.
 - Production validation **fails closed**; a design stays non-production until the physical result is validated. A beautiful preview never overrides a failed validation.
 - Approved designs produce an **immutable production manifest** (design ID/version, engine and model versions, intent, primitives, grammar, seed, geometry hash, material, process, placement, tolerances, validation results, manufacturer capability profile, provenance, manifest hash).
