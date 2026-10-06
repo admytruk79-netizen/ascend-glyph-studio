@@ -106,6 +106,23 @@ export class Kit {
     return out;
   }
 
+  /**
+   * ASCEND star (Oleksandr's blue sheet): a concave four-point star with eight seed-flicks around it.
+   * It is the signature: every book design carries it at its heart.
+   */
+  ascendStar(cx: number, cy: number, R: number, star: string, seed: string, tilt = 0) {
+    this.star4(cx, cy, R, star, tilt);
+    for (let k = 0; k < 8; k++) {
+      const a = tilt + Math.PI / 4 + (k * Math.PI) / 4 + (k % 2 ? 0.15 : -0.15), r0 = R * (k % 2 ? 1.12 : 0.92);
+      this.leaf(seed, P(cx + r0 * Math.cos(a), cy + r0 * Math.sin(a)), a + 0.35, R * 0.5, Math.max(0.75, R * 0.09), 0.25, 0.42, "flick");
+    }
+  }
+
+  /** Place an ASCEND form (polygons in a unit box, from ascend.ts) at (x, y) with the given size; colours cycle over its parts. */
+  place(polys: Pt[][], x: number, y: number, size: number, colors: string[], mirror = false, kind = "ascend") {
+    polys.forEach((poly, i) => this.fill(kind, colors[i % colors.length]!, poly.map((p) => P(x + (mirror ? 1 - p.x : p.x) * size, y + p.y * size)), 45));
+  }
+
   /** Bud «бутон»: a full teardrop held by two sepals. */
   bud(base: Pt, a: number, size: number, body: string, sepal: string) {
     const d = dir(a);

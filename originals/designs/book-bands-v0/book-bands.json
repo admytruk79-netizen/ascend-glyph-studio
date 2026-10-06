@@ -1,0 +1,103 @@
+[
+  {
+    "card": 1,
+    "name": "001-the-flame-of-purity",
+    "phase": 1,
+    "rhythm": "7-3",
+    "event": "lily",
+    "stitches": 10550,
+    "minutes": 21.6,
+    "colors": 5,
+    "failed": []
+  },
+  {
+    "card": 3,
+    "name": "003-the-spiral-of-wisdom",
+    "phase": 1,
+    "rhythm": "8-2",
+    "event": "horns",
+    "stitches": 10406,
+    "minutes": 21.1,
+    "colors": 5,
+    "failed": []
+  },
+  {
+    "card": 10,
+    "name": "010-the-solar-axis",
+    "phase": 2,
+    "rhythm": "6-4",
+    "event": "sun",
+    "stitches": 12617,
+    "minutes": 30.8,
+    "colors": 5,
+    "failed": []
+  },
+  {
+    "card": 14,
+    "name": "014-the-lotus-of-renewal",
+    "phase": 2,
+    "rhythm": "9-1",
+    "event": "lotus",
+    "stitches": 13481,
+    "minutes": 31.7,
+    "colors": 5,
+    "failed": []
+  },
+  {
+    "card": 19,
+    "name": "019-the-tree-of-emanations",
+    "phase": 2,
+    "rhythm": "4-4-4-4",
+    "event": "tree",
+    "stitches": 11679,
+    "minutes": 29.9,
+    "colors": 5,
+    "failed": [
+      "min-gap: closest objects centre-492/berry-498 0.25 mm (min 0.8)"
+    ]
+  },
+  {
+    "card": 25,
+    "name": "025-the-prismatic-stream",
+    "phase": 2,
+    "rhythm": "5-5",
+    "event": "vine",
+    "stitches": 12083,
+    "minutes": 30,
+    "colors": 5,
+    "failed": []
+  },
+  {
+    "card": 57,
+    "name": "057-the-temple-gateway",
+    "phase": 3,
+    "rhythm": "11-5-11",
+    "event": "enclosure",
+    "stitches": 10600,
+    "minutes": 30.3,
+    "colors": 5,
+    "failed": []
+  },
+  {
+    "card": 68,
+    "name": "068-the-eye-of-the-eternal",
+    "phase": 4,
+    "rhythm": "5-5-5",
+    "event": "eye",
+    "stitches": 10001,
+    "minutes": 25.9,
+    "colors": 5,
+    "failed": []
+  },
+  {
+    "card": 92,
+    "name": "092-the-golden-thread",
+    "phase": 5,
+    "rhythm": "11-0-11",
+    "event": "crown",
+    "stitches": 12790,
+    "minutes": 26.9,
+    "colors": 5,
+    "failed": []
+  }
+]
