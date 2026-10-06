@@ -29,8 +29,11 @@ function mediumForMode(mode:PatternMode,requested?:string):MediumId{
 }
 
 function richOrnament(svg:string,mode:PatternMode,complexity:number,medium:MediumId,width:number,height:number){
- const body=svg.match(/<svg[^>]*>([\\s\\S]*)<\\/svg>/)?.[1]??"";
- const withoutMeta=body.replace(/<metadata[\\s\\S]*?<\\/metadata>/g,"");
+ const open=svg.indexOf(">"),close=svg.lastIndexOf("</svg>");
+ const body=open>=0&&close>open?svg.slice(open+1,close):svg;
+ let withoutMeta=body;
+ const ms=withoutMeta.indexOf("<metadata"),me=withoutMeta.indexOf("</metadata>");
+ if(ms>=0&&me>=ms)withoutMeta=withoutMeta.slice(0,ms)+withoutMeta.slice(me+"</metadata>".length);
  const levels=complexity>.78?4:complexity>.52?3:2;
  const repeat=mode==="band"||mode==="cuff"||mode==="collar"||mode==="sleeve";
  const transforms:string[]=[];
