@@ -11,6 +11,13 @@ function piece(id:string,kind:PatternPieceKind,w:number,h:number,zones:ReturnTyp
  return {id,kind,cutQuantity:1,mirror:false,outline:rect(w,h),grainline:{from:{x:w/2,y:10},to:{x:w/2,y:h-10}},seams:[],noGoZones:[],designZones:zones,sourceState:"reference"};
 }
 
+function connect(a:PatternPiece,b:PatternPiece,index:number){
+ const aId=`join-${index}-a`,bId=`join-${index}-b`;
+ a.seams.push({id:aId,kind:"construction",edge:"reference-edge",joins:{pieceId:b.id,seamId:bId},allowanceMm:10,crossDesignAllowed:true,registrationToleranceMm:2});
+ b.seams.push({id:bId,kind:"construction",edge:"reference-edge",joins:{pieceId:a.id,seamId:aId},allowanceMm:10,crossDesignAllowed:true,registrationToleranceMm:2});
+ return {fromPiece:a.id,fromSeam:aId,toPiece:b.id,toSeam:bId};
+}
+
 export function buildPilotShirtPattern(size:SizeProfile):ShirtPattern{
  const r=resolvePilotShirtMeasurements(size);if(!r.measurements)throw new Error(r.errors.join(","));
  const m=r.measurements,halfChest=m.garmentChestMm/4,bodyH=m.bodyLengthMm;
@@ -24,10 +31,10 @@ export function buildPilotShirtPattern(size:SizeProfile):ShirtPattern{
  const cl=piece("cuff-left","cuff-left",cuffW,120,[zone("cuff",cuffW,120,"left-arm")]);
  const cr=piece("cuff-right","cuff-right",cuffW,120,[zone("cuff",cuffW,120,"right-arm")]);
  const collar=piece("collar","collar",m.collarMm/2,110,[zone("collar",m.collarMm/2,110,"neck")]);
- const pieces=[frontL,frontR,back,yoke,sl,sr,cl,cr,collar].map(addConstructionNoGoZones);
  const seamGraph=[
-  ["front-left","yoke"],["front-right","yoke"],["back","yoke"],
-  ["yoke","sleeve-left"],["yoke","sleeve-right"],["sleeve-left","cuff-left"],["sleeve-right","cuff-right"],["yoke","collar"]
- ].map(([a,b],i)=>({fromPiece:a!,fromSeam:`join-${i}-a`,toPiece:b!,toSeam:`join-${i}-b`}));
+  connect(frontL,yoke,0),connect(frontR,yoke,1),connect(back,yoke,2),
+  connect(yoke,sl,3),connect(yoke,sr,4),connect(sl,cl,5),connect(sr,cr,6),connect(yoke,collar,7)
+ ];
+ const pieces=[frontL,frontR,back,yoke,sl,sr,cl,cr,collar].map(addConstructionNoGoZones);
  return {id:`pilot-shirt:${size.id}`,size,pieces,seamGraph};
 }
