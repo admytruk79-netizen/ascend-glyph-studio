@@ -20,8 +20,32 @@ function connect(a:PatternPiece,b:PatternPiece,index:number){
  return {fromPiece:a.id,fromSeam:aId,toPiece:b.id,toSeam:bId};
 }
 
+function sourcedPattern(size:SizeProfile,block:PilotBlockSpec):ShirtPattern{
+ const byKind=new Map<PatternPieceKind,PatternPiece>();
+ for(const supplied of Object.values(block.pieces)){
+  if(!supplied)continue;
+  const p:PatternPiece={id:supplied.kind,kind:supplied.kind,cutQuantity:1,mirror:false,
+   outline:supplied.outline.map(q=>({...q})),grainline:{from:{...supplied.grainline.from},to:{...supplied.grainline.to}},
+   seams:[],noGoZones:supplied.noGoZones.map(z=>({...z,polygon:z.polygon.map(q=>({...q}))})),
+   designZones:supplied.designZones.map(z=>({...z,polygon:z.polygon.map(q=>({...q}))})),sourceState:block.sourceState};
+  byKind.set(supplied.kind,p);
+ }
+ const seamGraph:ShirtPattern["seamGraph"]=[];
+ for(const supplied of Object.values(block.pieces)){
+  if(!supplied)continue;const p=byKind.get(supplied.kind)!;
+  for(const seam of supplied.seams){
+   const target=seam.joins?byKind.get(seam.joins.pieceKind):undefined;
+   p.seams.push({id:seam.id,kind:seam.kind,edge:seam.edge,joins:seam.joins&&target?{pieceId:target.id,seamId:seam.joins.seamId}:undefined,
+    allowanceMm:seam.allowanceMm,crossDesignAllowed:seam.crossDesignAllowed,registrationToleranceMm:seam.registrationToleranceMm});
+   if(seam.joins&&target&&p.id<target.id)seamGraph.push({fromPiece:p.id,fromSeam:seam.id,toPiece:target.id,toSeam:seam.joins.seamId});
+  }
+ }
+ return {id:`pilot-shirt:${size.id}:${block.id}`,size,pieces:[...byKind.values()].map(addConstructionNoGoZones),seamGraph};
+}
+
 export function buildPilotShirtPattern(size:SizeProfile,block?:PilotBlockSpec):ShirtPattern{
  const blockErrors=block?validatePilotBlockSpec(block):[];if(blockErrors.length)throw new Error(blockErrors.join(","));
+ if(block)return sourcedPattern(size,block);
  const r=resolvePilotShirtMeasurements(size);if(!r.measurements)throw new Error(r.errors.join(","));
  const m=r.measurements,halfChest=m.garmentChestMm/4,bodyH=m.bodyLengthMm;
  const sleeveW=m.upperSleeveCircumferenceMm/2,sleeveH=m.sleeveMm*.78,cuffW=m.cuffMm/2;
@@ -34,14 +58,7 @@ export function buildPilotShirtPattern(size:SizeProfile,block?:PilotBlockSpec):S
  const cl=piece("cuff-left","cuff-left",cuffW,120,[zone("cuff",cuffW,120,"left-arm")]);
  const cr=piece("cuff-right","cuff-right",cuffW,120,[zone("cuff",cuffW,120,"right-arm")]);
  const collar=piece("collar","collar",m.collarMm/2,110,[zone("collar",m.collarMm/2,110,"neck")]);
- const seamGraph=[
-  connect(frontL,yoke,0),connect(frontR,yoke,1),connect(back,yoke,2),
-  connect(yoke,sl,3),connect(yoke,sr,4),connect(sl,cl,5),connect(sr,cr,6),connect(yoke,collar,7)
- ];
- const pieces=[frontL,frontR,back,yoke,sl,sr,cl,cr,collar].map(p=>{
-  const supplied=block?.pieces[p.kind];
-  const resolved=supplied?{...p,outline:supplied.outline.map(q=>({...q})),grainline:{from:{...supplied.grainline.from},to:{...supplied.grainline.to}},designZones:supplied.designZones.map(z=>({...z,polygon:z.polygon.map(q=>({...q}))})),sourceState:block!.sourceState}:p;
-  return addConstructionNoGoZones(resolved);
- });
- return {id:`pilot-shirt:${size.id}:${block?.id??"reference"}`,size,pieces,seamGraph};
+ const seamGraph=[connect(frontL,yoke,0),connect(frontR,yoke,1),connect(back,yoke,2),connect(yoke,sl,3),connect(yoke,sr,4),connect(sl,cl,5),connect(sr,cr,6),connect(yoke,collar,7)];
+ const pieces=[frontL,frontR,back,yoke,sl,sr,cl,cr,collar].map(addConstructionNoGoZones);
+ return {id:`pilot-shirt:${size.id}:reference`,size,pieces,seamGraph};
 }
