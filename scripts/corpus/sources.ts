@@ -263,7 +263,12 @@ const UKRAINIAN = [
   "Ukrainian shirt", "embroidered shirt Ukraine", "Ukrainian sash", "Ukrainian apron", "plakhta", "Ukrainian Easter egg", "pysanka",
   "вишивка", "вишиванка", "рушник", "сорочка", "килим", "орнамент",
 ];
-const WESTERN = ["saddle", "spurs", "leather tooling", "cowboy", "bridle", "chaps", "western boots", "charro", "saddle blanket", "horse tack", "silver concho", "belt buckle"];
+const BELARUSIAN = ["Belarusian embroidery", "Belarusian textile", "Belarusian towel", "Belarus weaving", "Slutsk sash", "Byelorussian", "White Russian embroidery", "Belarusian costume"];
+const ENGLISH = [
+  "English embroidery", "blackwork", "crewelwork", "Jacobean embroidery", "English sampler", "needlework sampler 17th century",
+  "Elizabethan embroidery", "stumpwork", "Berlin woolwork", "Spitalfields silk", "English needlework", "embroidered coif", "English quilt",
+];
+const WESTERN = ["saddle", "spurs", "leather tooling", "cowboy", "bridle", "chaps", "western boots", "charro", "saddle blanket", "horse tack", "silver concho", "belt buckle", "cowboy boots", "boot stitching", "tooled leather", "vaquero", "saddlery", "Western saddle"];
 const GLOBAL = [
   "embroidery", "embroidered linen", "needlework sampler", "weaving", "tapestry", "brocade", "damask", "lace", "kilim", "carpet", "rug",
   "ikat", "batik", "block printed textile", "chintz", "quilt", "jacquard", "shawl", "sash", "textile fragment", "textile design",
@@ -287,6 +292,8 @@ const GLOBAL = [
 
 export const QUERIES: Query[] = [
   ...UKRAINIAN.map((q) => ({ q, tradition: "Ukrainian" })),
+  ...BELARUSIAN.map((q) => ({ q, tradition: "Belarusian" })),
+  ...ENGLISH.map((q) => ({ q, tradition: "English (16th–19th c.)" })),
   ...WESTERN.map((q) => ({ q, tradition: "Western / cowboy material culture" })),
   ...GLOBAL.map((q) => ({ q, tradition: "Global" })),
 ];
