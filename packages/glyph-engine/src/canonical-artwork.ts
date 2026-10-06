@@ -2,9 +2,10 @@ import {createHash} from "node:crypto";
 import {PointMm} from "./product-geometry";
 import {ArtworkPlacement} from "./universal-preflight";
 
+export interface CanonicalCompoundPath{fillRule:"nonzero"|"evenodd";rings:PointMm[][]}
 export interface CanonicalArtwork{
  id:string;revision:string;sourceHash:string;viewBox:{x:number;y:number;width:number;height:number};
- polygons:PointMm[][];minLineUnits:number;minGapUnits:number;
+ polygons:PointMm[][];compoundPaths?:CanonicalCompoundPath[];minLineUnits:number;minGapUnits:number;
 }
 export interface ArtworkProjection{
  artworkId:string;artworkRevision:string;canonicalSourceHash:string;transformHash:string;placement:ArtworkPlacement;
@@ -20,7 +21,8 @@ export function validateCanonicalArtwork(a:CanonicalArtwork):string[]{
  const e:string[]=[];if(!a.id.trim()||!a.revision.trim())e.push("missing-artwork-identity");
  if(a.viewBox.width<=0||a.viewBox.height<=0)e.push("invalid-artwork-viewbox");
  if(!a.polygons.length||a.polygons.some(p=>p.length<3))e.push("invalid-artwork-polygons");
- if(a.polygons.flat().some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y)))e.push("non-finite-artwork-geometry");
+ if(a.compoundPaths?.some(p=>!p.rings.length||p.rings.some(r=>r.length<3)))e.push("invalid-artwork-compound-paths");
+ if(a.polygons.flat().some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y))||a.compoundPaths?.flatMap(p=>p.rings).flat().some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y)))e.push("non-finite-artwork-geometry");
  const {sourceHash,...raw}=a;if(sourceHash!==hashCanonicalArtwork(raw))e.push("canonical-source-hash-mismatch");
  return e;
 }
