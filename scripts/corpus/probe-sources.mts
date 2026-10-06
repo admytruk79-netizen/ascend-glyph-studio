@@ -6,6 +6,8 @@
 import { USER_AGENT } from "./sources.ts";
 
 const URLS = [
+  // Reference only (product benchmark): read access rules and terms, never harvested.
+  "https://vytvory.ua/robots.txt",
   "https://krovets.ua/en/terms-of-use",
   "https://kyiv.ua.museum-digital.org/json/object/12655",
   "https://kyiv.ua.museum-digital.org/json/objects?s=" + encodeURIComponent("вишивка") + "&startwert=24",
