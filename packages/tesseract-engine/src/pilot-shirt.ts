@@ -3,6 +3,8 @@ import type {PatternPiece,PatternPieceKind,Point,ShirtPattern} from "./pattern";
 import {resolvePilotShirtMeasurements} from "./shirt-measurements";
 import type {SizeProfile} from "./garment";
 import {addConstructionNoGoZones} from "./pattern-projector";
+import type {PilotBlockSpec} from "./pilot-block";
+import {validatePilotBlockSpec} from "./pilot-block";
 
 const rect=(w:number,h:number):Point[]=>[{x:0,y:0},{x:w,y:0},{x:w,y:h},{x:0,y:h}];
 const zone=(kind:GarmentZoneKind,w:number,h:number,wrapGroupId?:string)=>({kind,polygon:rect(w,h),wrapGroupId});
@@ -18,7 +20,8 @@ function connect(a:PatternPiece,b:PatternPiece,index:number){
  return {fromPiece:a.id,fromSeam:aId,toPiece:b.id,toSeam:bId};
 }
 
-export function buildPilotShirtPattern(size:SizeProfile):ShirtPattern{
+export function buildPilotShirtPattern(size:SizeProfile,block?:PilotBlockSpec):ShirtPattern{
+ const blockErrors=block?validatePilotBlockSpec(block):[];if(blockErrors.length)throw new Error(blockErrors.join(","));
  const r=resolvePilotShirtMeasurements(size);if(!r.measurements)throw new Error(r.errors.join(","));
  const m=r.measurements,halfChest=m.garmentChestMm/4,bodyH=m.bodyLengthMm;
  const sleeveW=m.upperSleeveCircumferenceMm/2,sleeveH=m.sleeveMm*.78,cuffW=m.cuffMm/2;
@@ -35,6 +38,10 @@ export function buildPilotShirtPattern(size:SizeProfile):ShirtPattern{
   connect(frontL,yoke,0),connect(frontR,yoke,1),connect(back,yoke,2),
   connect(yoke,sl,3),connect(yoke,sr,4),connect(sl,cl,5),connect(sr,cr,6),connect(yoke,collar,7)
  ];
- const pieces=[frontL,frontR,back,yoke,sl,sr,cl,cr,collar].map(addConstructionNoGoZones);
- return {id:`pilot-shirt:${size.id}`,size,pieces,seamGraph};
+ const pieces=[frontL,frontR,back,yoke,sl,sr,cl,cr,collar].map(p=>{
+  const supplied=block?.pieces[p.kind];
+  const resolved=supplied?{...p,outline:supplied.outline.map(q=>({...q})),grainline:{from:{...supplied.grainline.from},to:{...supplied.grainline.to}},sourceState:block!.sourceState}:p;
+  return addConstructionNoGoZones(resolved);
+ });
+ return {id:`pilot-shirt:${size.id}:${block?.id??"reference"}`,size,pieces,seamGraph};
 }
