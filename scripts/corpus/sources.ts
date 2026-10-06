@@ -22,28 +22,39 @@ export const USER_AGENT = UA;
 const str = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim() : undefined);
 const join = (v: unknown) => (Array.isArray(v) ? str(v.filter(Boolean).join("; ")) : str(v));
 
+// The Met retired /v1/search on 2026-10-01; /v1.1/search is paginated with offset and limit.
+const metIds = (res: any): number[] => {
+  const list = res?.objectIDs ?? res?.results ?? res?.data ?? res?.objects ?? [];
+  return (list as any[]).map((x) => (typeof x === "number" ? x : Number(x?.objectID ?? x?.id))).filter((n) => Number.isFinite(n));
+};
 const met: Adapter = {
   institution: "The Metropolitan Museum of Art",
   source: "met",
   enabled: () => true,
   async *search({ q, tradition }, fetchJson) {
-    const base = "https://collectionapi.metmuseum.org/public/collection/v1";
-    const res = await fetchJson(`${base}/search?hasImages=true&q=${encodeURIComponent(q)}`);
-    for (const id of (res?.objectIDs ?? []) as number[]) {
-      let x: any;
-      try { x = await fetchJson(`${base}/objects/${id}`); } catch { continue; }
-      if (!x) continue;
-      const rightsStatus: RightsStatus = x.isPublicDomain === true ? "open" : "review";
-      yield {
-        id: `met-${id}`, institution: met.institution, source: met.source, query: q, tradition,
-        title: str(x.title), creator: str(x.artistDisplayName), date: str(x.objectDate),
-        region: str([x.country, x.region, x.city].filter(Boolean).join(", ")), culture: str(x.culture),
-        material: str(x.medium), technique: str(x.classification), objectType: str(x.objectName),
-        objectURL: str(x.objectURL), image: str(x.primaryImage) ?? str(x.primaryImageSmall),
-        rights: x.isPublicDomain ? "Public domain (Met Open Access, CC0)" : str(x.rightsAndReproduction) ?? "Not open access",
-        rightsStatus, accession: str(x.accessionNumber), reliability: 0.98,
-        description: str([x.department, x.period, x.dynasty, x.tags?.map((t: any) => t.term).join(" ")].filter(Boolean).join(" ")),
-      };
+    const base = "https://collectionapi.metmuseum.org/public/collection";
+    for (let offset = 0; offset < 10000; offset += 100) {
+      const res = await fetchJson(`${base}/v1.1/search?hasImages=true&q=${encodeURIComponent(q)}&offset=${offset}&limit=100`);
+      const ids = metIds(res);
+      if (!ids.length) return;
+      for (const id of ids) {
+        let x: any;
+        try { x = await fetchJson(`${base}/v1/objects/${id}`); } catch { continue; }
+        if (!x) continue;
+        const rightsStatus: RightsStatus = x.isPublicDomain === true ? "open" : "review";
+        yield {
+          id: `met-${id}`, institution: met.institution, source: met.source, query: q, tradition,
+          title: str(x.title), creator: str(x.artistDisplayName), date: str(x.objectDate),
+          region: str([x.country, x.region, x.city].filter(Boolean).join(", ")), culture: str(x.culture),
+          material: str(x.medium), technique: str(x.classification), objectType: str(x.objectName),
+          objectURL: str(x.objectURL), image: str(x.primaryImageSmall) ?? str(x.primaryImage),
+          rights: x.isPublicDomain ? "Public domain (Met Open Access, CC0)" : str(x.rightsAndReproduction) ?? "Not open access",
+          rightsStatus, accession: str(x.accessionNumber), reliability: 0.98,
+          description: str([x.department, x.period, x.dynasty, x.tags?.map((t: any) => t.term).join(" ")].filter(Boolean).join(" ")),
+        };
+      }
+      const total = Number(res?.total ?? res?.totalCount ?? NaN);
+      if (ids.length < 100 || (Number.isFinite(total) && offset + 100 >= total)) return;
     }
   },
 };
@@ -192,12 +203,12 @@ const commons: Adapter = {
   source: "commons",
   enabled: () => true,
   queries: [
-    "Embroidery of Ukraine", "Ukrainian embroidery", "Vyshyvanka", "Rushnyky", "Rushnyk", "Embroidered shirts of Ukraine",
+    "Embroidery of Ukraine", "Traditional Ukrainian embroidery", "Ukrainian embroidery by region", "Ukrainian embroidery by date",
+    "Ukrainian rushnyk", "Sorochka (Ukraine)", "Nyz'", "Cross-stitching in Ukraine", "Pillows of Ukraine", "Vyshyvanka in Ukraine",
+    "Ukrainian embroidery", "Vyshyvanka", "Rushnyky",
     "Ukrainian folk costume", "Folk costumes of Ukraine", "Hutsul embroidery", "Hutsul costume", "Boyko costume", "Lemko costume",
-    "Embroidery in the Ivan Honchar Museum", "Textiles in the Ivan Honchar Museum", "Ivan Honchar Museum",
-    "Embroidery in the National Museum of Ukrainian Folk Decorative Art", "National Museum of Ukrainian Folk Decorative Art",
-    "Ukrainian kilims", "Kilims of Ukraine", "Plakhta", "Petrykivka painting", "Kosiv ceramics", "Reshetylivka embroidery",
-    "Poltava embroidery", "Podillia embroidery", "Bukovina embroidery", "Polissia embroidery",
+    "Ivan Honchar Museum", "National Museum of Ukrainian Folk Decorative Art", "Ukrainian kilims", "Kilims of Ukraine", "Plakhta",
+    "Petrykivka painting", "Kosiv ceramics", "Reshetylivka embroidery",
   ].map((q) => ({ q, tradition: "Ukrainian" })),
   async *search({ q, tradition }, fetchJson) {
     const visited = new Set<string>();
