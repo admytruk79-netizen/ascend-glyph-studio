@@ -2,6 +2,7 @@ import {describe,expect,it} from "vitest";
 import {PILOT_SIZE_PROFILES,resolvePilotShirtMeasurements} from "../src/shirt-measurements";
 import {buildPilotShirtPattern} from "../src/pilot-shirt";
 import {validatePattern} from "../src/pattern";
+import {mapGarmentZonesToPieces} from "../src/pattern-projector";
 import {compileProductionManifest} from "../src/production-package";
 import {pilotGarment} from "../src/pilot-runner";
 
@@ -15,6 +16,9 @@ describe("pilot production provenance",()=>{
   expect(validatePattern(pattern)).toEqual([]);
   expect(pattern.pieces.length).toBeGreaterThan(0);
   expect(pattern.pieces.every(p=>p.sourceState==="reference")).toBe(true);
+  const mapped=mapGarmentZonesToPieces(pattern);
+  expect(mapped.map(x=>x.pieceId)).toEqual(pattern.pieces.map(x=>x.id));
+  expect(mapped.flatMap(x=>x.zones).some(z=>z.kind==="sleeve"&&!!z.wrapGroupId)).toBe(true);
  });
  it("blocks production approval for the reference pilot pattern",()=>{
   const garment=pilotGarment("pilot-m");
