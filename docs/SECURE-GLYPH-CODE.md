@@ -27,6 +27,8 @@ The code works like a QR code hidden inside ornament.
 
 The **skeleton layout itself is secret**: the positions of the data points are derived from the key (HKDF). Without the key, a reader can't tell which motifs carry data and which are decoration. That adds concealment on top of the encryption, but **the security comes from the encryption, not from hiding**.
 
+**Historical precedent.** Lithuanian pick-up sashes were woven with song texts and still carry woven inscriptions, and "hundred-pattern" (*стоузорні*) sashes make every motif along the band different (Nykorak, Herus, Kutsyr 2022, DOI 10.15407/nz2022.05.1147). A band where every cell is a distinct, readable symbol is a folk form, so the data skeleton has a traditional look rather than a technical one.
+
 ## 1. Encoding
 
 1. **Payload**

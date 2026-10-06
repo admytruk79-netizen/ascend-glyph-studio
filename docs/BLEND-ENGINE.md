@@ -27,7 +27,12 @@ Each tradition is summarised from the corpus as numbers, never images. For examp
 - **Western boot stitching and leather carving:** parallel stitch rows, scroll orbits, flame and rose curves, mirror pairs across the shaft.
 - **Native American (nation-specific):** structure statistics only, for diversity. Never a selectable "style" for motif-level derivation, and never marketed as Native-made (Indian Arts and Crafts Act).
 
-The profile itself is the pattern-language model's learned description of how that tradition behaves.
+- **West Ukrainian sashes** (Nykorak, Herus, Kutsyr 2022): vertical-axis symmetry, static rhythm; 1-, 3-, 5- or 7-part layouts with the richest band in the centre and finer bands outward, framed by thin stripes; half-motifs in neighbouring bands joining into a whole; rhomb / oblique-cross alternation; close-hue colour "shimmer".
+- **Lithuanian sashes** (same source): diagonal axes, S-motifs, rotation without mirror (`p2`, `p11g`), motifs cut by the edge, dark-on-light contrast; "hundred-pattern" sashes where no motif repeats.
+
+The profile itself is the pattern-language model's learned description of how that tradition behaves. Seed rules from the literature are stored in `compositionRules` in `data/semantics/motif-semantics.v1.json`; the corpus measurements confirm or correct them.
+
+**Bands as enclosure.** A closed band (cuff, collar, belt) carries the documented sash meaning of protection by "taking into a circle" (ethnographic grade). The wrap-around rule that no motif is cut at the seam keeps that circle unbroken.
 
 ## Composition
 
