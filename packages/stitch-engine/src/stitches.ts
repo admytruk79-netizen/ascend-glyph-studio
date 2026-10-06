@@ -107,7 +107,10 @@ export function tatamiFill(poly: Pt[], o: FillOptions = {}): Stitch[][] {
   const pc = (o.pullComp ?? 0.2) / 2;
   const regions: Stitch[][] = [];
 
-  if (o.underlay ?? true) {
+  // Underlay only where the shape is big enough to hold it; small fills (seeds, < 4 mm) get none.
+  const xs = poly.map((p) => p.x), ys = poly.map((p) => p.y);
+  const small = Math.min(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)) < 4;
+  if ((o.underlay ?? true) && !small) {
     const edge = inset(poly, 0.5);
     if (edge.length >= 3) regions.push(resample([...edge, edge[0]!], 2.5));
     for (const r of rawFill(poly, ang + Math.PI / 2, 2.0, 4, 0, 1)) regions.push(r);

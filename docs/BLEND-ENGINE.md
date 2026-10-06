@@ -85,6 +85,11 @@ The profile itself is the pattern-language model's learned description of how th
    - Tradition comes from the museum's own culture, region and title text first. The search query is used only when there is no catalogue text, and such labels are marked "(by query)".
    - `blend()` mixes the profiles by weight. It fails closed for unknown or non-selectable traditions (Native American is structure only) and warns when a profile has fewer than 30 objects.
 2. Meaning-to-primitives map from the semantics file, plus ASCEND's own concepts.
-3. Candidate generator over primitives, with structure targets.
+3. Candidate generator over primitives, with structure targets. **Built (v0.1):** `packages/blend-engine`.
+   - **Meanings → motifs:** each choice carries its semantics entries and evidence grades.
+   - **Tradition weights → symmetry:** all 7 frieze groups. The tradition weights also set proportions, the chance of an event motif, and the palette. Measured profiles take over from literature priors once a tradition has 30 or more objects, and structure-only traditions never affect motifs or palette.
+   - **Zone → wrap-around fit**, with the `AAAA | B | AAAA` grammar and enclosing rails for "protection".
+   - **Self-checks:** the deconstruction analyser must read back the intended symmetry group (verified for every motif in every group), and the stitch-engine gate must pass.
+   - **Motifs are provisional** until Oleksandr's drawings are traced. They are built without symmetry of their own, so the group alone creates the figure.
 4. Scorers: resemblance, distance from corpus, identity, feasibility.
 5. Lineage/explanation output, which feeds the production manifest.

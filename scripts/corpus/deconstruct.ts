@@ -180,9 +180,9 @@ export function detectBands(f: Float64Array, w: number, h: number): Band[] {
     if (max <= 0 || med > max * 0.6) continue;
     const thr = med + (max - med) * 0.35;
     for (let y = 0; y < H; ) {
-      if (sm[y] < thr) { y++; continue; }
+      if (sm[y]! < thr) { y++; continue; }
       let e = y;
-      while (e < H && sm[e] >= thr) e++;
+      while (e < H && sm[e]! >= thr) e++;
       const height = e - y;
       if (height >= Math.max(4, H * 0.04) && height <= H * 0.5) {
         const p = stripPeriod(g, W, y, e);
