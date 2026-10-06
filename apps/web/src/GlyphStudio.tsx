@@ -8,6 +8,7 @@ import {DEFAULT_GRAMMAR} from "../../../packages/glyph-engine/src/grammar";
 type ProductId="mens-shirt"|"womens-shirt"|"diary";
 type SizeId="XS"|"S"|"M"|"L"|"XL"|"XXL";
 type FabricId="natural-linen"|"midnight-linen"|"black-linen";
+type MediumId="embroidery"|"print"|"emboss"|"leather-tooling";
 type Step=1|2|3|4|5;
 
 const products:{id:ProductId;name:string;subtitle:string}[]=[
@@ -34,11 +35,12 @@ export default function GlyphStudio(){
  const [paletteId,setPaletteId]=useState("underdog-heritage");
  const [seed,setSeed]=useState("ascend-001");
  const [complexity,setComplexity]=useState(.68);
+ const [medium,setMedium]=useState<MediumId>("embroidery");
  const [revision,setRevision]=useState(0);
  const [selected,setSelected]=useState(0);
  const [cart,setCart]=useState(false);
 
- const patterns=useMemo(()=>generatePatterns({seed:seed+":"+revision,concepts,paletteId,mode,complexity,variations:12,width:960,height:260}),[seed,revision,concepts,paletteId,mode,complexity]);
+ const patterns=useMemo(()=>generatePatterns({seed:seed+":"+revision,concepts,paletteId,mode,complexity,medium,placement:mode,variations:12,width:960,height:260}),[seed,revision,concepts,paletteId,mode,complexity,medium]);
  const active=patterns[Math.min(selected,Math.max(0,patterns.length-1))];
  const universal=useMemo(()=>synthesizeUniversal({seed:seed+":"+revision,meanings:concepts,principleIds:["verified-research"],density:complexity<.34?"restrained":complexity>.7?"complex":"balanced",symmetry:"bilateral"},DEFAULT_GRAMMAR),[seed,revision,concepts,complexity]);
  const activeFabric=fabrics.find(x=>x.id===fabric)!;
@@ -62,8 +64,8 @@ export default function GlyphStudio(){
     {step===1&&<><h2>Choose product</h2><div className="productCards">{products.map(p=><button key={p.id} className={product===p.id?"productCard active":"productCard"} onClick={()=>setProduct(p.id)}><strong>{p.name}</strong><small>{p.subtitle}</small></button>)}</div></>}
     {step===2&&<><h2>Choose size</h2><div className="sizeGrid">{sizes.map(s=><button key={s} onClick={()=>setSize(s)} className={size===s?"size active":"size"}>{s}</button>)}</div><p className="hint">Production sizing will use the garment specification, not visual scaling.</p></>}
     {step===3&&<><h2>Material & base colour</h2><div className="fabricList">{fabrics.map(f=><button key={f.id} onClick={()=>setFabric(f.id)} className={fabric===f.id?"fabric active":"fabric"}><i style={{background:f.hex}}/><span>{f.name}</span></button>)}</div><h2>Pattern palette</h2><select value={paletteId} onChange={e=>setPaletteId(e.target.value)}>{Object.values(ASCEND_PALETTES).map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></>}
-    {step===4&&<><h2>Meaning</h2><div className="chips">{conceptOptions.map(c=><button key={c} className={concepts.includes(c)?"chip active":"chip"} onClick={()=>toggleConcept(c)}>{c}</button>)}</div><h2>Placement</h2><div className="chips">{modes.map(m=><button key={m} className={mode===m?"chip active":"chip"} onClick={()=>{setMode(m);setSelected(0)}}>{m}</button>)}</div><h2>Complexity</h2><input type="range" min="0" max="1" step=".01" value={complexity} onChange={e=>setComplexity(+e.target.value)}/><button className="generate wide" onClick={()=>{setRevision(x=>x+1);setSelected(0)}}>Generate new family</button><h2>Seed</h2><input value={seed} onChange={e=>setSeed(e.target.value)}/></>}
-    {step===5&&<><h2>Review design</h2><dl className="summary"><dt>Product</dt><dd>{products.find(p=>p.id===product)?.name}</dd><dt>Size</dt><dd>{size}</dd><dt>Material</dt><dd>{activeFabric.name}</dd><dt>Placement</dt><dd>{mode}</dd><dt>Palette</dt><dd>{ASCEND_PALETTES[paletteId]?.name}</dd><dt>Lineage</dt><dd>{active?.lineageId??"—"}</dd></dl><button className="generate wide" onClick={()=>setCart(true)}>Add configured piece to cart</button></>}
+    {step===4&&<><h2>Meaning</h2><div className="chips">{conceptOptions.map(c=><button key={c} className={concepts.includes(c)?"chip active":"chip"} onClick={()=>toggleConcept(c)}>{c}</button>)}</div><h2>Placement</h2><div className="chips">{modes.map(m=><button key={m} className={mode===m?"chip active":"chip"} onClick={()=>{setMode(m);setSelected(0)}}>{m}</button>)}</div><h2>Process</h2><div className="chips">{(["embroidery","print","emboss","leather-tooling"] as MediumId[]).map(x=><button key={x} className={medium===x?"chip active":"chip"} onClick={()=>setMedium(x)}>{x.replace("-"," ")}</button>)}</div><h2>Complexity</h2><input type="range" min="0" max="1" step=".01" value={complexity} onChange={e=>setComplexity(+e.target.value)}/><button className="generate wide" onClick={()=>{setRevision(x=>x+1);setSelected(0)}}>Generate new family</button><h2>Seed</h2><input value={seed} onChange={e=>setSeed(e.target.value)}/></>}
+    {step===5&&<><h2>Review design</h2><dl className="summary"><dt>Product</dt><dd>{products.find(p=>p.id===product)?.name}</dd><dt>Size</dt><dd>{size}</dd><dt>Material</dt><dd>{activeFabric.name}</dd><dt>Placement</dt><dd>{mode}</dd><dt>Palette</dt><dd>{ASCEND_PALETTES[paletteId]?.name}</dd><dt>Process</dt><dd>{medium}</dd><dt>Lineage</dt><dd>{active?.lineageId??"—"}</dd></dl><button className="generate wide" onClick={()=>setCart(true)}>Add configured piece to cart</button></>}
     <div className="navButtons"><button disabled={step===1} onClick={back}>Back</button><button disabled={step===5} onClick={next}>Continue</button></div>
    </aside>
 
@@ -72,7 +74,7 @@ export default function GlyphStudio(){
      {product==="diary"?<div className="diary3d" style={{background:activeFabric.hex}}><div className={"diaryPattern "+mode} dangerouslySetInnerHTML={{__html:active?.svg??""}}/><div className="diaryBrand">ASCEND</div></div>:
      <Garment3D svg={active?.svg??""} fabric={activeFabric.hex} mode={mode}/>} 
     </div>
-    <div className="meta"><strong>{active?.lineageId??"No lineage"}</strong><span>universal rules {universal.recipe.ruleIds.length} · seed {universal.seed}</span><span>{active?("score "+active.score.toFixed(1)+" · novelty "+active.novelty.toFixed(2)):""}</span></div>
+    <div className="meta"><strong>{active?.lineageId??"No lineage"}</strong><span>universal rules {universal.recipe.ruleIds.length} · seed {universal.seed}</span><span>{active?("score "+active.score.toFixed(1)+" · novelty "+active.novelty.toFixed(2)+" · "+medium):""}</span></div>
     <div className="selectionStrip"><span>{products.find(p=>p.id===product)?.name}</span><span>{size}</span><span>{activeFabric.name}</span><span>{mode}</span></div>
    </section>
 
