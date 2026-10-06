@@ -12,7 +12,9 @@ export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
  seed:string;concepts:string[];paletteId?:string;mode?:PatternMode;
  width?:number;height?:number;variations?:number;complexity?:number;
- cultureIds?:string[];medium?:string;placement?:string;\n corpusSignals?:{id:string;weight:number;sourceIds?:string[]}[];
+ cultureIds?:string[];medium?:string;placement?:string;
+ corpusSignals?:{id:string;weight:number;sourceIds?:string[]}[];
+ population?:number;generations?:number;
 };
 export type GeneratedPattern={
  id:string;lineageId:string;score:number;novelty:number;svg:string;
@@ -104,7 +106,8 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  const cultureIds=input.cultureIds?.length?input.cultureIds:["ukraine","japan","britain","china","western-craft"];
  const placementTypes=input.placement?[input.placement,"garment","shirt","tunic","textile","textile-family","design-cloth","wrapper","sash","leather"]:undefined;
  const cultural=culturalSignals(cultureIds,placementTypes);
- const culturalConcepts=cultural.features.map(([id,w])=>({id:`structure:${id}`,weight:Math.min(1,.3+w/4)}));\n const corpusConcepts=(input.corpusSignals??[]).slice(0,96).map(s=>({id:`corpus:${s.id}`,weight:Math.max(.15,Math.min(1,s.weight))}));
+ const culturalConcepts=cultural.features.map(([id,w])=>({id:`structure:${id}`,weight:Math.min(1,.3+w/4)}));
+ const corpusConcepts=(input.corpusSignals??[]).slice(0,96).map(s=>({id:`corpus:${s.id}`,weight:Math.max(.15,Math.min(1,s.weight))}));
  const candidates=searchDesignSpace({
   seed:input.seed,
   intent:{
@@ -113,7 +116,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
    character:[{id:"ordered-organic",weight:.55+complexity*.35},{id:"minimal-complex",weight:complexity},...(input.medium?[{id:`medium:${input.medium}`,weight:.9}]:[]),...(input.placement?[{id:`placement:${input.placement}`,weight:.95}]:[])]
   },
   principles:[],niches:niche?[niche]:undefined,medium,
-  population:Math.round(32+complexity*64),generations:Math.round(3+complexity*5),keep:variations
+  population:input.population??Math.round(32+complexity*64),generations:input.generations??Math.round(3+complexity*5),keep:variations
  });
  return candidates.map((c,i)=>{
   const adapted=adaptForProduction(c.topology,medium,niche);
