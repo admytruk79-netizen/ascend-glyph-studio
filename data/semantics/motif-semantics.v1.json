@@ -20,254 +20,635 @@
     {
       "id": "ua.rhombus",
       "tradition": "Ukrainian",
-      "names": { "uk": "ромб; ромб з крапками («засіяне поле»)", "en": "rhombus; dotted rhombus ('sown field')" },
-      "structure": { "primitives": ["seed", "crossing"], "form": "rhombus, often subdivided into four with a dot in each part; chains of rhombs in bands" },
-      "regions": ["widespread; dense geometric forms in Podillia, Bukovyna, Hutsul region"],
+      "names": {
+        "uk": "ромб; ромб з крапками («засіяне поле»)",
+        "en": "rhombus; dotted rhombus ('sown field')"
+      },
+      "structure": {
+        "primitives": [
+          "seed",
+          "crossing"
+        ],
+        "form": "rhombus, often subdivided into four with a dot in each part; chains of rhombs in bands"
+      },
+      "regions": [
+        "widespread; dense geometric forms in Podillia, Bukovyna, Hutsul region"
+      ],
       "meanings": [
-        { "claim": "sown field, fertility of earth and people", "evidence": "popular-modern", "note": "Very widely repeated; the 'sown field' reading is also argued in archaeological literature (Trypillia-era rhomb-and-dot signs).", "alsoGraded": "scholarly-interpretive" },
-        { "claim": "worn on wedding garments and by expectant mothers as a wish for a good harvest or a healthy child", "evidence": "popular-modern" }
+        {
+          "claim": "sown field, fertility of earth and people",
+          "evidence": "popular-modern",
+          "note": "Very widely repeated; the 'sown field' reading is also argued in archaeological literature (Trypillia-era rhomb-and-dot signs).",
+          "alsoGraded": "scholarly-interpretive"
+        },
+        {
+          "claim": "worn on wedding garments and by expectant mothers as a wish for a good harvest or a healthy child",
+          "evidence": "popular-modern"
+        }
       ]
     },
     {
       "id": "ua.tree-of-life",
       "tradition": "Ukrainian",
-      "names": { "uk": "дерево життя; світове дерево", "en": "tree of life; world tree" },
-      "structure": { "primitives": ["axis", "branch", "seed"], "form": "vertical axis with symmetric branches, often a vase or ground at the base and birds above; central motif on rushnyk ends" },
-      "regions": ["Central and Northern Ukraine rushnyky (Kyiv region, Poltava, Chernihiv)"],
+      "names": {
+        "uk": "дерево життя; світове дерево",
+        "en": "tree of life; world tree"
+      },
+      "structure": {
+        "primitives": [
+          "axis",
+          "branch",
+          "seed"
+        ],
+        "form": "vertical axis with symmetric branches, often a vase or ground at the base and birds above; central motif on rushnyk ends"
+      },
+      "regions": [
+        "Central and Northern Ukraine rushnyky (Kyiv region, Poltava, Chernihiv)"
+      ],
       "meanings": [
-        { "claim": "links underworld, earth and heaven; continuity of generations", "evidence": "scholarly-interpretive" },
-        { "claim": "central motif of wedding and ritual rushnyky", "evidence": "ethnographic" }
+        {
+          "claim": "links underworld, earth and heaven; continuity of generations",
+          "evidence": "scholarly-interpretive"
+        },
+        {
+          "claim": "central motif of wedding and ritual rushnyky",
+          "evidence": "ethnographic"
+        }
       ],
       "caution": "v3 anti-generic rule: never as an automatic tree-of-life composition. Use the axis-and-branch structure, not the stock image."
     },
     {
       "id": "ua.kalyna",
       "tradition": "Ukrainian",
-      "names": { "uk": "калина", "en": "guelder rose (viburnum)" },
-      "structure": { "primitives": ["branch", "seed"], "form": "branch with clustered round berries and leaves, red and black" },
+      "names": {
+        "uk": "калина",
+        "en": "guelder rose (viburnum)"
+      },
+      "structure": {
+        "primitives": [
+          "branch",
+          "seed"
+        ],
+        "form": "branch with clustered round berries and leaves, red and black"
+      },
       "meanings": [
-        { "claim": "girlhood, love, beauty, motherhood, continuity of family; homeland", "evidence": "folklore", "note": "Kalyna is one of the most frequent symbols in Ukrainian folk song." }
+        {
+          "claim": "girlhood, love, beauty, motherhood, continuity of family; homeland",
+          "evidence": "folklore",
+          "note": "Kalyna is one of the most frequent symbols in Ukrainian folk song."
+        }
       ]
     },
     {
       "id": "ua.hops",
       "tradition": "Ukrainian",
-      "names": { "uk": "хміль", "en": "hops" },
-      "structure": { "primitives": ["branch", "orbit"], "form": "climbing vine with curling tendrils and cone-like fruit" },
+      "names": {
+        "uk": "хміль",
+        "en": "hops"
+      },
+      "structure": {
+        "primitives": [
+          "branch",
+          "orbit"
+        ],
+        "form": "climbing vine with curling tendrils and cone-like fruit"
+      },
       "meanings": [
-        { "claim": "youth, vitality, fertility; marriage", "evidence": "folklore", "note": "Hops appear in wedding songs and rites." }
+        {
+          "claim": "youth, vitality, fertility; marriage",
+          "evidence": "folklore",
+          "note": "Hops appear in wedding songs and rites."
+        }
       ]
     },
     {
       "id": "ua.grapes",
       "tradition": "Ukrainian",
-      "names": { "uk": "виноград", "en": "grapevine" },
-      "structure": { "primitives": ["branch", "seed"], "form": "vine with leaves and bunches, often a continuous border" },
+      "names": {
+        "uk": "виноград",
+        "en": "grapevine"
+      },
+      "structure": {
+        "primitives": [
+          "branch",
+          "seed"
+        ],
+        "form": "vine with leaves and bunches, often a continuous border"
+      },
       "meanings": [
-        { "claim": "family, household, abundance", "evidence": "folklore", "note": "The grapevine ('виноград') is a recurrent image in carols (koliadky) and wedding songs." }
+        {
+          "claim": "family, household, abundance",
+          "evidence": "folklore",
+          "note": "The grapevine ('виноград') is a recurrent image in carols (koliadky) and wedding songs."
+        }
       ]
     },
     {
       "id": "ua.oak",
       "tradition": "Ukrainian",
-      "names": { "uk": "дубове листя", "en": "oak leaves" },
-      "structure": { "primitives": ["branch"], "form": "lobed leaves, often on men's shirts" },
+      "names": {
+        "uk": "дубове листя",
+        "en": "oak leaves"
+      },
+      "structure": {
+        "primitives": [
+          "branch"
+        ],
+        "form": "lobed leaves, often on men's shirts"
+      },
       "meanings": [
-        { "claim": "strength, endurance, manhood", "evidence": "popular-modern" }
+        {
+          "claim": "strength, endurance, manhood",
+          "evidence": "popular-modern"
+        }
       ]
     },
     {
       "id": "ua.ruzha",
       "tradition": "Ukrainian",
-      "names": { "uk": "ружа; восьмипелюсткова розета", "en": "'ruzha' (rose); eight-petal rosette" },
-      "structure": { "primitives": ["seed", "radial-emission"], "form": "rosette with rotational symmetry (often D4 or D8)" },
+      "names": {
+        "uk": "ружа; восьмипелюсткова розета",
+        "en": "'ruzha' (rose); eight-petal rosette"
+      },
+      "structure": {
+        "primitives": [
+          "seed",
+          "radial-emission"
+        ],
+        "form": "rosette with rotational symmetry (often D4 or D8)"
+      },
       "meanings": [
-        { "claim": "the name 'ruzha' is a recorded folk name for rosette motifs", "evidence": "folk-name" },
-        { "claim": "sun, light, beauty", "evidence": "scholarly-interpretive" }
+        {
+          "claim": "the name 'ruzha' is a recorded folk name for rosette motifs",
+          "evidence": "folk-name"
+        },
+        {
+          "claim": "sun, light, beauty",
+          "evidence": "scholarly-interpretive"
+        }
       ]
     },
     {
       "id": "ua.eight-point-star",
       "tradition": "Ukrainian",
-      "names": { "uk": "восьмикутна зірка", "en": "eight-pointed star" },
-      "structure": { "primitives": ["radial-emission", "crossing"], "form": "two overlaid squares or rhombs, D8 symmetry" },
+      "names": {
+        "uk": "восьмикутна зірка",
+        "en": "eight-pointed star"
+      },
+      "structure": {
+        "primitives": [
+          "radial-emission",
+          "crossing"
+        ],
+        "form": "two overlaid squares or rhombs, D8 symmetry"
+      },
       "meanings": [
-        { "claim": "sun, cosmic order, protection", "evidence": "popular-modern" }
+        {
+          "claim": "sun, cosmic order, protection",
+          "evidence": "popular-modern"
+        }
       ]
     },
     {
       "id": "ua.rams-horns",
       "tradition": "Ukrainian",
-      "names": { "uk": "баранячі ріжки", "en": "ram's horns" },
-      "structure": { "primitives": ["orbit", "opposition"], "form": "paired spirals curling outward from a centre (mirror pair)" },
+      "names": {
+        "uk": "баранячі ріжки",
+        "en": "ram's horns"
+      },
+      "structure": {
+        "primitives": [
+          "orbit",
+          "opposition"
+        ],
+        "form": "paired spirals curling outward from a centre (mirror pair)"
+      },
       "meanings": [
-        { "claim": "the name 'ram's horns' is a recorded folk name of the motif", "evidence": "folk-name" },
-        { "claim": "prosperity, strength", "evidence": "popular-modern" }
+        {
+          "claim": "the name 'ram's horns' is a recorded folk name of the motif",
+          "evidence": "folk-name"
+        },
+        {
+          "claim": "prosperity, strength",
+          "evidence": "popular-modern"
+        }
       ]
     },
     {
       "id": "ua.meander",
       "tradition": "Ukrainian",
-      "names": { "uk": "безконечник; меандр", "en": "'endless' meander" },
-      "structure": { "primitives": ["line", "orbit"], "form": "continuous interlocking hook or meander line, usually a band" },
+      "names": {
+        "uk": "безконечник; меандр",
+        "en": "'endless' meander"
+      },
+      "structure": {
+        "primitives": [
+          "line",
+          "orbit"
+        ],
+        "form": "continuous interlocking hook or meander line, usually a band"
+      },
       "meanings": [
-        { "claim": "the name 'bezkonechnyk' (the endless one) is a recorded folk name", "evidence": "folk-name" },
-        { "claim": "eternity, continuity of life", "evidence": "popular-modern" }
+        {
+          "claim": "the name 'bezkonechnyk' (the endless one) is a recorded folk name",
+          "evidence": "folk-name"
+        },
+        {
+          "claim": "eternity, continuity of life",
+          "evidence": "popular-modern"
+        }
       ]
     },
     {
       "id": "ua.zigzag",
       "tradition": "Ukrainian",
-      "names": { "uk": "кривулька", "en": "zigzag ('kryvulka')" },
-      "structure": { "primitives": ["line"], "form": "zigzag or wave line in bands" },
+      "names": {
+        "uk": "кривулька",
+        "en": "zigzag ('kryvulka')"
+      },
+      "structure": {
+        "primitives": [
+          "line"
+        ],
+        "form": "zigzag or wave line in bands"
+      },
       "meanings": [
-        { "claim": "'kryvulka' is a recorded folk name", "evidence": "folk-name" },
-        { "claim": "water, road, life path", "evidence": "popular-modern" }
+        {
+          "claim": "'kryvulka' is a recorded folk name",
+          "evidence": "folk-name"
+        },
+        {
+          "claim": "water, road, life path",
+          "evidence": "popular-modern"
+        }
       ]
     },
     {
       "id": "ua.birds",
       "tradition": "Ukrainian",
-      "names": { "uk": "птахи; пава", "en": "birds; peahen ('pava')" },
-      "structure": { "primitives": ["opposition", "axis"], "form": "paired birds facing a tree or axis (mirror pair)" },
+      "names": {
+        "uk": "птахи; пава",
+        "en": "birds; peahen ('pava')"
+      },
+      "structure": {
+        "primitives": [
+          "opposition",
+          "axis"
+        ],
+        "form": "paired birds facing a tree or axis (mirror pair)"
+      },
       "meanings": [
-        { "claim": "paired birds as bride and groom, in wedding contexts", "evidence": "folklore" },
-        { "claim": "birds as souls or messengers; spring", "evidence": "scholarly-interpretive" }
+        {
+          "claim": "paired birds as bride and groom, in wedding contexts",
+          "evidence": "folklore"
+        },
+        {
+          "claim": "birds as souls or messengers; spring",
+          "evidence": "scholarly-interpretive"
+        }
       ]
     },
     {
       "id": "ua.female-figure",
       "tradition": "Ukrainian",
-      "names": { "uk": "жіноча фігура з піднятими руками («берегиня»)", "en": "female figure with raised arms ('berehynia')" },
-      "structure": { "primitives": ["axis", "branch"], "form": "frontal figure with raised arms, often flanked by riders or birds; northern rushnyky" },
+      "names": {
+        "uk": "жіноча фігура з піднятими руками («берегиня»)",
+        "en": "female figure with raised arms ('berehynia')"
+      },
+      "structure": {
+        "primitives": [
+          "axis",
+          "branch"
+        ],
+        "form": "frontal figure with raised arms, often flanked by riders or birds; northern rushnyky",
+        "variants": [
+          "female figure with raised arms",
+          "vase/flowerpot with branches",
+          "double-headed eagle"
+        ]
+      },
       "meanings": [
-        { "claim": "the motif itself is documented on rushnyky", "evidence": "ethnographic" },
-        { "claim": "a protective mother-goddess named 'Berehynia'", "evidence": "contested", "note": "The national 'Berehynia' goddess reading is widely regarded as a late-20th-century construction." }
+        {
+          "claim": "the motif itself is documented on rushnyky",
+          "evidence": "ethnographic"
+        },
+        {
+          "claim": "a protective mother-goddess named 'Berehynia'",
+          "evidence": "contested",
+          "note": "The national 'Berehynia' goddess reading is widely regarded as a late-20th-century construction."
+        },
+        {
+          "claim": "the female figure, the vase (flowerpot / tree) and the double-headed eagle on 19th-century Dnipro-region rushnyky are iconographically and stylistically related variants of one composition",
+          "evidence": "scholarly-interpretive",
+          "source": "selivachov",
+          "note": "Plate caption in Selivachov's Lexicon, p. 53: 'Іконографічна та стилістична спорідненість зображень богині, вазона та двоголового орла у вишиваних рушниках XIX ст. Подніпров'я'."
+        }
       ]
     },
     {
       "id": "ua.deer-goddess-podillia",
       "tradition": "Ukrainian",
-      "names": { "uk": "образ «богині-оленя» (Поділля)", "en": "'deer goddess' image (Podillia)" },
-      "structure": { "primitives": ["axis", "branch", "crossing"], "form": "geometric figure in women's shirts of Podillia" },
+      "names": {
+        "uk": "образ «богині-оленя» (Поділля)",
+        "en": "'deer goddess' image (Podillia)"
+      },
+      "structure": {
+        "primitives": [
+          "axis",
+          "branch",
+          "crossing"
+        ],
+        "form": "geometric figure in women's shirts of Podillia"
+      },
       "meanings": [
-        { "claim": "a reading of geometric Podillia shirt ornament as a deer-goddess image", "evidence": "scholarly-interpretive", "source": "culturology.academy" }
+        {
+          "claim": "a reading of geometric Podillia shirt ornament as a deer-goddess image",
+          "evidence": "scholarly-interpretive",
+          "source": "culturology.academy"
+        }
       ]
     },
     {
       "id": "ua.colour-red-black",
       "tradition": "Ukrainian",
-      "names": { "uk": "червоне і чорне", "en": "red and black" },
-      "structure": { "primitives": [], "form": "palette" },
+      "names": {
+        "uk": "червоне і чорне",
+        "en": "red and black"
+      },
+      "structure": {
+        "primitives": [],
+        "form": "palette"
+      },
       "meanings": [
-        { "claim": "red: life, love, protection; black: earth", "evidence": "popular-modern" },
-        { "claim": "palettes are strongly regional (e.g. Poltava white-on-white, Hutsul multicolour)", "evidence": "ethnographic" }
+        {
+          "claim": "red: life, love, protection; black: earth",
+          "evidence": "popular-modern"
+        },
+        {
+          "claim": "palettes are strongly regional (e.g. Poltava white-on-white, Hutsul multicolour)",
+          "evidence": "ethnographic"
+        }
       ]
     },
     {
       "id": "by.rhombus-sun",
       "tradition": "Belarusian",
-      "names": { "be": "ромб", "en": "rhombus / sun sign" },
-      "structure": { "primitives": ["seed", "crossing", "radial-emission"], "form": "central rhomb with horn-like side figures; chains of rhombs ('showers') on rushnyki" },
+      "names": {
+        "be": "ромб",
+        "en": "rhombus / sun sign"
+      },
+      "structure": {
+        "primitives": [
+          "seed",
+          "crossing",
+          "radial-emission"
+        ],
+        "form": "central rhomb with horn-like side figures; chains of rhombs ('showers') on rushnyki"
+      },
       "meanings": [
-        { "claim": "sown field or sun; fertility and protection", "evidence": "popular-modern" },
-        { "claim": "chains of rhombs read as rain", "evidence": "popular-modern" }
+        {
+          "claim": "sown field or sun; fertility and protection",
+          "evidence": "popular-modern"
+        },
+        {
+          "claim": "chains of rhombs read as rain",
+          "evidence": "popular-modern"
+        }
       ]
     },
     {
       "id": "by.duck-pair",
       "tradition": "Belarusian",
-      "names": { "be": "качкі", "en": "pair of ducks" },
-      "structure": { "primitives": ["opposition"], "form": "mirrored bird pair on rushnyk" },
+      "names": {
+        "be": "качкі",
+        "en": "pair of ducks"
+      },
+      "structure": {
+        "primitives": [
+          "opposition"
+        ],
+        "form": "mirrored bird pair on rushnyk"
+      },
       "meanings": [
-        { "claim": "duck and drake as bride and groom; family life", "evidence": "folklore" }
+        {
+          "claim": "duck and drake as bride and groom; family life",
+          "evidence": "folklore"
+        }
       ]
     },
     {
       "id": "by.red-dominance",
       "tradition": "Belarusian",
-      "names": { "en": "red-on-white rushnyki" },
-      "structure": { "primitives": [], "form": "palette" },
+      "names": {
+        "en": "red-on-white rushnyki"
+      },
+      "structure": {
+        "primitives": [],
+        "form": "palette"
+      },
       "meanings": [
-        { "claim": "predominantly red threads on white linen", "evidence": "ethnographic" },
-        { "claim": "red as life, sun, health", "evidence": "popular-modern" }
+        {
+          "claim": "predominantly red threads on white linen",
+          "evidence": "ethnographic"
+        },
+        {
+          "claim": "red as life, sun, health",
+          "evidence": "popular-modern"
+        }
       ]
     },
     {
       "id": "en.jacobean-tree",
       "tradition": "English",
-      "names": { "en": "Jacobean crewelwork tree of life (17th c.)" },
-      "structure": { "primitives": ["axis", "branch", "orbit"], "form": "sinuous tree on a hillock with exotic leaves and flowers, wool crewel on linen-cotton twill" },
+      "names": {
+        "en": "Jacobean crewelwork tree of life (17th c.)"
+      },
+      "structure": {
+        "primitives": [
+          "axis",
+          "branch",
+          "orbit"
+        ],
+        "form": "sinuous tree on a hillock with exotic leaves and flowers, wool crewel on linen-cotton twill"
+      },
       "meanings": [
-        { "claim": "the style draws on Indian painted cottons (palampores) brought by the East India trade", "evidence": "ethnographic", "note": "Documented trade and design history rather than a symbolic meaning." }
+        {
+          "claim": "the style draws on Indian painted cottons (palampores) brought by the East India trade",
+          "evidence": "ethnographic",
+          "note": "Documented trade and design history rather than a symbolic meaning."
+        }
       ]
     },
     {
       "id": "en.elizabethan-emblems",
       "tradition": "English",
-      "names": { "en": "Elizabethan and Stuart emblem flowers and blackwork (16th–17th c.)" },
-      "structure": { "primitives": ["seed", "branch", "line"], "form": "scrolling coiling stems enclosing single flowers (strawberry, pansy, honeysuckle, pea pod); counted-thread blackwork fillings" },
+      "names": {
+        "en": "Elizabethan and Stuart emblem flowers and blackwork (16th–17th c.)"
+      },
+      "structure": {
+        "primitives": [
+          "seed",
+          "branch",
+          "line"
+        ],
+        "form": "scrolling coiling stems enclosing single flowers (strawberry, pansy, honeysuckle, pea pod); counted-thread blackwork fillings"
+      },
       "meanings": [
-        { "claim": "flowers carried emblem meanings (e.g. pansy: thoughts/remembrance) recorded in period emblem literature", "evidence": "period-emblem" },
-        { "claim": "blackwork fillings: decorative geometric filling patterns", "evidence": "none-documented" }
+        {
+          "claim": "flowers carried emblem meanings (e.g. pansy: thoughts/remembrance) recorded in period emblem literature",
+          "evidence": "period-emblem"
+        },
+        {
+          "claim": "blackwork fillings: decorative geometric filling patterns",
+          "evidence": "none-documented"
+        }
       ]
     },
     {
       "id": "en.sampler-borders",
       "tradition": "English",
-      "names": { "en": "sampler borders (17th–19th c.)" },
-      "structure": { "primitives": ["line", "seed", "branch"], "form": "horizontal bands of repeating border patterns, alphabets, verses, figures" },
+      "names": {
+        "en": "sampler borders (17th–19th c.)"
+      },
+      "structure": {
+        "primitives": [
+          "line",
+          "seed",
+          "branch"
+        ],
+        "form": "horizontal bands of repeating border patterns, alphabets, verses, figures"
+      },
       "meanings": [
-        { "claim": "a record of stitches and patterns and a demonstration of skill and education", "evidence": "ethnographic" },
-        { "claim": "border patterns themselves", "evidence": "none-documented" }
+        {
+          "claim": "a record of stitches and patterns and a demonstration of skill and education",
+          "evidence": "ethnographic"
+        },
+        {
+          "claim": "border patterns themselves",
+          "evidence": "none-documented"
+        }
       ]
     },
     {
       "id": "us.western-floral-carving",
       "tradition": "American Western",
-      "names": { "en": "floral leather carving (Western / Sheridan style)" },
-      "structure": { "primitives": ["orbit", "branch", "seed"], "form": "tight scrolling stems, wild-rose flowers and leaves, tooled and bevelled in leather" },
+      "names": {
+        "en": "floral leather carving (Western / Sheridan style)"
+      },
+      "structure": {
+        "primitives": [
+          "orbit",
+          "branch",
+          "seed"
+        ],
+        "form": "tight scrolling stems, wild-rose flowers and leaves, tooled and bevelled in leather"
+      },
       "meanings": [
-        { "claim": "regional saddlery craft style; no fixed symbolic meaning", "evidence": "none-documented" }
+        {
+          "claim": "regional saddlery craft style; no fixed symbolic meaning",
+          "evidence": "none-documented"
+        }
       ]
     },
     {
       "id": "us.boot-stitching",
       "tradition": "American Western",
-      "names": { "en": "cowboy boot shaft stitching" },
-      "structure": { "primitives": ["line", "orbit", "branch"], "form": "multiple parallel rows of decorative stitching forming scrolls, flames or florals on shaft panels" },
+      "names": {
+        "en": "cowboy boot shaft stitching"
+      },
+      "structure": {
+        "primitives": [
+          "line",
+          "orbit",
+          "branch"
+        ],
+        "form": "multiple parallel rows of decorative stitching forming scrolls, flames or florals on shaft panels"
+      },
       "meanings": [
-        { "claim": "stitch rows stiffen the shaft and decorate it", "evidence": "ethnographic" }
+        {
+          "claim": "stitch rows stiffen the shaft and decorate it",
+          "evidence": "ethnographic"
+        }
       ]
     },
     {
       "id": "us.lone-star",
       "tradition": "American Western",
-      "names": { "en": "lone star (Texas star)" },
-      "structure": { "primitives": ["radial-emission"], "form": "five-pointed star inlay or stitching" },
+      "names": {
+        "en": "lone star (Texas star)"
+      },
+      "structure": {
+        "primitives": [
+          "radial-emission"
+        ],
+        "form": "five-pointed star inlay or stitching"
+      },
       "meanings": [
-        { "claim": "Texan identity", "evidence": "ethnographic" }
+        {
+          "claim": "Texan identity",
+          "evidence": "ethnographic"
+        }
       ]
     },
     {
       "id": "na.structure-only",
       "tradition": "Native American (nation-specific)",
-      "names": { "en": "beadwork, quillwork, weaving and other traditions of specific nations" },
-      "structure": { "primitives": [], "form": "learned only as abstract structure: band rhythm, symmetry group, density" },
+      "names": {
+        "en": "beadwork, quillwork, weaving and other traditions of specific nations"
+      },
+      "structure": {
+        "primitives": [],
+        "form": "learned only as abstract structure: band rhythm, symmetry group, density"
+      },
       "meanings": [],
       "policy": "No motif semantics are recorded or used. Nation-specific, ceremonial and sacred designs are excluded from derivation (v3)."
     }
   ],
   "sources": [
-    { "id": "selivachov", "cite": "M. R. Selivachov, Лексикон української орнаментики (іконографія, номінація, стилістика, типологія), 3rd ed., Kyiv 2013. ~1,500 entries comparing pattern graphics with folk names.", "url": "http://www.library.univ.kiev.ua/ukr/elcat/new/detail.php3?doc_id=1633826" },
-    { "id": "kulynych", "cite": "O. Kulynych-Stakhurska, The Art of Ukrainian Embroidery: techniques and technology (155 stitches by locality).", "url": "https://www.goodreads.com/book/show/61102537-the-art-of-ukrainian-embroidery" },
-    { "id": "kara-vasylieva", "cite": "T. Kara-Vasylieva, Українська вишивка (Ukrainian Embroidery), Mystetstvo, Kyiv 1993." },
-    { "id": "eou", "cite": "Encyclopedia of Ukraine: Embroidery.", "url": "https://www.encyclopediaofukraine.com/display.asp?linkpath=pages\\E\\M\\Embroidery.htm" },
-    { "id": "deer-podillia", "cite": "'Образ «богині-оленя» у геометричних орнаментах жіночих сорочок Поділля'.", "url": "https://www.culturology.academy/obraz-bogini-olenya-u-geometrichnih-ornamentah-zhinochih-sorochok-podillya.html" },
-    { "id": "alberta-rushnyk", "cite": "University of Alberta, Ukrainian Traditional Folklore: Rushnyky – Tree-of-Life.", "url": "http://www.artsrn.ualberta.ca/ukisite/ukisite/rushnyk/rushnyk2.htm" },
-    { "id": "ukrainianlessons", "cite": "Ukrainian Lessons: Ukrainian Vyshyvanka – patterns, symbols and regional styles (popular).", "url": "https://www.ukrainianlessons.com/ukrainian-vyshyvanka/" },
-    { "id": "rushnyk-wiki", "cite": "Rushnyk (Wikipedia).", "url": "https://en.wikipedia.org/wiki/Rushnyk" },
-    { "id": "belarus-textile", "cite": "Belarusian Textile (belarusguide).", "url": "https://www.belarusguide.com/culture1/visual_arts/Textile.html" }
+    {
+      "id": "selivachov",
+      "cite": "M. R. Selivachov, Лексикон української орнаментики (іконографія, номінація, стилістика, типологія), 3rd ed., Kyiv 2013. ~1,500 entries comparing pattern graphics with folk names.",
+      "url": "http://www.library.univ.kiev.ua/ukr/elcat/new/detail.php3?doc_id=1633826"
+    },
+    {
+      "id": "kulynych",
+      "cite": "O. Kulynych-Stakhurska, The Art of Ukrainian Embroidery: techniques and technology (155 stitches by locality).",
+      "url": "https://www.goodreads.com/book/show/61102537-the-art-of-ukrainian-embroidery"
+    },
+    {
+      "id": "kara-vasylieva",
+      "cite": "T. Kara-Vasylieva, Українська вишивка (Ukrainian Embroidery), Mystetstvo, Kyiv 1993."
+    },
+    {
+      "id": "eou",
+      "cite": "Encyclopedia of Ukraine: Embroidery.",
+      "url": "https://www.encyclopediaofukraine.com/display.asp?linkpath=pages\\E\\M\\Embroidery.htm"
+    },
+    {
+      "id": "deer-podillia",
+      "cite": "'Образ «богині-оленя» у геометричних орнаментах жіночих сорочок Поділля'.",
+      "url": "https://www.culturology.academy/obraz-bogini-olenya-u-geometrichnih-ornamentah-zhinochih-sorochok-podillya.html"
+    },
+    {
+      "id": "alberta-rushnyk",
+      "cite": "University of Alberta, Ukrainian Traditional Folklore: Rushnyky – Tree-of-Life.",
+      "url": "http://www.artsrn.ualberta.ca/ukisite/ukisite/rushnyk/rushnyk2.htm"
+    },
+    {
+      "id": "ukrainianlessons",
+      "cite": "Ukrainian Lessons: Ukrainian Vyshyvanka – patterns, symbols and regional styles (popular).",
+      "url": "https://www.ukrainianlessons.com/ukrainian-vyshyvanka/"
+    },
+    {
+      "id": "rushnyk-wiki",
+      "cite": "Rushnyk (Wikipedia).",
+      "url": "https://en.wikipedia.org/wiki/Rushnyk"
+    },
+    {
+      "id": "belarus-textile",
+      "cite": "Belarusian Textile (belarusguide).",
+      "url": "https://www.belarusguide.com/culture1/visual_arts/Textile.html"
+    }
   ],
   "nextResearch": [
     "Extract folk names and their attested meanings directly from Selivachov's lexicon (requires the book): the highest-value upgrade of evidence grades.",
