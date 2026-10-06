@@ -1,0 +1,10 @@
+import {strict as assert} from "node:assert";
+import {canonicalR2Key,loadCanonicalGlyphSvg} from "./canonical-asset-loader";
+const glyph={id:"water-02",family:"water",sourceVersion:1,vectorAssetKey:"glyphs/water/water-02/v1.svg"};
+assert.equal(canonicalR2Key(glyph),"glyphs/water/water-02/v1.svg");
+const bytes=new TextEncoder().encode('<svg viewBox="0 0 90 75"><path d="M0 0L1 1"/></svg>');
+const store={exists:async(k:string)=>k===glyph.vectorAssetKey,get:async()=>bytes};
+const loaded=await loadCanonicalGlyphSvg(store,glyph);assert.equal(loaded.key,glyph.vectorAssetKey);assert.match(loaded.svg,/<path/);
+await assert.rejects(()=>loadCanonicalGlyphSvg(store,{...glyph,vectorAssetKey:"glyphs/water/water-02/vector/v1.svg"}),/canonical-vector-key-mismatch/);
+await assert.rejects(()=>loadCanonicalGlyphSvg({exists:async()=>false,get:async()=>bytes},glyph),/canonical-vector-asset-missing/);
+await assert.rejects(()=>loadCanonicalGlyphSvg({exists:async()=>true,get:async()=>new TextEncoder().encode("not svg")},glyph),/invalid-canonical-svg/);
