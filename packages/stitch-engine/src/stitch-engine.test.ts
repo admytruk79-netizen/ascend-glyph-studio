@@ -153,3 +153,16 @@ test("gate rejects a too-wide satin, a tiny gap and a small hoop", () => {
   const failed = new Set(g.checks.filter((c) => !c.pass).map((c) => c.id));
   for (const id of ["satin-width", "min-gap", "hoop-fit"]) assert.ok(failed.has(id), id);
 });
+
+test("calibration strip: every item stitched, fits a 200x200 hoop, and the gate flags the deliberate limit tests", async () => {
+  const { calibrationStrip } = await import("./index.js");
+  const { objects, items } = calibrationStrip();
+  assert.equal(items.length, 8 + 6 + 5 + 2 + 4 + 4);
+  const p = plan(objects, linen);
+  const g = runGate(objects, p.commands, linen, { hoop: { name: "200x200", width: 200, height: 200 } }, 1);
+  const failed = g.checks.filter((c) => !c.pass).map((c) => c.id).sort();
+  // 0.8 mm satin, 0.35/0.38 mm fills and the 0.5 mm gap are limit tests by design
+  assert.deepEqual(failed, ["fill-density", "min-gap", "recipe-validated", "satin-width"]);
+  assert.equal(g.checks.find((c) => c.id === "hoop-fit")!.pass, true);
+  assert.equal(readDst(writeDst(p.commands)).commands.filter((c) => c.cmd === "stitch").length, p.commands.filter((c) => c.cmd === "stitch").length);
+});

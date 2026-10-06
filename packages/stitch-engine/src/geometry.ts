@@ -26,13 +26,29 @@ export function sampleAt(path: Pt[], s: number): { p: Pt; t: Pt } {
   return { p: { ...p }, t: { x: 1, y: 0 } };
 }
 
-/** Evenly spaced points along a polyline: about `step` apart, always including both ends. */
-export function resample(path: Pt[], step: number): Pt[] {
-  const L = polylineLength(path);
-  if (L === 0) return [{ ...path[0]! }];
-  const n = Math.max(1, Math.ceil(L / step - 1e-9));
+/**
+ * Points along a polyline about `step` apart, always including both ends and every sharp corner
+ * (direction change over `cornerDeg`), so stitches never cut across a corner. Smooth curves given as
+ * dense polylines are spaced by arc length.
+ */
+export function resample(path: Pt[], step: number, cornerDeg = 25): Pt[] {
+  if (polylineLength(path) === 0) return [{ ...path[0]! }];
+  const cut = [0];
+  for (let i = 1; i < path.length - 1; i++) {
+    const a = path[i - 1]!, b = path[i]!, c = path[i + 1]!;
+    const u = norm({ x: b.x - a.x, y: b.y - a.y }), v = norm({ x: c.x - b.x, y: c.y - b.y });
+    const turn = (Math.acos(Math.max(-1, Math.min(1, u.x * v.x + u.y * v.y))) * 180) / Math.PI;
+    if (turn > cornerDeg) cut.push(i);
+  }
+  cut.push(path.length - 1);
   const out: Pt[] = [];
-  for (let i = 0; i <= n; i++) out.push(sampleAt(path, (L * i) / n).p);
+  for (let k = 1; k < cut.length; k++) {
+    const piece = path.slice(cut[k - 1]!, cut[k]! + 1);
+    const L = polylineLength(piece);
+    if (L === 0) continue;
+    const n = Math.max(1, Math.ceil(L / step - 1e-9));
+    for (let i = out.length ? 1 : 0; i <= n; i++) out.push(sampleAt(piece, (L * i) / n).p);
+  }
   return out;
 }
 

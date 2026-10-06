@@ -9,8 +9,8 @@ import type { StitchRecipe } from "./recipes.js";
 
 export type DesignObject =
   | { kind: "run"; id: string; color: string; path: Pt[]; triple?: boolean; length?: number }
-  | { kind: "satin"; id: string; color: string; path: Pt[]; width: number }
-  | { kind: "fill"; id: string; color: string; polygon: Pt[]; angle?: number };
+  | { kind: "satin"; id: string; color: string; path: Pt[]; width: number; spacing?: number }
+  | { kind: "fill"; id: string; color: string; polygon: Pt[]; angle?: number; rowSpacing?: number };
 
 export interface PlannedBlock { objectId: string; color: string; runs: Stitch[][] }
 export interface Plan { commands: Command[]; blocks: PlannedBlock[]; colors: string[]; trims: number; jumps: number }
@@ -20,8 +20,8 @@ export const TRIM_OVER_MM = 7;
 export function stitchObject(o: DesignObject, r: StitchRecipe): Stitch[][] {
   switch (o.kind) {
     case "run": return [o.triple ? tripleRun(o.path, o.length ?? 2.5) : runStitch(o.path, o.length ?? 2.5)];
-    case "satin": return [satinColumn(o.path, o.width, { spacing: r.satinSpacing, pullComp: r.pullComp })];
-    case "fill": return tatamiFill(o.polygon, { angle: o.angle ?? 0, rowSpacing: r.fillRowSpacing, pullComp: r.pullComp });
+    case "satin": return [satinColumn(o.path, o.width, { spacing: o.spacing ?? r.satinSpacing, pullComp: r.pullComp })];
+    case "fill": return tatamiFill(o.polygon, { angle: o.angle ?? 0, rowSpacing: o.rowSpacing ?? r.fillRowSpacing, pullComp: r.pullComp });
   }
 }
 

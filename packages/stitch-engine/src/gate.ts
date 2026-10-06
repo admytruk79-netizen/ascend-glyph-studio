@@ -20,7 +20,10 @@ export function runGate(objects: DesignObject[], commands: Command[], r: StitchR
   const badSatin = satins.filter((s) => s.width < r.minSatinWidth || s.width > r.maxSatinWidth);
   add("satin-width", badSatin.length === 0, badSatin.length ? `out of ${r.minSatinWidth}–${r.maxSatinWidth} mm: ${badSatin.map((s) => `${s.id}=${s.width}`).join(", ")}` : `${satins.length} columns within ${r.minSatinWidth}–${r.maxSatinWidth} mm`);
 
-  add("fill-density", r.fillRowSpacing >= r.minFillRowSpacing, `row spacing ${r.fillRowSpacing} mm (min ${r.minFillRowSpacing})`);
+  const fills = objects.filter((o) => o.kind === "fill") as Extract<DesignObject, { kind: "fill" }>[];
+  const dense = fills.filter((f) => (f.rowSpacing ?? r.fillRowSpacing) < r.minFillRowSpacing);
+  add("fill-density", r.fillRowSpacing >= r.minFillRowSpacing && dense.length === 0,
+    dense.length ? `denser than ${r.minFillRowSpacing} mm: ${dense.map((f) => `${f.id}=${f.rowSpacing}`).join(", ")}` : `row spacing ${r.fillRowSpacing} mm (min ${r.minFillRowSpacing})`);
 
   // stitch lengths: ignore ties; ignore the very short closing stitch of a run that lands on its own start
   let short = 0, long = 0, prev: Command | undefined;
