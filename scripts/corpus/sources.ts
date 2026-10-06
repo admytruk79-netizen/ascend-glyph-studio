@@ -217,7 +217,8 @@ const commons: Adapter = {
     ["Embroidery of Belarus", "Textiles of Belarus", "Rushnyks of Belarus", "Belarusian national costume", "Folk costumes of Belarus",
       "Slutsk sashes", "Belarusian folk art", "Weaving in Belarus"].map((q) => ({ q, tradition: "Belarusian" })),
     ["Embroidery of Lithuania", "Textiles of Lithuania", "Lithuanian sashes", "Juostos", "Lithuanian national costume",
-      "Folk costumes of Lithuania", "Lithuanian folk art", "Weaving in Lithuania"].map((q) => ({ q, tradition: "Lithuanian" })),
+      "Folk costumes of Lithuania", "Lithuanian folk art", "Weaving in Lithuania", "Lithuanian embroidery", "Sashes of Lithuania",
+      "Lithuanian textiles", "Clothing of Lithuania"].map((q) => ({ q, tradition: "Lithuanian" })),
   ),
   async *search({ q, tradition }, fetchJson) {
     const visited = new Set<string>();
@@ -313,9 +314,10 @@ const europeana: Adapter = {
 // Library of Congress (loc.gov JSON API, no key). Prints and photographs, many with
 // "No known restrictions"; each item's rights advisory is read before acceptance.
 export function locRights(advisory: string | undefined): RightsStatus {
-  const a = (advisory ?? "").toLowerCase();
+  const a = (advisory ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().toLowerCase();
   if (!a) return "unknown";
-  if (/no known restrictions|public domain|no known copyright/.test(a)) return "open";
+  // Only an unqualified statement counts; "believes that some of the items…" is a collection-level hedge.
+  if (/^(no known restrictions|no known copyright restrictions|public domain)/.test(a)) return "open";
   return "review";
 }
 function locImage(urls: unknown): string | undefined {

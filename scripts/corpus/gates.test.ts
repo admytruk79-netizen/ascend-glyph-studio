@@ -73,6 +73,7 @@ test("Library of Congress and Internet Archive rights", async () => {
   const { locRights, archiveRights } = await import("./sources.ts");
   assert.equal(locRights("No known restrictions on publication."), "open");
   assert.equal(locRights("Rights status not evaluated."), "review");
+  assert.equal(locRights("<p>The Library of Congress believes that some of the items have no known restrictions</p>"), "review");
   assert.equal(locRights(undefined), "unknown");
   assert.equal(archiveRights(1876, undefined), "open");
   assert.equal(archiveRights(1930, undefined), "open");
