@@ -91,7 +91,14 @@ Diaries and print carry much more, at smaller motif pitch and with more variants
 
 ## 4. Build steps
 
-1. **Codec library:** payload format, AES-GCM with HKDF nonce, signature reference, Reed–Solomon, interleaving, framing. Unit tests use known vectors.
+1. **Codec library: built** (`packages/glyph-codec`, prototype). It has no dependencies and uses only Web Crypto, so it runs both in Node and in a phone browser.
+   - **Payload:** the public layer is 7 bytes (version, key ID, serial, signature reference). The secret is 2 bytes (blood group, Rh, 8 flags), sealed with AES-256-GCM: HKDF nonce from key ID and serial, 64-bit tag, public layer as associated data.
+   - **Error correction and layout:** Reed–Solomon GF(256) with 12 parity bytes corrects e errors plus f erasures while 2e + f ≤ 12. Symbols are interleaved so a seam costs each byte at most one symbol, and the frame has start and end markers plus calibration motifs, so the band reads in either direction.
+   - **Registry:** an Ed25519 registry issues unique serials, stores signatures and handles revocation.
+   - **Band layout:** the provisional motif is a rhomb with one quarter open. It lays out as one row or as a block; a cuff block is 4 × 31 motifs at 8 mm, 248 × 36.5 mm. The layout feeds the stitch engine directly.
+   - **Measured capacity:** 122 motifs carry 136 data bits plus 96 parity bits (232 bits) at 2 bits per motif. That's more than the §3 estimate, because a whole byte goes to Reed–Solomon parity.
+   - **Safety test:** across 400 random damage levels the reader never returns a wrong secret. It decrypts correctly or reports "not readable". Damage beyond capacity can corrupt the *public* layer, which the registry signature check catches.
+   - **Demo:** `src/demo-band.ts` takes a message through the codec and the stitch engine to a DST file and reads it back.
 2. **Encoder:** message plus keys → symbols → ASCEND band SVG (mm) for print or embroidery.
 3. **Reader prototype:** a phone web app (camera sweep → stitch → detect → classify → decode → verify → decrypt) with public and keyed modes, working offline.
 4. **Paper test:** print bands at several motif pitches and measure the read rate under angles, curvature and lighting.
