@@ -189,6 +189,7 @@ const smithsonian: Adapter = {
 // per-file licences. Public domain, CC0 and CC BY are treated as open; CC BY-SA
 // (share-alike) goes to review unless COMMONS_ACCEPT_SHAREALIKE=1.
 const COMMONS_API = "https://commons.wikimedia.org/w/api.php";
+const COUNTRY: Record<string, string> = { Ukrainian: "Ukraine", Belarusian: "Belarus", Lithuanian: "Lithuania" };
 const stripHtml = (v: unknown) => str(String(v ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " "));
 export function commonsRights(licence: string | undefined): RightsStatus {
   const l = (licence ?? "").toLowerCase();
@@ -212,7 +213,12 @@ const commons: Adapter = {
     "Ukrainian folk costume", "Folk costumes of Ukraine", "Hutsul embroidery", "Hutsul costume", "Boyko costume", "Lemko costume",
     "Ivan Honchar Museum", "National Museum of Ukrainian Folk Decorative Art", "Ukrainian kilims", "Kilims of Ukraine", "Plakhta",
     "Petrykivka painting", "Kosiv ceramics", "Reshetylivka embroidery",
-  ].map((q) => ({ q, tradition: "Ukrainian" })),
+  ].map((q) => ({ q, tradition: "Ukrainian" })).concat(
+    ["Embroidery of Belarus", "Textiles of Belarus", "Rushnyks of Belarus", "Belarusian national costume", "Folk costumes of Belarus",
+      "Slutsk sashes", "Belarusian folk art", "Weaving in Belarus"].map((q) => ({ q, tradition: "Belarusian" })),
+    ["Embroidery of Lithuania", "Textiles of Lithuania", "Lithuanian sashes", "Juostos", "Lithuanian national costume",
+      "Folk costumes of Lithuania", "Lithuanian folk art", "Weaving in Lithuania"].map((q) => ({ q, tradition: "Lithuanian" })),
+  ),
   async *search({ q, tradition }, fetchJson) {
     const visited = new Set<string>();
     const stack: { title: string; depth: number }[] = [{ title: `Category:${q}`, depth: 0 }];
@@ -238,7 +244,7 @@ const commons: Adapter = {
             id: `commons-${p.pageid}`, institution: commons.institution, source: commons.source, query: q, tradition,
             title: stripHtml(m.ObjectName?.value) ?? str(p.title.replace(/^File:/, "").replace(/\.[a-z]+$/i, "")),
             creator: stripHtml(m.Artist?.value), date: stripHtml(m.DateTimeOriginal?.value),
-            culture: "Ukraine", region: "Ukraine",
+            culture: COUNTRY[tradition] ?? tradition, region: COUNTRY[tradition] ?? tradition,
             objectURL: str(ii.descriptionurl) ?? `https://commons.wikimedia.org/wiki/${encodeURIComponent(p.title)}`,
             image: str(ii.thumburl) ?? str(ii.url), imageWidth: ii.width, imageHeight: ii.height,
             rights: licence ?? "No licence metadata", rightsStatus: commonsRights(licence),
@@ -304,7 +310,147 @@ const europeana: Adapter = {
   },
 };
 
-export const ADAPTERS: Adapter[] = [met, aic, cleveland, vam, smithsonian, commons, europeana];
+// Library of Congress (loc.gov JSON API, no key). Prints and photographs, many with
+// "No known restrictions"; each item's rights advisory is read before acceptance.
+export function locRights(advisory: string | undefined): RightsStatus {
+  const a = (advisory ?? "").toLowerCase();
+  if (!a) return "unknown";
+  if (/no known restrictions|public domain|no known copyright/.test(a)) return "open";
+  return "review";
+}
+function locImage(urls: unknown): string | undefined {
+  const list = (Array.isArray(urls) ? urls : []).map((u) => String(u).replace(/#.*$/, ""));
+  const iiif = list.find((u) => u.includes("/iiif/"));
+  if (iiif) return iiif.replace(/\/full\/[^/]+\/0\//, "/full/!1600,1600/0/");
+  return list.at(-1);
+}
+const loc: Adapter = {
+  institution: "Library of Congress",
+  source: "loc",
+  enabled: () => true,
+  queries: [
+    ...["Ukrainian embroidery", "Ukrainian costume", "Ukrainian folk art", "Hutsul", "Ukrainian peasant", "Ruthenian", "Little Russian costume",
+      "Ukrainian Easter eggs", "Ukrainian textile"].map((q) => ({ q, tradition: "Ukrainian" })),
+    ...["Belarus costume", "White Russian peasant", "Byelorussian folk art"].map((q) => ({ q, tradition: "Belarusian" })),
+    ...["Lithuanian costume", "Lithuanian folk art", "Lithuanian weaving"].map((q) => ({ q, tradition: "Lithuanian" })),
+    ...["sampler embroidery", "crewel embroidery", "English needlework"].map((q) => ({ q, tradition: "English (16th–19th c.)" })),
+    ...["cowboy boots", "saddle", "western saddle", "chaps cowboy", "spurs", "tooled leather"].map((q) => ({ q, tradition: "Western / cowboy material culture" })),
+  ],
+  async *search({ q, tradition }, fetchJson) {
+    for (let page = 1; page <= 30; page++) {
+      let res: any;
+      try { res = await fetchJson(`https://www.loc.gov/search/?q=${encodeURIComponent(q)}&fa=online-format:image&fo=json&c=100&sp=${page}`); } catch { return; }
+      const results: any[] = res?.results ?? [];
+      if (!results.length) return;
+      for (const x of results) {
+        const image = locImage(x.image_url);
+        if (!image || !x.id) continue;
+        let advisory: string | undefined;
+        try {
+          const item = await fetchJson(`${String(x.id).replace(/\/$/, "")}/?fo=json`);
+          advisory = str(item?.item?.rights_advisory) ?? join(item?.item?.rights) ?? str(item?.rights);
+        } catch { /* rights unknown → not accepted */ }
+        yield {
+          id: `loc-${String(x.id).replace(/^https?:\/\/www\.loc\.gov\//, "").replace(/\W+/g, "-")}`, institution: loc.institution, source: loc.source,
+          query: q, tradition, title: str(x.title), date: str(x.date), region: join(x.location), culture: join(x.location),
+          objectType: join(x.original_format), technique: join(x.subject), objectURL: str(x.url) ?? str(x.id), image,
+          rights: advisory ?? "No rights advisory", rightsStatus: locRights(advisory), accession: `loc:${x.id}`, reliability: 0.9,
+          description: str([join(x.description), join(x.subject)].filter(Boolean).join(" ")),
+        };
+      }
+      if (!res?.pagination?.next) return;
+    }
+  },
+};
+
+// Internet Archive (no key): scanned pattern albums and ornament books. Each page image is a
+// candidate. Open only when public domain in the US (published 1930 or earlier, or marked PD).
+export function archiveRights(year: number | undefined, licence: string | undefined): RightsStatus {
+  if (/publicdomain/i.test(licence ?? "")) return "open";
+  if (year !== undefined && Number.isFinite(year)) return year <= 1930 ? "open" : "review";
+  return "unknown";
+}
+const archive: Adapter = {
+  institution: "Internet Archive",
+  source: "ia",
+  enabled: () => true,
+  queries: [
+    ...["український орнамент", "українські вишивки", "вишивки", "малорусский орнамент", "малороссийские узоры", "ukrainian ornament",
+      "ukrainian embroidery", "hutsul", "писанки", "узоры вышивок"].map((q) => ({ q, tradition: "Ukrainian" })),
+    ...["белорусский орнамент", "белорусские узоры", "беларускі арнамент"].map((q) => ({ q, tradition: "Belarusian" })),
+    ...["lietuvių ornamentas", "juostos", "lithuanian ornament"].map((q) => ({ q, tradition: "Lithuanian" })),
+    ...["sampler patterns", "needlework patterns", "embroidery patterns 17th century"].map((q) => ({ q, tradition: "English (16th–19th c.)" })),
+  ],
+  async *search({ q, tradition }, fetchJson) {
+    const params = new URLSearchParams({ q: `(${q}) AND mediatype:(texts OR image)`, rows: "100", page: "1", output: "json" });
+    for (const f of ["identifier", "title", "year", "date", "licenseurl", "creator", "language"]) params.append("fl[]", f);
+    let res: any;
+    try { res = await fetchJson(`https://archive.org/advancedsearch.php?${params}`); } catch { return; }
+    for (const d of res?.response?.docs ?? []) {
+      const year = Number(String(d.year ?? d.date ?? "").slice(0, 4)) || undefined;
+      const rightsStatus = archiveRights(year, str(d.licenseurl));
+      if (rightsStatus !== "open") continue; // don't fetch manifests for books we cannot use
+      let man: any;
+      try { man = await fetchJson(`https://iiif.archive.org/iiif/3/${encodeURIComponent(d.identifier)}/manifest.json`); } catch { continue; }
+      const canvases: any[] = (man?.items ?? []).slice(0, 400);
+      for (let i = 0; i < canvases.length; i++) {
+        const c = canvases[i];
+        const body = c?.items?.[0]?.items?.[0]?.body;
+        const svc = body?.service?.[0]?.id ?? body?.service?.[0]?.["@id"];
+        const image = svc ? `${svc}/full/!1600,1600/0/default.jpg` : str(body?.id);
+        if (!image) continue;
+        yield {
+          id: `ia-${d.identifier}-p${i + 1}`, institution: archive.institution, source: archive.source, query: q, tradition,
+          title: `${join(d.title) ?? d.identifier}, page ${i + 1}`, creator: join(d.creator), date: year ? String(year) : undefined,
+          culture: COUNTRY[tradition] ?? tradition, region: COUNTRY[tradition] ?? tradition,
+          objectURL: `https://archive.org/details/${d.identifier}/page/n${i}`, image, imageWidth: c.width, imageHeight: c.height,
+          rights: str(d.licenseurl) ?? `Published ${year}; public domain in the US`, rightsStatus, accession: `ia:${d.identifier}:${i + 1}`,
+          reliability: 0.75, description: `ornament album page ${q}`,
+        };
+      }
+    }
+  },
+};
+
+// Finna (Finnish museums, archives and libraries; no key). Per-image licences.
+const finna: Adapter = {
+  institution: "Finna",
+  source: "finna",
+  enabled: () => true,
+  queries: [
+    ...["ukrainalainen", "Ukraina kirjonta", "Ukraina tekstiili", "ukrainalainen kansanpuku"].map((q) => ({ q, tradition: "Ukrainian" })),
+    ...["valkovenäläinen", "Valko-Venäjä tekstiili"].map((q) => ({ q, tradition: "Belarusian" })),
+    ...["liettualainen", "Liettua vyö", "Liettua tekstiili"].map((q) => ({ q, tradition: "Lithuanian" })),
+  ],
+  async *search({ q, tradition }, fetchJson) {
+    for (let page = 1; page <= 20; page++) {
+      const params = new URLSearchParams({ lookfor: q, limit: "100", page: String(page) });
+      params.append("filter[]", 'online_boolean:"1"');
+      for (const f of ["id", "title", "images", "imageRights", "buildings", "year", "nonPresenterAuthors", "subjects", "formats", "recordPage"]) params.append("field[]", f);
+      let res: any;
+      try { res = await fetchJson(`https://api.finna.fi/v1/search?${params}`); } catch { return; }
+      const recs: any[] = res?.records ?? [];
+      if (!recs.length) return;
+      for (const x of recs) {
+        const img = x.images?.[0];
+        if (!img) continue;
+        const licence = str(x.imageRights?.copyright);
+        yield {
+          id: `finna-${x.id}`, institution: str(x.buildings?.[0]?.translated) ?? finna.institution, source: finna.source, query: q, tradition,
+          title: str(x.title), date: str(x.year), creator: str(x.nonPresenterAuthors?.[0]?.name),
+          culture: COUNTRY[tradition] ?? tradition, objectType: str(x.formats?.at(-1)?.translated),
+          objectURL: `https://www.finna.fi${str(x.recordPage) ?? `/Record/${encodeURIComponent(x.id)}`}`,
+          image: `https://api.finna.fi${String(img).replace("size=small", "size=large")}`,
+          rights: licence ?? "No licence", rightsStatus: commonsRights(licence), accession: `finna:${x.id}`, reliability: 0.85,
+          description: join((x.subjects ?? []).flat()),
+        };
+      }
+      if (recs.length < 100) return;
+    }
+  },
+};
+
+export const ADAPTERS: Adapter[] = [met, aic, cleveland, vam, smithsonian, commons, europeana, loc, archive, finna];
 
 const UKRAINIAN = [
   "Ukrainian embroidery", "Ukrainian textile", "Ukrainian costume", "rushnyk", "Ukrainian kilim", "Hutsul", "Ukrainian folk art", "Ukrainian ceramics",

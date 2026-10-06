@@ -25,14 +25,14 @@ const deadline = Date.now() + Number(process.env.CORPUS_MAX_MINUTES ?? 330) * 60
 const checkpointEvery = Number(process.env.CORPUS_CHECKPOINT_EVERY ?? 1000);
 const sourceList = (process.env.CORPUS_SOURCES ?? "").split(",").map((s) => s.trim()).filter(Boolean);
 const only = sourceList.length ? sourceList : undefined;
-const WORKERS: Record<string, number> = { met: 2, aic: 2, cma: 2, vam: 2, si: 2, commons: 1, europeana: 2 };
+const WORKERS: Record<string, number> = { met: 2, aic: 2, cma: 2, vam: 2, si: 2, commons: 1, europeana: 2, loc: 1, ia: 1, finna: 2 };
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 // Minimum spacing between requests to the same host. The Met sits behind bot
 // protection that answers bursts with HTTP 403 pages; Commons answers with 429.
 const PACE_MS: Record<string, number> = {
-  "collectionapi.metmuseum.org": 400, "commons.wikimedia.org": 300, "api.vam.ac.uk": 100, "api.europeana.eu": 150,
+  "collectionapi.metmuseum.org": 400, "commons.wikimedia.org": 300, "api.vam.ac.uk": 100, "api.europeana.eu": 150, "www.loc.gov": 700, "archive.org": 500, "iiif.archive.org": 300, "api.finna.fi": 200,
 };
 const nextSlot = new Map<string, number>();
 async function pace(host: string) {

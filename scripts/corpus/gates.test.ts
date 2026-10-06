@@ -68,3 +68,15 @@ test("Europeana rights statements: PD/CC0/CC BY open, BY-SA and NC go to review"
   assert.equal(europeanaRights("http://rightsstatements.org/vocab/InC/1.0/"), "review");
   assert.equal(europeanaRights(undefined), "unknown");
 });
+
+test("Library of Congress and Internet Archive rights", async () => {
+  const { locRights, archiveRights } = await import("./sources.ts");
+  assert.equal(locRights("No known restrictions on publication."), "open");
+  assert.equal(locRights("Rights status not evaluated."), "review");
+  assert.equal(locRights(undefined), "unknown");
+  assert.equal(archiveRights(1876, undefined), "open");
+  assert.equal(archiveRights(1930, undefined), "open");
+  assert.equal(archiveRights(1955, undefined), "review");
+  assert.equal(archiveRights(undefined, "http://creativecommons.org/publicdomain/mark/1.0/"), "open");
+  assert.equal(archiveRights(undefined, undefined), "unknown");
+});
