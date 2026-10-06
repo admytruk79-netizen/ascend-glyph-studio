@@ -7,10 +7,11 @@ const nums=(s:string)=>s.trim().split(/[\s,]+/).filter(Boolean).map(Number);
 export function parseCanonicalSvg(svg:string):ParsedCanonicalSvg{
  const vb=svg.match(/viewBox=["']([^"']+)["']/i);if(!vb)throw new Error("canonical-svg-viewbox-required");
  const v=nums(vb[1]!);if(v.length!==4||v.some(x=>!Number.isFinite(x)))throw new Error("invalid-canonical-svg-viewbox");
- const paths=[...svg.matchAll(/<path\b[^>]*\bd=["']([^"']+)["'][^>]*>/gi)].map(m=>m[1]!);
+ const paths=[...svg.matchAll(/<path\b([^>]*)\bd=["']([^"']+)["']([^>]*)>/gi)].map(m=>({attrs:`${m[1]??""} ${m[3]??""}`,d:m[2]!}));
  if(!paths.length)throw new Error("canonical-svg-path-required");
- const polygons:PointMm[][]=[];
- for(const d of paths){
+ const polygons:PointMm[][]=[],compoundPaths:CanonicalCompoundPath[]=[];
+ for(const path of paths){
+  const d=path.d,rings:PointMm[][]=[],fillRule=/fill-rule=["']evenodd["']/i.test(path.attrs)?"evenodd" as const:"nonzero" as const;
   if(/[CQASTHVcqasthv]/.test(d))throw new Error("unsupported-canonical-svg-path-command");
   const tokens=d.match(/[MLZmlz]|-?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?/gi)??[];let i=0,x=0,y=0,start:PointMm|undefined,poly:PointMm[]=[];
   const flush=()=>{if(poly.length>=3){polygons.push(poly);rings.push(poly)}poly=[];start=undefined};
@@ -23,7 +24,7 @@ export function parseCanonicalSvg(svg:string):ParsedCanonicalSvg{
     const p={x,y};if(first&&!start)start=p;poly.push(p);first=false;
    }
   }
-  flush();
+  flush();if(rings.length)compoundPaths.push({fillRule,rings});
  }
  if(!polygons.length)throw new Error("canonical-svg-closed-polygon-required");
  return{byteHash:createHash("sha256").update(svg).digest("hex"),viewBox:{x:v[0]!,y:v[1]!,width:v[2]!,height:v[3]!},polygons,compoundPaths};
