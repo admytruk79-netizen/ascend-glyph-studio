@@ -1,8 +1,8 @@
 import {createHash} from "node:crypto";
 import {PointMm} from "./product-geometry";
-import {CanonicalArtwork,hashCanonicalArtwork} from "./canonical-artwork";
+import {CanonicalArtwork,CanonicalCompoundPath,hashCanonicalArtwork} from "./canonical-artwork";
 
-export interface ParsedCanonicalSvg{byteHash:string;viewBox:{x:number;y:number;width:number;height:number};polygons:PointMm[][]}
+export interface ParsedCanonicalSvg{byteHash:string;viewBox:{x:number;y:number;width:number;height:number};polygons:PointMm[][];compoundPaths:CanonicalCompoundPath[]}
 const nums=(s:string)=>s.trim().split(/[\s,]+/).filter(Boolean).map(Number);
 export function parseCanonicalSvg(svg:string):ParsedCanonicalSvg{
  const vb=svg.match(/viewBox=["']([^"']+)["']/i);if(!vb)throw new Error("canonical-svg-viewbox-required");
@@ -13,7 +13,7 @@ export function parseCanonicalSvg(svg:string):ParsedCanonicalSvg{
  for(const d of paths){
   if(/[CQASTHVcqasthv]/.test(d))throw new Error("unsupported-canonical-svg-path-command");
   const tokens=d.match(/[MLZmlz]|-?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?/gi)??[];let i=0,x=0,y=0,start:PointMm|undefined,poly:PointMm[]=[];
-  const flush=()=>{if(poly.length>=3)polygons.push(poly);poly=[];start=undefined};
+  const flush=()=>{if(poly.length>=3){polygons.push(poly);rings.push(poly)}poly=[];start=undefined};
   while(i<tokens.length){const cmd=tokens[i++]!;if(!/[MLZmlz]/.test(cmd))throw new Error("canonical-svg-command-required");
    if(cmd==="Z"||cmd==="z"){flush();continue}
    let first=true;
@@ -26,9 +26,9 @@ export function parseCanonicalSvg(svg:string):ParsedCanonicalSvg{
   flush();
  }
  if(!polygons.length)throw new Error("canonical-svg-closed-polygon-required");
- return{byteHash:createHash("sha256").update(svg).digest("hex"),viewBox:{x:v[0]!,y:v[1]!,width:v[2]!,height:v[3]!},polygons};
+ return{byteHash:createHash("sha256").update(svg).digest("hex"),viewBox:{x:v[0]!,y:v[1]!,width:v[2]!,height:v[3]!},polygons,compoundPaths};
 }
 export function canonicalArtworkFromSvg(id:string,revision:string,svg:string,minLineUnits:number,minGapUnits:number):CanonicalArtwork&{byteHash:string}{
- const parsed=parseCanonicalSvg(svg);const raw={id,revision,viewBox:parsed.viewBox,polygons:parsed.polygons,minLineUnits,minGapUnits};
+ const parsed=parseCanonicalSvg(svg);const raw={id,revision,viewBox:parsed.viewBox,polygons:parsed.polygons,compoundPaths:parsed.compoundPaths,minLineUnits,minGapUnits};
  return{...raw,sourceHash:hashCanonicalArtwork(raw),byteHash:parsed.byteHash};
 }
