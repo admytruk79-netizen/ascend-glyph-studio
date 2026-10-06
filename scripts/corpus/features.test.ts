@@ -60,3 +60,13 @@ test("vertical hash separates horizontally banded images that the horizontal has
   assert.equal(idx.findOrAdd("0".repeat(16) + dHashVertical(bands(1))), undefined);
   assert.equal(idx.findOrAdd("0".repeat(16) + dHashVertical(bands(3))), undefined);
 });
+
+test("Commons licences: PD, CC0 and CC BY are open; share-alike and NC go to review", async () => {
+  const { commonsRights } = await import("./sources.ts");
+  assert.equal(commonsRights("Public domain"), "open");
+  assert.equal(commonsRights("CC0"), "open");
+  assert.equal(commonsRights("CC BY 4.0"), "open");
+  assert.equal(commonsRights("CC BY-SA 4.0"), "review");
+  assert.equal(commonsRights("CC BY-NC 2.0"), "review");
+  assert.equal(commonsRights(undefined), "unknown");
+});

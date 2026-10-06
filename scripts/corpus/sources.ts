@@ -10,6 +10,8 @@ export type Adapter = {
   institution: string;
   source: string;
   enabled: () => boolean;
+  /** Source-specific queries; when absent the shared QUERIES list is used. */
+  queries?: Query[];
   search: (query: Query, fetchJson: FetchJson) => AsyncGenerator<Candidate>;
 };
 export type FetchJson = (url: string, headers?: Record<string, string>) => Promise<any>;
@@ -170,9 +172,83 @@ const smithsonian: Adapter = {
   },
 };
 
-export const ADAPTERS: Adapter[] = [met, aic, cleveland, vam, smithsonian];
 
-const UKRAINIAN = ["Ukrainian embroidery", "Ukrainian textile", "Ukrainian costume", "rushnyk", "Ukrainian kilim", "Hutsul", "Ukrainian folk art", "Ukrainian ceramics", "Petrykivka", "Kosiv ceramics", "Ukraine weaving", "Ukrainian towel"];
+// Wikimedia Commons: category crawl over Ukrainian embroidery and folk-textile
+// categories. Commons hosts many photographs of museum objects with explicit
+// per-file licences. Public domain, CC0 and CC BY are treated as open; CC BY-SA
+// (share-alike) goes to review unless COMMONS_ACCEPT_SHAREALIKE=1.
+const COMMONS_API = "https://commons.wikimedia.org/w/api.php";
+const stripHtml = (v: unknown) => str(String(v ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " "));
+export function commonsRights(licence: string | undefined): RightsStatus {
+  const l = (licence ?? "").toLowerCase();
+  if (!l) return "unknown";
+  if (/public domain|^pd|cc0|cc-zero/.test(l)) return "open";
+  if (/by-sa|by sa/.test(l)) return process.env.COMMONS_ACCEPT_SHAREALIKE === "1" ? "open" : "review";
+  if (/^cc by(?!-nc|-nd)|^cc-by(?!-nc|-nd)/.test(l) && !/nc|nd/.test(l)) return "open";
+  return "review";
+}
+const commons: Adapter = {
+  institution: "Wikimedia Commons",
+  source: "commons",
+  enabled: () => true,
+  queries: [
+    "Embroidery of Ukraine", "Ukrainian embroidery", "Vyshyvanka", "Rushnyky", "Rushnyk", "Embroidered shirts of Ukraine",
+    "Ukrainian folk costume", "Folk costumes of Ukraine", "Hutsul embroidery", "Hutsul costume", "Boyko costume", "Lemko costume",
+    "Embroidery in the Ivan Honchar Museum", "Textiles in the Ivan Honchar Museum", "Ivan Honchar Museum",
+    "Embroidery in the National Museum of Ukrainian Folk Decorative Art", "National Museum of Ukrainian Folk Decorative Art",
+    "Ukrainian kilims", "Kilims of Ukraine", "Plakhta", "Petrykivka painting", "Kosiv ceramics", "Reshetylivka embroidery",
+    "Poltava embroidery", "Podillia embroidery", "Bukovina embroidery", "Polissia embroidery",
+  ].map((q) => ({ q, tradition: "Ukrainian" })),
+  async *search({ q, tradition }, fetchJson) {
+    const visited = new Set<string>();
+    const stack: { title: string; depth: number }[] = [{ title: `Category:${q}`, depth: 0 }];
+    while (stack.length) {
+      const { title, depth } = stack.pop()!;
+      if (visited.has(title)) continue;
+      visited.add(title);
+      let cont: Record<string, string> = { continue: "" };
+      for (let page = 0; page < 50 && cont; page++) {
+        const params = new URLSearchParams({
+          action: "query", format: "json", generator: "categorymembers", gcmtitle: title, gcmtype: "file|subcat", gcmlimit: "200",
+          prop: "imageinfo", iiprop: "url|size|mime|extmetadata", iiurlwidth: "1024",
+          iiextmetadatafilter: "LicenseShortName|ImageDescription|Artist|DateTimeOriginal|ObjectName|Credit", ...cont,
+        });
+        const res = await fetchJson(`${COMMONS_API}?${params}`);
+        for (const p of Object.values<any>(res?.query?.pages ?? {})) {
+          if (p.ns === 14) { if (depth < 2) stack.push({ title: p.title, depth: depth + 1 }); continue; }
+          const ii = p.imageinfo?.[0];
+          if (!ii || !/^image\/(jpeg|png|tiff|webp)/.test(ii.mime ?? "")) continue;
+          const m = ii.extmetadata ?? {};
+          const licence = str(m.LicenseShortName?.value);
+          yield {
+            id: `commons-${p.pageid}`, institution: commons.institution, source: commons.source, query: q, tradition,
+            title: stripHtml(m.ObjectName?.value) ?? str(p.title.replace(/^File:/, "").replace(/\.[a-z]+$/i, "")),
+            creator: stripHtml(m.Artist?.value), date: stripHtml(m.DateTimeOriginal?.value),
+            culture: "Ukraine", region: "Ukraine",
+            objectURL: str(ii.descriptionurl) ?? `https://commons.wikimedia.org/wiki/${encodeURIComponent(p.title)}`,
+            image: str(ii.thumburl) ?? str(ii.url), imageWidth: ii.width, imageHeight: ii.height,
+            rights: licence ?? "No licence metadata", rightsStatus: commonsRights(licence),
+            accession: `commons:${p.pageid}`, reliability: 0.8,
+            description: stripHtml([m.ImageDescription?.value, m.Credit?.value, title.replace(/^Category:/, "")].filter(Boolean).join(" ")),
+          };
+        }
+        cont = res?.continue;
+      }
+    }
+  },
+};
+
+export const ADAPTERS: Adapter[] = [met, aic, cleveland, vam, smithsonian, commons];
+
+const UKRAINIAN = [
+  "Ukrainian embroidery", "Ukrainian textile", "Ukrainian costume", "rushnyk", "Ukrainian kilim", "Hutsul", "Ukrainian folk art", "Ukrainian ceramics",
+  "Petrykivka", "Kosiv ceramics", "Ukraine weaving", "Ukrainian towel",
+  // Historical and regional names used in Western museum catalogues.
+  "Ruthenian", "Ruthenian embroidery", "Galicia embroidery", "Galician costume", "Bukovina", "Bukovina embroidery", "Carpathian embroidery",
+  "Carpathian textile", "Lemko", "Boyko", "Transcarpathia", "Podolia", "Volhynia", "Poltava", "Little Russian", "Kiev embroidery",
+  "Ukrainian shirt", "embroidered shirt Ukraine", "Ukrainian sash", "Ukrainian apron", "plakhta", "Ukrainian Easter egg", "pysanka",
+  "вишивка", "вишиванка", "рушник", "сорочка", "килим", "орнамент",
+];
 const WESTERN = ["saddle", "spurs", "leather tooling", "cowboy", "bridle", "chaps", "western boots", "charro", "saddle blanket", "horse tack", "silver concho", "belt buckle"];
 const GLOBAL = [
   "embroidery", "embroidered linen", "needlework sampler", "weaving", "tapestry", "brocade", "damask", "lace", "kilim", "carpet", "rug",

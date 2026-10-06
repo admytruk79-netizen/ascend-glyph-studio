@@ -22,6 +22,17 @@ concurrency:
   group: corpus-harvest-${{ github.ref }}
   cancel-in-progress: false
 jobs:
+  probe:
+    # Reconnaissance of candidate sources (robots.txt, sitemaps, API samples). Read-only.
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npx -y tsx@4 scripts/corpus/probe-sources.mts
+
   harvest:
     runs-on: ubuntu-latest
     timeout-minutes: 350

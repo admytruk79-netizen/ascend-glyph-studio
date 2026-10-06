@@ -57,6 +57,8 @@ const RELEVANCE: Record<string, RegExp> = {
   wood: /\b(carv\w*|inlay|marquetry|intarsia|woodwork)\b/i,
   print: /\b(woodblock|block.print\w*|pattern book|ornament print|design for|wallpaper)\b/i,
   bead: /\b(bead\w*|quillwork)\b/i,
+  // Ukrainian-language catalogue and Commons descriptions.
+  ukrainian: /(вишив|вишиван|рушник|сорочк|килим|плахт|запаск|крайк|орнамент|візерун|мережк|ткан|писанк|кераміч)/i,
 };
 
 // Nation-specific Indigenous North American provenance always goes to human review:

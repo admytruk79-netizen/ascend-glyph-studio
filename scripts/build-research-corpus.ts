@@ -25,7 +25,7 @@ const deadline = Date.now() + Number(process.env.CORPUS_MAX_MINUTES ?? 330) * 60
 const checkpointEvery = Number(process.env.CORPUS_CHECKPOINT_EVERY ?? 1000);
 const sourceList = (process.env.CORPUS_SOURCES ?? "").split(",").map((s) => s.trim()).filter(Boolean);
 const only = sourceList.length ? sourceList : undefined;
-const WORKERS: Record<string, number> = { met: 6, aic: 2, cma: 2, vam: 2, si: 2 };
+const WORKERS: Record<string, number> = { met: 6, aic: 2, cma: 2, vam: 2, si: 2, commons: 2 };
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -104,8 +104,9 @@ async function main() {
 
   await Promise.all(adapters.map(async (a) => {
     stats.bySource[a.source] = { enumerated: 0, accepted: 0, review: 0, rejected: 0, errors: 0 };
-    const queue: Query[] = [...QUERIES];
-    const perQuery = Math.max(250, Math.ceil((sourceCap / QUERIES.length) * 8));
+    const queries = a.queries ?? QUERIES;
+    const queue: Query[] = [...queries];
+    const perQuery = a.queries ? sourceCap : Math.max(250, Math.ceil((sourceCap / queries.length) * 8));
     const worker = async () => {
       for (let q = queue.shift(); q && !stop; q = queue.shift()) {
         let fromQuery = 0;

@@ -43,3 +43,9 @@ test("dedupe keys cover id, image URL and institution accession", () => {
   const k = dedupeKeys({ ...base, image: base.image + "?v=2" });
   assert.deepEqual(k, ["cma-1", "img:https://openaccess-cdn.clevelandart.org/1/1_web.jpg", "acc:Cleveland Museum of Art:1916.1"]);
 });
+
+test("Ukrainian-language descriptions count as structurally relevant", () => {
+  const g = gate({ ...base, title: "Сорочка жіноча", material: undefined, culture: "Ukraine" });
+  assert.equal(g.accepted, true);
+  if (g.accepted) assert.ok(g.relevance.includes("ukrainian"));
+});
