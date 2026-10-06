@@ -36,7 +36,9 @@ export const fetchJson: FetchJson = async (url, headers = {}) => {
       if (r.ok) return r.json();
       if (r.status === 404) return null;
       if (attempt < 3 && (r.status === 429 || r.status >= 500)) { await sleep(2000 * 2 ** attempt); continue; }
-      throw new Error(`${r.status} ${url}`);
+      // Include the start of the body: retired or moved APIs usually say where they went.
+      const body = (await r.text().catch(() => "")).replace(/\s+/g, " ").slice(0, 160);
+      throw new Error(`${r.status} ${url} ${body}`);
     } catch (e) {
       if (attempt < 3 && (e as Error).name === "TimeoutError") { await sleep(2000 * 2 ** attempt); continue; }
       throw e;

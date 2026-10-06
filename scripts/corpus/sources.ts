@@ -183,6 +183,16 @@ const GLOBAL = [
   "Persian textile", "Ottoman textile", "Ottoman tile", "kimono", "Chinese silk", "Indian textile", "Andean textile", "kente",
   "adire", "songket", "Celtic interlace", "Islamic geometric", "Gothic ornament", "Art Nouveau ornament", "Coptic textile",
   "Scandinavian weaving", "Baltic textile", "Greek embroidery", "Turkmen", "Uzbek ikat", "Japanese stencil katagami",
+  "velvet", "silk textile", "linen", "woven silk", "printed cotton", "resist dyed", "tie-dye", "shibori", "obi", "fukusa",
+  "sari", "Kashmir shawl", "paisley", "toile", "Spitalfields silk", "Lyon silk", "Italian velvet", "Mughal textile",
+  "Safavid", "Mamluk", "Fatimid", "Byzantine textile", "Sasanian", "Peruvian textile", "Paracas", "Mexican textile", "Guatemalan textile",
+  "Indonesian textile", "Philippine textile", "Chinese embroidery", "Korean textile", "dragon robe", "rank badge",
+  "openwork", "lattice", "pierced", "interlace ornament", "arabesque", "rosette", "palmette", "guilloche", "meander", "strapwork",
+  "grotesque ornament", "acanthus", "lacquer", "inro", "netsuke", "sword guard tsuba", "tsuba", "damascened", "niello", "champlevé", "cloisonné",
+  "bookbinding", "manuscript border", "illuminated border", "Qur'an illumination", "endpaper", "marbled paper", "textile sample book",
+  "stained glass", "floor tile", "Iznik", "Delftware", "maiolica", "lustreware", "Chinese porcelain", "blue and white", "celadon",
+  "basketry", "mat weaving", "feltwork", "felt", "knitting", "crochet", "bobbin lace", "needle lace", "whitework", "cutwork", "drawn thread work",
+  "cross stitch", "counted thread", "smocking", "beaded bag", "embroidered purse", "chasuble", "cope", "vestment", "banner",
 ];
 
 export const QUERIES: Query[] = [
