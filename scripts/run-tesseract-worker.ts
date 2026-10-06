@@ -49,7 +49,13 @@ async function loadVisualCorpus(seed:string){
   if(Number(f.radiality||0)>.5)ops.push("branch");
   const scale=Array.isArray(f.scaleHierarchy)?f.scaleHierarchy.length:1;
   return {id:r.id,sourceRef:r.source_key,class:"real-historical" as const,evidenceTier:Number(r.reliability||0)>=.85?"A" as const:"B" as const,verifiedReal:true,trainingUse:"composition" as const,
-   features:{symmetry:(Number(f.mirrorX||.5)+Number(f.mirrorY||.5)+Number(f.rotation180||.5))/3,density:Number(f.edgeDensity||.5),voidRatio:Number(f.voidRatio||.5),scaleLevels:scale,dominantDirection:dirs,operations:ops},notes:[r.kind||"unknown",r.tradition||"unknown"],provenance:r.id};
+   features:{symmetry:(Number(f.mirrorX||.5)+Number(f.mirrorY||.5)+Number(f.rotation180||.5))/3,density:Number(f.edgeDensity||.5),voidRatio:Number(f.voidRatio||.5),scaleLevels:scale,dominantDirection:dirs,operations:ops,
+    densityVariation:Number(f.densityVariation||.5),directionalEntropy:Array.isArray(f.orientation)?(()=>{const xs=f.orientation.map((x:any)=>Number(x||0)),sum=xs.reduce((a:number,b:number)=>a+b,0)||1;return -xs.reduce((h:number,x:number)=>{const p=x/sum;return p>0?h+p*Math.log(p):h},0)/Math.log(Math.max(2,xs.length))})():.5,
+    axisStrength:Number(f.axisStrength||.5),rotation180:Number(f.rotation180||.5),periodicity:Math.max(Number(f.repetitionX||0),Number(f.repetitionY||0)),
+    focalDominance:Math.max(0,Math.min(1,(scale>1?.55:.25)+Number(f.densityVariation||0)*.35+(1-Math.max(Number(f.repetitionX||0),Number(f.repetitionY||0)))*.1)),
+    asymmetryBalance:Math.max(0,Math.min(1,Math.abs(Number(f.mirrorX||.5)-Number(f.mirrorY||.5))*1.5+Number(f.densityVariation||0)*.35)),
+    motifFieldRatio:Number(d?.scale?.motif||.5),compositionalDepth:Math.max(0,Math.min(1,(scale/5)*.45+Number(f.densityVariation||0)*.35+Number(f.radiality||0)*.2)),
+    embroideryComplexity:Math.max(0,Math.min(1,Number(f.edgeDensity||.5)*.35+Number(f.densityVariation||.5)*.25+(scale/5)*.2+Math.max(Number(f.repetitionX||0),Number(f.repetitionY||0))*.2))},notes:[r.kind||"unknown",r.tradition||"unknown"],provenance:r.id};
  });
 }
 async function execute(run:any){
