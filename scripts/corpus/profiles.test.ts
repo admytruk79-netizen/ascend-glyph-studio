@@ -15,6 +15,11 @@ test("catalogue text beats the search group; Indigenous provenance is structure-
   assert.equal(traditionOf(row("c", { tradition: "Ukrainian" })), "Ukrainian (by query)");
   assert.equal(traditionOf(row("d", { culture: "Lakota" })), "Native American (structure only)");
   assert.equal(traditionOf(row("e", { title: "Rinktinė juosta, Lietuva" })), "Lithuanian");
+  assert.equal(traditionOf(row("f", { culture: "American", title: "Saddle" })), "Western / cowboy material culture");
+  assert.equal(traditionOf(row("g", { culture: "Mexican", title: "Pair of spurs" })), "Western / cowboy material culture");
+  assert.equal(traditionOf(row("h", { culture: "French", title: "Saddle cloth" })), "Other");
+  assert.equal(traditionOf(row("i", { tradition: "Ukraine" })), "Ukrainian"); // older rows: culture stored in tradition
+  assert.equal(traditionOf(row("j", { tradition: "American", title: "Beaded bag, Lakota" })), "Native American (structure only)");
 });
 
 test("profiles and blend: distributions, medians, dominant symmetry, fail closed", () => {

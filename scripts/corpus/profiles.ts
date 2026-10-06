@@ -19,18 +19,26 @@ const CULTURE_RULES: [RegExp, string][] = [
   [/\b(england|english|british|london|jacobean|elizabethan)\b/i, "English (16th–19th c.)"],
   [/\b(cowboy|vaquero|charro|western saddle|texas|wyoming|montana)\b/i, "Western / cowboy material culture"],
 ];
-const INDIGENOUS = /\b(native american|american indian|first nations?|lakota|navajo|din[eé]|hopi|apache|cheyenne|sioux|ojibw?e|cherokee|pueblo|plains)\b/i;
+const INDIGENOUS = /\b(native american|american indian|first nations?|lakota|navajo|din[eé]|hopi|apache|cheyenne|sioux|ojibw?e|cherokee|pueblo|plains|acoma|zuni|pomo|seminole|chilkat|tlingit|haida|great lakes)\b/i;
+// Western / cowboy material is catalogued by object type, with culture "American" or "Mexican".
+const WESTERN_OBJECT = /\b(saddle\w*|spurs?|chaps|cowboy|vaquero|charro|bridle|holster|lariat|lasso|reata|concho\w*|stirrups?|rodeo|bandana|boots?|bit and headstall|headstall|saddlebags?|tooled)\b/i;
+const WESTERN_PLACE = /\b(american|united states|mexic\w*|texas|wyoming|montana|california|new mexico|arizona|colorado|oklahoma|west)\b/i;
+const QUERY_GROUPS = new Set<string>([...SELECTABLE, "Global"]);
 
 /**
  * Tradition of a row: the museum's own culture/region/title text wins over the search group
  * (museum search is fuzzy, so a "Ukrainian embroidery" query also returns unrelated objects).
+ * Older rows carry the culture in `tradition`; it is read as catalogue text unless it is a query-group label.
  */
 export function traditionOf(r: AnalyzedRow): string {
-  const t = [r.culture, r.region, r.title].filter((v) => typeof v === "string").join(" ");
+  const label = typeof r.tradition === "string" ? r.tradition : "";
+  const parts = [r.culture, r.region, r.title, QUERY_GROUPS.has(label) ? undefined : label].filter((v) => typeof v === "string" && v.trim());
+  const t = parts.join(" ");
   if (INDIGENOUS.test(t)) return "Native American (structure only)";
   for (const [re, name] of CULTURE_RULES) if (re.test(t)) return name;
+  if (WESTERN_OBJECT.test(t) && (WESTERN_PLACE.test(t) || label === "Western / cowboy material culture")) return "Western / cowboy material culture";
   // Without catalogue text, trust the search group only for the targeted groups, marked as weaker evidence.
-  if (!t && r.tradition && r.tradition !== "Global") return `${r.tradition} (by query)`;
+  if (!t && label && label !== "Global") return `${label} (by query)`;
   return t ? "Other" : "Unlabelled";
 }
 
