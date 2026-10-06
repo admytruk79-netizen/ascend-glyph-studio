@@ -15,7 +15,8 @@
     "Tesseract states meanings only at their evidence grade; unknown meanings stay unknown (v3 non-negotiable).",
     "Meanings guide the choice and arrangement of ASCEND's own primitives; traditional motifs themselves are never copied.",
     "Native American traditions: structure only. No motif semantics are recorded or used for commercial derivation; nation-specific and sacred material is excluded.",
-    "Archaism note (Nykorak et al. 2022): geometric sash motifs are probably the oldest layer and began as protective signs, but most lost their meaning and became decorative; only folk names keep the associations. So a folk name is evidence of how makers saw the shape, not proof of an ancient meaning."
+    "Archaism note (Nykorak et al. 2022): geometric sash motifs are probably the oldest layer and began as protective signs, but most lost their meaning and became decorative; only folk names keep the associations. So a folk name is evidence of how makers saw the shape, not proof of an ancient meaning.",
+    "Modern myth-making (Dmytruk 2016): claims that the vyshyvanka is a 'genetic code' or a working amulet, or that stitched signs 'programme' outcomes, spread through popular media from oral retellings and undocumented sources. Even 19th–20th c. makers could no longer explain the old meanings (Bosyi, cited there). Such claims are graded popular-modern or contested, and ASCEND never markets a product as giving magical protection, least of all the defence line."
   ],
   "motifs": [
     {
@@ -932,6 +933,10 @@
     {
       "id": "tamosaitis-1988",
       "cite": "A. Tamošaitienė, A. Tamošaitis, Lithuanian Sashes, Toronto: Lithuanian Folk Art Institute, 1988 (English). Cited via Nykorak et al. 2022; not yet read directly."
+    },
+    {
+      "id": "dmytruk-2016",
+      "cite": "L. Dmytruk, 'Сакралізація народного одягу в Україні як приклад сучасного міфотворення' (Sacralisation of folk dress in Ukraine as an example of modern myth-making), Культура і сучасність No. 2, 2016, pp. 101–105."
     }
   ],
   "nextResearch": [
