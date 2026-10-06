@@ -54,7 +54,7 @@ jobs:
         with:
           node-version: 22
       - name: Corpus tests
-        run: npx -y tsx@4 --test scripts/corpus/gates.test.ts scripts/corpus/features.test.ts scripts/corpus/store.test.ts
+        run: npx -y tsx@4 --test scripts/corpus/gates.test.ts scripts/corpus/features.test.ts scripts/corpus/store.test.ts scripts/corpus/profiles.test.ts
       - name: Harvest
         run: |
           mkdir -p out
@@ -153,10 +153,19 @@ jobs:
           ANALYZED_IN: out/analyzed.ndjson
           MASTER_OUT: out/master.ndjson.gz
           MASTER_STATS_OUT: out/master-stats.json
+          CANDIDATES_IN: out/corpus.ndjson
         run: |
           test -f out/analyzed.ndjson || exit 0
           npx -y tsx@4 scripts/merge-research-corpus.ts > out/merge.log
           jq 'del(.topTraditions)' out/master-stats.json
+      - name: Style profiles
+        if: always()
+        env:
+          MASTER_IN: out/master.ndjson.gz
+          PROFILES_OUT: out/style-profiles.json
+        run: |
+          test -f out/master.ndjson.gz || exit 0
+          npx -y tsx@4 scripts/build-style-profiles.ts
       - name: Summary
         if: always()
         run: |
@@ -177,5 +186,6 @@ jobs:
           path: |
             out/master.ndjson.gz
             out/master-stats.json
+            out/style-profiles.json
           retention-days: 90
           if-no-files-found: ignore

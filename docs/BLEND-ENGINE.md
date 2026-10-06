@@ -78,7 +78,9 @@ The profile itself is the pattern-language model's learned description of how th
 
 ## Build order
 
-1. Style profiles from the master corpus. These need the tradition labels, which the corpus already carries (culture, region, query group).
+1. Style profiles from the master corpus. **Built:** `scripts/corpus/profiles.ts` and `scripts/build-style-profiles.ts`, run by the corpus workflow after each merge. They write `style-profiles.json` into the `tesseract-master` artifact and print a summary in the run log.
+   - Tradition comes from the museum's own culture, region and title text first. The search query is used only when there is no catalogue text, and such labels are marked "(by query)".
+   - `blend()` mixes the profiles by weight. It fails closed for unknown or non-selectable traditions (Native American is structure only) and warns when a profile has fewer than 30 objects.
 2. Meaning-to-primitives map from the semantics file, plus ASCEND's own concepts.
 3. Candidate generator over primitives, with structure targets.
 4. Scorers: resemblance, distance from corpus, identity, feasibility.

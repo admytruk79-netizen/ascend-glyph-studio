@@ -35,7 +35,7 @@ const MIN_EDGE = 600, ANALYSIS_EDGE = 160, DECONSTRUCT_EDGE = 512;
 
 type Row = {
   id: string; source: string; image?: string; objectURL?: string; accession?: string; tradition?: string;
-  institution?: string; relevance?: string[]; raw?: Record<string, unknown>;
+  institution?: string; relevance?: string[]; culture?: string; region?: string; date?: string; title?: string; raw?: Record<string, any>;
 };
 
 const stats = {
@@ -135,7 +135,7 @@ async function main() {
     const p = analyze(row, dupes).then((a) => {
       stream.write(JSON.stringify({
         id: row.id, source: row.source, institution: row.institution ?? row.raw?.institution, objectURL: row.objectURL, accession: row.accession,
-        tradition: row.tradition, image: row.image, relevance: row.relevance ?? row.raw?.relevance, width: a.width, height: a.height,
+        tradition: row.tradition, culture: row.culture ?? row.raw?.culture, region: row.region ?? row.raw?.region, date: row.date ?? row.raw?.date, title: row.title ?? row.raw?.title, image: row.image, relevance: row.relevance ?? row.raw?.relevance, width: a.width, height: a.height,
         dhash: a.dhash, features: a.features, deconstruction: a.deconstruction, stage: "analyzed", analyzerVersion: ANALYZER_VERSION, analyzedAt: new Date().toISOString(),
       }) + "\n");
       stats.analyzed++; bump(stats.bySource, row.source); bump(stats.dominantAxis, a.features.dominantAxis);
