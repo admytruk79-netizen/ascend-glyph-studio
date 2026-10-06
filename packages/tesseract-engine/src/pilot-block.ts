@@ -1,4 +1,5 @@
 import type {Point,PatternPieceKind} from "./pattern";
+import type {GarmentZoneKind} from "./garment";
 
 export type PatternSourceState="pattern-specified"|"sample-measured"|"manufacturer-validated"|"production-validated";
 
@@ -6,6 +7,7 @@ export type PilotBlockPieceSpec={
  kind:PatternPieceKind;
  outline:Point[];
  grainline:{from:Point;to:Point};
+ designZones:{kind:GarmentZoneKind;polygon:Point[];wrapGroupId?:string}[];
 };
 
 export type PilotBlockSpec={
@@ -31,6 +33,7 @@ export function validatePilotBlockSpec(spec:PilotBlockSpec):string[]{
   if(piece.kind!==kind)errors.push(`block-piece-kind-mismatch:${kind}`);
   if(piece.outline.length<3||piece.outline.some(p=>!validPoint(p)))errors.push(`invalid-block-outline:${kind}`);
   if(!validPoint(piece.grainline.from)||!validPoint(piece.grainline.to))errors.push(`invalid-block-grainline:${kind}`);
+  if(!piece.designZones.length||piece.designZones.some(z=>z.polygon.length<3||z.polygon.some(p=>!validPoint(p))))errors.push(`invalid-block-design-zones:${kind}`);
  }
  return errors;
 }
