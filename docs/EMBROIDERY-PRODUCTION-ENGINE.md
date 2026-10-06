@@ -19,6 +19,16 @@ Tesseract design (SVG, mm)
  → sew-out → measure → corrected recipe → production
 ```
 
+**Implementation:** `packages/stitch-engine` (TypeScript, no dependencies) implements §5–§8:
+- stitch generation: running and triple run, satin with width-based underlay and pull compensation, tatami fill with staggered rows, region splitting for concave shapes, and edge-run plus light perpendicular underlay;
+- planning: colour blocks, nearest-neighbour order, tie-in and tie-off stitches, a trim on jumps over 7 mm;
+- a DST writer and reader, checked against pyembroidery (same stitch count, same bounds);
+- wrap-around fit with per-size grading, and the compensation pre-scale;
+- the fail-closed gate, the run sheet and an SVG preview;
+- starting recipes for linen, cotton, knit, terry and leather.
+
+`npm run demo -w @ascend/stitch-engine -- <outDir> 250 24` produces a cuff band (DST, preview, run sheet). Every recipe stays `validated: false`, so the gate blocks release until a sew-out stores measured values (§9).
+
 ---
 
 ## 2. Machines and file formats
