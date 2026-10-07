@@ -54,3 +54,46 @@ export function mutateMotifGrammar(g:MotifGrammar,seed:number):MotifGrammar{
  }));
  return {...g,id:`${g.id}:mutation:${seed}`,instances};
 }
+
+
+export type MotifHierarchyKind="sub-motif"|"motif"|"compound-motif"|"repeat-cell"|"band"|"field"|"composition";
+export type MotifHierarchyNode={
+ id:string;kind:MotifHierarchyKind;childIds:string[];instanceIds:string[];
+ sourceIds:string[];confidence:number;depth:number;
+};
+export type MotifHierarchy={rootId:string;nodes:MotifHierarchyNode[];maxDepth:number;instanceCount:number};
+
+/**
+ * Builds a hierarchy without imposing a motif/instance ceiling.
+ * Leaf instances are grouped spatially, then recursively grouped into larger visual Lego assemblies.
+ * branchFactor controls grouping granularity, not maximum complexity.
+ */
+export function buildMotifHierarchy(g:MotifGrammar,branchFactor=8):MotifHierarchy{
+ const bf=Math.max(2,Math.floor(branchFactor)),nodes:MotifHierarchyNode[]=[];
+ const ordered=[...g.instances].sort((a,b)=>a.layer-b.layer||a.y01-b.y01||a.x01-b.x01||a.id.localeCompare(b.id));
+ let level=ordered.map(x=>{
+  const id="sub:"+x.id;
+  nodes.push({id,kind:"sub-motif" as const,childIds:[],instanceIds:[x.id],sourceIds:g.sourceIds,confidence:g.confidence,depth:0});
+  return id;
+ });
+ let depth=0;
+ const kinds:MotifHierarchyKind[]=["motif","compound-motif","repeat-cell","band","field"];
+ while(level.length>1){
+  depth++;
+  const next:string[]=[];
+  for(let i=0;i<level.length;i+=bf){
+   const children=level.slice(i,i+bf);
+   const childNodes=children.map(id=>nodes.find(n=>n.id===id)!);
+   const instanceIds=[...new Set(childNodes.flatMap(n=>n.instanceIds))];
+   const kind=kinds[Math.min(depth-1,kinds.length-1)]!;
+   const id=kind+":"+depth+":"+Math.floor(i/bf);
+   nodes.push({id,kind,childIds:children,instanceIds,sourceIds:g.sourceIds,confidence:g.confidence,depth});
+   next.push(id);
+  }
+  level=next;
+ }
+ const rootChild=level[0]!;
+ const rootDepth=depth+1,rootId="composition:"+g.id;
+ nodes.push({id:rootId,kind:"composition",childIds:[rootChild],instanceIds:ordered.map(x=>x.id),sourceIds:g.sourceIds,confidence:g.confidence,depth:rootDepth});
+ return {rootId,nodes,maxDepth:rootDepth,instanceCount:ordered.length};
+}
