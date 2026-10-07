@@ -9,6 +9,7 @@ import type {GarmentZone} from "./garment";
 import {adaptForProduction,type MediumId} from "./medium-compiler";
 import type {ImageObservation} from "./image-corpus";
 import {critiqueFinalSvg,type FinalSvgCritique} from "./final-svg-critic";
+import {compileMasterComposition} from "./master-composition";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
@@ -126,8 +127,8 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const adapted=adaptForProduction(candidate.topology,medium,niche);
   const g=genomeFromTopology(`pattern:${input.seed}:${i}`,adapted.topology);
   const projected=projectSemanticGeometry(g,width,height,zone);
-  const rich=richOrnament(projected.svg,mode,complexity,medium,width,height);
-  const svg=colorize(rich,input.paletteId??"underdog-heritage");
+  const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`});
+  const svg=colorize(master,input.paletteId??"underdog-heritage");
   const finalCritique=critiqueFinalSvg(svg,medium,input.visualCorpus??[]);
   const combinedScore=candidate.score+finalCritique.score*.45;
   return {id:`pat-${input.seed}-${i+1}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,finalCritique};
