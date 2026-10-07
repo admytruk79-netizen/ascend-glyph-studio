@@ -90,13 +90,14 @@ function colorize(svg:string,paletteId:string){
  let out=svg.replace(/<svg([^>]*)>/,`<svg$1 data-palette="${p.id}">${bg}`);
  out=out.replace(/currentColor/g,structure);
  let pathIndex=0;
- out=out.replace(/<path ([^>]*?)>/g,(tag,attrs:string)=>{
+ // keep a self-closing slash at the end of the tag and replace (not repeat) any existing stroke
+ out=out.replace(/<path ([^>]*?)\s*(\/?)>/g,(tag,attrs:string,slash:string)=>{
   if(!accents.length)return tag;
   const limit=accents.length*2;
   if(pathIndex>=limit){pathIndex++;return tag;}
   const i=pathIndex++;
   const c=accents[i%accents.length]!;
-  return `<path ${attrs} data-accent="${i}" stroke="${c}">`;
+  return `<path ${attrs.replace(/\s*\bstroke="[^"]*"/g,"")} data-accent="${i}" stroke="${c}"${slash}>`;
  });
  return out;
 }

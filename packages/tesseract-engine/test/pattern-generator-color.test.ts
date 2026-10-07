@@ -11,3 +11,19 @@ describe("pattern generator color projection",()=>{
   expect(new Set(accents).size).toBe(accents.length);
  });
 });
+
+describe("pattern generator SVG validity",()=>{
+ it("keeps self-closing paths closed and never duplicates the stroke attribute when applying accents",()=>{
+  const [p]=generatePatterns({seed:"accent-xml",concepts:["ancestry","freedom","protection"],paletteId:"underdog-heritage",mode:"band",complexity:.5,variations:2,width:640,height:180});
+  const svg=p!.svg;
+  // a slash followed by more attributes means the tag was broken open (`d="…"/ data-accent=…>`)
+  expect(svg).not.toMatch(/\/\s+[a-z-]+=/);
+  for(const m of svg.matchAll(/<path\b[^>]*>/g)){
+   const tag=m[0];
+   expect((tag.match(/\sstroke="/g)??[]).length).toBeLessThanOrEqual(1);
+  }
+  // every path is self-closed or explicitly closed
+  const open=(svg.match(/<path\b[^>]*[^/]>/g)??[]).length,close=(svg.match(/<\/path>/g)??[]).length;
+  expect(open).toBe(close);
+ });
+});
