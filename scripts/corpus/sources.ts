@@ -482,10 +482,21 @@ const UKRAINIAN = [
 ];
 const BELARUSIAN = ["Belarusian embroidery", "Belarusian textile", "Belarusian towel", "Belarus weaving", "Slutsk sash", "Byelorussian", "White Russian embroidery", "Belarusian costume"];
 // American Indian material: structure-only (see gates.ts). Generic technique queries; sacred material is excluded by the gate.
-const NATIVE_STRUCTURE = [
-  "Native American beadwork", "Plains beadwork", "quillwork", "parfleche", "Navajo weaving", "Navajo textile", "Pueblo pottery",
-  "Native American basket", "Apache basket", "Pomo basket", "Seminole patchwork", "Ojibwe beadwork", "Great Lakes beadwork",
-  "Native American textile", "beaded moccasins", "beaded bag Native American", "Chilkat", "Hopi pottery", "Acoma pottery",
+const INDIGENOUS_GRAMMARS: Query[] = [
+  ...["Diné weaving","Diné textile","Navajo weaving","Navajo textile","Ganado textile"].map(q=>({q,tradition:"Diné textile structure (structure only)"})),
+  ...["Hopi pottery","Hopi textile","Pueblo weaving"].map(q=>({q,tradition:"Hopi / Pueblo structure (structure only)"})),
+  ...["Acoma pottery","Acoma Pueblo pottery"].map(q=>({q,tradition:"Acoma Pueblo structure (structure only)"})),
+  ...["Plains beadwork","Plains quillwork","parfleche"].map(q=>({q,tradition:"Plains material structure (structure only)"})),
+  ...["Ojibwe beadwork","Great Lakes beadwork"].map(q=>({q,tradition:"Ojibwe / Great Lakes structure (structure only)"})),
+  ...["Seminole patchwork"].map(q=>({q,tradition:"Seminole patchwork structure (structure only)"})),
+  ...["Chilkat weaving","Chilkat textile"].map(q=>({q,tradition:"Chilkat textile structure (structure only)"})),
+  ...["Apache basket","Pomo basket","Native American basket"].map(q=>({q,tradition:"Indigenous North American basket structure (structure only)"})),
+];
+const ISLAMIC = [
+  "Islamic geometric pattern","Islamic geometric ornament","arabesque","Islamic textile","Islamic embroidery",
+  "Qur'an illumination","Mamluk ornament","Mamluk textile","Fatimid textile","Safavid textile","Safavid carpet",
+  "Ottoman textile","Ottoman tile","Iznik tile","Persian geometric ornament","Persian arabesque","muqarnas","girih",
+  "zellige","star polygon tile","interlace Islamic art","palmette Islamic art"
 ];
 const LITHUANIAN = ["Lithuanian sash", "Lithuanian textile", "Lithuanian costume", "Lithuanian weaving", "juosta", "Baltic sash"];
 const ENGLISH = [
@@ -518,7 +529,8 @@ export const QUERIES: Query[] = [
   ...UKRAINIAN.map((q) => ({ q, tradition: "Ukrainian" })),
   ...BELARUSIAN.map((q) => ({ q, tradition: "Belarusian" })),
   ...LITHUANIAN.map((q) => ({ q, tradition: "Lithuanian" })),
-  ...NATIVE_STRUCTURE.map((q) => ({ q, tradition: "Native American (structure only)" })),
+  ...INDIGENOUS_GRAMMARS,
+  ...ISLAMIC.map((q) => ({ q, tradition: "Islamic geometric / arabesque grammar" })),
   ...ENGLISH.map((q) => ({ q, tradition: "English (16th–19th c.)" })),
   ...WESTERN.map((q) => ({ q, tradition: "Western / cowboy material culture" })),
   ...GLOBAL.map((q) => ({ q, tradition: "Global" })),
