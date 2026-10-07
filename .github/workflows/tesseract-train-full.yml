@@ -3,12 +3,12 @@ name: Tesseract training on the full corpus
 # palettes, motif elements; images analysed in memory, never stored), then merges them into one model.
 # Shards write image tags to Neon as they go; the merge writes learned_model.
 on:
-  # retrain after every successful corpus harvest, and monthly regardless
+  # retrain daily, and after every successful corpus harvest
   workflow_run:
     workflows: ["Tesseract corpus harvest"]
     types: [completed]
   schedule:
-    - cron: "41 3 1 * *"
+    - cron: "41 3 * * *"
   push:
     branches: [claude/tesseract-corpus-harvest]
     paths:

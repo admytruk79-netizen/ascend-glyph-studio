@@ -16,8 +16,19 @@ const server=http.createServer(async(req,res)=>{
  if(req.method==="OPTIONS"){res.writeHead(204);res.end();return}
  try{
   if(req.url==="/canon"){
-   const q=await pool.query(`select id,support,status,review_state,nearest_reference_distance,traditions,sources,paths,centroid,reviewer_note,reviewed_at from corpus_canonical order by support desc`);
-   res.writeHead(200,{"content-type":"application/json","cache-control":"no-store"});res.end(JSON.stringify(q.rows));return;
+   const q=await pool.query(`select id,support,status,review_state,nearest_reference_distance,traditions,sources,paths,centroid,provenance,reviewer_note,reviewed_at from corpus_canonical order by support desc`);
+   const rows=[];
+   for(const row of q.rows){
+    const ids=Array.isArray(row.provenance?.observationIds)?row.provenance.observationIds.slice(0,8):[];
+    let evidence:any[]=[];
+    if(ids.length){
+     const e=await pool.query(`select id,source_key,title,creator,date_label,tradition,region,material,technique,image_url,source_url,rights,cultural_access,reliability
+      from research_corpus_object where id=any($1::text[]) order by array_position($1::text[],id)`,[ids]);
+     evidence=e.rows;
+    }
+    rows.push({...row,evidence});
+   }
+   res.writeHead(200,{"content-type":"application/json","cache-control":"no-store"});res.end(JSON.stringify(rows));return;
   }
   const m=req.url?.match(/^\/canon\/([^/]+)\.svg$/);
   if(m){

@@ -29,8 +29,8 @@ import { featureOf, hex, kmeans, learnImage, prototypeShape, type Element } from
 import { CLIP_MODEL as MODEL, MOTIF_TYPES, NOT_ORNAMENT, ORNAMENT, regionOf } from "./labels.ts";
 
 const per = Number(process.env.TRAIN_PER_TRADITION ?? 600);
+const maxImages = Number(process.env.TRAIN_MAX_IMAGES ?? 25000);
 const deadline = Date.now() + Number(process.env.TRAIN_MAX_MINUTES ?? 150) * 60_000;
-const FOCUS = new Set(["Ukrainian", "Belarusian", "Lithuanian", "Western / cowboy material culture", "English (16th–19th c.)"]);
 
 const softmax = (xs: number[]) => { const m = Math.max(...xs), e = xs.map((x) => Math.exp(x - m)), s = e.reduce((a, b) => a + b, 0); return e.map((x) => x / s); };
 
@@ -85,13 +85,13 @@ async function extract(): Promise<{ kept: Kept[]; stats: Stats }> {
     if (!r.image || (r.culturalAccess ?? "open") !== "open") continue;
     const t = traditionOf(r).replace(/ \(by query\)$/, "");
     if (STRUCTURE_ONLY.has(t)) continue;
-    if (MODE === "extract") { if (shardOf(r.id) !== SHARD) continue; }
-    else if (!FOCUS.has(t)) continue;
+    if (MODE === "extract" && shardOf(r.id) !== SHARD) continue;
     const g = groups.get(t) ?? groups.set(t, []).get(t)!;
     if (MODE === "extract" || g.length < per * 2) g.push(r);
   }
   const queue = [...groups.entries()].flatMap(([t, rows]) => rows.map((r) => ({ t, r })));
-  // interleave traditions so a time limit still leaves every tradition represented
+  // Interleave all eligible traditions so large museum collections cannot crowd
+  // smaller traditions out of the image-learning budget.
   queue.sort((a, b) => (groups.get(a.t)!.indexOf(a.r) - groups.get(b.t)!.indexOf(b.r)) || a.t.localeCompare(b.t));
   console.log(JSON.stringify({ sampled: Object.fromEntries([...groups].map(([t, g]) => [t, g.length])) }));
 
@@ -119,7 +119,8 @@ async function extract(): Promise<{ kept: Kept[]; stats: Stats }> {
   const db = MODE === "extract" && process.env.DATABASE_URL ? await pool() : null;
   let flushed = 0;
   for (const { t, r } of queue) {
-    if (Date.now() > deadline) break;
+    // a shard takes everything it is given; the single-job mode keeps its per-tradition and total budgets
+    if (Date.now() > deadline || (MODE !== "extract" && kept.length >= maxImages)) break;
     if (MODE !== "extract" && (done.get(t) ?? 0) >= per) continue;
     stats.seen++;
     try {
@@ -184,7 +185,7 @@ async function aggregate(kept: Kept[], stats: Stats) {
   };
   const summarise = (ks: Kept[]) => ({ images: ks.length, tags: tagMix(ks), palette: paletteOfGroup(ks), density: +(ks.map((k) => k.density).sort((a, b) => a - b)[Math.floor(ks.length / 2)] ?? 0).toFixed(3), elementsPerImage: +(ks.reduce((a, k) => a + k.elements.length, 0) / ks.length).toFixed(1), codebook: codebookOf(ks) });
   const model = {
-    version: "tesseract-learned/0.1", builtAt: new Date().toISOString(), clip: MODEL, stats,
+    version: "tesseract-learned/0.2-all-eligible", builtAt: new Date().toISOString(), clip: MODEL, stats,
     traditions: Object.fromEntries([...groupOf((k) => k.tradition)].map(([t, ks]) => [t, summarise(ks)])),
     regions: Object.fromEntries([...groupOf((k) => k.region)].filter(([, ks]) => ks.length >= 5).map(([r, ks]) => [r, summarise(ks)])),
   };

@@ -1,8 +1,9 @@
 import React,{useEffect,useState} from "react";
 
+type Evidence={id:string;source_key:string;title?:string|null;creator?:string|null;date_label?:string|null;tradition?:string|null;region?:string|null;material?:string|null;technique?:string|null;image_url?:string|null;source_url?:string|null;rights?:string|null;cultural_access?:string|null;reliability?:number|null};
 type CanonRow={
  id:string;support:number;status:string;review_state:string;nearest_reference_distance:number|string;
- traditions:unknown[];sources:unknown[];reviewer_note?:string|null;reviewed_at?:string|null;
+ traditions:unknown[];sources:unknown[];reviewer_note?:string|null;reviewed_at?:string|null;evidence?:Evidence[];
 };
 
 const WORKER="https://ascend-tesseract-worker.onrender.com";
@@ -24,6 +25,12 @@ export function CanonReview(){
      <strong>{r.id}</strong><span className="canonState">{r.review_state}</span>
      <dl><dt>Support</dt><dd>{r.support.toLocaleString()}</dd><dt>Traditions</dt><dd>{Array.isArray(r.traditions)?r.traditions.length:0}</dd><dt>Sources</dt><dd>{Array.isArray(r.sources)?r.sources.length:0}</dd><dt>Nearest ref.</dt><dd>{Number(r.nearest_reference_distance).toFixed(3)}</dd></dl>
      {r.reviewer_note&&<p>{r.reviewer_note}</p>}
+     {!!r.evidence?.length&&<div className="canonEvidence">
+      {r.evidence.slice(0,6).map(e=><figure key={e.id}>
+       {e.image_url?<img src={e.image_url} alt={e.title||e.tradition||"Corpus evidence"} loading="lazy"/>:<div className="evidenceBlank"/>}
+       <figcaption><strong>{e.tradition||"Unknown tradition"}</strong><span>{[e.region,e.material,e.technique].filter(Boolean).join(" · ")||e.source_key}</span><small>{e.title||e.date_label||e.source_key}</small></figcaption>
+      </figure>)}
+     </div>}
     </div>
    </article>)}
   </div>
