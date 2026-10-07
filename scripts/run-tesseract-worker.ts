@@ -1,6 +1,7 @@
 import pg from "pg";
 import http from "node:http";
 import {generatePatterns,type PatternMode} from "../packages/tesseract-engine/src/pattern-generator";
+import {critiqueRaster,type RasterCritique} from "../packages/tesseract-engine/src/raster-critic";
 
 const {Pool}=pg;
 const url=process.env.DATABASE_URL;
@@ -72,20 +73,30 @@ async function execute(run:any){
  process.stdout.write(JSON.stringify({runId:run.id,stage:"visual-corpus-loaded",observations:visualCorpus.length})+"\n");
  const patterns=generatePatterns({seed:run.seed,concepts,paletteId:intent.paletteId,mode,complexity:intent.complexity??.72,variations:run.batch_size??12,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus});
  process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-complete",patterns:patterns.length})+"\n");
+ // judge the rendered design, not its SVG text: tangles, overfilled or empty bands are rejected (kept with reasons)
+ const judged:{p:(typeof patterns)[number];raster:RasterCritique|null;score:number}[]=[];
+ for(const p of patterns){
+  let raster:RasterCritique|null=null;
+  try{raster=await critiqueRaster(p.svg)}catch(e){process.stdout.write(JSON.stringify({runId:run.id,stage:"raster-critic-error",pattern:p.id,message:String((e as Error).message).slice(0,120)})+"\n")}
+  judged.push({p,raster,score:p.score+(raster?raster.quality*60-(raster.survive?0:80):0)});
+ }
+ judged.sort((a,b)=>Number(b.raster?.survive??false)-Number(a.raster?.survive??false)||b.score-a.score);
+ process.stdout.write(JSON.stringify({runId:run.id,stage:"raster-critic",passed:judged.filter(j=>j.raster?.survive).length,of:judged.length})+"\n");
  const c=await pool.connect();
  try{
   await c.query("begin");
   await c.query("delete from synthesis_candidate where run_id=$1",[run.id]);
-  for(let i=0;i<patterns.length;i++){
-   const p=patterns[i]!;
-   const state={patternId:p.id,lineageId:p.lineageId,svg:p.svg,objectives:p.objectives,mode,concepts,corpusSignals,visualCorpusCount:visualCorpus.length,corpusObjectCount:28265};
+  for(let i=0;i<judged.length;i++){
+   const {p,raster,score}=judged[i]!;
+   const state={patternId:p.id,lineageId:p.lineageId,svg:p.svg,objectives:p.objectives,raster,mode,concepts,corpusSignals,visualCorpusCount:visualCorpus.length,corpusObjectCount:28265};
    const complexity={target:intent.complexity??.72,novelty:p.novelty};
+   const disposition=raster&&!raster.survive?"rejected-raster":"candidate";
    await c.query(`insert into synthesis_candidate(id,run_id,ordinal,state,complexity,score,disposition)
-    values(gen_random_uuid(),$1,$2,$3::jsonb,$4::jsonb,$5,'candidate')`,[run.id,i,JSON.stringify(state),JSON.stringify(complexity),p.score]);
+    values(gen_random_uuid(),$1,$2,$3::jsonb,$4::jsonb,$5,$6)`,[run.id,i,JSON.stringify(state),JSON.stringify(complexity),score,disposition]);
   }
   await c.query("update synthesis_run set status='completed' where id=$1",[run.id]);
   await c.query("commit");
-  return patterns.length;
+  return judged.length;
  }catch(e){await c.query("rollback");await pool.query("update synthesis_run set status='failed' where id=$1",[run.id]);throw e}finally{c.release()}
 }
 async function main(){

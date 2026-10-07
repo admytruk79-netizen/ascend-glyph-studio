@@ -24,6 +24,13 @@ export function compileMasterComposition(input:MasterCompositionInput){
   <clipPath id="ascend-field"><rect x="${frameInset}" y="${frameInset}" width="${Math.max(1,width-frameInset*2)}" height="${Math.max(1,height-frameInset*2)}" rx="${Math.max(3,frameInset*.25)}"/></clipPath>
  </defs>`;
  const layers:string[]=[];
+ // Thread has no translucency: every "ghost" layer would be stitched solid on top of the others and the
+ // stack becomes a tangle. For stitched and tooled media keep one drawing, placed once; the depth effect
+ // (ghost, echo, counterpoint copies) is for print only.
+ if(medium==="embroidery"||medium==="leather-tooling"){
+  layers.push(`<g data-composition-layer="primary-focal" clip-path="url(#ascend-field)">${b}</g>`);
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" data-master-composition="v2-single" data-mode="${mode}" data-medium="${medium}">${defs}<g fill="none" stroke="currentColor" stroke-width="${strokeFor(medium)}" stroke-linecap="round" stroke-linejoin="round">${layers.join("")}</g></svg>`;
+ }
  layers.push(`<g data-composition-layer="quiet-field" opacity=".16" clip-path="url(#ascend-field)" transform="translate(${(-width*.08).toFixed(2)} ${(height*.06).toFixed(2)}) scale(${ghostScale.toFixed(3)})">${b}</g>`);
  if(wrap)layers.push(`<g data-composition-layer="long-movement" opacity=".28" mask="url(#ascend-void)" transform="translate(${(width*.12).toFixed(2)} ${(-height*.08).toFixed(2)}) scale(1.18 .72)">${b}</g>`);
  layers.push(`<g data-composition-layer="primary-focal" transform="translate(${focalX.toFixed(2)} ${focalY.toFixed(2)}) scale(${focalScale.toFixed(3)}) translate(${(-focalX).toFixed(2)} ${(-focalY).toFixed(2)})">${b}</g>`);
