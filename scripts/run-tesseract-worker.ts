@@ -2,6 +2,8 @@ import pg from "pg";
 import http from "node:http";
 import {generatePatterns,type PatternMode} from "../packages/tesseract-engine/src/pattern-generator";
 import {critiqueRaster,type RasterCritique} from "../packages/tesseract-engine/src/raster-critic";
+import {deriveCorpusCanon} from "../packages/tesseract-engine/src/corpus-canonical";
+import {installCorpusCanon} from "../packages/tesseract-engine/src/ascend-primitives";
 
 const {Pool}=pg;
 const url=process.env.DATABASE_URL;
@@ -19,7 +21,7 @@ async function claim(){
   await c.query("begin");
   const q=await c.query(`select r.*,e.batch_size,e.population,e.generations
    from synthesis_run r cross join engine_runtime e
-   where (r.status in ('queued','created') or (r.status='running' and not exists (select 1 from synthesis_candidate sc where sc.run_id=r.id))) and e.id='tesseract-v2' and e.enabled=true
+   where (r.status in ('queued','created') or (r.status='running' and r.solver_version='3.0.0-corpus-visual' and not exists (select 1 from synthesis_candidate sc where sc.run_id=r.id))) and e.id='tesseract-v2' and e.enabled=true
    order by r.created_at for update of r skip locked limit 1`);
   const run=q.rows[0]; if(!run){await c.query("rollback");return null}
   await c.query("update synthesis_run set status='running' where id=$1",[run.id]);
@@ -63,6 +65,15 @@ async function loadVisualCorpus(seed:string){
     embroideryComplexity:Math.max(0,Math.min(1,Number(f.edgeDensity||.5)*.35+Number(f.densityVariation||.5)*.25+(scale/5)*.2+Math.max(Number(f.repetitionX||0),Number(f.repetitionY||0))*.2))},notes:[r.kind||"unknown",r.tradition||"unknown"],provenance:r.id};
  });
 }
+async function persistCorpusCanon(canon:any[]){
+ for(const x of canon){
+  await pool.query(`insert into corpus_canonical(id,version,status,support,traditions,sources,centroid,paths,nearest_reference_distance,provenance,built_at)
+   values($1,$2,$3,$4,$5::jsonb,$6::jsonb,$7::jsonb,$8::jsonb,$9,$10::jsonb,now())
+   on conflict(id) do update set version=excluded.version,status=excluded.status,support=excluded.support,traditions=excluded.traditions,sources=excluded.sources,centroid=excluded.centroid,paths=excluded.paths,nearest_reference_distance=excluded.nearest_reference_distance,provenance=excluded.provenance,built_at=now()`,
+   [x.id,x.version,x.status,x.support,JSON.stringify(x.traditions),JSON.stringify(x.sources),JSON.stringify(x.centroid),JSON.stringify(x.paths),x.nearestReferenceDistance,JSON.stringify(x.provenance)]);
+ }
+}
+
 async function execute(run:any){
  const intent=(run.intent??{}) as Intent;
  const concepts=(intent.concepts??[]).sort((a,b)=>b.weight-a.weight).map(x=>x.id);
@@ -71,6 +82,10 @@ async function execute(run:any){
  process.stdout.write(JSON.stringify({runId:run.id,stage:"corpus-signals-loaded",signals:corpusSignals.length})+"\n");
  const visualCorpus=await loadVisualCorpus(run.seed);
  process.stdout.write(JSON.stringify({runId:run.id,stage:"visual-corpus-loaded",observations:visualCorpus.length})+"\n");
+ const canon=deriveCorpusCanon(visualCorpus,{count:16,minTraditions:4,minSources:8,minSupport:24,minReferenceDistance:.035});
+ installCorpusCanon(canon);
+ process.stdout.write(JSON.stringify({runId:run.id,stage:"corpus-canon-derived",canonical:canon.filter(x=>x.status==="canonical").length,total:canon.length})+"\n");
+ await persistCorpusCanon(canon);
  const patterns=generatePatterns({seed:run.seed,concepts,paletteId:intent.paletteId,mode,complexity:intent.complexity??.72,variations:run.batch_size??12,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus});
  process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-complete",patterns:patterns.length})+"\n");
  // judge the rendered design, not its SVG text: tangles, overfilled or empty bands are rejected (kept with reasons)
@@ -115,6 +130,11 @@ async function persist(run:any,judged:{p:any;raster:RasterCritique|null;score:nu
  }catch(e){await c.query("rollback").catch(()=>{});throw e}finally{c.release(true)}
 }
 async function main(){
+ const bootstrapVisual=await loadVisualCorpus("corpus-canonical-bootstrap-v1");
+ const bootstrapCanon=deriveCorpusCanon(bootstrapVisual,{count:16,minTraditions:4,minSources:8,minSupport:24,minReferenceDistance:.02});
+ installCorpusCanon(bootstrapCanon);
+ await persistCorpusCanon(bootstrapCanon);
+ process.stdout.write(JSON.stringify({stage:"corpus-canon-bootstrap",observations:bootstrapVisual.length,canonical:bootstrapCanon.filter(x=>x.status==="canonical").length,total:bootstrapCanon.length})+"\n");
  let done=0;
  for(;;){const run=await claim();if(!run)break;const n=await execute(run);done+=n;process.stdout.write(JSON.stringify({runId:run.id,candidates:n,status:"completed"})+"\n")}
  process.stdout.write(JSON.stringify({ok:true,candidatesPersisted:done})+"\n");

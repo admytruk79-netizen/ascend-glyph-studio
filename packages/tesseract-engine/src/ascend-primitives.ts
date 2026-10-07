@@ -1,6 +1,7 @@
+import type {CorpusCanonicalGeometry} from "./corpus-canonical";
 export type PrimitiveId="torus"|"axis"|"spatial-flow"|"opposition"|"radial-emission"|"seed"|"branch"|"orbit"|"crossing"|"void";
 export type PrimitivePort={id:string;x:number;y:number;angleDeg:number;role:"entry"|"exit"|"branch"|"orbit"|"center"};
-export type PrimitiveGeometry={id:PrimitiveId;viewBox:string;paths:string[];ports:PrimitivePort[];closure:"open"|"closed"|"mixed";status:"source-derived-provisional"|"canonical-verified";source:string};
+export type PrimitiveGeometry={id:PrimitiveId;viewBox:string;paths:string[];ports:PrimitivePort[];closure:"open"|"closed"|"mixed";status:"source-derived-provisional"|"canonical-verified"|"corpus-canonical";source:string};
 
 const src="Oleksandr source-symbol board / hand-drawn geometry";
 export const ASCEND_PRIMITIVES:Record<PrimitiveId,PrimitiveGeometry>={
@@ -15,4 +16,21 @@ export const ASCEND_PRIMITIVES:Record<PrimitiveId,PrimitiveGeometry>={
  crossing:{id:"crossing",viewBox:"0 0 100 100",paths:["M15 18 C37 35 59 60 84 84","M82 15 C62 36 42 60 18 85"],ports:[{id:"nw",x:15,y:18,angleDeg:225,role:"entry"},{id:"se",x:84,y:84,angleDeg:45,role:"exit"},{id:"ne",x:82,y:15,angleDeg:-45,role:"entry"},{id:"sw",x:18,y:85,angleDeg:135,role:"exit"}],closure:"open",status:"source-derived-provisional",source:src},
  void:{id:"void",viewBox:"0 0 100 100",paths:["M15 50 C21 24 41 14 59 18","M77 30 C88 43 85 62 73 74","M58 83 C40 87 24 77 18 65"],ports:[{id:"gap-a",x:59,y:18,angleDeg:-20,role:"exit"},{id:"gap-b",x:77,y:30,angleDeg:210,role:"entry"},{id:"center",x:50,y:50,angleDeg:0,role:"center"}],closure:"open",status:"source-derived-provisional",source:src}
 };
-export function primitiveForForm(form:string):PrimitiveGeometry|undefined{const map:Record<string,PrimitiveId>={seed:"seed",axis:"axis",torus:"torus",bifurcation:"branch",branch:"branch",opposition:"opposition",crossing:"crossing",enclosure:"torus",mutation:"spatial-flow","spatial-flow":"spatial-flow","radial-emission":"radial-emission",void:"void",orbit:"orbit"};return ASCEND_PRIMITIVES[map[form]]}
+let CORPUS_CANON:CorpusCanonicalGeometry[]=[];
+export function installCorpusCanon(canon:CorpusCanonicalGeometry[]){CORPUS_CANON=canon.filter(x=>x.status==="canonical");}
+function corpusScore(form:string,c:CorpusCanonicalGeometry){
+ const v=c.centroid;
+ const target:Record<string,number>={seed:v.focalDominance+v.closure+v.voidRatio*.3,axis:v.axisStrength+v.vertical*.6,torus:v.closure+v.radial+v.voidRatio*.4,bifurcation:v.branching+v.directionalEntropy*.5,branch:v.branching+v.directionalEntropy*.55,opposition:v.asymmetryBalance+v.interruption+v.directionalEntropy*.35,crossing:v.interruption+v.directionalEntropy+v.axisStrength*.2,enclosure:v.closure+v.voidRatio+v.radial*.35,mutation:v.densityVariation+v.asymmetryBalance+v.interruption*.5,"spatial-flow":v.directionalEntropy+v.asymmetryBalance+v.horizontal*.35,"radial-emission":v.radial+v.branching+v.directionalEntropy*.35,void:v.voidRatio+v.interruption+v.asymmetryBalance*.25,orbit:v.radial+v.closure+v.directionalEntropy*.3};
+ return (target[form]??v.compositionalDepth)+Math.log1p(c.support)*.015+c.nearestReferenceDistance*.2;
+}
+function corpusPrimitiveForForm(form:string):PrimitiveGeometry|undefined{
+ const c=CORPUS_CANON.length?[...CORPUS_CANON].sort((a,b)=>corpusScore(form,b)-corpusScore(form,a))[0]:undefined;
+ if(!c)return undefined;
+ const id=(form==="bifurcation"?"branch":form==="enclosure"?"torus":form==="mutation"?"spatial-flow":form) as PrimitiveId;
+ return {id,viewBox:c.viewBox,paths:c.paths,ports:[],closure:c.centroid.closure>.58?"closed":c.centroid.closure>.28?"mixed":"open",status:"corpus-canonical",source:`full-corpus:${c.id};support=${c.support};traditions=${c.traditions.length};sources=${c.sources.length}`};
+}
+export function primitiveForForm(form:string):PrimitiveGeometry|undefined{
+ const corpus=corpusPrimitiveForForm(form);if(corpus)return corpus;
+ const map:Record<string,PrimitiveId>={seed:"seed",axis:"axis",torus:"torus",bifurcation:"branch",branch:"branch",opposition:"opposition",crossing:"crossing",enclosure:"torus",mutation:"spatial-flow","spatial-flow":"spatial-flow","radial-emission":"radial-emission",void:"void",orbit:"orbit"};
+ return ASCEND_PRIMITIVES[map[form]];
+}
