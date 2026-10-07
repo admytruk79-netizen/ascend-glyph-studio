@@ -8,6 +8,7 @@ import {worldPatternGraph} from "./world-pattern-graph";
 import type {GarmentZone} from "./garment";
 import {adaptForProduction,type MediumId} from "./medium-compiler";
 import type {ImageObservation} from "./image-corpus";
+import {critiqueFinalSvg,type FinalSvgCritique} from "./final-svg-critic";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
@@ -20,6 +21,7 @@ export type PatternGeneratorInput={
 export type GeneratedPattern={
  id:string;lineageId:string;score:number;novelty:number;svg:string;
  objectives:ReturnType<typeof searchDesignSpace>[number]["objectives"];
+ finalCritique:FinalSvgCritique;
 };
 
 const nicheForMode=(mode:PatternMode):DesignNicheId|undefined=>({
@@ -102,6 +104,7 @@ function culturalSignals(cultureIds:string[],objectTypes?:string[]){const signal
 export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]{
  const concepts=(input.concepts.length?input.concepts:["ancestry","freedom","protection"]).slice(0,8);
  const mode=input.mode??"band",niche=nicheForMode(mode),variations=Math.max(4,Math.min(input.variations??12,32));
+ const searchKeep=Math.min(32,Math.max(variations+4,variations*2));
  const width=input.width??960,height=input.height??260,medium=mediumForMode(mode,input.medium),zone=projectionZone(mode,width,height);
  const complexity=Math.max(0,Math.min(1,input.complexity??.65));
  const cultureIds=input.cultureIds?.length?input.cultureIds:["ukraine","japan","britain","china","western-craft"];
@@ -117,13 +120,19 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
    character:[{id:"ordered-organic",weight:.55+complexity*.35},{id:"minimal-complex",weight:complexity},...(input.medium?[{id:`medium:${input.medium}`,weight:.9}]:[]),...(input.placement?[{id:`placement:${input.placement}`,weight:.95}]:[])]
   },
   principles:[],niches:niche?[niche]:undefined,medium,visualCorpus:input.visualCorpus,
-  population:input.population??Math.round(32+complexity*64),generations:input.generations??Math.round(3+complexity*5),keep:variations
+  population:input.population??Math.round(32+complexity*64),generations:input.generations??Math.round(3+complexity*5),keep:searchKeep
  });
- return candidates.map((c,i)=>{
-  const adapted=adaptForProduction(c.topology,medium,niche);
+ const rendered=candidates.map((candidate,i)=>{
+  const adapted=adaptForProduction(candidate.topology,medium,niche);
   const g=genomeFromTopology(`pattern:${input.seed}:${i}`,adapted.topology);
-  const p=projectSemanticGeometry(g,width,height,zone);
-  const rich=richOrnament(p.svg,mode,complexity,medium,width,height);
-  return {id:`pat-${input.seed}-${i+1}`,lineageId:c.lineageId,score:c.score,novelty:c.novelty,objectives:c.objectives,svg:colorize(rich,input.paletteId??"underdog-heritage")};
- });
+  const projected=projectSemanticGeometry(g,width,height,zone);
+  const rich=richOrnament(projected.svg,mode,complexity,medium,width,height);
+  const svg=colorize(rich,input.paletteId??"underdog-heritage");
+  const finalCritique=critiqueFinalSvg(svg,medium,input.visualCorpus??[]);
+  const combinedScore=candidate.score+finalCritique.score*.45;
+  return {id:`pat-${input.seed}-${i+1}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,finalCritique};
+ }).sort((a,b)=>b.score-a.score);
+ const survivors=rendered.filter(x=>x.finalCritique.survive);
+ const pool=survivors.length>=Math.min(4,variations)?survivors:rendered;
+ return pool.slice(0,variations);
 }
