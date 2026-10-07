@@ -203,3 +203,45 @@ jobs:
             out/style-profiles.json
           retention-days: 90
           if-no-files-found: ignore
+
+
+  train:
+    # Learn directly from the freshly analysed imagery produced by this harvest.
+    # This keeps the learned model in sync with corpus growth instead of requiring
+    # a separate branch/manual training run.
+    needs: analyze
+    if: always() && needs.analyze.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 200
+    permissions:
+      actions: read
+      contents: read
+    env:
+      TRAIN_PER_TRADITION: "1200"
+      TRAIN_MAX_MINUTES: "170"
+      DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/download-artifact@v4
+        with:
+          name: tesseract-master
+          path: master
+      - name: Install image learning runtime
+        run: npm install --no-save --no-audit --no-fund @huggingface/transformers@3 sharp pg
+      - name: Train on fresh analysed imagery
+        env:
+          MASTER_IN: master/master.ndjson.gz
+        run: |
+          mkdir -p out
+          test -f "$MASTER_IN"
+          npx -y tsx@4 scripts/train/train-tesseract.mts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tesseract-model-${{ github.run_id }}
+          path: out/tesseract-model.json
+          retention-days: 90
+          if-no-files-found: ignore
