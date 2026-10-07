@@ -11,6 +11,9 @@ if(!url)throw new Error("DATABASE_URL required");
 const pool=new Pool({connectionString:url,ssl:{rejectUnauthorized:false},max:3,idleTimeoutMillis:15000,connectionTimeoutMillis:15000,keepAlive:true});
 pool.on("error",(err)=>{console.error(JSON.stringify({level:"warn",event:"db_pool_idle_disconnect",message:err.message}));});
 const server=http.createServer(async(req,res)=>{
+ res.setHeader("access-control-allow-origin","*");
+ res.setHeader("access-control-allow-methods","GET,OPTIONS");
+ if(req.method==="OPTIONS"){res.writeHead(204);res.end();return}
  try{
   if(req.url==="/canon"){
    const q=await pool.query(`select id,support,status,review_state,nearest_reference_distance,traditions,sources,paths,centroid,reviewer_note,reviewed_at from corpus_canonical order by support desc`);
