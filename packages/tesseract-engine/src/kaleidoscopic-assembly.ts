@@ -27,3 +27,19 @@ export function solveKaleidoscopicAssembly(g:MotifGrammar,ports:MotifPort[],cons
  const score=1/(1+penalty);
  return {grammar:g,valid:violations.length===0,score,violations};
 }
+
+
+export type NestingBox={x01:number;y01:number;width01:number;height01:number};
+export type NestingFit={scale:number;x01:number;y01:number;fits:boolean;reason?:string};
+
+/** Proportionally shrinks a child motif to fit a parent cavity; never enlarges past its requested scale. */
+export function fitMotifToCavity(child:{aspect:number;scale:number},cavity:NestingBox,minScale=.15,padding01=.02):NestingFit{
+ const w=Math.max(0,cavity.width01-padding01*2),h=Math.max(0,cavity.height01-padding01*2);
+ const aspect=Math.max(.0001,child.aspect);
+ const requested=Math.max(.0001,child.scale);
+ const fit=Math.min(w/aspect,h,requested);
+ const scale=Math.max(0,fit);
+ const fits=scale>=minScale&&w>0&&h>0;
+ const childW=scale*aspect,childH=scale;
+ return {scale,x01:cavity.x01+(cavity.width01-childW)/2,y01:cavity.y01+(cavity.height01-childH)/2,fits,reason:fits?undefined:"nested-motif-below-minimum-scale"};
+}
