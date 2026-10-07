@@ -32,8 +32,8 @@ export function projectSemanticGeometry(g:DesignGenome,width=800,height=240,zone
   if(!wrap)return [main];const mirror=tx<0?tx+width:tx-width;return [main,`<path data-wrap-continuation="relation-${i}" d="M ${f(mirror)} ${f(b.y)} Q ${f((mirror+b.x)/2)} ${f((a.y+b.y)/2+bend)} ${f(b.x)} ${f(b.y)}"/>`];
  }).join("");
  const shapes=nodes.map(v=>{const p=pos.get(v.id)!;const shape=geometry(v.form,p,Math.min(24,height*.105)*p.scale,v.id);return `<g transform="rotate(${f(p.angleDeg)} ${f(p.x)} ${f(p.y)})" data-layer="${p.layer}">${shape}</g>`;}).join("");
- const metadata=`<metadata data-layout="constraint-relational" data-iterations="${layout.iterations}" data-energy="${f(layout.energy)}" data-wrap="${zone?.wrapAllowed?"true":"false"}"/>`;
- return {svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" data-genome="${esc(g.id)}">${metadata}<g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${paths}${shapes}</g></svg>`,width,height,featureMap:Object.fromEntries(nodes.map(v=>[v.id,v.conceptId]))};
+ const metadata=`<metadata data-layout="constraint-relational" data-relations="layout-only" data-iterations="${layout.iterations}" data-energy="${f(layout.energy)}" data-wrap="${zone?.wrapAllowed?"true":"false"}"/>`;
+ return {svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" data-genome="${esc(g.id)}">${metadata}<g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${shapes}</g></svg>`,width,height,featureMap:Object.fromEntries(nodes.map(v=>[v.id,v.conceptId]))};
 }
 
 export function renderZoneTrajectories(projection:SvgProjection,zoneId:string,trajectories:GarmentTrajectory[]):SvgProjection{
