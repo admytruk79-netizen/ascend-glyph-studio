@@ -1,0 +1,84 @@
+{
+  "designId": "ASCEND-CALIBRATION",
+  "revision": "0.1",
+  "zone": "flat test panel",
+  "file": "ascend-calibration-linen-180-prewashed.dst",
+  "compensation": {
+    "scaleX": 1,
+    "scaleY": 1
+  },
+  "gate": {
+    "release": false,
+    "checks": [
+      {
+        "id": "satin-width",
+        "pass": false,
+        "detail": "out of 1–8 mm: A1=0.8"
+      },
+      {
+        "id": "fill-density",
+        "pass": false,
+        "detail": "denser than 0.4 mm: B1=0.35, B2=0.38"
+      },
+      {
+        "id": "min-stitch",
+        "pass": true,
+        "detail": "0 stitches shorter than 1 mm"
+      },
+      {
+        "id": "max-stitch",
+        "pass": true,
+        "detail": "0 stitches longer than 12.1 mm"
+      },
+      {
+        "id": "hoop-fit",
+        "pass": true,
+        "detail": "design 135.2×131.0 mm, hoop 200x200 200×200 mm"
+      },
+      {
+        "id": "min-gap",
+        "pass": false,
+        "detail": "closest objects F1a/F1b 0.50 mm (min 0.8)"
+      },
+      {
+        "id": "recipe-validated",
+        "pass": false,
+        "detail": "recipe linen-180-prewashed has no sew-out yet: prototype only"
+      }
+    ]
+  },
+  "format": "DST",
+  "stitches": 5038,
+  "colorChanges": 1,
+  "trims": 50,
+  "estMinutes": 11.5,
+  "extentMm": {
+    "width": 135.2,
+    "height": 131
+  },
+  "threads": [
+    {
+      "block": 1,
+      "color": "#1d2a4d"
+    },
+    {
+      "block": 2,
+      "color": "#8b1a1a"
+    }
+  ],
+  "recipe": {
+    "id": "linen-180-prewashed",
+    "material": "Linen ~180 GSM, pre-washed",
+    "needle": "75/11 sharp",
+    "stabilizer": "medium cut-away or mesh",
+    "speedSpm": 700
+  },
+  "qc": [
+    "This is a test strip: the limit tests (0.8 mm satin, 0.35/0.38 mm fills, 0.5 mm gap) are expected to fail the gate and are there to be measured.",
+    "dimensions within ±1 mm of extent",
+    "registration of outlines to fills",
+    "no puckering after unhooping",
+    "no thread breaks or birdnests",
+    "band closes at seam on a void / segment boundary"
+  ]
+}
