@@ -26,6 +26,9 @@ export interface Element {
   mirror: number;        // mirror score about the principal axis, 0–1
   color: RGB;
   profile: number[];     // r(θ), 64 bins, aligned to the principal axis, mean 1
+  x?: number; y?: number; // centroid, as a fraction of image width / height (layout analysis)
+  angle?: number;         // principal axis, radians
+  extent?: number;        // longest side of the bounding box, as a fraction of the image's longer side
 }
 export interface ImageLearning { palette: Swatch[]; ground: RGB; density: number; elements: Element[] }
 
@@ -144,7 +147,10 @@ export function describe(pix: number[], img: Raster): Omit<Element, "size"> {
   }
   // mirror about the principal axis: r(θ) against r(−θ)
   let num = 0, den = 0; for (let i = 0; i < BINS; i++) { num += Math.abs(prof[i]! - prof[(BINS - i) % BINS]!); den += prof[i]!; }
+  let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+  for (const p of pix) { const x = p % w, y = (p - x) / w; if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
   return {
+    x: cx / img.width, y: cy / img.height, angle: axis, extent: (Math.max(x1 - x0, y1 - y0) + 1) / Math.max(img.width, img.height),
     area: pix.length / (img.width * img.height), elong: Math.sqrt(l1 / l2), solidity: Math.min(1, pix.length / Math.max(1, hullArea)),
     order, mirror: Math.max(0, 1 - num / den), color: col.map((v) => Math.round(v / pix.length)) as RGB, profile: prof,
   };

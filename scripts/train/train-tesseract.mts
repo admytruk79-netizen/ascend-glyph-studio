@@ -26,6 +26,7 @@ import sharp from "sharp";
 import { STRUCTURE_ONLY, traditionOf } from "../corpus/profiles.ts";
 import { USER_AGENT } from "../corpus/sources.ts";
 import { featureOf, hex, kmeans, learnImage, prototypeShape, type Element } from "./learn.ts";
+import { assemble, brickSignatures, grammarOf, scalesOf, type Assembly } from "./lego.ts";
 import { CLIP_MODEL as MODEL, MOTIF_TYPES, NOT_ORNAMENT, ORNAMENT, regionOf } from "./labels.ts";
 
 const per = Number(process.env.TRAIN_PER_TRADITION ?? 600);
@@ -34,9 +35,11 @@ const deadline = Date.now() + Number(process.env.TRAIN_MAX_MINUTES ?? 150) * 60_
 
 const softmax = (xs: number[]) => { const m = Math.max(...xs), e = xs.map((x) => Math.exp(x - m)), s = e.reduce((a, b) => a + b, 0); return e.map((x) => x / s); };
 
+// traditions whose motif elements are kept for the codebook, and which a shard learns first
+const FOCUS = new Set(["Ukrainian", "Belarusian", "Lithuanian", "Western / cowboy material culture", "English (16th–19th c.)"]);
 const MODE = process.env.TRAIN_MODE ?? "all", SHARDS = Number(process.env.TRAIN_SHARDS ?? 1), SHARD = Number(process.env.TRAIN_SHARD ?? 0);
 const shardOf = (id: string) => createHash("md5").update(id).digest().readUInt32BE(0) % SHARDS;
-type Kept = { id: string; tradition: string; region?: string; ornamentP: number; tags: Record<string, number>; palette: { hex: string; share: number }[]; ground: string; density: number; elements: Element[] };
+type Kept = { id: string; tradition: string; region?: string; ornamentP: number; tags: Record<string, number>; palette: { hex: string; share: number }[]; ground: string; density: number; elements: Element[]; lego?: Assembly };
 type Stats = { seen: number; kept: number; notOrnament: number; failed: number; perTradition: Record<string, number> };
 
 async function pool() {
@@ -70,18 +73,37 @@ async function main() {
       for (const [t, n] of Object.entries(d.stats.perTradition as Record<string, number>)) stats.perTradition[t] = (stats.perTradition[t] ?? 0) + n;
     }
     console.log(JSON.stringify({ merged: files.length, stats }));
+    // never replace a working model with one learned from a run that mostly failed
+    const minKept = Number(process.env.TRAIN_MIN_KEPT ?? 2000);
+    if (kept.length < minKept) { console.error(`only ${kept.length} images kept (need ${minKept}): model not written`); process.exitCode = 1; return; }
   } else ({ kept, stats } = await extract());
   if (MODE === "extract") return;
   await aggregate(kept, stats);
 }
 
+/**
+ * The corpus to learn from. TRAIN_SOURCE=neon reads every object straight from research_corpus_object, so a run sees
+ * everything harvested so far (a harvest writes Neon before its slow analysis step finishes); otherwise the master
+ * corpus file from the last successful harvest (MASTER_IN).
+ */
+async function* records(): AsyncGenerator<any> {
+  if (process.env.TRAIN_SOURCE === "neon") {
+    const db = await pool();
+    const { rows } = await db.query(`select id, image_url as image, coalesce(cultural_access, 'open') as "culturalAccess", tradition, title, region,
+      raw->>'culture' as culture, raw->>'institution' as institution from research_corpus_object where image_url is not null`);
+    await db.end();
+    console.log(JSON.stringify({ source: "neon", objects: rows.length }));
+    yield* rows;
+    return;
+  }
+  const stream = createReadStream(process.env.MASTER_IN ?? "master/master.ndjson.gz");
+  for await (const line of createInterface({ input: stream.pipe(createGunzip()), crlfDelay: Infinity })) if (line.trim()) yield JSON.parse(line);
+}
+
 async function extract(): Promise<{ kept: Kept[]; stats: Stats }> {
   // 1. select: per focus tradition (sampled) or, in a shard, every open-access image whose id hashes to it
   const groups = new Map<string, any[]>();
-  const stream = createReadStream(process.env.MASTER_IN ?? "master/master.ndjson.gz");
-  for await (const line of createInterface({ input: stream.pipe(createGunzip()), crlfDelay: Infinity })) {
-    if (!line.trim()) continue;
-    const r = JSON.parse(line);
+  for await (const r of records()) {
     if (!r.image || (r.culturalAccess ?? "open") !== "open") continue;
     const t = traditionOf(r).replace(/ \(by query\)$/, "");
     if (STRUCTURE_ONLY.has(t)) continue;
@@ -92,7 +114,11 @@ async function extract(): Promise<{ kept: Kept[]; stats: Stats }> {
   const queue = [...groups.entries()].flatMap(([t, rows]) => rows.map((r) => ({ t, r })));
   // Interleave all eligible traditions so large museum collections cannot crowd
   // smaller traditions out of the image-learning budget.
-  queue.sort((a, b) => (groups.get(a.t)!.indexOf(a.r) - groups.get(b.t)!.indexOf(b.r)) || a.t.localeCompare(b.t));
+  // Focus traditions first (the time limit may stop a shard before the end), "Other" last; within that, rank in
+  // its own group, so smaller traditions are not crowded out. Ranks are precomputed (indexOf in a sort is quadratic).
+  const rank = new Map<any, number>(); for (const g of groups.values()) g.forEach((r, i) => rank.set(r, i));
+  const tier = (t: string) => (FOCUS.has(t) ? 0 : t === "Other" || t === "Unlabelled" ? 2 : 1);
+  queue.sort((a, b) => tier(a.t) - tier(b.t) || rank.get(a.r)! - rank.get(b.r)! || a.t.localeCompare(b.t));
   console.log(JSON.stringify({ sampled: Object.fromEntries([...groups].map(([t, g]) => [t, g.length])) }));
 
   // the vision model is only needed to extract (merging works without it)
@@ -101,23 +127,45 @@ async function extract(): Promise<{ kept: Kept[]; stats: Stats }> {
   const pe = await embedTexts(prompts), te = await embedTexts(Object.values(MOTIF_TYPES));
 
   const lastHit = new Map<string, number>();
+  // a host that keeps failing (blocked, or too slow to answer) is dropped for the rest of the run, so it cannot
+  // eat the shard's time budget one 20-second timeout at a time
+  const strikes = new Map<string, number>(), dropped = new Set<string>(), hostMs = new Map<string, [number, number]>();
   async function get(url: string): Promise<Buffer> {
+    // archive.org's IIIF server cuts each page scan on request: ask for the size we use, not 1600 px
+    if (url.includes("iiif.archive.org/")) url = url.replace(/\/full\/(!?\d*,\d*|max|full)\/0\/default\.(jpg|png)$/, "/full/!512,512/0/default.$2");
+    const host = new URL(url).host;
+    if (dropped.has(host)) throw new Error(`host ${host} dropped`);
     // several shards run at once: pace each host more gently per shard
-    const host = new URL(url).host, wait = (lastHit.get(host) ?? 0) + (MODE === "extract" ? 650 : 400) - Date.now();
+    const wait = (lastHit.get(host) ?? 0) + (MODE === "extract" ? 650 : 400) - Date.now();
     if (wait > 0) await new Promise((r) => setTimeout(r, wait));
     lastHit.set(host, Date.now());
     const h: Record<string, string> = { "user-agent": USER_AGENT, accept: "image/jpeg,image/png,image/*;q=0.8" };
     if (url.includes("artic.edu")) h["AIC-User-Agent"] = USER_AGENT;
-    const res = await fetch(url, { headers: h, signal: AbortSignal.timeout(30_000) });
-    if (!res.ok) throw new Error(String(res.status));
-    return Buffer.from(await res.arrayBuffer());
+    try {
+      const t0 = Date.now();
+      const res = await fetch(url, { headers: h, signal: AbortSignal.timeout(20_000) });
+      const hm = hostMs.get(host) ?? [0, 0]; hostMs.set(host, [hm[0] + Date.now() - t0, hm[1] + 1]);
+      if (!res.ok) throw new Error(String(res.status));
+      const buf = Buffer.from(await res.arrayBuffer());
+      strikes.set(host, 0);
+      return buf;
+    } catch (e) {
+      const n = (strikes.get(host) ?? 0) + 1;
+      strikes.set(host, n);
+      if (n >= 25) { dropped.add(host); console.log(JSON.stringify({ droppedHost: host, after: n, last: String((e as Error).message).slice(0, 80) })); }
+      throw e;
+    }
   }
 
+  // Lego pieces: brick signatures once per shard, then every kept image is read as an assembly of pieces
+  const sigs = await brickSignatures(), sigScale = scalesOf(sigs);
   const kept: Kept[] = [];
   const stats: Stats = { seen: 0, kept: 0, notOrnament: 0, failed: 0, perTradition: {} };
   const done = new Map<string, number>();
   const db = MODE === "extract" && process.env.DATABASE_URL ? await pool() : null;
   let flushed = 0;
+  // heartbeat: progress and fetch time per host, every minute, so a slow source is visible in the log
+  const beat = setInterval(() => console.log(JSON.stringify({ beat: stats, hosts: Object.fromEntries([...hostMs].map(([hh, [ms, n]]) => [hh, { n, avgMs: Math.round(ms / n) }])), dropped: [...dropped] })), 60_000);
   for (const { t, r } of queue) {
     // a shard takes everything it is given; the single-job mode keeps its per-tradition and total budgets
     if (Date.now() > deadline || (MODE !== "extract" && kept.length >= maxImages)) break;
@@ -132,20 +180,29 @@ async function extract(): Promise<{ kept: Kept[]; stats: Stats }> {
       if (ornamentP < 0.6) { stats.notOrnament++; continue; }
       const tp = softmax(te.map((v) => cos(e, v) * 100));
       const raw = await sharp(buf).rotate().resize(384, 384, { fit: "inside" }).removeAlpha().raw().toBuffer({ resolveWithObject: true });
-      const L = learnImage({ data: raw.data, width: raw.info.width, height: raw.info.height });
+      const img = { data: raw.data, width: raw.info.width, height: raw.info.height };
+      const L = learnImage(img);
+      const A = assemble(img, sigs, sigScale, 40, L);
       kept.push({
         id: r.id, tradition: t, region: t === "Ukrainian" ? regionOf(r) : undefined, ornamentP: +ornamentP.toFixed(3),
         tags: Object.fromEntries(types.map((k, i) => [k, +tp[i]!.toFixed(3)])),
         palette: L.palette.slice(0, 5).map((s) => ({ hex: hex(s.rgb), share: +s.share.toFixed(3) })), ground: hex(L.ground), density: +L.density.toFixed(3),
         // motif elements are only clustered for the focus traditions; keep the shard files small otherwise
         elements: FOCUS.has(t) ? L.elements.map((e) => ({ ...e, profile: e.profile.map((v) => +v.toFixed(3)) })) : [],
+        // pieces without their shape vectors (novel ones keep theirs, for clustering into new bricks)
+        lego: { ...A, pieces: A.pieces.map((p) => (p.brick === "novel" ? p : { ...p, f: undefined })) },
       });
       done.set(t, (done.get(t) ?? 0) + 1); stats.kept++; stats.perTradition[t] = done.get(t)!;
       if (stats.kept % 100 === 0) console.log(JSON.stringify({ progress: stats }));
       // write tags as we go, so a time limit never loses finished work
-      if (db && kept.length - flushed >= 250) { await writeTags(db, kept.slice(flushed)).catch((e) => console.log(JSON.stringify({ neonRetryLater: String(e.message).slice(0, 80) }))); flushed = kept.length; }
-    } catch { stats.failed++; }
+      if (db && kept.length - flushed >= 100) { await writeTags(db, kept.slice(flushed)).catch((e) => console.log(JSON.stringify({ neonRetryLater: String(e.message).slice(0, 80) }))); flushed = kept.length; }
+    } catch (e) {
+      // a failed download is normal; anything else is a bug, so show the first few instead of counting them silently
+      stats.failed++;
+      if (stats.failed <= 5) console.log(JSON.stringify({ failed: r.id, error: String((e as Error)?.stack ?? e).slice(0, 300) }));
+    }
   }
+  clearInterval(beat);
   if (MODE === "extract") {
     if (db) { await writeTags(db, kept.slice(flushed)); await db.end(); }
     mkdirSync("out", { recursive: true });
@@ -185,9 +242,15 @@ async function aggregate(kept: Kept[], stats: Stats) {
   };
   const summarise = (ks: Kept[]) => ({ images: ks.length, tags: tagMix(ks), palette: paletteOfGroup(ks), density: +(ks.map((k) => k.density).sort((a, b) => a - b)[Math.floor(ks.length / 2)] ?? 0).toFixed(3), elementsPerImage: +(ks.reduce((a, k) => a + k.elements.length, 0) / ks.length).toFixed(1), codebook: codebookOf(ks) });
   const model = {
-    version: "tesseract-learned/0.2-all-eligible", builtAt: new Date().toISOString(), clip: MODEL, stats,
+    version: "tesseract-learned/0.3-lego", builtAt: new Date().toISOString(), clip: MODEL, stats,
     traditions: Object.fromEntries([...groupOf((k) => k.tradition)].map(([t, ks]) => [t, summarise(ks)])),
     regions: Object.fromEntries([...groupOf((k) => k.region)].filter(([, ks]) => ks.length >= 5).map(([r, ks]) => [r, summarise(ks)])),
+    // Lego grammar: which pieces each tradition and region uses, how they sit together, mirror and repeat
+    lego: {
+      all: grammarOf(kept.flatMap((k) => (k.lego ? [k.lego] : []))),
+      traditions: Object.fromEntries([...groupOf((k) => k.tradition)].map(([t, ks]) => [t, grammarOf(ks.flatMap((k) => (k.lego ? [k.lego] : [])))])),
+      regions: Object.fromEntries([...groupOf((k) => k.region)].filter(([, ks]) => ks.length >= 5).map(([r, ks]) => [r, grammarOf(ks.flatMap((k) => (k.lego ? [k.lego] : [])))])),
+    },
   };
   mkdirSync("out", { recursive: true });
   writeFileSync("out/tesseract-model.json", JSON.stringify(model));

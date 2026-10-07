@@ -1,5 +1,5 @@
 name: Tesseract training on the full corpus
-# Learns from every open-access museum image in six parallel shards (CLIP ornament filter and motif tags,
+# Learns from every open-access museum image in Neon (research_corpus_object) in six parallel shards (CLIP ornament filter and motif tags,
 # palettes, motif elements; images analysed in memory, never stored), then merges them into one model.
 # Shards write image tags to Neon as they go; the merge writes learned_model.
 on:
@@ -25,7 +25,7 @@ jobs:
   extract:
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
-    timeout-minutes: 200
+    timeout-minutes: 350
     strategy:
       fail-fast: false
       matrix:
@@ -35,24 +35,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Fetch master corpus
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          mkdir -p master out
-          for id in $(gh run list -R "${{ github.repository }}" --workflow corpus-harvest.yml --status success --limit 30 --json databaseId -q '.[].databaseId'); do
-            if gh run download "$id" -R "${{ github.repository }}" -n tesseract-master -D master 2>/dev/null; then echo "master from run $id"; break; fi
-          done
-          test -f master/master.ndjson.gz
       - name: Install model runtime
         run: npm install --no-save --no-audit --no-fund @huggingface/transformers@3 sharp pg
       - name: Extract shard ${{ matrix.shard }}
         env:
-          MASTER_IN: master/master.ndjson.gz
+          # every harvested object, straight from Neon (no wait for a harvest's analysis step)
+          TRAIN_SOURCE: neon
           TRAIN_MODE: extract
           TRAIN_SHARDS: "6"
           TRAIN_SHARD: ${{ matrix.shard }}
-          TRAIN_MAX_MINUTES: "180"
+          TRAIN_MAX_MINUTES: "330"
           DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
         run: npx -y tsx@4 scripts/train/train-tesseract.mts
       - uses: actions/upload-artifact@v4
@@ -64,7 +56,8 @@ jobs:
           if-no-files-found: ignore
   merge:
     needs: extract
-    if: always() && needs.extract.result != 'skipped'
+    # partial shard failures still merge; a cancelled run never does (it would have nothing to merge)
+    if: ${{ !cancelled() && needs.extract.result != 'skipped' }}
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
