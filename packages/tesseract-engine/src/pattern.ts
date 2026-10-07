@@ -29,6 +29,12 @@ export function adjacentPieces(p:ShirtPattern,pieceId:string){
  return p.seamGraph.flatMap(e=>e.fromPiece===pieceId?[e.toPiece]:e.toPiece===pieceId?[e.fromPiece]:[]);
 }
 
+function pathLength(path:Point[]|undefined):number|undefined{
+ if(!path?.length)return undefined;let total=0;
+ for(let i=1;i<path.length;i++)total+=Math.hypot(path[i]!.x-path[i-1]!.x,path[i]!.y-path[i-1]!.y);
+ return total;
+}
+
 export function validatePattern(p:ShirtPattern):string[]{
  const errors:string[]=[];
  const ids=new Set(p.pieces.map(x=>x.id));
@@ -42,6 +48,13 @@ export function validatePattern(p:ShirtPattern):string[]{
   if(!ts)errors.push(`missing-seam:${e.toPiece}:${e.toSeam}`);
   if(fs?.joins&&(fs.joins.pieceId!==e.toPiece||fs.joins.seamId!==e.toSeam))errors.push(`seam-join-mismatch:${e.fromPiece}:${e.fromSeam}`);
   if(ts?.joins&&(ts.joins.pieceId!==e.fromPiece||ts.joins.seamId!==e.fromSeam))errors.push(`seam-join-mismatch:${e.toPiece}:${e.toSeam}`);
+  if(fs&&ts){
+   const fl=pathLength(fs.edgePath),tl=pathLength(ts.edgePath);
+   const tolerance=Math.max(fs.registrationToleranceMm??0,ts.registrationToleranceMm??0);
+   if(fl!==undefined&&tl!==undefined&&Math.abs(fl-tl)>tolerance)errors.push(`seam-edge-length-mismatch:${e.fromPiece}:${e.fromSeam}->${e.toPiece}:${e.toSeam}`);
+   const fa=fs.registrationAnchors?.length??0,ta=ts.registrationAnchors?.length??0;
+   if(fa!==ta)errors.push(`seam-registration-anchor-count-mismatch:${e.fromPiece}:${e.fromSeam}->${e.toPiece}:${e.toSeam}`);
+  }
  }
  for(const piece of p.pieces){
   if(piece.outline.length<3)errors.push(`invalid-outline:${piece.id}`);
