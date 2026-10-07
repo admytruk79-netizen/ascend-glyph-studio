@@ -1,10 +1,11 @@
 import type {MotifGrammar,MotifRelation} from "./motif-grammar";
 export type MotifPort={instanceId:string;name:string;x01:number;y01:number;angleDeg:number;kind:"entry"|"exit"|"radial"|"edge"};
-export type AssemblyConstraint={a:string;b:string;relation:MotifRelation;maxGap:number;angleToleranceDeg:number};
+export type AssemblyConstraint={a:string;b:string;relation:MotifRelation;maxGap:number;angleToleranceDeg:number;scaleRatio?:[number,number]};
 export type AssemblyResult={grammar:MotifGrammar;valid:boolean;score:number;violations:string[]};
 
 const angleDelta=(a:number,b:number)=>Math.abs((((a-b)+540)%360)-180);
 export function solveKaleidoscopicAssembly(g:MotifGrammar,ports:MotifPort[],constraints:AssemblyConstraint[]):AssemblyResult{
+ const instanceScale=new Map(g.instances.map(i=>[i.id,i.scale]));
  const byPort=new Map(ports.map(p=>[p.instanceId+":"+p.name,p]));
  const violations:string[]=[];let penalty=0;
  for(const c of constraints){
@@ -15,6 +16,13 @@ export function solveKaleidoscopicAssembly(g:MotifGrammar,ports:MotifPort[],cons
   const ad=angleDelta((a.angleDeg-b.angleDeg+360)%360,expected);
   if(gap>c.maxGap){violations.push("open-join:"+c.a+":"+c.b);penalty+=gap/c.maxGap}
   if(ad>c.angleToleranceDeg){violations.push("misaligned-join:"+c.a+":"+c.b);penalty+=ad/Math.max(1,c.angleToleranceDeg)}
+  if(c.scaleRatio){
+   const ai=c.a.split(":")[0]!,bi=c.b.split(":")[0]!,as=instanceScale.get(ai),bs=instanceScale.get(bi);
+   if(as!==undefined&&bs!==undefined){
+    const ratio=as/Math.max(.0001,bs),lo=Math.min(...c.scaleRatio),hi=Math.max(...c.scaleRatio);
+    if(ratio<lo||ratio>hi){violations.push("scale-hierarchy:"+c.a+":"+c.b);penalty+=ratio<lo?lo-ratio:ratio-hi}
+   }
+  }
  }
  const score=1/(1+penalty);
  return {grammar:g,valid:violations.length===0,score,violations};
