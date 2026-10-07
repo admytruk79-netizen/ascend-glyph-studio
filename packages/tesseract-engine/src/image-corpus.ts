@@ -5,6 +5,9 @@ export type ImageObservation={
  verifiedReal:boolean;trainingUse:"geometry"|"composition"|"material"|"manufacturing"|"negative-example";
  features:{
   symmetry?:number;density?:number;voidRatio?:number;scaleLevels?:number;
+  densityVariation?:number;directionalEntropy?:number;axisStrength?:number;rotation180?:number;
+  periodicity?:number;focalDominance?:number;asymmetryBalance?:number;motifFieldRatio?:number;
+  compositionalDepth?:number;embroideryComplexity?:number;
   dominantDirection?:("vertical"|"horizontal"|"radial"|"field"|"wrap")[];
   operations?:string[];zones?:string[];materials?:string[];techniques?:string[];
  };

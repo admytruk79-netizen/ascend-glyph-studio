@@ -23,6 +23,14 @@ export function planPieceProjection(piece:PatternPiece,sourceWidth=1000,sourceHe
 
 export function mapPoint(p:Point,t:PatternTransform):Point{return {x:t.offsetX+p.x*t.scaleX,y:t.offsetY+p.y*t.scaleY};}
 
+export type PieceZoneMap={pieceId:string;zones:{id:string;kind:PatternPiece["designZones"][number]["kind"];polygon:Point[];wrapGroupId?:string}[]};
+
+export function mapGarmentZonesToPieces(pattern:ShirtPattern):PieceZoneMap[]{
+ return pattern.pieces.map(piece=>({pieceId:piece.id,zones:piece.designZones.map((zone,index)=>({
+  id:`${piece.id}:${zone.kind}:${index}`,kind:zone.kind,polygon:zone.polygon.map(p=>({...p})),wrapGroupId:zone.wrapGroupId
+ }))}));
+}
+
 export function seamTransfers(pattern:ShirtPattern,defaultToleranceMm=2):SeamTransfer[]{
  const pieces=new Map(pattern.pieces.map(p=>[p.id,p]));
  return pattern.seamGraph.map(e=>{

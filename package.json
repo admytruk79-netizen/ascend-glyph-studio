@@ -12,7 +12,8 @@
     "check": "npm run typecheck --workspaces --if-present",
     "test": "npm test --workspaces --if-present",
     "corpus:build": "tsx scripts/build-research-corpus.ts",
-    "corpus:import": "tsx scripts/import-research-corpus.ts"
+    "corpus:import": "tsx scripts/import-research-corpus.ts",
+    "tesseract:worker": "tsx scripts/run-tesseract-worker.ts"
   },
   "devDependencies": {
     "wrangler": "^4.46.0",

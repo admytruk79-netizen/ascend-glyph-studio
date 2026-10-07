@@ -9,7 +9,7 @@ export type ShirtResolvedMeasurements={
 
 export type MeasurementResolution={
  measurements?:ShirtResolvedMeasurements;errors:string[];warnings:string[];
- sourceState:"pattern-specified";
+ sourceState:"reference";
 };
 
 const required=["neckMm","chestMm","waistMm","shoulderMm","sleeveMm","wristMm","bodyLengthMm"] as const;
@@ -17,17 +17,17 @@ const required=["neckMm","chestMm","waistMm","shoulderMm","sleeveMm","wristMm","
 export function resolvePilotShirtMeasurements(size:SizeProfile):MeasurementResolution{
  const errors:string[]=[],warnings:string[]=[];
  for(const k of required)if(!size.body[k]||size.body[k]!<=0)errors.push(`missing-or-invalid:${k}`);
- if(errors.length)return {errors,warnings,sourceState:"pattern-specified"};
+ if(errors.length)return {errors,warnings,sourceState:"reference"};
  const b=size.body as Required<typeof size.body>;
  const chestEase=size.easeMm?.chest??120,waistEase=size.easeMm?.waist??120,neckEase=size.easeMm?.neck??15;
- // These are engine defaults, not historical or manufacturer-validated pattern rules.
+ // These are REFERENCE engine defaults, not historical, pattern-specified, or manufacturer-validated rules.
  const bicepMm=Math.max(300,b.chestMm*.34);
  const upperSleeveCircumferenceMm=bicepMm+80;
  const cuffMm=Math.max(b.wristMm+55,210);
  if(!size.easeMm?.chest)warnings.push("default-chest-ease:120mm");
  if(!size.easeMm?.waist)warnings.push("default-waist-ease:120mm");
  if(!size.easeMm?.neck)warnings.push("default-neck-ease:15mm");
- return {errors,warnings,sourceState:"pattern-specified",measurements:{
+ return {errors,warnings,sourceState:"reference",measurements:{
   neckMm:b.neckMm,chestMm:b.chestMm,waistMm:b.waistMm,shoulderMm:b.shoulderMm,sleeveMm:b.sleeveMm,
   wristMm:b.wristMm,bodyLengthMm:b.bodyLengthMm,bicepMm,
   garmentChestMm:b.chestMm+chestEase,garmentWaistMm:b.waistMm+waistEase,collarMm:b.neckMm+neckEase,
