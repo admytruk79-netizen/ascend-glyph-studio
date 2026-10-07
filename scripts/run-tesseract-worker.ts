@@ -5,13 +5,15 @@ import {generatePatterns,type PatternMode} from "../packages/tesseract-engine/sr
 const {Pool}=pg;
 const url=process.env.DATABASE_URL;
 if(!url)throw new Error("DATABASE_URL required");
-const pool=new Pool({connectionString:url,ssl:{rejectUnauthorized:false}});
+const pool=new Pool({connectionString:url,ssl:{rejectUnauthorized:false},max:3,idleTimeoutMillis:15000,connectionTimeoutMillis:15000,keepAlive:true});
+pool.on("error",(err)=>{console.error(JSON.stringify({level:"warn",event:"db_pool_idle_disconnect",message:err.message}));});
 const server=http.createServer((_req,res)=>{res.writeHead(200,{"content-type":"text/plain"});res.end("tesseract worker ready");});
 server.listen(Number(process.env.PORT||10000),"0.0.0.0",()=>process.stdout.write(JSON.stringify({status:"listening",port:Number(process.env.PORT||10000)})+"\n"));
 
 type Intent={concepts?:{id:string;weight:number}[];materialId?:string;zoneId?:string;mode?:PatternMode;paletteId?:string;complexity?:number};
 
 async function claim(){
+ process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-complete",patterns:patterns.length})+"\n");
  const c=await pool.connect();
  try{
   await c.query("begin");
@@ -66,7 +68,9 @@ async function execute(run:any){
  const concepts=(intent.concepts??[]).sort((a,b)=>b.weight-a.weight).map(x=>x.id);
  const mode=(intent.mode??(intent.zoneId?.includes("sleeve")?"sleeve":"band")) as PatternMode;
  const corpusSignals=await loadCorpusSignals(run.seed);
+ process.stdout.write(JSON.stringify({runId:run.id,stage:"corpus-signals-loaded",signals:corpusSignals.length})+"\n");
  const visualCorpus=await loadVisualCorpus(run.seed);
+ process.stdout.write(JSON.stringify({runId:run.id,stage:"visual-corpus-loaded",observations:visualCorpus.length})+"\n");
  const patterns=generatePatterns({seed:run.seed,concepts,paletteId:intent.paletteId,mode,complexity:intent.complexity??.72,variations:run.batch_size??12,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus});
  const c=await pool.connect();
  try{
