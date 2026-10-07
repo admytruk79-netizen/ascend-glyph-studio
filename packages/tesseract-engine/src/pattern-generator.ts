@@ -19,6 +19,7 @@ export type PatternGeneratorInput={
  cultureIds?:string[];medium?:string;placement?:string;
  corpusSignals?:{id:string;weight:number;sourceIds?:string[]}[];
  population?:number;generations?:number;visualCorpus?:ImageObservation[];
+ learnedGuidance?:{density:number;tags:{id:string;weight:number}[];palette:{hex:string;weight:number}[];model:string};
 };
 export type GeneratedPattern={
  id:string;lineageId:string;score:number;novelty:number;svg:string;
@@ -109,18 +110,28 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  const mode=input.mode??"band",niche=nicheForMode(mode),variations=Math.max(4,Math.min(input.variations??12,32));
  const searchKeep=Math.min(32,Math.max(variations+4,variations*2));
  const width=input.width??960,height=input.height??260,medium=mediumForMode(mode,input.medium),zone=projectionZone(mode,width,height);
- const complexity=Math.max(0,Math.min(1,input.complexity??.65));
+ const requestedComplexity=Math.max(0,Math.min(1,input.complexity??.65));
+ const learnedDensity=Math.max(0,Math.min(1,input.learnedGuidance?.density??requestedComplexity));
+ const complexity=Math.max(0,Math.min(1,requestedComplexity*.72+learnedDensity*.28));
  const cultureIds=input.cultureIds?.length?input.cultureIds:["ukraine","japan","britain","china","western-craft"];
  const placementTypes=input.placement?[input.placement,"garment","shirt","tunic","textile","textile-family","design-cloth","wrapper","sash","leather"]:undefined;
  const cultural=culturalSignals(cultureIds,placementTypes);
  const culturalConcepts=cultural.features.map(([id,w])=>({id:`structure:${id}`,weight:Math.min(1,.3+w/4)}));
  const corpusConcepts=(input.corpusSignals??[]).slice(0,96).map(s=>({id:`corpus:${s.id}`,weight:Math.max(.15,Math.min(1,s.weight))}));
+ const learnedConcepts=(input.learnedGuidance?.tags??[]).map(x=>({id:`learned-structure:${x.id}`,weight:Math.max(.15,Math.min(1,x.weight))}));
  const candidates=searchDesignSpace({
   seed:input.seed,
   intent:{
-   concepts:[...concepts.map((id,i)=>({id,weight:Math.max(.35,1-i*.09)})),...culturalConcepts,...corpusConcepts],
+   concepts:[...concepts.map((id,i)=>({id,weight:Math.max(.35,1-i*.09)})),...culturalConcepts,...corpusConcepts,...learnedConcepts],
    traditions:[{id:"ascend-universal",weight:1},...cultureIds.map((id,i)=>({id:`evidence:${id}`,weight:Math.max(.35,.75-i*.05)}))],
-   character:[{id:"ordered-organic",weight:.55+complexity*.35},{id:"minimal-complex",weight:complexity},...(input.medium?[{id:`medium:${input.medium}`,weight:.9}]:[]),...(input.placement?[{id:`placement:${input.placement}`,weight:.95}]:[])]
+   character:[
+    {id:"ordered-organic",weight:.55+complexity*.35},
+    {id:"minimal-complex",weight:complexity},
+    {id:"learned-density",weight:learnedDensity},
+    ...(input.learnedGuidance?.tags??[]).slice(0,3).map(x=>({id:`learned:${x.id}`,weight:x.weight})),
+    ...(input.medium?[{id:`medium:${input.medium}`,weight:.9}]:[]),
+    ...(input.placement?[{id:`placement:${input.placement}`,weight:.95}]:[])
+   ]
   },
   principles:[],niches:niche?[niche]:undefined,medium,visualCorpus:input.visualCorpus,
   population:input.population??Math.round(32+complexity*64),generations:input.generations??Math.round(3+complexity*5),keep:searchKeep

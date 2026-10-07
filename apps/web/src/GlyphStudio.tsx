@@ -4,6 +4,7 @@ import {ASCEND_PALETTES} from "../../../packages/tesseract-engine/src/color-syst
 import {Garment3D} from "./Garment3D";
 import {synthesizeUniversal} from "../../../packages/glyph-engine/src/universal";
 import {DEFAULT_GRAMMAR} from "../../../packages/glyph-engine/src/grammar";
+import {CanonReview} from "./CanonReview";
 
 type ProductId="mens-shirt"|"womens-shirt"|"diary";
 type SizeId="XS"|"S"|"M"|"L"|"XL"|"XXL";
@@ -42,6 +43,7 @@ export default function GlyphStudio(){
  const [revision,setRevision]=useState(0);
  const [selected,setSelected]=useState(0);
  const [cart,setCart]=useState(false);
+ const [canonReview,setCanonReview]=useState(false);
 
  const patterns=useMemo(()=>generatePatterns({seed:seed+":"+revision,concepts,paletteId,mode,complexity,medium,placement:mode,variations:12,width:960,height:260}),[seed,revision,concepts,paletteId,mode,complexity,medium]);
  const active=patterns[Math.min(selected,Math.max(0,patterns.length-1))];
@@ -55,9 +57,10 @@ export default function GlyphStudio(){
  return <main className="studioApp">
   <header className="topbar">
    <div><div className="eyebrow">ASCEND</div><h1>Glyph Studio</h1><small>Universal engine · {universal.id}</small></div>
-   <div className="topActions"><span className="liveBadge">LIVE GENERATOR</span><button className="cartBtn" onClick={()=>setCart(v=>!v)}>Cart {cart?"1":"0"}</button></div>
+   <div className="topActions"><span className="liveBadge">LIVE GENERATOR</span><button className="cartBtn" onClick={()=>setCanonReview(v=>!v)}>{canonReview?"Studio":"Canon Review"}</button><button className="cartBtn" onClick={()=>setCart(v=>!v)}>Cart {cart?"1":"0"}</button></div>
   </header>
 
+  {canonReview?<CanonReview/>:<>
   <div className="stepper">
    {(["Choose","Fit","Material","Pattern","Review"] as const).map((label,i)=><button key={label} onClick={()=>setStep((i+1) as Step)} className={step===i+1?"step active":step>i+1?"step done":"step"}><b>{String(i+1).padStart(2,"0")}</b><span>{label}</span></button>)}
   </div>
@@ -88,6 +91,7 @@ export default function GlyphStudio(){
    </aside>
   </section>
 
+  </>}
   {cart&&<div className="cartDrawer"><button className="close" onClick={()=>setCart(false)}>×</button><div className="eyebrow">CONFIGURED PIECE</div><h2>{products.find(p=>p.id===product)?.name}</h2><p>{size} · {activeFabric.name} · {mode}</p><div className="cartPreview" dangerouslySetInnerHTML={{__html:active?.svg??""}}/><p className="hint">Checkout/payment connection is the next commerce layer; configuration is preserved in this session.</p></div>}
  </main>
 }

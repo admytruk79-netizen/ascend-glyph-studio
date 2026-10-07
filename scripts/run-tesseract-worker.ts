@@ -10,7 +10,26 @@ const url=process.env.DATABASE_URL;
 if(!url)throw new Error("DATABASE_URL required");
 const pool=new Pool({connectionString:url,ssl:{rejectUnauthorized:false},max:3,idleTimeoutMillis:15000,connectionTimeoutMillis:15000,keepAlive:true});
 pool.on("error",(err)=>{console.error(JSON.stringify({level:"warn",event:"db_pool_idle_disconnect",message:err.message}));});
-const server=http.createServer((_req,res)=>{res.writeHead(200,{"content-type":"text/plain"});res.end("tesseract worker ready");});
+const server=http.createServer(async(req,res)=>{
+ res.setHeader("access-control-allow-origin","*");
+ res.setHeader("access-control-allow-methods","GET,OPTIONS");
+ if(req.method==="OPTIONS"){res.writeHead(204);res.end();return}
+ try{
+  if(req.url==="/canon"){
+   const q=await pool.query(`select id,support,status,review_state,nearest_reference_distance,traditions,sources,paths,centroid,reviewer_note,reviewed_at from corpus_canonical order by support desc`);
+   res.writeHead(200,{"content-type":"application/json","cache-control":"no-store"});res.end(JSON.stringify(q.rows));return;
+  }
+  const m=req.url?.match(/^\/canon\/([^/]+)\.svg$/);
+  if(m){
+   const q=await pool.query("select id,paths from corpus_canonical where id=$1",[m[1]]);
+   if(!q.rows[0]){res.writeHead(404);res.end("not found");return}
+   const paths=(q.rows[0].paths??[]) as string[];
+   const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#fff"/><g fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${paths.map(d=>`<path d="${d.replace(/"/g,"&quot;")}"/>`).join("")}</g></svg>`;
+   res.writeHead(200,{"content-type":"image/svg+xml","cache-control":"no-store"});res.end(svg);return;
+  }
+  res.writeHead(200,{"content-type":"text/plain"});res.end("tesseract worker ready");
+ }catch(e){res.writeHead(500,{"content-type":"application/json"});res.end(JSON.stringify({error:String((e as Error).message)}))}
+});
 server.listen(Number(process.env.PORT||10000),"0.0.0.0",()=>process.stdout.write(JSON.stringify({status:"listening",port:Number(process.env.PORT||10000)})+"\n"));
 
 type Intent={concepts?:{id:string;weight:number}[];materialId?:string;zoneId?:string;mode?:PatternMode;paletteId?:string;complexity?:number};
@@ -65,6 +84,26 @@ async function loadVisualCorpus(seed:string){
     embroideryComplexity:Math.max(0,Math.min(1,Number(f.edgeDensity||.5)*.35+Number(f.densityVariation||.5)*.25+(scale/5)*.2+Math.max(Number(f.repetitionX||0),Number(f.repetitionY||0))*.2))},notes:[r.kind||"unknown",r.tradition||"unknown"],provenance:r.id};
  });
 }
+async function loadApprovedCanon(){
+ const q=await pool.query(`select id,version,support,traditions,sources,centroid,paths,nearest_reference_distance,provenance from corpus_canonical where review_state='approved' order by support desc`);
+ return q.rows.map((r:any)=>({id:r.id,version:r.version,viewBox:"0 0 100 100" as const,paths:r.paths,centroid:r.centroid,support:r.support,traditions:r.traditions,sources:r.sources,nearestReferenceDistance:Number(r.nearest_reference_distance),status:"canonical" as const,provenance:r.provenance}));
+}
+async function loadLearnedGuidance(){
+ const q=await pool.query("select body from learned_model where id='tesseract-learned-latest' limit 1");
+ const body=q.rows[0]?.body;if(!body)return undefined;
+ const traditions=Object.entries<any>(body.traditions??{});
+ if(!traditions.length)return undefined;
+ const total=traditions.reduce((s,[,v])=>s+Number(v.images||0),0)||1;
+ const density=traditions.reduce((s,[,v])=>s+Number(v.density||0)*Number(v.images||0),0)/total;
+ const tagScores=new Map<string,number>(),colorScores=new Map<string,number>();
+ for(const [,v] of traditions){
+  const w=Number(v.images||0)/total;
+  for(const [k,x] of Object.entries<number>(v.tags??{}))tagScores.set(k,(tagScores.get(k)||0)+Number(x)*w);
+  for(const sw of (v.palette??[]))colorScores.set(String(sw.hex),(colorScores.get(String(sw.hex))||0)+Number(sw.share||0)*w);
+ }
+ return {density,tags:[...tagScores.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5).map(([id,weight])=>({id,weight})),palette:[...colorScores.entries()].sort((a,b)=>b[1]-a[1]).slice(0,6).map(([hex,weight])=>({hex,weight})),model:String(body.version||"tesseract-learned")};
+}
+
 async function persistCorpusCanon(canon:any[]){
  for(const x of canon){
   await pool.query(`insert into corpus_canonical(id,version,status,support,traditions,sources,centroid,paths,nearest_reference_distance,provenance,built_at)
@@ -79,14 +118,16 @@ async function execute(run:any){
  const concepts=(intent.concepts??[]).sort((a,b)=>b.weight-a.weight).map(x=>x.id);
  const mode=(intent.mode??(intent.zoneId?.includes("sleeve")?"sleeve":"band")) as PatternMode;
  const corpusSignals=await loadCorpusSignals(run.seed);
+ const learnedGuidance=await loadLearnedGuidance();
  process.stdout.write(JSON.stringify({runId:run.id,stage:"corpus-signals-loaded",signals:corpusSignals.length})+"\n");
  const visualCorpus=await loadVisualCorpus(run.seed);
  process.stdout.write(JSON.stringify({runId:run.id,stage:"visual-corpus-loaded",observations:visualCorpus.length})+"\n");
  const canon=deriveCorpusCanon(visualCorpus,{count:16,minTraditions:4,minSources:8,minSupport:24,minReferenceDistance:.035});
- installCorpusCanon(canon);
- process.stdout.write(JSON.stringify({runId:run.id,stage:"corpus-canon-derived",canonical:canon.filter(x=>x.status==="canonical").length,total:canon.length})+"\n");
  await persistCorpusCanon(canon);
- const patterns=generatePatterns({seed:run.seed,concepts,paletteId:intent.paletteId,mode,complexity:intent.complexity??.72,variations:run.batch_size??12,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus});
+ const approvedCanon=await loadApprovedCanon();
+ installCorpusCanon(approvedCanon);
+ process.stdout.write(JSON.stringify({runId:run.id,stage:"corpus-canon-derived",canonical:canon.filter(x=>x.status==="canonical").length,total:canon.length})+"\n");
+ const patterns=generatePatterns({seed:run.seed,concepts,paletteId:intent.paletteId,mode,complexity:intent.complexity??.72,variations:run.batch_size??12,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus,learnedGuidance});
  process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-complete",patterns:patterns.length})+"\n");
  // judge the rendered design, not its SVG text: tangles, overfilled or empty bands are rejected (kept with reasons)
  const judged:{p:(typeof patterns)[number];raster:RasterCritique|null;score:number}[]=[];
@@ -132,8 +173,9 @@ async function persist(run:any,judged:{p:any;raster:RasterCritique|null;score:nu
 async function main(){
  const bootstrapVisual=await loadVisualCorpus("corpus-canonical-bootstrap-v1");
  const bootstrapCanon=deriveCorpusCanon(bootstrapVisual,{count:16,minTraditions:4,minSources:8,minSupport:24,minReferenceDistance:.02});
- installCorpusCanon(bootstrapCanon);
  await persistCorpusCanon(bootstrapCanon);
+ const approvedCanon=await loadApprovedCanon();
+ installCorpusCanon(approvedCanon);
  process.stdout.write(JSON.stringify({stage:"corpus-canon-bootstrap",observations:bootstrapVisual.length,canonical:bootstrapCanon.filter(x=>x.status==="canonical").length,total:bootstrapCanon.length})+"\n");
  // Keep polling: new runs are queued automatically (daily designs workflow) and must be picked up without a
  // redeploy. A failed claim (e.g. Neon waking up) waits and tries again instead of ending the worker.
