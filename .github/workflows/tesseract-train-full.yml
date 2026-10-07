@@ -56,7 +56,8 @@ jobs:
           if-no-files-found: ignore
   merge:
     needs: extract
-    if: always() && needs.extract.result != 'skipped'
+    # partial shard failures still merge; a cancelled run never does (it would have nothing to merge)
+    if: ${{ !cancelled() && needs.extract.result != 'skipped' }}
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:

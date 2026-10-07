@@ -70,6 +70,9 @@ async function main() {
       for (const [t, n] of Object.entries(d.stats.perTradition as Record<string, number>)) stats.perTradition[t] = (stats.perTradition[t] ?? 0) + n;
     }
     console.log(JSON.stringify({ merged: files.length, stats }));
+    // never replace a working model with one learned from a run that mostly failed
+    const minKept = Number(process.env.TRAIN_MIN_KEPT ?? 2000);
+    if (kept.length < minKept) { console.error(`only ${kept.length} images kept (need ${minKept}): model not written`); process.exitCode = 1; return; }
   } else ({ kept, stats } = await extract());
   if (MODE === "extract") return;
   await aggregate(kept, stats);
