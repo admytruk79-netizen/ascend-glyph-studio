@@ -75,13 +75,29 @@ async function main() {
   await aggregate(kept, stats);
 }
 
+/**
+ * The corpus to learn from. TRAIN_SOURCE=neon reads every object straight from research_corpus_object, so a run sees
+ * everything harvested so far (a harvest writes Neon before its slow analysis step finishes); otherwise the master
+ * corpus file from the last successful harvest (MASTER_IN).
+ */
+async function* records(): AsyncGenerator<any> {
+  if (process.env.TRAIN_SOURCE === "neon") {
+    const db = await pool();
+    const { rows } = await db.query(`select id, image_url as image, coalesce(cultural_access, 'open') as "culturalAccess", tradition, title, region,
+      raw->>'culture' as culture, raw->>'institution' as institution from research_corpus_object where image_url is not null`);
+    await db.end();
+    console.log(JSON.stringify({ source: "neon", objects: rows.length }));
+    yield* rows;
+    return;
+  }
+  const stream = createReadStream(process.env.MASTER_IN ?? "master/master.ndjson.gz");
+  for await (const line of createInterface({ input: stream.pipe(createGunzip()), crlfDelay: Infinity })) if (line.trim()) yield JSON.parse(line);
+}
+
 async function extract(): Promise<{ kept: Kept[]; stats: Stats }> {
   // 1. select: per focus tradition (sampled) or, in a shard, every open-access image whose id hashes to it
   const groups = new Map<string, any[]>();
-  const stream = createReadStream(process.env.MASTER_IN ?? "master/master.ndjson.gz");
-  for await (const line of createInterface({ input: stream.pipe(createGunzip()), crlfDelay: Infinity })) {
-    if (!line.trim()) continue;
-    const r = JSON.parse(line);
+  for await (const r of records()) {
     if (!r.image || (r.culturalAccess ?? "open") !== "open") continue;
     const t = traditionOf(r).replace(/ \(by query\)$/, "");
     if (STRUCTURE_ONLY.has(t)) continue;
