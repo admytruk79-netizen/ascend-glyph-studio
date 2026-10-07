@@ -218,6 +218,7 @@ jobs:
       contents: read
     env:
       TRAIN_PER_TRADITION: "1200"
+      TRAIN_MAX_IMAGES: "25000"
       TRAIN_MAX_MINUTES: "170"
       DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
     steps:
