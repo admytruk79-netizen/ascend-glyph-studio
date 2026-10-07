@@ -1,0 +1,40 @@
+name: Complexity study (towels, shirts, skirts)
+# Measures how complex museum towels, shirts and skirts are (coverage, busyness, size levels, fine detail, colours,
+# edges, mirror) and writes the profiles to Neon (learned_model 'complexity-profiles'); the generator fills designs
+# to these targets and the critic scores against them. Weekly, after the harvest, and on demand.
+on:
+  schedule:
+    - cron: "11 6 * * 1"
+  push:
+    branches: [claude/tesseract-corpus-harvest]
+    paths:
+      - "scripts/study/**"
+      - ".github/workflows/complexity-study.yml"
+  workflow_dispatch:
+concurrency:
+  group: complexity-study-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-save --no-audit --no-fund pg sharp tsx
+      - name: Study towels, shirts and skirts
+        env:
+          DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+          STUDY_MAX_MINUTES: "45"
+        run: npx tsx scripts/study/study-complexity.mts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: complexity-${{ github.run_id }}
+          path: out/complexity.json
+          retention-days: 30
+          if-no-files-found: ignore
