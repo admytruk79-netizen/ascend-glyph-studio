@@ -117,16 +117,32 @@ async function extract(): Promise<{ kept: Kept[]; stats: Stats }> {
   const pe = await embedTexts(prompts), te = await embedTexts(Object.values(MOTIF_TYPES));
 
   const lastHit = new Map<string, number>();
+  // a host that keeps failing (blocked, or too slow to answer) is dropped for the rest of the run, so it cannot
+  // eat the shard's time budget one 20-second timeout at a time
+  const strikes = new Map<string, number>(), dropped = new Set<string>();
   async function get(url: string): Promise<Buffer> {
+    // archive.org's IIIF server cuts each page scan on request: ask for the size we use, not 1600 px
+    if (url.includes("iiif.archive.org/")) url = url.replace(/\/full\/(!?\d*,\d*|max|full)\/0\/default\.(jpg|png)$/, "/full/!512,512/0/default.$2");
+    const host = new URL(url).host;
+    if (dropped.has(host)) throw new Error(`host ${host} dropped`);
     // several shards run at once: pace each host more gently per shard
-    const host = new URL(url).host, wait = (lastHit.get(host) ?? 0) + (MODE === "extract" ? 650 : 400) - Date.now();
+    const wait = (lastHit.get(host) ?? 0) + (MODE === "extract" ? 650 : 400) - Date.now();
     if (wait > 0) await new Promise((r) => setTimeout(r, wait));
     lastHit.set(host, Date.now());
     const h: Record<string, string> = { "user-agent": USER_AGENT, accept: "image/jpeg,image/png,image/*;q=0.8" };
     if (url.includes("artic.edu")) h["AIC-User-Agent"] = USER_AGENT;
-    const res = await fetch(url, { headers: h, signal: AbortSignal.timeout(30_000) });
-    if (!res.ok) throw new Error(String(res.status));
-    return Buffer.from(await res.arrayBuffer());
+    try {
+      const res = await fetch(url, { headers: h, signal: AbortSignal.timeout(20_000) });
+      if (!res.ok) throw new Error(String(res.status));
+      const buf = Buffer.from(await res.arrayBuffer());
+      strikes.set(host, 0);
+      return buf;
+    } catch (e) {
+      const n = (strikes.get(host) ?? 0) + 1;
+      strikes.set(host, n);
+      if (n >= 25) { dropped.add(host); console.log(JSON.stringify({ droppedHost: host, after: n, last: String((e as Error).message).slice(0, 80) })); }
+      throw e;
+    }
   }
 
   const kept: Kept[] = [];
@@ -159,7 +175,7 @@ async function extract(): Promise<{ kept: Kept[]; stats: Stats }> {
       done.set(t, (done.get(t) ?? 0) + 1); stats.kept++; stats.perTradition[t] = done.get(t)!;
       if (stats.kept % 100 === 0) console.log(JSON.stringify({ progress: stats }));
       // write tags as we go, so a time limit never loses finished work
-      if (db && kept.length - flushed >= 250) { await writeTags(db, kept.slice(flushed)).catch((e) => console.log(JSON.stringify({ neonRetryLater: String(e.message).slice(0, 80) }))); flushed = kept.length; }
+      if (db && kept.length - flushed >= 100) { await writeTags(db, kept.slice(flushed)).catch((e) => console.log(JSON.stringify({ neonRetryLater: String(e.message).slice(0, 80) }))); flushed = kept.length; }
     } catch { stats.failed++; }
   }
   if (MODE === "extract") {
