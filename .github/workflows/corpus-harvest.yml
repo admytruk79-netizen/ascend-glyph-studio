@@ -3,6 +3,9 @@ name: Tesseract corpus harvest
 # apply metadata gates (image, provenance, rights, cultural access, relevance),
 # deduplicate, and publish the metadata-accepted candidates as an artifact.
 on:
+  # weekly: grow and re-analyse the corpus (training follows automatically when this succeeds)
+  schedule:
+    - cron: "23 2 * * 0"
   push:
     branches: [claude/tesseract-corpus-harvest]
     paths:
