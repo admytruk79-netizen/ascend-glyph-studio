@@ -20,12 +20,13 @@ export type DensifyOptions = {
   maxMotifs?: number;
   mirrorX?: number;   // place every motif twice, mirrored about this vertical line (symmetric designs)
   targetCover?: number; // stop once this share of the area is ink (a complexity target from the corpus)
+  attach?: boolean;   // sprigs and berry clusters grow a stalk to the nearest ink, so the fill is connected (default true)
 };
 
 const P = (x: number, y: number): Pt => ({ x, y });
 
-function stamp(grid: Uint8Array, gw: number, gh: number, cell: number, o: DesignObject) {
-  const mark = (x: number, y: number) => { const i = Math.floor(x / cell), j = Math.floor(y / cell); if (i >= 0 && j >= 0 && i < gw && j < gh) grid[j * gw + i] = 1; };
+function stamp(grid: Uint8Array, gw: number, gh: number, cell: number, o: DesignObject, owner?: Int32Array, id = -1) {
+  const mark = (x: number, y: number) => { const i = Math.floor(x / cell), j = Math.floor(y / cell); if (i >= 0 && j >= 0 && i < gw && j < gh) { grid[j * gw + i] = 1; if (owner) owner[j * gw + i] = id; } };
   if (o.kind === "fill") {
     const xs = o.polygon.map((p) => p.x), ys = o.polygon.map((p) => p.y);
     for (let y = Math.min(...ys); y <= Math.max(...ys); y += cell / 2) for (let x = Math.min(...xs); x <= Math.max(...xs); x += cell / 2) {
@@ -68,7 +69,9 @@ export function densify(k: Kit, o: DensifyOptions): number {
   const gw = Math.ceil(o.width / cell), gh = Math.ceil(o.height / cell);
   const grid = new Uint8Array(gw * gh);
   for (let j = 0; j < gh; j++) for (let i = 0; i < gw; i++) { const x = i * cell, y = j * cell; if (x < margin || y < margin || x > o.width - margin || y > o.height - margin) grid[j * gw + i] = 1; }
-  for (const ob of k.objs) stamp(grid, gw, gh, cell, ob);
+  // which object owns each inked cell: a stalk may only end where a single object is near
+  const owner = new Int32Array(gw * gh).fill(-1);
+  k.objs.forEach((ob, i) => stamp(grid, gw, gh, cell, ob, owner, i));
   const c = o.colors;
   let placed = 0;
   for (let guard = 0; guard < (o.maxMotifs ?? 400); guard++) {
@@ -80,12 +83,37 @@ export function densify(k: Kit, o: DensifyOptions): number {
     const x = (bi % gw) * cell + cell / 2, y = Math.floor(bi / gw) * cell + cell / 2;
     const R = Math.min(room, 6.5);
     // one motif per size class, so the fill reads as an order, not confetti
+    // a cell where only one object's ink lies within 1.6 mm: a stalk ending there joins that object and no other
+    const soleOwner = (i: number, j: number) => {
+      const r = Math.ceil(1.6 / cell), ids = new Set<number>();
+      for (let y = Math.max(0, j - r); y <= Math.min(gh - 1, j + r); y++) for (let x = Math.max(0, i - r); x <= Math.min(gw - 1, i + r); x++) { const v = owner[y * gw + x]!; if (v >= 0) ids.add(v); if (ids.size > 1) return false; }
+      return ids.size === 1;
+    };
+    // nearest ink to a point: the stalk's target (searched in a window a little larger than the clearing)
+    const nearestInk = (px: number, py: number): Pt | null => {
+      const ci = Math.floor(px / cell), cj = Math.floor(py / cell), rr = Math.ceil(best) + 3;
+      let bd = Infinity, bp: Pt | null = null;
+      for (let j = Math.max(0, cj - rr); j <= Math.min(gh - 1, cj + rr); j++) for (let i = Math.max(0, ci - rr); i <= Math.min(gw - 1, ci + rr); i++) {
+        if (!grid[j * gw + i]) continue;
+        const x0 = i * cell + cell / 2, y0 = j * cell + cell / 2, dd = (x0 - px) ** 2 + (y0 - py) ** 2;
+        if (dd < bd && x0 > margin && y0 > margin && x0 < o.width - margin && y0 < o.height - margin && soleOwner(i, j)) { bd = dd; bp = P(x0, y0); }
+      }
+      return bp;
+    };
     const put = (px: number, py: number, f: 1 | -1) => {
       const before = k.objs.length;
+      if ((o.attach ?? true) && R >= 3.2) {
+        // a stalk from the motif's foot to the nearest stem or form, ending just inside it
+        // sprigs: from the seed at their foot; clusters: from the berry nearest the target, so the stalk meets no other berry
+        const r = Math.max(1, R * 0.32), berries = [[0, -1.05], [-0.95, 0.55], [0.95, 0.55]].map(([dx, dy]) => P(px + dx! * r, py + dy! * r));
+        let foot = P(px, py + R * 0.6), to = nearestInk(foot.x, foot.y);
+        if (R < 4.6 && to) { foot = berries.reduce((a, b) => (Math.hypot(b.x - to!.x, b.y - to!.y) < Math.hypot(a.x - to!.x, a.y - to!.y) ? b : a)); to = nearestInk(foot.x, foot.y); }
+        if (to) { const L = Math.hypot(to.x - foot.x, to.y - foot.y); if (L >= 1.5 && L <= R * 2.2) k.run("stalk", c.leaf, [foot, P(to.x + ((to.x - foot.x) / L) * 0.4, to.y + ((to.y - foot.y) / L) * 0.4)]); }
+      }
       if (R >= 4.6) { for (const s of [-1, 0, 1]) k.leaf(s ? c.leaf : c.accent, P(px, py + R * 0.55), -Math.PI / 2 + s * 0.65 * f, R * 1.35, Math.max(1, R * 0.22), 0, 0.45, "sprig"); k.disc(c.main, px, py + R * 0.6, Math.max(1, R * 0.16), "sprig-seed"); }
       else if (R >= 3.2) { const r = Math.max(1, R * 0.32); for (const [dx, dy] of [[0, -1.05], [-0.95, 0.55], [0.95, 0.55]]) k.disc(c.main, px + dx * r, py + dy * r, r, "kalyna"); }
       else k.disc(R >= 2.6 ? c.accent : c.light, px, py, Math.max(1, R * 0.55), "seed");
-      for (const ob of k.objs.slice(before)) stamp(grid, gw, gh, cell, ob);
+      k.objs.slice(before).forEach((ob, i) => stamp(grid, gw, gh, cell, ob, owner, before + i));
     };
     put(x, y, 1);
     if (o.mirrorX !== undefined) {
