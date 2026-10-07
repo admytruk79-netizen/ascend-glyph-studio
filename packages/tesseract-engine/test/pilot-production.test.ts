@@ -49,6 +49,13 @@ describe("pilot production provenance",()=>{
   const size=PILOT_SIZE_PROFILES[1]!;const block:PilotBlockSpec={id:"bad",revision:"1",sourceId:"test-fixture",sourceState:"pattern-specified",pieces:{}};
   expect(()=>buildPilotShirtPattern(size,block)).toThrow(/missing-block-piece:front-left/);
  });
+ it("rejects incompatible reciprocal seam geometry",()=>{
+  const size=PILOT_SIZE_PROFILES[1]!;
+  const lengthMismatch=sourcedFixture();lengthMismatch.pieces["cuff-left"]!.seams[0]!.edgePath=[{x:0,y:0},{x:120,y:0}];
+  expect(validatePattern(buildPilotShirtPattern(size,lengthMismatch))).toContain("seam-edge-length-mismatch:cuff-left:cuff-sleeve->sleeve-left:left-cuff");
+  const anchorMismatch=sourcedFixture();anchorMismatch.pieces["cuff-left"]!.seams[0]!.registrationAnchors=[];
+  expect(validatePattern(buildPilotShirtPattern(size,anchorMismatch))).toContain("seam-registration-anchor-count-mismatch:cuff-left:cuff-sleeve->sleeve-left:left-cuff");
+ });
  it("rejects nonreciprocal sourced seam joins",()=>{
   const size=PILOT_SIZE_PROFILES[1]!;const block=sourcedFixture();block.pieces["cuff-left"]!.seams[0]!.joins=undefined;
   expect(()=>buildPilotShirtPattern(size,block)).toThrow(/nonreciprocal-block-seam-join/);
