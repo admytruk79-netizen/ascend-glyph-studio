@@ -82,13 +82,28 @@ async function execute(run:any){
  }
  judged.sort((a,b)=>Number(b.raster?.survive??false)-Number(a.raster?.survive??false)||b.score-a.score);
  process.stdout.write(JSON.stringify({runId:run.id,stage:"raster-critic",passed:judged.filter(j=>j.raster?.survive).length,of:judged.length})+"\n");
+ // Generation takes minutes of CPU; meanwhile Neon may suspend the idle compute and drop connections.
+ // Save on a fresh connection with its own error handler (an unhandled client 'error' kills the process),
+ // retrying with backoff while the compute wakes up.
+ for(let attempt=1;;attempt++){
+  try{return await persist(run,judged,intent,mode,concepts,corpusSignals,visualCorpus.length)}
+  catch(e){
+   const msg=String((e as Error).message);
+   process.stdout.write(JSON.stringify({runId:run.id,stage:"persist-retry",attempt,message:msg.slice(0,160)})+"\n");
+   if(attempt>=5){await pool.query("update synthesis_run set status='failed' where id=$1",[run.id]).catch(()=>{});throw e}
+   await new Promise(r=>setTimeout(r,2000*2**attempt));
+  }
+ }
+}
+async function persist(run:any,judged:{p:any;raster:RasterCritique|null;score:number}[],intent:Intent,mode:PatternMode,concepts:string[],corpusSignals:unknown[],visualCorpusCount:number){
  const c=await pool.connect();
+ c.on("error",(err)=>process.stdout.write(JSON.stringify({level:"warn",event:"db_client_error",runId:run.id,message:err.message})+"\n"));
  try{
   await c.query("begin");
   await c.query("delete from synthesis_candidate where run_id=$1",[run.id]);
   for(let i=0;i<judged.length;i++){
    const {p,raster,score}=judged[i]!;
-   const state={patternId:p.id,lineageId:p.lineageId,svg:p.svg,objectives:p.objectives,raster,mode,concepts,corpusSignals,visualCorpusCount:visualCorpus.length,corpusObjectCount:28265};
+   const state={patternId:p.id,lineageId:p.lineageId,svg:p.svg,objectives:p.objectives,raster,mode,concepts,corpusSignals,visualCorpusCount,corpusObjectCount:28265};
    const complexity={target:intent.complexity??.72,novelty:p.novelty};
    const disposition=raster&&!raster.survive?"rejected-raster":"candidate";
    await c.query(`insert into synthesis_candidate(id,run_id,ordinal,state,complexity,score,disposition)
@@ -97,7 +112,7 @@ async function execute(run:any){
   await c.query("update synthesis_run set status='completed' where id=$1",[run.id]);
   await c.query("commit");
   return judged.length;
- }catch(e){await c.query("rollback");await pool.query("update synthesis_run set status='failed' where id=$1",[run.id]);throw e}finally{c.release()}
+ }catch(e){await c.query("rollback").catch(()=>{});throw e}finally{c.release(true)}
 }
 async function main(){
  let done=0;
