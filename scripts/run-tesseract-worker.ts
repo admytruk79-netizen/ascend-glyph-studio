@@ -13,7 +13,6 @@ server.listen(Number(process.env.PORT||10000),"0.0.0.0",()=>process.stdout.write
 type Intent={concepts?:{id:string;weight:number}[];materialId?:string;zoneId?:string;mode?:PatternMode;paletteId?:string;complexity?:number};
 
 async function claim(){
- process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-complete",patterns:patterns.length})+"\n");
  const c=await pool.connect();
  try{
   await c.query("begin");
@@ -72,6 +71,7 @@ async function execute(run:any){
  const visualCorpus=await loadVisualCorpus(run.seed);
  process.stdout.write(JSON.stringify({runId:run.id,stage:"visual-corpus-loaded",observations:visualCorpus.length})+"\n");
  const patterns=generatePatterns({seed:run.seed,concepts,paletteId:intent.paletteId,mode,complexity:intent.complexity??.72,variations:run.batch_size??12,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus});
+ process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-complete",patterns:patterns.length})+"\n");
  const c=await pool.connect();
  try{
   await c.query("begin");
