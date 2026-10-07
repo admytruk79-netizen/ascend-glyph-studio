@@ -11,6 +11,7 @@ import type {ImageObservation} from "./image-corpus";
 import {critiqueFinalSvg,type FinalSvgCritique} from "./final-svg-critic";
 import {compileMasterComposition} from "./master-composition";
 import {selectVisuallyDiverse} from "./design-fingerprint";
+import {reconstructionTarget,critiqueReconstruction,type ReconstructionCritique} from "./reconstruction-critic";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
@@ -24,7 +25,7 @@ export type PatternGeneratorInput={
 export type GeneratedPattern={
  id:string;lineageId:string;score:number;novelty:number;svg:string;
  objectives:ReturnType<typeof searchDesignSpace>[number]["objectives"];
- finalCritique:FinalSvgCritique;
+ finalCritique:FinalSvgCritique;reconstruction?:ReconstructionCritique;
 };
 
 const nicheForMode=(mode:PatternMode):DesignNicheId|undefined=>({
@@ -136,6 +137,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   principles:[],niches:niche?[niche]:undefined,medium,visualCorpus:input.visualCorpus,
   population:input.population??Math.round(32+complexity*64),generations:input.generations??Math.round(3+complexity*5),keep:searchKeep
  });
+ const reconstruction=reconstructionTarget(input.visualCorpus??[]);
  const rendered=candidates.map((candidate,i)=>{
   const adapted=adaptForProduction(candidate.topology,medium,niche);
   const g=genomeFromTopology(`pattern:${input.seed}:${i}`,adapted.topology);
@@ -143,10 +145,11 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`});
   const svg=colorize(master,input.paletteId??"underdog-heritage");
   const finalCritique=critiqueFinalSvg(svg,medium,input.visualCorpus??[]);
-  const combinedScore=candidate.score+finalCritique.score*.45;
-  return {id:`pat-${input.seed}-${i+1}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,finalCritique};
+  const reconstructionCritique=reconstruction?critiqueReconstruction(finalCritique.analysis.vector,reconstruction):undefined;
+  const combinedScore=candidate.score+finalCritique.score*.45+(reconstructionCritique?.score??0)*22;
+  return {id:`pat-${input.seed}-${i+1}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,finalCritique,reconstruction:reconstructionCritique};
  }).sort((a,b)=>b.score-a.score);
- const survivors=rendered.filter(x=>x.finalCritique.survive);
+ const survivors=rendered.filter(x=>x.finalCritique.survive&&(x.reconstruction?.survive??true));
  const pool=survivors.length>=Math.min(4,variations)?survivors:rendered;
  return selectVisuallyDiverse(pool,variations,.11);
 }
