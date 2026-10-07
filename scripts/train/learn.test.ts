@@ -38,3 +38,10 @@ test("clustering separates the two element kinds and prototypes are unit-box pol
   assert.equal(shape.length, 48);
   assert.ok(shape.every(([x, y]) => Math.abs(x) <= 0.51 && Math.abs(y) <= 0.51));
 });
+
+test("region comes from the catalogue text", async () => {
+  const { regionOf } = await import("./labels.ts");
+  assert.equal(regionOf({ title: "Women's shirt, Poltava governorate, 19th c." }), "Poltava");
+  assert.equal(regionOf({ title: "Гуцульська сорочка" }), "Hutsul");
+  assert.equal(regionOf({ title: "Вишивка хрестиком 02", region: "Ukraine" }), undefined);
+});
