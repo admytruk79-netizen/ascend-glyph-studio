@@ -20,7 +20,7 @@ export type PatternGeneratorInput={
  cultureIds?:string[];medium?:string;placement?:string;
  corpusSignals?:{id:string;weight:number;sourceIds?:string[]}[];
  population?:number;generations?:number;visualCorpus?:ImageObservation[];
- learnedGuidance?:{density:number;tags:{id:string;weight:number}[];palette:{hex:string;weight:number}[];model:string};
+ learnedGuidance?:{density:number;tags:{id:string;weight:number}[];palette:{hex:string;weight:number}[];model:string};\n traditionMix?:Record<string,number>;
 };
 export type GeneratedPattern={
  id:string;lineageId:string;score:number;novelty:number;svg:string;
@@ -137,7 +137,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   principles:[],niches:niche?[niche]:undefined,medium,visualCorpus:input.visualCorpus,
   population:input.population??Math.round(32+complexity*64),generations:input.generations??Math.round(3+complexity*5),keep:searchKeep
  });
- const reconstruction=reconstructionTarget(input.visualCorpus??[]);
+ const reconstruction=reconstructionTarget(input.visualCorpus??[],input.traditionMix);
  const rendered=candidates.map((candidate,i)=>{
   const adapted=adaptForProduction(candidate.topology,medium,niche);
   const g=genomeFromTopology(`pattern:${input.seed}:${i}`,adapted.topology);
