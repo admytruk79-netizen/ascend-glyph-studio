@@ -1,0 +1,24 @@
+name: Tesseract daily designs
+# Files three new design runs a day (concepts and shirt placements rotating), wakes the Render worker and keeps
+# it awake until they are done; designs are judged by the raster critic and stored in Neon (synthesis_candidate).
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  queue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-save --no-audit --no-fund pg tsx
+      - name: Queue designs and keep the worker awake
+        env:
+          DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+          WORKER_URL: https://ascend-tesseract-worker.onrender.com
+        run: npx tsx scripts/queue-daily-designs.mts

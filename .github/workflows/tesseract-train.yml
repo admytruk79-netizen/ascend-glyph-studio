@@ -6,7 +6,6 @@ on:
   push:
     branches: [claude/tesseract-corpus-harvest]
     paths:
-      - "scripts/train/**"
       - ".github/workflows/tesseract-train.yml"
   workflow_dispatch:
     inputs:

@@ -3,6 +3,9 @@ name: Tesseract corpus harvest
 # apply metadata gates (image, provenance, rights, cultural access, relevance),
 # deduplicate, and publish the metadata-accepted candidates as an artifact.
 on:
+  # weekly: grow and re-analyse the corpus (training follows automatically when this succeeds)
+  schedule:
+    - cron: "23 2 * * 0"
   push:
     branches: [main, claude/tesseract-corpus-harvest]
     paths:
@@ -204,45 +207,7 @@ jobs:
           retention-days: 90
           if-no-files-found: ignore
 
-
-  train:
-    # Learn directly from the freshly analysed imagery produced by this harvest.
-    # This keeps the learned model in sync with corpus growth instead of requiring
-    # a separate branch/manual training run.
-    needs: analyze
-    if: always() && needs.analyze.result == 'success'
-    runs-on: ubuntu-latest
-    timeout-minutes: 200
-    permissions:
-      actions: read
-      contents: read
-    env:
-      TRAIN_PER_TRADITION: "1200"
-      TRAIN_MAX_IMAGES: "25000"
-      TRAIN_MAX_MINUTES: "170"
-      DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - uses: actions/download-artifact@v4
-        with:
-          name: tesseract-master
-          path: master
-      - name: Install image learning runtime
-        run: npm install --no-save --no-audit --no-fund @huggingface/transformers@3 sharp pg
-      - name: Train on fresh analysed imagery
-        env:
-          MASTER_IN: master/master.ndjson.gz
-        run: |
-          mkdir -p out
-          test -f "$MASTER_IN"
-          npx -y tsx@4 scripts/train/train-tesseract.mts
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: tesseract-model-${{ github.run_id }}
-          path: out/tesseract-model.json
-          retention-days: 90
-          if-no-files-found: ignore
+  # Training is not a job here: "Tesseract training on the full corpus" (tesseract-train-full.yml) starts
+  # automatically when this workflow succeeds (workflow_run) and trains on every open-access image in six
+  # parallel shards. A sampled run here would write the same learned_model ('tesseract-learned-latest') and
+  # could overwrite the full model with a smaller one.

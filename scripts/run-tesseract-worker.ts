@@ -188,9 +188,21 @@ async function main(){
  const approvedCanon=await loadApprovedCanon();
  installCorpusCanon(approvedCanon);
  process.stdout.write(JSON.stringify({stage:"corpus-canon-bootstrap",observations:bootstrapVisual.length,canonical:bootstrapCanon.filter(x=>x.status==="canonical").length,total:bootstrapCanon.length})+"\n");
- let done=0;
- for(;;){const run=await claim();if(!run)break;const n=await execute(run);done+=n;process.stdout.write(JSON.stringify({runId:run.id,candidates:n,status:"completed"})+"\n")}
- process.stdout.write(JSON.stringify({ok:true,candidatesPersisted:done})+"\n");
- await pool.end();
+ // Keep polling: new runs are queued automatically (daily designs workflow) and must be picked up without a
+ // redeploy. A failed claim (e.g. Neon waking up) waits and tries again instead of ending the worker.
+ const poll=Number(process.env.WORKER_POLL_MS??30000);
+ let done=0,idleLogged=false;
+ for(;;){
+  let run:any=null;
+  try{run=await claim()}catch(e){process.stdout.write(JSON.stringify({level:"warn",event:"claim_failed",message:String((e as Error).message).slice(0,160)})+"\n")}
+  if(!run){if(!idleLogged){process.stdout.write(JSON.stringify({status:"idle",candidatesPersisted:done,pollMs:poll})+"\n");idleLogged=true}await new Promise(r=>setTimeout(r,poll));continue}
+  idleLogged=false;
+  try{const n=await execute(run);done+=n;process.stdout.write(JSON.stringify({runId:run.id,candidates:n,status:"completed"})+"\n")}
+  catch(e){
+   process.stdout.write(JSON.stringify({level:"error",runId:run.id,event:"run_failed",message:String((e as Error).message).slice(0,200)})+"\n");
+   // mark it failed, or the claim query (running with no candidates) would pick the same run up forever
+   await pool.query("update synthesis_run set status='failed' where id=$1",[run.id]).catch(()=>{});
+  }
+ }
 }
 main().catch(async e=>{console.error(e);await pool.end();process.exitCode=1});
