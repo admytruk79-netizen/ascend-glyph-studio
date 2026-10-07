@@ -1,10 +1,13 @@
 import pg from "pg";
+import http from "node:http";
 import {generatePatterns,type PatternMode} from "../packages/tesseract-engine/src/pattern-generator";
 
 const {Pool}=pg;
 const url=process.env.DATABASE_URL;
 if(!url)throw new Error("DATABASE_URL required");
 const pool=new Pool({connectionString:url,ssl:{rejectUnauthorized:false}});
+const server=http.createServer((_req,res)=>{res.writeHead(200,{"content-type":"text/plain"});res.end("tesseract worker ready");});
+server.listen(Number(process.env.PORT||10000),"0.0.0.0",()=>process.stdout.write(JSON.stringify({status:"listening",port:Number(process.env.PORT||10000)})+"\n"));
 
 type Intent={concepts?:{id:string;weight:number}[];materialId?:string;zoneId?:string;mode?:PatternMode;paletteId?:string;complexity?:number};
 
