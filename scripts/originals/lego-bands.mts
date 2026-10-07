@@ -4,12 +4,14 @@
  *   DATABASE_URL=... npx tsx scripts/originals/lego-bands.mts <out-dir> [scope=all|tradition:<name>|region:<name>] [count=8] [seed=lego]
  *   npx tsx scripts/originals/lego-bands.mts <out-dir> file:<grammar.json> [count] [seed]
  *
+ * SIGNATURE=0.4 blends Oleksandr's signature pieces (medallion, star-lily, snowflake, fan) into the learned grammar.
+ *
  * Reads learned_model 'tesseract-learned-latest' (body.lego) unless a grammar file is given. Writes per band an SVG,
  * a DST and its stitch preview, plus board.png and bands.json (pieces, novel pairings, stitches, gate).
  */
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import sharp from "sharp";
-import { composeBand, type LegoGrammar } from "../../packages/blend-engine/src/lego-compose.ts";
+import { blendGrammars, composeBand, SIGNATURE_GRAMMAR, type LegoGrammar } from "../../packages/blend-engine/src/lego-compose.ts";
 import { estimateMinutes, plan, previewSvg, recipes, runGate, writeDst, type DesignObject } from "../../packages/stitch-engine/src/index.ts";
 
 const [out, scope = "all", countArg = "8", seed = "lego"] = process.argv.slice(2);
@@ -30,7 +32,8 @@ async function grammar(): Promise<LegoGrammar> {
   return g;
 }
 
-const g = await grammar();
+const learned = await grammar(), sigW = Number(process.env.SIGNATURE ?? 0);
+const g = sigW > 0 ? blendGrammars(learned, SIGNATURE_GRAMMAR, sigW) : learned;
 const roles = { main: "#b3332b", dark: "#1f2c4c", leaf: "#4f6b3a", light: "#d39b35", accent: "#2b8796" };
 const r = recipes["linen-180-prewashed"]!, L = 250, H = 60;
 const svgOf = (objs: DesignObject[]) => objs.map((o) => o.kind === "fill" ? `<polygon points="${o.polygon.map((q) => `${q.x.toFixed(2)},${q.y.toFixed(2)}`).join(" ")}" fill="${o.color}"/>`

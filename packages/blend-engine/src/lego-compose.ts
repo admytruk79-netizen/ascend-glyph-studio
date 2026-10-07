@@ -78,3 +78,35 @@ export function composeBand(g: LegoGrammar, o: { seed: string; length?: number; 
   k.resolveGaps();
   return { kit: k, plan: { ...p, filler, units } };
 }
+
+/**
+ * Oleksandr's signature, written as a grammar: medallions lead, star-lilies and stars accompany them, snowflakes and
+ * fans fill, mirrored. Blend it into a learned grammar to put his signature into designs built from the corpus.
+ */
+export const SIGNATURE_GRAMMAR: LegoGrammar = {
+  images: 1,
+  bricks: {
+    medallion: { share: 1, perImage: 9, extent: 0.12 }, "star-lily": { share: 1, perImage: 4, extent: 0.08 },
+    star5: { share: 1, perImage: 6, extent: 0.02 }, snowflake: { share: 1, perImage: 6, extent: 0.02 }, fan: { share: 0.8, perImage: 4, extent: 0.03 },
+  },
+  pairs: {
+    "medallion|star-lily": { n: 6, dx: 1.1, dy: 0, ratio: 0.55 }, "medallion|star8": { n: 3, dx: 1.2, dy: 0, ratio: 0.45 },
+    "star-lily|medallion": { n: 6, dx: -1.1, dy: 0, ratio: 1.8 },
+  },
+  mirrorV: 0.8,
+};
+
+/** Mix two grammars: `w` is the weight of `b` (0 = only a, 1 = only b). Shares and pair counts are blended. */
+export function blendGrammars(a: LegoGrammar, b: LegoGrammar, w: number): LegoGrammar {
+  const bricks: LegoGrammar["bricks"] = {}, pairs: LegoGrammar["pairs"] = {};
+  for (const id of new Set([...Object.keys(a.bricks), ...Object.keys(b.bricks)])) {
+    const x = a.bricks[id], y = b.bricks[id];
+    bricks[id] = { share: (x?.share ?? 0) * (1 - w) + (y?.share ?? 0) * w, perImage: (x?.perImage ?? 0) * (1 - w) + (y?.perImage ?? 0) * w, extent: y?.extent ?? x?.extent ?? 0.05 };
+  }
+  const na = Math.max(1, ...Object.values(a.pairs).map((p) => p.n)), nb = Math.max(1, ...Object.values(b.pairs).map((p) => p.n));
+  for (const key of new Set([...Object.keys(a.pairs), ...Object.keys(b.pairs)])) {
+    const x = a.pairs[key], y = b.pairs[key], src = (w >= 0.5 ? y ?? x : x ?? y)!;
+    pairs[key] = { ...src, n: ((x?.n ?? 0) / na) * (1 - w) * 100 + ((y?.n ?? 0) / nb) * w * 100 };
+  }
+  return { images: a.images + b.images, bricks, pairs, mirrorV: a.mirrorV * (1 - w) + b.mirrorV * w };
+}

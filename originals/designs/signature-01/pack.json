@@ -1,0 +1,24 @@
+{
+  "panel": {
+    "sizeMm": [
+      130,
+      200
+    ],
+    "objects": 1099,
+    "stitches": 34609,
+    "minutes": 93.4,
+    "colors": 6,
+    "gateFailed": []
+  },
+  "band": {
+    "sizeMm": [
+      250,
+      60
+    ],
+    "objects": 508,
+    "stitches": 15960,
+    "minutes": 44.1,
+    "colors": 6,
+    "gateFailed": []
+  }
+}

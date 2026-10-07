@@ -1,0 +1,128 @@
+{
+  "scope": "file:/tmp/claude-0/grammar-bands.json",
+  "grammarImages": 7,
+  "bands": [
+    {
+      "id": "lego-01",
+      "hero": "rhomb-frame",
+      "companions": [
+        "star8"
+      ],
+      "filler": "fan",
+      "mirrored": true,
+      "novelPairs": [],
+      "units": 2,
+      "stitches": 7660,
+      "minutes": 22,
+      "colors": 4,
+      "gateFailed": []
+    },
+    {
+      "id": "lego-02",
+      "hero": "tree",
+      "companions": [
+        "star8"
+      ],
+      "filler": "snowflake",
+      "mirrored": true,
+      "novelPairs": [],
+      "units": 2,
+      "stitches": 7209,
+      "minutes": 22.5,
+      "colors": 5,
+      "gateFailed": []
+    },
+    {
+      "id": "lego-03",
+      "hero": "medallion",
+      "companions": [
+        "star-lily"
+      ],
+      "filler": "snowflake",
+      "mirrored": true,
+      "novelPairs": [],
+      "units": 2,
+      "stitches": 8474,
+      "minutes": 26.5,
+      "colors": 5,
+      "gateFailed": []
+    },
+    {
+      "id": "lego-04",
+      "hero": "medallion",
+      "companions": [
+        "star-lily"
+      ],
+      "filler": "star5",
+      "mirrored": true,
+      "novelPairs": [],
+      "units": 2,
+      "stitches": 8364,
+      "minutes": 26.4,
+      "colors": 5,
+      "gateFailed": []
+    },
+    {
+      "id": "lego-05",
+      "hero": "rhomb-frame",
+      "companions": [
+        "star8"
+      ],
+      "filler": "rhomb",
+      "mirrored": false,
+      "novelPairs": [],
+      "units": 3,
+      "stitches": 7739,
+      "minutes": 22.3,
+      "colors": 4,
+      "gateFailed": []
+    },
+    {
+      "id": "lego-06",
+      "hero": "horns",
+      "companions": [
+        "star-lily"
+      ],
+      "filler": "rhomb",
+      "mirrored": true,
+      "novelPairs": [
+        "horns+star-lily"
+      ],
+      "units": 2,
+      "stitches": 7358,
+      "minutes": 22.2,
+      "colors": 5,
+      "gateFailed": []
+    },
+    {
+      "id": "lego-07",
+      "hero": "medallion",
+      "companions": [
+        "star-lily"
+      ],
+      "filler": "star5",
+      "mirrored": true,
+      "novelPairs": [],
+      "units": 2,
+      "stitches": 8364,
+      "minutes": 26.4,
+      "colors": 5,
+      "gateFailed": []
+    },
+    {
+      "id": "lego-08",
+      "hero": "medallion",
+      "companions": [
+        "star-lily"
+      ],
+      "filler": "snowflake",
+      "mirrored": true,
+      "novelPairs": [],
+      "units": 2,
+      "stitches": 8474,
+      "minutes": 26.5,
+      "colors": 5,
+      "gateFailed": []
+    }
+  ]
+}
