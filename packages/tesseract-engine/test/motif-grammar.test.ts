@@ -1,5 +1,5 @@
 import {describe,expect,it} from "vitest";
-import {buildMotifHierarchy,mutateMotifGrammar,validateMotifGrammar,type MotifGrammar} from "../src/motif-grammar";
+import {buildMotifHierarchy,mutateMotifGrammar,transformMotifGrammar,validateMotifGrammar,type MotifGrammar} from "../src/motif-grammar";
 
 const g:MotifGrammar={id:"embroidered-band",sourceIds:["ref-1"],confidence:.9,
  parts:[{id:"rosette",familyId:"rosette-family",role:"core",geometry:{silhouette:"M0 5 L5 0 L10 5 L5 10 Z",aspect:1},sourceIds:["ref-1"],confidence:.95,invariants:{preserveSilhouette:true,preserveHoles:true,allowedTransforms:["translate","scale","rotate","mirror"]},tags:["floral","diamond"]}],
@@ -22,5 +22,14 @@ describe("motif Lego grammar",()=>{
   expect(h.maxDepth).toBeGreaterThan(2);
   expect(h.nodes.find(n=>n.id===h.rootId)?.instanceIds).toHaveLength(384);
   expect(h.nodes.some(n=>n.kind==="compound-motif")).toBe(true);
+ });
+ it("supports deterministic continuous rotation, mirroring and scale variation",()=>{
+  const a=transformMotifGrammar(g,41,{rotation:"free",maxRotationDeg:180,allowMirror:true,scaleRange:[.7,1.3]});
+  const b=transformMotifGrammar(g,41,{rotation:"free",maxRotationDeg:180,allowMirror:true,scaleRange:[.7,1.3]});
+  expect(a.instances).toEqual(b.instances);
+  expect(a.parts).toEqual(g.parts);
+  expect(a.instances.some((x,i)=>Math.abs(x.rotationDeg-g.instances[i]!.rotationDeg)>1)).toBe(true);
+  expect(a.instances.every(x=>x.rotationDeg>=0&&x.rotationDeg<360)).toBe(true);
+  expect(a.instances.every(x=>x.scale>=.7&&x.scale<=1.3)).toBe(true);
  });
 });
