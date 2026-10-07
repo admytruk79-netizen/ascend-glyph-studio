@@ -10,6 +10,7 @@ import {adaptForProduction,type MediumId} from "./medium-compiler";
 import type {ImageObservation} from "./image-corpus";
 import {critiqueFinalSvg,type FinalSvgCritique} from "./final-svg-critic";
 import {compileMasterComposition} from "./master-composition";
+import {selectVisuallyDiverse} from "./design-fingerprint";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
@@ -135,5 +136,5 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  }).sort((a,b)=>b.score-a.score);
  const survivors=rendered.filter(x=>x.finalCritique.survive);
  const pool=survivors.length>=Math.min(4,variations)?survivors:rendered;
- return pool.slice(0,variations);
+ return selectVisuallyDiverse(pool,variations,.11);
 }
