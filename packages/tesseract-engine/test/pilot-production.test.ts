@@ -35,7 +35,7 @@ describe("pilot production provenance",()=>{
   expect(sleeve.seams[0]!.edge).toBe("sleeve-opening");
   expect(sleeve.seams[0]!.edgePath).toEqual([{x:0,y:0},{x:100,y:0}]);
   expect(sleeve.seams[0]!.registrationAnchors).toEqual([{x:50,y:0}]);
-  expect(sleeve.noGoZones.length).toBeGreaterThan(0);
+  expect(sleeve.noGoZones).toEqual([]);
   const transfer=seamTransfers(pattern)[0]!;
   expect(transfer.fromPoint).toEqual({x:50,y:0});expect(transfer.toPoint).toEqual({x:50,y:0});
   expect(transfer.fromEdgePath).toEqual([{x:0,y:0},{x:100,y:0}]);
