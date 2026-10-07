@@ -16,8 +16,10 @@
     "tesseract:worker": "tsx scripts/run-tesseract-worker.ts"
   },
   "devDependencies": {
-    "wrangler": "^4.46.0",
-    "tsx": "^4.19.2"
+    "jsqr": "^1.4.0",
+    "qrcode": "^1.5.4",
+    "tsx": "^4.19.2",
+    "wrangler": "^4.46.0"
   },
   "engines": {
     "node": "22.x"
