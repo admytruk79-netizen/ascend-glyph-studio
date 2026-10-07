@@ -97,3 +97,32 @@ export function buildMotifHierarchy(g:MotifGrammar,branchFactor=8):MotifHierarch
  nodes.push({id:rootId,kind:"composition",childIds:[rootChild],instanceIds:ordered.map(x=>x.id),sourceIds:g.sourceIds,confidence:g.confidence,depth:rootDepth});
  return {rootId,nodes,maxDepth:rootDepth,instanceCount:ordered.length};
 }
+
+
+export type MotifTransformPolicy={
+ rotation:"fixed"|"discrete"|"free";
+ allowedAnglesDeg?:number[];
+ maxRotationDeg?:number;
+ allowMirror:boolean;
+ scaleRange:[number,number];
+};
+
+/** Applies deterministic family-level transformations while preserving motif geometry. */
+export function transformMotifGrammar(g:MotifGrammar,seed:number,policy:MotifTransformPolicy):MotifGrammar{
+ const unit=(n:number)=>((Math.imul((seed^n)>>>0,2246822519)>>>0)%100000)/99999;
+ const lo=Math.min(policy.scaleRange[0],policy.scaleRange[1]),hi=Math.max(policy.scaleRange[0],policy.scaleRange[1]);
+ const instances=g.instances.map((i,n)=>{
+  let rotationDeg=i.rotationDeg;
+  if(policy.rotation==="discrete"){
+   const a=policy.allowedAnglesDeg?.length?policy.allowedAnglesDeg:[0,90,180,270];
+   rotationDeg+=a[Math.floor(unit(n*13+1)*a.length)%a.length]!;
+  }else if(policy.rotation==="free"){
+   const max=Math.max(0,Math.min(180,policy.maxRotationDeg??180));
+   rotationDeg+=(unit(n*17+3)*2-1)*max;
+  }
+  const scale=i.scale*(lo+(hi-lo)*unit(n*19+5));
+  const mirrorX=policy.allowMirror&&unit(n*23+7)>.5?!i.mirrorX:i.mirrorX;
+  return {...i,rotationDeg:((rotationDeg%360)+360)%360,scale,mirrorX};
+ });
+ return {...g,id:g.id+":transform:"+seed,instances};
+}
