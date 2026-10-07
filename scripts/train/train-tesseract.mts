@@ -25,8 +25,8 @@ import { featureOf, hex, kmeans, learnImage, prototypeShape, type Element } from
 import { MOTIF_TYPES, NOT_ORNAMENT, ORNAMENT, regionOf } from "./labels.ts";
 
 const per = Number(process.env.TRAIN_PER_TRADITION ?? 600);
+const maxImages = Number(process.env.TRAIN_MAX_IMAGES ?? 25000);
 const deadline = Date.now() + Number(process.env.TRAIN_MAX_MINUTES ?? 150) * 60_000;
-const FOCUS = new Set(["Ukrainian", "Belarusian", "Lithuanian", "Western / cowboy material culture", "English (16th–19th c.)"]);
 
 const softmax = (xs: number[]) => { const m = Math.max(...xs), e = xs.map((x) => Math.exp(x - m)), s = e.reduce((a, b) => a + b, 0); return e.map((x) => x / s); };
 
@@ -39,12 +39,13 @@ async function main() {
     const r = JSON.parse(line);
     if (!r.image || (r.culturalAccess ?? "open") !== "open") continue;
     const t = traditionOf(r).replace(/ \(by query\)$/, "");
-    if (!FOCUS.has(t) || STRUCTURE_ONLY.has(t)) continue;
+    if (STRUCTURE_ONLY.has(t)) continue;
     const g = groups.get(t) ?? groups.set(t, []).get(t)!;
     if (g.length < per * 2) g.push(r);
   }
   const queue = [...groups.entries()].flatMap(([t, rows]) => rows.map((r) => ({ t, r })));
-  // interleave traditions so a time limit still leaves every tradition represented
+  // Interleave all eligible traditions so large museum collections cannot crowd
+  // smaller traditions out of the image-learning budget.
   queue.sort((a, b) => (groups.get(a.t)!.indexOf(a.r) - groups.get(b.t)!.indexOf(b.r)) || a.t.localeCompare(b.t));
   console.log(JSON.stringify({ sampled: Object.fromEntries([...groups].map(([t, g]) => [t, g.length])) }));
 
@@ -68,7 +69,7 @@ async function main() {
   const stats = { seen: 0, kept: 0, notOrnament: 0, failed: 0, perTradition: {} as Record<string, number> };
   const done = new Map<string, number>();
   for (const { t, r } of queue) {
-    if (Date.now() > deadline) break;
+    if (Date.now() > deadline || kept.length >= maxImages) break;
     if ((done.get(t) ?? 0) >= per) continue;
     stats.seen++;
     try {
@@ -118,7 +119,7 @@ async function main() {
   };
   const summarise = (ks: Kept[]) => ({ images: ks.length, tags: tagMix(ks), palette: paletteOfGroup(ks), density: +(ks.map((k) => k.density).sort((a, b) => a - b)[Math.floor(ks.length / 2)] ?? 0).toFixed(3), elementsPerImage: +(ks.reduce((a, k) => a + k.elements.length, 0) / ks.length).toFixed(1), codebook: codebookOf(ks) });
   const model = {
-    version: "tesseract-learned/0.1", builtAt: new Date().toISOString(), clip: MODEL, stats,
+    version: "tesseract-learned/0.2-all-eligible", builtAt: new Date().toISOString(), clip: MODEL, stats,
     traditions: Object.fromEntries([...groupOf((k) => k.tradition)].map(([t, ks]) => [t, summarise(ks)])),
     regions: Object.fromEntries([...groupOf((k) => k.region)].filter(([, ks]) => ks.length >= 5).map(([r, ks]) => [r, summarise(ks)])),
   };
