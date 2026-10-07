@@ -45,12 +45,27 @@ export function medallion(k: Kit, cx: number, cy: number, size: number, c: Signa
     const r = h * 1.04, len = Math.max(3.6, size * 0.13);
     k.leaf(i % 2 ? c.red : c.blue, P(cx + Math.cos(a) * r * 0.9, cy + Math.sin(a) * r), a, len, Math.max(0.9, len * 0.2), 0, 0.45, "halo");
   }
+  if (size >= 30) {
+    // larger medallions: a second, outer halo of small flames between the first, and a bud beyond each point
+    for (let i = 0; i < halo; i++) {
+      const a = up + (i / halo) * 2 * Math.PI;
+      if (Math.abs(Math.cos(a)) < 0.3) continue;
+      const len = Math.max(3.2, size * 0.09);
+      k.leaf(i % 2 ? c.blue : c.red, P(cx + Math.cos(a) * h * 1.05, cy + Math.sin(a) * h * 1.32), a, len, Math.max(0.9, len * 0.2), 0, 0.45, "halo-out");
+    }
+    for (const s of [-1, 1]) k.leaf(c.red, P(cx, cy + s * (h + 1.6)), s < 0 ? up : -up, size * 0.12, Math.max(1, size * 0.03), 0, 0.55, "point-bud");
+  }
   // nested outlines as triple runs: satin columns would bunch into tiny stitches at the sharp points
-  const ring = (s: number, color: string) => { const pts = concaveDiamond(cx, cy, w * s, h * s); k.run("ring", color, [...pts, pts[0]!]); };
+  // every ring uses the outer ring's point count, so nested rings stay parallel
+  const n = Math.max(3, Math.min(10, Math.floor(Math.hypot(w, h) / 1.5)));
+  const ring = (s: number, color: string) => { const pts = concaveDiamond(cx, cy, w * s, h * s, 0.22, n); k.run("ring", color, [...pts, pts[0]!]); };
+  // rings and core share one shape (same bow and point count), so the gaps between them stay even all round
   ring(1, c.blue);
-  if (size >= 30) { ring(0.72, c.teal); ring(0.46, c.blue); } else ring(0.56, c.teal); // three rings only where they fit
-  k.fill("core", c.red, concaveDiamond(cx, cy, w * 0.26, h * 0.26, 0.1), 45);
-  if (h * 0.13 >= 1.6) k.rhomb(c.gold, cx, cy, w * 0.13, h * 0.13, "seed"); // a seed only where it can be stitched
+  const inner = size >= 34 ? [0.72, 0.42] : size >= 20 ? [0.55] : [];
+  inner.forEach((f, i) => ring(f, i % 2 ? c.blue : c.teal));
+  const coreF = size >= 34 ? 0.2 : size >= 20 ? 0.24 : 0.42;
+  k.fill("core", c.red, concaveDiamond(cx, cy, w * coreF, h * coreF, 0.22, n), 45);
+  if (h * coreF * 0.45 >= 1.6) k.rhomb(c.gold, cx, cy, w * coreF * 0.4, h * coreF * 0.4, "seed"); // a seed only where it can be stitched
 }
 
 export function starLily(k: Kit, cx: number, cy: number, size: number, c: SignaturePalette = SIGNATURE) {
@@ -59,6 +74,16 @@ export function starLily(k: Kit, cx: number, cy: number, size: number, c: Signat
   k.leaf(c.red, P(cx, cy), up, size * 0.42, size * 0.09, 0, 0.5, "lily-in");
   k.leaf(c.olive, P(cx, cy), Math.PI / 2, size * 0.28, size * 0.1, 0, 0.5, "lily-base");
   k.disc(c.gold, cx, cy, Math.max(0.9, size * 0.05), "lily-seed");
+  // two curling tendrils from the base, mirror images, each a shrinking spiral
+  if (size < 16) return; // too small to curl in thread
+  for (const s of [-1, 1]) {
+    const ox = cx + s * size * 0.34, oy = cy - size * 0.04, dense: Pt[] = [];
+    for (let i = 0; i <= 120; i++) { const t = i / 120, th = Math.PI / 2 + t * 2.6 * Math.PI, r = size * 0.15 * (1 - 0.65 * t); dense.push(P(ox + s * Math.cos(th) * r, oy - Math.sin(th) * r)); }
+    // keep points at least 1.5 mm apart, so every stitch of the curl is long enough to hold
+    const pts: Pt[] = [dense[0]!];
+    for (const q of dense) if (Math.hypot(q.x - pts[pts.length - 1]!.x, q.y - pts[pts.length - 1]!.y) >= 1.5) pts.push(q);
+    if (pts.length >= 3) k.run("tendril", c.green, pts);
+  }
 }
 
 export function snowflake(k: Kit, cx: number, cy: number, size: number, c: SignaturePalette = SIGNATURE) {
@@ -81,16 +106,24 @@ export function fan(k: Kit, cx: number, cy: number, size: number, c: SignaturePa
  *  and berry sprigs sized to the column, a star-lily on top. */
 export function vine(k: Kit, x: number, yBase: number, height: number, width: number, c: SignaturePalette = SIGNATURE, phase = 0) {
   const A = width * 0.1, top = height - width * 0.55, X = (t: number) => x + A * Math.sin(1.6 * Math.PI * t + phase);
-  k.satin("stem", c.green, Array.from({ length: 41 }, (_, i) => P(X(i / 40), yBase - (i / 40) * top)), Math.max(1.2, width * 0.06));
+  const sw = Math.max(1.2, width * 0.06);
+  k.satin("stem", c.green, Array.from({ length: 41 }, (_, i) => P(X(i / 40), yBase - (i / 40) * top)), sw);
+  // the board's stems are two-coloured: a red line runs along the green
+  k.run("stem-line", c.red, Array.from({ length: 41 }, (_, i) => P(X(i / 40) + sw / 2 + 0.15, yBase - (i / 40) * top * 0.97)));
   const step = width * 0.42, n = Math.floor((top - width * 0.3) / step), len = width * 0.42, half = Math.max(1.1, width * 0.075);
   for (let i = 0; i < n; i++) {
     const t = (width * 0.25 + i * step) / top, side = i % 2 ? 1 : -1, y = yBase - t * top, px = X(t);
-    k.leaf(i % 3 === 2 ? c.olive : c.green, P(px, y), up + side * 0.85, len, half, -side * 0.3, 0.42, "vine-leaf");
+    const la = up + side * 0.85;
+    k.leaf(i % 3 === 2 ? c.olive : c.green, P(px, y), la, len, half, -side * 0.3, 0.42, "vine-leaf");
+    // vein: a run along the leaf, stitched over its fill
+    k.run("vein", i % 3 === 2 ? c.green : c.olive, [P(px + Math.cos(la) * len * 0.3, y + Math.sin(la) * len * 0.3), P(px + Math.cos(la - side * 0.06) * len * 0.7, y + Math.sin(la - side * 0.06) * len * 0.7)]);
     if (i % 3 === 1) {
       // berry sprig opposite the leaf
       const sx = px - side * width * 0.3, sy = y - width * 0.18;
       k.run("sprig", c.red, [P(px, y - 0.6), P(sx, sy)]);
-      k.disc(c.red, sx, sy, Math.max(1, width * 0.05), "berry");
+      // a cluster of three berries, touching, at the sprig's end
+      const br = Math.max(1, width * 0.045);
+      for (const [dx, dy] of [[0, 0], [-1.6, -1.05], [1.6, -1.05]]) k.disc(c.red, sx + dx * br, sy + dy * br, br, "berry");
     }
   }
   starLily(k, X(1), yBase - top - width * 0.15, width * 0.9, c);
@@ -104,9 +137,11 @@ export function signaturePanel(width: number, height: number, c: SignaturePalett
     for (const x of [bx - 3, bx + 3]) k.satin("frame", c.red, [P(x, 2), P(x, height - 2)], 1);
     for (let y = 7, i = 0; y < height - 4; y += 8, i++) (i % 2 ? snowflake : star5)(k, bx, y, 5.4, c);
   }
-  const cols = columns * 2 + 1, cw = inner / cols;
+  // vine columns narrower than medallion columns, so medallions are big enough for their full rings and halo
+  const cols = columns * 2 + 1, vw = inner * 0.15, mwid = (inner - (columns + 1) * vw) / columns;
+  const colX = (i: number) => border + Math.floor((i + 1) / 2) * vw + Math.floor(i / 2) * mwid + (i % 2 ? mwid : vw) / 2;
   for (let i = 0; i < cols; i++) {
-    const x = border + cw * (i + 0.5);
+    const x = colX(i), cw = i % 2 ? mwid : vw;
     if (i % 2 === 0) vine(k, x, height - 4, height - 8, cw, c, i * 1.3);
     else {
       const step = Math.min(cw * 1.5, 46), n = Math.max(1, Math.floor((height - 10) / step));
