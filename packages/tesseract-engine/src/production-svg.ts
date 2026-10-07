@@ -10,7 +10,13 @@ export function productionPieceSvg(piece:PatternPiece,plan:PieceProjectionPlan,t
  const w=maxX-minX,h=maxY-minY;
  const ng=piece.noGoZones.map(z=>`<polygon points="${pts(z.polygon)}" fill="none" stroke="currentColor" stroke-dasharray="4 3" data-no-go="${xml(z.id)}"><title>${xml(z.reason)}</title></polygon>`).join("");
  const maskNoGo=piece.noGoZones.map(z=>`<polygon points="${pts(z.polygon)}" fill="black" stroke="black" stroke-width="${z.clearanceMm*2}" stroke-linejoin="round" data-no-go-mask="${xml(z.id)}"/>`).join("");
- const seams=transfers.filter(t=>t.fromPiece===piece.id||t.toPiece===piece.id).map((t,i)=>{const p=t.fromPiece===piece.id?t.fromPoint:t.toPoint;return `<circle cx="${p.x}" cy="${p.y}" r="3" fill="none" stroke="currentColor" data-registration="${i}"/>`}).join("");
+ const seams=transfers.filter(t=>t.fromPiece===piece.id||t.toPiece===piece.id).map((t,i)=>{
+  const from=t.fromPiece===piece.id,path=from?t.fromEdgePath:t.toEdgePath,anchors=from?t.fromRegistrationAnchors:t.toRegistrationAnchors;
+  const p=from?t.fromPoint:t.toPoint;
+  const edge=path?.length?`<polyline points="${pts(path)}" fill="none" stroke="currentColor" stroke-dasharray="2 2" data-seam-edge="${i}"/>`:"";
+  const marks=anchors?.length?anchors.map((a,j)=>`<circle cx="${a.x}" cy="${a.y}" r="3" fill="none" stroke="currentColor" data-registration="${i}:${j}"/>`).join(""):`<circle cx="${p.x}" cy="${p.y}" r="3" fill="none" stroke="currentColor" data-registration="${i}"/>`;
+  return edge+marks;
+ }).join("");
  const u=plan.usableBounds;
  const clipId=`piece-clip-${piece.id.replace(/[^a-z0-9_-]/gi,"_")}`,maskId=`design-mask-${piece.id.replace(/[^a-z0-9_-]/gi,"_")}`;
  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}mm" height="${h}mm" viewBox="${minX} ${minY} ${w} ${h}" data-piece="${xml(piece.id)}">
