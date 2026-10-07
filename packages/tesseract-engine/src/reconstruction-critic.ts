@@ -7,19 +7,26 @@ export type ReconstructionCritique={score:number;survive:boolean;distance:number
 
 const keys:(keyof VisualFeatureVector)[]=["symmetry","density","voidRatio","scaleLevels","densityVariation","directionalEntropy","axisStrength","rotation180","periodicity","focalDominance","asymmetryBalance","motifFieldRatio","compositionalDepth","embroideryComplexity","repetition","interruption"];
 
-export function reconstructionTarget(corpus:ImageObservation[]):ReconstructionTarget|undefined{
- const usable=corpus.filter(o=>o.trainingUse==="composition"||o.trainingUse==="geometry");
+export function reconstructionTarget(corpus:ImageObservation[],traditionMix?:Record<string,number>):ReconstructionTarget|undefined{
+ const usable=corpus.filter(o=>{
+  if(o.trainingUse!=="composition"&&o.trainingUse!=="geometry")return false;
+  if(!traditionMix||!Object.keys(traditionMix).length)return true;
+  const tradition=o.tradition??o.notes?.[1]??"unknown";
+  return (traditionMix[tradition]??0)>0;
+ });
  if(!usable.length)return undefined;
  const vector={} as VisualFeatureVector;let total=0;
  for(const k of keys)(vector as any)[k]=0;
  const sourceIds:string[]=[];
  for(const o of usable){
-  const w=trainingWeight(o);if(w<=0)continue;total+=w;sourceIds.push(o.id);
+  const tradition=o.tradition??o.notes?.[1]??"unknown";
+  const mixWeight=traditionMix?Math.max(0,traditionMix[tradition]??0):1;
+  const w=trainingWeight(o)*mixWeight;if(w<=0)continue;total+=w;sourceIds.push(o.id);
   for(const k of keys){const v=(o.features as any)[k];if(Number.isFinite(v))(vector as any)[k]+=v*w;}
  }
  if(!total)return undefined;
  for(const k of keys)(vector as any)[k]/=total;
- return {id:"corpus-reconstruction-target",vector,weight:total/usable.length,sourceIds};
+ return {id:traditionMix?"tradition-mix-reconstruction-target":"corpus-reconstruction-target",vector,weight:total/usable.length,sourceIds};
 }
 
 export function critiqueReconstruction(candidate:VisualFeatureVector,target:ReconstructionTarget,maxDistance=.28):ReconstructionCritique{
