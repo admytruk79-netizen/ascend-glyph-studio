@@ -1,0 +1,60 @@
+name: Tesseract design scoring
+# Scores generated designs with CLIP (pretrained, no training): resemblance to each tradition in the
+# corpus, alignment with plain descriptions, generic-clip-art risk, and distance from every reference
+# object (near-copies rejected). Results go to the run log, an artifact and Neon (design_candidate).
+on:
+  push:
+    branches: [claude/tesseract-corpus-harvest]
+    paths:
+      - "scripts/score/**"
+      - "packages/blend-engine/src/**"
+      - ".github/workflows/tesseract-score.yml"
+  workflow_dispatch:
+concurrency:
+  group: tesseract-score-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+  actions: read
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Fetch master corpus
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p master out
+          for id in $(gh run list -R "${{ github.repository }}" --workflow corpus-harvest.yml --status success --limit 30 --json databaseId -q '.[].databaseId'); do
+            if gh run download "$id" -R "${{ github.repository }}" -n tesseract-master -D master 2>/dev/null; then echo "master from run $id"; break; fi
+          done
+          test -f master/master.ndjson.gz
+      - name: Install model runtime
+        run: npm install --no-save --no-audit --no-fund @huggingface/transformers@3 sharp pg
+      - name: Build CLIP reference from the corpus
+        env:
+          MASTER_IN: master/master.ndjson.gz
+          REF_OUT: out/clip-reference.json.gz
+          REF_PER_TRADITION: "200"
+          REF_MAX_MINUTES: "50"
+        run: npx -y tsx@4 scripts/score/build-reference.mts
+      - name: Generate and score candidates
+        env:
+          REF_IN: out/clip-reference.json.gz
+          DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+        run: npx -y tsx@4 scripts/score/score-candidates.mts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tesseract-scores-${{ github.run_id }}
+          path: |
+            out/candidate-scores.json
+            out/candidates
+            out/clip-reference.json.gz
+          retention-days: 90
+          if-no-files-found: ignore

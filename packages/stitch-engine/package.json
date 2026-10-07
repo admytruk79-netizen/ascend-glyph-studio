@@ -1,0 +1,1 @@
+{"name":"@ascend/stitch-engine","version":"0.1.0","private":true,"type":"module","scripts":{"typecheck":"tsc --noEmit","test":"tsx --test src/*.test.ts","demo":"tsx src/demo-cuff.ts","calibration":"tsx src/calibration-cli.ts"},"devDependencies":{"@types/node":"^22.10.0","tsx":"^4.19.2","typescript":"^5.7.2"}}

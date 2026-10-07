@@ -1,0 +1,33 @@
+name: Corpus source check
+# Quick live check of source adapters (small samples, nothing stored). Runs separately from the
+# long corpus harvest so new sources can be verified within minutes.
+on:
+  push:
+    branches: [claude/tesseract-corpus-harvest]
+    paths:
+      - "scripts/corpus/sources.ts"
+      - "scripts/corpus/try-sources.mts"
+      - ".github/workflows/source-check.yml"
+  workflow_dispatch:
+    inputs:
+      sources:
+        description: "Comma list of sources to try"
+        default: "loc,ia,finna,commons"
+concurrency:
+  group: source-check-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  try:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      TRY_SOURCES: ${{ inputs.sources || 'loc,ia,finna,commons' }}
+      COMMONS_ACCEPT_SHAREALIKE: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npx -y tsx@4 scripts/corpus/try-sources.mts

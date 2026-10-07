@@ -1,0 +1,155 @@
+[
+  {
+    "id": "01-ascend-roots",
+    "name": "Ascend Roots",
+    "meanings": [
+      "growth",
+      "family",
+      "protection"
+    ],
+    "motifs": [
+      "ua.tree-of-life",
+      "ua.birds",
+      "ua.kalyna",
+      "ua.ruzha",
+      "ua.eight-point-star"
+    ],
+    "sizeMm": [
+      250,
+      60
+    ],
+    "objects": 458,
+    "stitches": 12301,
+    "colors": 5,
+    "minutes": 36.2,
+    "failed": [
+      "recipe-validated: recipe linen-180-prewashed has no sew-out yet: prototype only"
+    ]
+  },
+  {
+    "id": "02-mountain-path",
+    "name": "Mountain Path",
+    "meanings": [
+      "road",
+      "protection",
+      "strength"
+    ],
+    "motifs": [
+      "ua.zigzag",
+      "ua.rams-horns",
+      "ua.rhombus",
+      "ua.eight-point-star"
+    ],
+    "sizeMm": [
+      250,
+      60
+    ],
+    "objects": 202,
+    "stitches": 10506,
+    "colors": 4,
+    "minutes": 22.9,
+    "failed": [
+      "recipe-validated: recipe linen-180-prewashed has no sew-out yet: prototype only"
+    ]
+  },
+  {
+    "id": "03-river-lineage",
+    "name": "River Lineage",
+    "meanings": [
+      "continuity",
+      "family",
+      "fertility"
+    ],
+    "motifs": [
+      "ua.hops",
+      "ua.grapes",
+      "ua.eight-point-star"
+    ],
+    "sizeMm": [
+      250,
+      60
+    ],
+    "objects": 214,
+    "stitches": 8308,
+    "colors": 5,
+    "minutes": 24.1,
+    "failed": [
+      "recipe-validated: recipe linen-180-prewashed has no sew-out yet: prototype only"
+    ]
+  },
+  {
+    "id": "04-sky-horizon",
+    "name": "Sky Horizon",
+    "meanings": [
+      "light",
+      "sun",
+      "expansion"
+    ],
+    "motifs": [
+      "ua.ruzha",
+      "ua.constellation",
+      "ua.cross"
+    ],
+    "sizeMm": [
+      250,
+      60
+    ],
+    "objects": 392,
+    "stitches": 12981,
+    "colors": 4,
+    "minutes": 33.5,
+    "failed": [
+      "recipe-validated: recipe linen-180-prewashed has no sew-out yet: prototype only"
+    ]
+  },
+  {
+    "id": "05-fire-within",
+    "name": "Fire Within",
+    "meanings": [
+      "light",
+      "renewal",
+      "courage"
+    ],
+    "motifs": [
+      "ua.lily",
+      "ua.cross"
+    ],
+    "sizeMm": [
+      250,
+      60
+    ],
+    "objects": 232,
+    "stitches": 11692,
+    "colors": 6,
+    "minutes": 34,
+    "failed": [
+      "recipe-validated: recipe linen-180-prewashed has no sew-out yet: prototype only"
+    ]
+  },
+  {
+    "id": "06-earth-anchor",
+    "name": "Earth Anchor",
+    "meanings": [
+      "fertility",
+      "protection",
+      "family"
+    ],
+    "motifs": [
+      "ua.rhombus",
+      "ua.eight-point-star",
+      "ua.kalyna",
+      "ua.oak"
+    ],
+    "sizeMm": [
+      250,
+      60
+    ],
+    "objects": 266,
+    "stitches": 10924,
+    "colors": 4,
+    "minutes": 30.7,
+    "failed": [
+      "recipe-validated: recipe linen-180-prewashed has no sew-out yet: prototype only"
+    ]
+  }
+]

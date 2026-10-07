@@ -1,34 +1,166 @@
 /**
- * Bulk research-corpus ingestion. Target scale: 250,000+ object records.
- * Streams paginated museum/archive APIs; never hand-curates individual objects.
+ * Bulk research-corpus acquisition. Target scale: 250,000+ accepted instances.
+ * Streams paginated open-access museum APIs; never hand-curates individual objects.
+ *
+ * Stage covered here: discover → enumerate candidate records → metadata gates
+ * (image present, provenance, rights, cultural access, structural relevance)
+ * → deduplicate. Records written to CORPUS_OUT are *metadata-accepted
+ * candidates*; they count toward a milestone only after image analysis.
+ *
+ * Env: CORPUS_TARGET (default 250000), CORPUS_OUT, CORPUS_REVIEW_OUT,
+ * CORPUS_SUMMARY_OUT, CORPUS_MAX_SOURCE_SHARE (default 0.4),
+ * CORPUS_MAX_MINUTES (default 330), CORPUS_CHECKPOINT_EVERY (default 1000),
+ * CORPUS_SOURCES (comma list to restrict), SMITHSONIAN_API_KEY (optional).
  */
-import {createWriteStream} from "node:fs";
-type Source={id:string;endpoint:string;query:string;tradition:string;culturalAccess:"open"|"review"};
-const sources:Source[]=[
- {id:"met-ukrainian",endpoint:"https://collectionapi.metmuseum.org/public/collection/v1/search",query:"Ukraine Ukrainian embroidery textile weaving folk art",tradition:"Ukrainian",culturalAccess:"open"},
- {id:"met-western",endpoint:"https://collectionapi.metmuseum.org/public/collection/v1/search",query:"American West western saddle leatherwork cowboy horse tack",tradition:"American Western",culturalAccess:"open"}
-];
-const target=Number(process.env.CORPUS_TARGET??250000),out=process.env.CORPUS_OUT??"data/research/corpus.ndjson";
-const mode=process.env.CORPUS_MODE??"broad";
-const checkpointEvery=Number(process.env.CORPUS_CHECKPOINT_EVERY??1000);
-const seen=new Set<string>();
-const sleep=(ms:number)=>new Promise(r=>setTimeout(r,ms));
-async function json(url:string){const r=await fetch(url,{headers:{"user-agent":"ASCEND-Research-Corpus/0.1"}});if(!r.ok)throw new Error(`${r.status} ${url}`);return r.json()}
-async function* met(s:Source){const q=await json(`${s.endpoint}?hasImages=true&q=${encodeURIComponent(s.query)}`);for(const id of q.objectIDs??[]){const x=await json(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`);yield{id:`met-${id}`,source:s.id,tradition:s.tradition,culturalAccess:s.culturalAccess,title:x.title,creator:x.artistDisplayName||undefined,date:x.objectDate||undefined,region:x.country||x.culture||undefined,material:x.medium||undefined,technique:x.classification||undefined,objectURL:x.objectURL,image:x.primaryImageSmall||undefined,rights:x.rightsAndReproduction||undefined,accession:x.accessionNumber,reliability:.98,raw:{department:x.department,culture:x.culture,period:x.period,dynasty:x.dynasty}};await sleep(35)}}
-async function main(){
- const stream=createWriteStream(out,{flags:"w"});let n=0;
- for(const s of sources){
-  for await(const row of met(s)){
-   if(seen.has(row.id))continue;
-   seen.add(row.id);
-   stream.write(JSON.stringify(row)+"\n");
-   n++;
-   if(n%checkpointEvery===0)console.log(JSON.stringify({checkpoint:n,target,out}));
-   if(n>=target)break;
-  }
-  if(n>=target)break;
- }
- stream.end();
- console.log(JSON.stringify({written:n,target,out,unique:seen.size}))
+import { createWriteStream, writeFileSync } from "node:fs";
+import { dedupeKeys, gate, type Candidate } from "./corpus/gates.ts";
+import { ADAPTERS, QUERIES, USER_AGENT, type Adapter, type FetchJson, type Query } from "./corpus/sources.ts";
+
+const target = Number(process.env.CORPUS_TARGET ?? 250000);
+const out = process.env.CORPUS_OUT ?? "data/research/corpus.ndjson";
+const reviewOut = process.env.CORPUS_REVIEW_OUT ?? "data/research/corpus-review.ndjson";
+const summaryOut = process.env.CORPUS_SUMMARY_OUT ?? "data/research/corpus-summary.json";
+const maxShare = Number(process.env.CORPUS_MAX_SOURCE_SHARE ?? 0.4);
+const deadline = Date.now() + Number(process.env.CORPUS_MAX_MINUTES ?? 330) * 60_000;
+const checkpointEvery = Number(process.env.CORPUS_CHECKPOINT_EVERY ?? 1000);
+const sourceList = (process.env.CORPUS_SOURCES ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+const only = sourceList.length ? sourceList : undefined;
+const WORKERS: Record<string, number> = { met: 2, aic: 2, cma: 2, vam: 2, si: 2, commons: 1, europeana: 2, loc: 1, ia: 1, finna: 2 };
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+// Minimum spacing between requests to the same host. The Met sits behind bot
+// protection that answers bursts with HTTP 403 pages; Commons answers with 429.
+const PACE_MS: Record<string, number> = {
+  "collectionapi.metmuseum.org": 400, "commons.wikimedia.org": 300, "api.vam.ac.uk": 100, "api.europeana.eu": 150, "www.loc.gov": 700, "archive.org": 500, "iiif.archive.org": 300, "api.finna.fi": 200,
+};
+const nextSlot = new Map<string, number>();
+async function pace(host: string) {
+  const gap = PACE_MS[host] ?? 0;
+  if (!gap) return;
+  const now = Date.now(), at = Math.max(now, nextSlot.get(host) ?? 0);
+  nextSlot.set(host, at + gap);
+  if (at > now) await sleep(at - now);
 }
-main().catch(e=>{console.error(e);process.exitCode=1});
+
+export const fetchJson: FetchJson = async (url, headers = {}) => {
+  const host = new URL(url).host;
+  for (let attempt = 0; ; attempt++) {
+    try {
+      await pace(host);
+      const r = await fetch(url, { headers: { "user-agent": USER_AGENT, accept: "application/json", ...headers }, signal: AbortSignal.timeout(30_000) });
+      if (r.ok) return r.json();
+      if (r.status === 404) return null;
+      // Rate limiting: 429, 5xx, or a bot-protection 403 page. Honour Retry-After, else back off hard.
+      const throttled = r.status === 429 || r.status >= 500 || (r.status === 403 && (r.headers.get("content-type") ?? "").includes("html"));
+      if (attempt < 4 && throttled) {
+        const retryAfter = Number(r.headers.get("retry-after"));
+        const wait = Number.isFinite(retryAfter) && retryAfter > 0 ? Math.min(retryAfter, 120) * 1000 : 5000 * 2 ** attempt;
+        nextSlot.set(host, Date.now() + wait);
+        await r.body?.cancel().catch(() => {});
+        await sleep(wait);
+        continue;
+      }
+      // Include the start of the body: retired or moved APIs usually say where they went.
+      const body = (await r.text().catch(() => "")).replace(/\s+/g, " ").slice(0, 160);
+      throw new Error(`${r.status} ${url} ${body}`);
+    } catch (e) {
+      if (attempt < 3 && (e as Error).name === "TimeoutError") { await sleep(2000 * 2 ** attempt); continue; }
+      throw e;
+    }
+  }
+};
+
+const seen = new Set<string>();
+const stats = {
+  target, accepted: 0, enumerated: 0, duplicates: 0,
+  bySource: {} as Record<string, { enumerated: number; accepted: number; review: number; rejected: number; errors: number }>,
+  rejected: {} as Record<string, number>,
+  relevance: {} as Record<string, number>,
+  queryGroup: {} as Record<string, number>,
+  culture: {} as Record<string, number>,
+  startedAt: new Date().toISOString(), finishedAt: "", stopReason: "",
+};
+const bump = (m: Record<string, number>, k: string) => { m[k] = (m[k] ?? 0) + 1; };
+
+function row(c: Candidate, relevance: string[], culturalAccess: string) {
+  return {
+    id: c.id, source: c.source, tradition: c.culture ?? c.region ?? "unattributed", culturalAccess,
+    title: c.title, creator: c.creator, date: c.date, region: c.region, material: c.material, technique: c.technique,
+    objectURL: c.objectURL, image: c.image, rights: c.rights, accession: c.accession, reliability: c.reliability,
+    raw: { institution: c.institution, query: c.query, queryGroup: c.tradition, culture: c.culture, objectType: c.objectType,
+      rightsStatus: c.rightsStatus, imageWidth: c.imageWidth, imageHeight: c.imageHeight, relevance, stage: "metadata-accepted" },
+  };
+}
+
+async function main() {
+  const stream = createWriteStream(out, { flags: "w" });
+  const review = createWriteStream(reviewOut, { flags: "w" });
+  const adapters = ADAPTERS.filter((a) => a.enabled() && (!only || only.includes(a.source)));
+  if (!adapters.length) throw new Error(`no corpus sources enabled (CORPUS_SOURCES=${process.env.CORPUS_SOURCES ?? ""})`);
+  const sourceCap = Math.ceil(target * Math.max(maxShare, 1 / adapters.length));
+  let stop = false;
+
+  const accept = (a: Adapter, c: Candidate) => {
+    const s = stats.bySource[a.source];
+    stats.enumerated++; s.enumerated++;
+    const keys = dedupeKeys(c);
+    if (keys.some((k) => seen.has(k))) { stats.duplicates++; return; }
+    keys.forEach((k) => seen.add(k));
+    const g = gate(c);
+    if (!g.accepted) {
+      bump(stats.rejected, g.reason); s.rejected++;
+      if (g.reason === "cultural-review" || g.reason === "rights-unresolved") {
+        s.review++;
+        review.write(JSON.stringify({ id: c.id, institution: c.institution, objectURL: c.objectURL, accession: c.accession,
+          title: c.title, culture: c.culture, region: c.region, rights: c.rights, reason: g.reason, culturalAccess: g.culturalAccess }) + "\n");
+      }
+      return;
+    }
+    if (stats.accepted >= target || s.accepted >= sourceCap) return;
+    stream.write(JSON.stringify(row(c, g.relevance, g.culturalAccess)) + "\n");
+    stats.accepted++; s.accepted++;
+    g.relevance.forEach((r) => bump(stats.relevance, r));
+    bump(stats.queryGroup, c.tradition ?? "Global");
+    if (c.culture) bump(stats.culture, c.culture);
+    if (stats.accepted % checkpointEvery === 0) console.log(JSON.stringify({ checkpoint: stats.accepted, target, out, enumerated: stats.enumerated }));
+    if (stats.accepted >= target) { stop = true; stats.stopReason = "target reached"; }
+  };
+
+  await Promise.all(adapters.map(async (a) => {
+    stats.bySource[a.source] = { enumerated: 0, accepted: 0, review: 0, rejected: 0, errors: 0 };
+    const queries = a.queries ?? QUERIES;
+    const queue: Query[] = [...queries];
+    const perQuery = a.queries ? sourceCap : Math.max(250, Math.ceil((sourceCap / queries.length) * 8));
+    const worker = async () => {
+      for (let q = queue.shift(); q && !stop; q = queue.shift()) {
+        let fromQuery = 0;
+        try {
+          for await (const c of a.search(q, fetchJson)) {
+            if (stop || Date.now() > deadline || stats.bySource[a.source].accepted >= sourceCap) break;
+            const before = stats.bySource[a.source].accepted;
+            accept(a, c);
+            if (stats.bySource[a.source].accepted > before && ++fromQuery >= perQuery) break;
+          }
+        } catch (e) {
+          stats.bySource[a.source].errors++;
+          console.error(JSON.stringify({ source: a.source, query: q.q, error: String((e as Error).message ?? e).slice(0, 200) }));
+        }
+        if (Date.now() > deadline) { stop = true; stats.stopReason ||= "time budget reached"; }
+      }
+    };
+    await Promise.all(Array.from({ length: WORKERS[a.source] ?? 2 }, worker));
+  }));
+
+  stats.stopReason ||= "all queries exhausted";
+  stats.finishedAt = new Date().toISOString();
+  await Promise.all([new Promise((r) => stream.end(r)), new Promise((r) => review.end(r))]);
+  const unique = stats.enumerated - stats.duplicates;
+  writeFileSync(summaryOut, JSON.stringify({ ...stats, unique, out, reviewOut }, null, 2));
+  console.log(JSON.stringify({ written: stats.accepted, target, out, unique, stopReason: stats.stopReason }));
+  const { culture, ...compact } = stats;
+  const topCultures = Object.entries(culture).sort((a, b) => b[1] - a[1]).slice(0, 25);
+  console.log("SUMMARY " + JSON.stringify({ ...compact, distinctCultures: Object.keys(culture).length, topCultures }));
+}
+
+main().catch((e) => { console.error(e); process.exitCode = 1; });

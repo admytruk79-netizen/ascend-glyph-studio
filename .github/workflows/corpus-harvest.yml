@@ -1,0 +1,205 @@
+name: Tesseract corpus harvest
+# Acquisition stage of the research corpus: enumerate open-access museum records,
+# apply metadata gates (image, provenance, rights, cultural access, relevance),
+# deduplicate, and publish the metadata-accepted candidates as an artifact.
+on:
+  push:
+    branches: [claude/tesseract-corpus-harvest]
+    paths:
+      - "scripts/build-research-corpus.ts"
+      - "scripts/analyze-research-corpus.ts"
+      - "scripts/merge-research-corpus.ts"
+      - "scripts/prepare-analysis-queue.ts"
+      - "scripts/corpus/**"
+      - ".github/workflows/corpus-harvest.yml"
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Metadata-accepted candidates to collect"
+        default: "25000"
+      sources:
+        description: "Comma list to restrict sources (met,aic,cma,vam,si); empty = all"
+        default: ""
+concurrency:
+  group: corpus-harvest-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  probe:
+    # Reconnaissance of candidate sources (robots.txt, sitemaps, API samples). Read-only.
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npx -y tsx@4 scripts/corpus/probe-sources.mts
+
+  harvest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env:
+      CORPUS_TARGET: ${{ inputs.target || '25000' }}
+      CORPUS_SOURCES: ${{ inputs.sources }}
+      CORPUS_MAX_MINUTES: "320"
+      CORPUS_OUT: out/corpus.ndjson
+      CORPUS_REVIEW_OUT: out/corpus-review.ndjson
+      CORPUS_SUMMARY_OUT: out/corpus-summary.json
+      SMITHSONIAN_API_KEY: ${{ secrets.SMITHSONIAN_API_KEY }}
+      EUROPEANA_API_KEY: ${{ secrets.EUROPEANA_API_KEY }}
+      # Owner decision 2026-10-06: CC BY-SA images are accepted for structural measurement only
+      # (no image is stored or republished; source and licence are kept in lineage).
+      COMMONS_ACCEPT_SHAREALIKE: "1"
+      DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Corpus tests
+        run: npx -y tsx@4 --test scripts/corpus/gates.test.ts scripts/corpus/features.test.ts scripts/corpus/store.test.ts scripts/corpus/profiles.test.ts
+      - name: Harvest
+        run: |
+          mkdir -p out
+          npx -y tsx@4 scripts/build-research-corpus.ts
+      - name: Summary
+        if: always()
+        run: |
+          test -f out/corpus-summary.json && jq 'del(.culture)' out/corpus-summary.json || echo "no summary"
+          wc -l out/*.ndjson || true
+          gzip -kf out/corpus.ndjson out/corpus-review.ndjson || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tesseract-corpus-${{ github.run_id }}
+          path: |
+            out/corpus.ndjson.gz
+            out/corpus-review.ndjson.gz
+            out/corpus-summary.json
+          retention-days: 90
+      - name: Import into research database
+        if: env.DATABASE_URL != ''
+        env:
+          CORPUS_IN: out/corpus.ndjson
+        run: |
+          npm install --no-audit --no-fund
+          npx -y tsx@4 scripts/import-research-corpus.ts
+
+  analyze:
+    # Image-analysis stage: download each queued image, extract structural
+    # features and deconstruct it (crop, bands, repeat unit, frieze/wallpaper/
+    # rosette symmetry, breaks, grammar), then merge into the master corpus.
+    # Images are analyzed in memory and never stored.
+    needs: harvest
+    if: always() && needs.harvest.result != 'cancelled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    permissions:
+      actions: read
+      contents: read
+    env:
+      ANALYZED_OUT: out/analyzed.ndjson
+      ANALYSIS_SUMMARY_OUT: out/analysis-summary.json
+      ANALYSIS_CONCURRENCY: "24"
+      ANALYSIS_MAX_MINUTES: "300"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/download-artifact@v4
+        with:
+          name: tesseract-corpus-${{ github.run_id }}
+          path: out
+      - name: Fetch previous master corpus
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p master
+          for id in $(gh run list -R "${{ github.repository }}" --workflow corpus-harvest.yml --status success --limit 30 --json databaseId -q '.[].databaseId'); do
+            if gh run download "$id" -R "${{ github.repository }}" -n tesseract-master -D master 2>/dev/null; then echo "master from run $id"; break; fi
+          done
+          # First master: seed from the analyzed outputs of earlier runs; their rows are
+          # queued for re-analysis below because they predate deconstruction.
+          if [ ! -f master/master.ndjson.gz ]; then
+            for id in $(gh run list -R "${{ github.repository }}" --workflow corpus-harvest.yml --status success --limit 5 --json databaseId -q '.[].databaseId'); do
+              gh run download "$id" -R "${{ github.repository }}" -p 'tesseract-analyzed-*' -D "seed/$id" 2>/dev/null || continue
+              for f in seed/$id/*/analyzed.ndjson.gz; do
+                test -f "$f" || continue
+                prev=""; test -f master/master.ndjson.gz && { cp master/master.ndjson.gz master/prev.ndjson.gz; prev=master/prev.ndjson.gz; }
+                MASTER_IN="$prev" ANALYZED_IN="$f" MASTER_OUT=master/master.ndjson.gz MASTER_STATS_OUT=master/seed-stats.json npx -y tsx@4 scripts/merge-research-corpus.ts > /dev/null
+                echo "seeded from run $id: $(zcat master/master.ndjson.gz | wc -l) rows"
+              done
+            done
+          fi
+          ls -la master || true
+      - name: Install image decoder
+        run: npm install --no-save --no-audit --no-fund sharp@0.33
+      - name: Corpus tests
+        run: npx -y tsx@4 --test scripts/corpus/*.test.ts
+      - name: Build analysis queue
+        env:
+          CORPUS_IN: out/corpus.ndjson
+          MASTER_IN: master/master.ndjson.gz
+          QUEUE_OUT: out/analysis-queue.ndjson
+        run: |
+          gunzip -kf out/corpus.ndjson.gz
+          npx -y tsx@4 scripts/prepare-analysis-queue.ts
+      - name: Analyze images
+        env:
+          CORPUS_IN: out/analysis-queue.ndjson
+        run: npx -y tsx@4 scripts/analyze-research-corpus.ts
+      - name: Merge into master corpus
+        if: always()
+        env:
+          MASTER_IN: master/master.ndjson.gz
+          ANALYZED_IN: out/analyzed.ndjson
+          MASTER_OUT: out/master.ndjson.gz
+          MASTER_STATS_OUT: out/master-stats.json
+          CANDIDATES_IN: out/corpus.ndjson
+        run: |
+          test -f out/analyzed.ndjson || exit 0
+          npx -y tsx@4 scripts/merge-research-corpus.ts > out/merge.log
+          jq 'del(.topTraditions)' out/master-stats.json
+      - name: Style profiles
+        if: always()
+        env:
+          MASTER_IN: out/master.ndjson.gz
+          PROFILES_OUT: out/style-profiles.json
+        run: |
+          test -f out/master.ndjson.gz || exit 0
+          npx -y tsx@4 scripts/build-style-profiles.ts
+      - name: Load measurements into Neon
+        if: always()
+        env:
+          DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+          MASTER_IN: out/master.ndjson.gz
+          PROFILES_IN: out/style-profiles.json
+        run: |
+          test -n "$DATABASE_URL" || { echo "TESSERACT_DATABASE_URL not set; skipping"; exit 0; }
+          test -f out/master.ndjson.gz || exit 0
+          npm install --no-audit --no-fund
+          npx -y tsx@4 scripts/import-analysis.ts
+      - name: Summary
+        if: always()
+        run: |
+          test -f out/analysis-summary.json && cat out/analysis-summary.json || echo "no summary"
+          gzip -kf out/analyzed.ndjson || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tesseract-analyzed-${{ github.run_id }}
+          path: |
+            out/analyzed.ndjson.gz
+            out/analysis-summary.json
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tesseract-master
+          path: |
+            out/master.ndjson.gz
+            out/master-stats.json
+            out/style-profiles.json
+          retention-days: 90
+          if-no-files-found: ignore
