@@ -21,7 +21,7 @@ async function claim(){
   await c.query("begin");
   const q=await c.query(`select r.*,e.batch_size,e.population,e.generations
    from synthesis_run r cross join engine_runtime e
-   where (r.status in ('queued','created') or (r.status='running' and not exists (select 1 from synthesis_candidate sc where sc.run_id=r.id))) and e.id='tesseract-v2' and e.enabled=true
+   where (r.status in ('queued','created') or (r.status='running' and r.solver_version='3.0.0-corpus-visual' and not exists (select 1 from synthesis_candidate sc where sc.run_id=r.id))) and e.id='tesseract-v2' and e.enabled=true
    order by r.created_at for update of r skip locked limit 1`);
   const run=q.rows[0]; if(!run){await c.query("rollback");return null}
   await c.query("update synthesis_run set status='running' where id=$1",[run.id]);
@@ -130,6 +130,11 @@ async function persist(run:any,judged:{p:any;raster:RasterCritique|null;score:nu
  }catch(e){await c.query("rollback").catch(()=>{});throw e}finally{c.release(true)}
 }
 async function main(){
+ const bootstrapVisual=await loadVisualCorpus("corpus-canonical-bootstrap-v1");
+ const bootstrapCanon=deriveCorpusCanon(bootstrapVisual,{count:16,minTraditions:4,minSources:8,minSupport:24,minReferenceDistance:.02});
+ installCorpusCanon(bootstrapCanon);
+ await persistCorpusCanon(bootstrapCanon);
+ process.stdout.write(JSON.stringify({stage:"corpus-canon-bootstrap",observations:bootstrapVisual.length,canonical:bootstrapCanon.filter(x=>x.status==="canonical").length,total:bootstrapCanon.length})+"\n");
  let done=0;
  for(;;){const run=await claim();if(!run)break;const n=await execute(run);done+=n;process.stdout.write(JSON.stringify({runId:run.id,candidates:n,status:"completed"})+"\n")}
  process.stdout.write(JSON.stringify({ok:true,candidatesPersisted:done})+"\n");
