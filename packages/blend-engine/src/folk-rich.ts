@@ -69,6 +69,8 @@ export class Kit {
           const end = Math.hypot(pts[0]!.x - from.x, pts[0]!.y - from.y) < Math.hypot(pts[pts.length - 1]!.x - from.x, pts[pts.length - 1]!.y - from.y) ? 0 : pts.length - 1;
           const nb = pts[end === 0 ? 1 : pts.length - 2]!, e = pts[end]!, L = Math.hypot(e.x - nb.x, e.y - nb.y) || 1, cut = Math.min(L * 0.9, min - gap + 0.05);
           e.x -= ((e.x - nb.x) / L) * cut; e.y -= ((e.y - nb.y) / L) * cut;
+          // a stub shorter than a stitch is dropped rather than left to make a tiny stitch
+          if (pts.length > 2 && Math.hypot(e.x - nb.x, e.y - nb.y) < 1.2) pts.splice(end, 1);
         }
         changed++; fixed++;
       }

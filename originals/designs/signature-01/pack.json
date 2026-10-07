@@ -4,9 +4,9 @@
       130,
       200
     ],
-    "objects": 646,
-    "stitches": 20095,
-    "minutes": 55.4,
+    "objects": 1026,
+    "stitches": 33242,
+    "minutes": 88.9,
     "colors": 6,
     "gateFailed": []
   },
@@ -15,10 +15,10 @@
       250,
       60
     ],
-    "objects": 311,
-    "stitches": 9877,
-    "minutes": 24.9,
-    "colors": 5,
+    "objects": 482,
+    "stitches": 15548,
+    "minutes": 43.5,
+    "colors": 6,
     "gateFailed": []
   }
 }

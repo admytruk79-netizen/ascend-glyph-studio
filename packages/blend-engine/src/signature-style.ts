@@ -14,12 +14,44 @@
  * medallions in its bays, chevrons below). All pieces are stitchable fills, satins and runs.
  */
 import { Kit, type Pt } from "./folk-rich.ts";
+import { densify } from "./densify.ts";
+import { pointInPolygon, pointSegDist } from "../../stitch-engine/src/index.ts";
 
 export type SignaturePalette = { ground: string; blue: string; teal: string; red: string; gold: string; green: string; olive: string };
 export const SIGNATURE: SignaturePalette = { ground: "#f3ecdc", blue: "#2f4f9e", teal: "#3f8f9a", red: "#c23b2e", gold: "#d9a43a", green: "#5b7f3a", olive: "#8a9a3e" };
 
 const P = (x: number, y: number): Pt => ({ x, y });
 const up = -Math.PI / 2;
+
+/** Points along a closed outline at least `gap` mm apart (so a run over it never makes tiny stitches). */
+function spaced(pts: Pt[], gap = 1.5): Pt[] {
+  const out: Pt[] = [pts[0]!];
+  for (const q of pts.slice(1)) if (Math.hypot(q.x - out[out.length - 1]!.x, q.y - out[out.length - 1]!.y) >= gap) out.push(q);
+  // close the loop without a tiny last stitch: drop the last point if it sits too near the start
+  if (out.length > 2 && Math.hypot(out[out.length - 1]!.x - pts[0]!.x, out[out.length - 1]!.y - pts[0]!.y) < gap) out.pop();
+  out.push(pts[0]!);
+  return out;
+}
+
+/** Clearance from a point to the ink already in `k` (the last `recent` objects), in mm. */
+function clearance(k: Kit, p: Pt, recent = 60): number {
+  let best = Infinity;
+  for (const o of k.objs.slice(-recent)) {
+    if (o.kind === "fill") {
+      if (pointInPolygon(p, o.polygon)) return 0;
+      for (let i = 0; i < o.polygon.length; i++) best = Math.min(best, pointSegDist(p, o.polygon[i]!, o.polygon[(i + 1) % o.polygon.length]!));
+    } else { const half = o.kind === "satin" ? o.width / 2 : 0.3; for (let i = 1; i < o.path.length; i++) best = Math.min(best, pointSegDist(p, o.path[i - 1]!, o.path[i]!) - half); }
+  }
+  return best;
+}
+
+/** A layered leaf or petal: fill, an outline in a contrasting colour, and a midrib, as the board draws them. */
+export function richLeaf(k: Kit, fill: string, edge: string, vein: string, base: Pt, a: number, len: number, half: number, bend = 0, kind = "leaf") {
+  k.leaf(fill, base, a, len, half, bend, 0.42, kind);
+  const leaf = k.objs[k.objs.length - 1]!;
+  if (len >= 7 && leaf.kind === "fill") k.run(`${kind}-edge`, edge, spaced(leaf.polygon));
+  if (len >= 5) k.run(`${kind}-rib`, vein, [P(base.x + Math.cos(a) * len * 0.22, base.y + Math.sin(a) * len * 0.22), P(base.x + Math.cos(a + bend * 0.15) * len * 0.72, base.y + Math.sin(a + bend * 0.15) * len * 0.72)]);
+}
 
 /** Concave diamond outline: points at top/bottom (±h) and sides (±w), sides bowed inward by `bow`. */
 function concaveDiamond(cx: number, cy: number, w: number, h: number, bow = 0.22, n = Math.max(3, Math.min(10, Math.floor(Math.hypot(w, h) / 1.5)))): Pt[] {
@@ -69,7 +101,7 @@ export function medallion(k: Kit, cx: number, cy: number, size: number, c: Signa
 }
 
 export function starLily(k: Kit, cx: number, cy: number, size: number, c: SignaturePalette = SIGNATURE) {
-  for (let i = 0; i < 3; i++) { const a = up + (i - 1) * 1.05; k.leaf(c.green, P(cx, cy), a, size * 0.5, size * 0.13, 0, 0.5, "lily-out"); }
+  for (let i = 0; i < 3; i++) { const a = up + (i - 1) * 1.05; richLeaf(k, c.green, c.blue, c.olive, P(cx, cy), a, size * 0.5, size * 0.13, 0, "lily-out"); }
   for (let i = 0; i < 2; i++) { const a = up + (i ? 0.52 : -0.52); k.leaf(i ? c.red : c.gold, P(cx, cy), a, size * 0.36, size * 0.08, 0, 0.5, "lily-in"); }
   k.leaf(c.red, P(cx, cy), up, size * 0.42, size * 0.09, 0, 0.5, "lily-in");
   k.leaf(c.olive, P(cx, cy), Math.PI / 2, size * 0.28, size * 0.1, 0, 0.5, "lily-base");
@@ -98,29 +130,38 @@ export function star5(k: Kit, cx: number, cy: number, size: number, c: Signature
 }
 
 export function fan(k: Kit, cx: number, cy: number, size: number, c: SignaturePalette = SIGNATURE, a = up) {
-  k.leaf(c.blue, P(cx, cy), a, size, size * 0.2, 0, 0.5, "fan");
+  richLeaf(k, c.blue, c.teal, c.teal, P(cx, cy), a, size, size * 0.2, 0, "fan");
   for (const s of [-1, 1]) k.leaf(c.red, P(cx, cy), a + s * 0.6, size * 0.8, size * 0.15, -s * 0.2, 0.5, "fan");
 }
 
 /** A rising vine from (x, yBase), `height` tall in a column `width` wide: gently S-curved stem, alternate leaves
  *  and berry sprigs sized to the column, a star-lily on top. */
-export function vine(k: Kit, x: number, yBase: number, height: number, width: number, c: SignaturePalette = SIGNATURE, phase = 0) {
-  const A = width * 0.1, top = height - width * 0.55, X = (t: number) => x + A * Math.sin(1.6 * Math.PI * t + phase);
+export function vine(k: Kit, x: number, yBase: number, height: number, width: number, c: SignaturePalette = SIGNATURE, phase = 0, flip: 1 | -1 = 1) {
+  const A = width * 0.1, top = height - width * 0.55, X = (t: number) => x + flip * A * Math.sin(1.6 * Math.PI * t + phase);
   const sw = Math.max(1.2, width * 0.06);
   k.satin("stem", c.green, Array.from({ length: 41 }, (_, i) => P(X(i / 40), yBase - (i / 40) * top)), sw);
   // the board's stems are two-coloured: a red line runs along the green
-  k.run("stem-line", c.red, Array.from({ length: 41 }, (_, i) => P(X(i / 40) + sw / 2 + 0.15, yBase - (i / 40) * top * 0.97)));
+  k.run("stem-line", c.red, Array.from({ length: 41 }, (_, i) => P(X(i / 40) + flip * (sw / 2 + 0.15), yBase - (i / 40) * top * 0.97)));
   const step = width * 0.42, n = Math.floor((top - width * 0.3) / step), len = width * 0.42, half = Math.max(1.1, width * 0.075);
   for (let i = 0; i < n; i++) {
-    const t = (width * 0.25 + i * step) / top, side = i % 2 ? 1 : -1, y = yBase - t * top, px = X(t);
+    const t = (width * 0.25 + i * step) / top, side = (i % 2 ? 1 : -1) * flip, y = yBase - t * top, px = X(t);
     const la = up + side * 0.85;
-    k.leaf(i % 3 === 2 ? c.olive : c.green, P(px, y), la, len, half, -side * 0.3, 0.42, "vine-leaf");
-    // vein: a run along the leaf, stitched over its fill
-    k.run("vein", i % 3 === 2 ? c.green : c.olive, [P(px + Math.cos(la) * len * 0.3, y + Math.sin(la) * len * 0.3), P(px + Math.cos(la - side * 0.06) * len * 0.7, y + Math.sin(la - side * 0.06) * len * 0.7)]);
+    // leaves crossing the red stem line get no outline (they would run alongside it, too close to stitch)
+    if (side === flip) k.leaf(i % 3 === 2 ? c.olive : c.green, P(px, y), la, len, half, -side * 0.3, 0.42, "vine-leaf");
+    else richLeaf(k, i % 3 === 2 ? c.olive : c.green, i % 2 ? c.blue : c.red, i % 3 === 2 ? c.green : c.olive, P(px, y), la, len, half, -side * 0.3, "vine-leaf");
+    if (i % 3 === 0 && width >= 14) {
+      // a curling tendril on the other side, with a small leaf: the vine grows into the space around it
+      const ox = px - side * width * 0.08, oy = y - width * 0.12, pts: Pt[] = [];
+      for (let q = 0; q <= 60; q++) { const u = q / 60, th = (side < 0 ? 0 : Math.PI) + -side * u * 1.7 * Math.PI, r = width * 0.16 * (1 - 0.6 * u); pts.push(P(ox - side * width * 0.18 + Math.cos(th) * r * -1 * -1, oy + Math.sin(th) * r)); }
+      const sp: Pt[] = [pts[0]!]; for (const q of pts) if (Math.hypot(q.x - sp[sp.length - 1]!.x, q.y - sp[sp.length - 1]!.y) >= 1.5) sp.push(q);
+      // only where it keeps clear of the leaves around it (its first point touches the stem)
+      if (sp.length >= 3 && sp.slice(1).every((q) => clearance(k, q) >= 1.15)) k.run("tendril", c.green, sp);
+    }
     if (i % 3 === 1) {
       // berry sprig opposite the leaf
       const sx = px - side * width * 0.3, sy = y - width * 0.18;
-      k.run("sprig", c.red, [P(px, y - 0.6), P(sx, sy)]);
+      // the stalk comes up into the cluster from below, clear of the two side berries
+      k.run("sprig", c.red, [P(px, y - 0.6), P(sx, sy + Math.max(1, width * 0.045) * 2.4), P(sx, sy)]);
       // a cluster of three berries, touching, at the sprig's end
       const br = Math.max(1, width * 0.045);
       for (const [dx, dy] of [[0, 0], [-1.6, -1.05], [1.6, -1.05]]) k.disc(c.red, sx + dx * br, sy + dy * br, br, "berry");
@@ -130,7 +171,8 @@ export function vine(k: Kit, x: number, yBase: number, height: number, width: nu
 }
 
 /** Panel (yoke, placket, diary cover, boot shaft): vine columns with medallion columns between, star borders left and right. */
-export function signaturePanel(width: number, height: number, c: SignaturePalette = SIGNATURE, columns = 2): Kit {
+/** `dense`: true fills every clearing; a number caps the fill motifs (used to fit a corpus complexity profile). */
+export function signaturePanel(width: number, height: number, c: SignaturePalette = SIGNATURE, columns = 2, dense: boolean | number = true): Kit {
   const k = new Kit("sig-");
   const border = 8, inner = width - 2 * border;
   for (const bx of [border / 2, width - border / 2]) {
@@ -142,7 +184,8 @@ export function signaturePanel(width: number, height: number, c: SignaturePalett
   const colX = (i: number) => border + Math.floor((i + 1) / 2) * vw + Math.floor(i / 2) * mwid + (i % 2 ? mwid : vw) / 2;
   for (let i = 0; i < cols; i++) {
     const x = colX(i), cw = i % 2 ? mwid : vw;
-    if (i % 2 === 0) vine(k, x, height - 4, height - 8, cw, c, i * 1.3);
+    // columns mirror about the centre: the right vine is the left one turned over
+    if (i % 2 === 0) { const m = cols - 1 - i; vine(k, x, height - 4, height - 8, cw, c, Math.min(i, m) * 1.3, i > m ? -1 : 1); }
     else {
       const step = Math.min(cw * 1.5, 46), n = Math.max(1, Math.floor((height - 10) / step));
       for (let j = 0; j < n; j++) {
@@ -153,12 +196,14 @@ export function signaturePanel(width: number, height: number, c: SignaturePalett
     }
   }
   k.resolveGaps();
+  if (dense) densify(k, { width, height, colors: { main: c.red, dark: c.blue, leaf: c.green, light: c.gold, accent: c.teal }, mirrorX: width / 2, ...(typeof dense === "number" ? { maxMotifs: dense } : {}) });
+  k.resolveGaps();
   return k;
 }
 
 /** Band (cuff, hem, collar): a star row above, chevrons below, and between them medallions threaded on a vine, each
  *  pair joined by an S-scroll of stem with leaves and a berry, as along the foot of the pattern board. */
-export function signatureBand(length: number, height: number, c: SignaturePalette = SIGNATURE): Kit {
+export function signatureBand(length: number, height: number, c: SignaturePalette = SIGNATURE, dense: boolean | number = true): Kit {
   const k = new Kit("sigb-");
   const top = 7, bottom = height - 6, mid = (top + bottom) / 2, inner = bottom - top;
   for (let x = 4, i = 0; x < length; x += 8, i++) (i % 2 ? snowflake : star5)(k, x, 3.4, 5, c);
@@ -183,5 +228,6 @@ export function signatureBand(length: number, height: number, c: SignaturePalett
     for (const t of [0.25, 0.75]) k.disc(c.red, wrap(x0 + (x1 - x0) * t), Y(t) + (t < 0.5 ? 1 : -1) * inner * 0.32, Math.max(1, inner * 0.04), "berry");
   }
   k.resolveGaps();
+  if (dense) densify(k, { width: length, height, colors: { main: c.red, dark: c.blue, leaf: c.green, light: c.gold, accent: c.teal }, margin: 6.5, ...(typeof dense === "number" ? { maxMotifs: dense } : {}) });
   return k;
 }
