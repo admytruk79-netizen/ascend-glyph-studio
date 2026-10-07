@@ -17,7 +17,7 @@ async function claim(){
   await c.query("begin");
   const q=await c.query(`select r.*,e.batch_size,e.population,e.generations
    from synthesis_run r cross join engine_runtime e
-   where r.status in ('queued','created') and e.id='tesseract-v2' and e.enabled=true
+   where (r.status in ('queued','created') or (r.status='running' and not exists (select 1 from synthesis_candidate sc where sc.run_id=r.id))) and e.id='tesseract-v2' and e.enabled=true
    order by r.created_at for update of r skip locked limit 1`);
   const run=q.rows[0]; if(!run){await c.query("rollback");return null}
   await c.query("update synthesis_run set status='running' where id=$1",[run.id]);
