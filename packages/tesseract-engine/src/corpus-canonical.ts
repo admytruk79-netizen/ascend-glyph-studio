@@ -40,7 +40,7 @@ function cluster(vs:VisualFeatureVector[],k:number,iters=10){
  return {centers,assign};
 }
 function srcOf(o:ImageObservation){return o.sourceRef||o.provenance||o.id}
-function traditionOf(o:ImageObservation){return String(o.notes?.[1]??"unknown")}
+function traditionOf(o:ImageObservation){return String(o.tradition??o.notes?.[1]??"unknown")}
 function p(n:number){return Number(n.toFixed(2))}
 function geometryFrom(v:VisualFeatureVector,seed:number):string[]{
  const paths:string[]=[];
