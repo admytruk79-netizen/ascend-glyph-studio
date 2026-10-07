@@ -81,7 +81,7 @@ function geometryFrom(v:VisualFeatureVector,seed:number):string[]{
  return paths.length?paths:[`M18 52 C34 24 67 22 84 48 C70 76 38 82 18 52`];
 }
 export function deriveCorpusCanon(observations:ImageObservation[],options:{count?:number;minTraditions?:number;minSources?:number;minSupport?:number;minReferenceDistance?:number}={}):CorpusCanonicalGeometry[]{
- const eligible=observations.filter(o=>o.verifiedReal&&o.trainingUse!=="exclude");
+ const eligible=observations.filter(o=>o.verifiedReal&&o.trainingUse!=="negative-example");
  const vectors=eligible.map(observationVector),count=Math.max(4,Math.min(options.count??16,32));
  const {centers,assign}=cluster(vectors,count);
  const out:CorpusCanonicalGeometry[]=[];
