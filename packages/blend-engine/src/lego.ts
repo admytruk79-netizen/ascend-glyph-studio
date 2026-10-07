@@ -7,16 +7,20 @@
  * Pieces learned from the corpus that match no brick are drawn from their averaged outline (`outlineBrick`).
  */
 import { Kit, MOTIF_IDS, type Pt } from "./folk-rich.ts";
+import { fan, medallion, snowflake, star5, starLily, type SignaturePalette } from "./signature-style.ts";
 
 /** Colour roles: main (red), dark (navy/black), leaf (green), light (ochre/gold), accent (teal/blue). */
 export type Roles = { main: string; dark: string; leaf: string; light: string; accent: string };
 export type BrickId =
   | "leaf" | "bud" | "rose" | "star8" | "star4" | "rhomb" | "rhomb-frame" | "cross" | "dot" | "kalyna" | "grapes"
-  | "horns" | "bird" | "tree" | "lily" | "ascend-star" | "constellation";
+  | "horns" | "bird" | "tree" | "lily" | "ascend-star" | "constellation"
+  // Oleksandr's signature pieces (signature-style.ts)
+  | "medallion" | "star-lily" | "snowflake" | "star5" | "fan";
 
 export type Brick = { id: BrickId; motif?: string; scale: "hero" | "companion" | "filler"; aspect?: number; draw: (k: Kit, x: number, y: number, size: number, c: Roles, angle?: number, flip?: 1 | -1) => void };
 
 const P = (x: number, y: number): Pt => ({ x, y });
+const sig = (c: Roles): SignaturePalette => ({ ground: "#efe6d2", blue: c.dark, teal: c.accent, red: c.main, gold: c.light, green: c.leaf, olive: c.leaf });
 const up = -Math.PI / 2;
 
 export const BRICKS: Record<BrickId, Brick> = {
@@ -36,6 +40,11 @@ export const BRICKS: Record<BrickId, Brick> = {
   tree: { id: "tree", aspect: 0.85, motif: MOTIF_IDS.tree, scale: "hero", draw: (k, x, y, s, c) => k.tree(x, y + s / 2, s, { trunk: c.leaf, leaf: c.leaf, bud: c.main, sepal: c.accent, rose: { petal: c.main, inner: c.light, centre: c.dark, seed: c.light }, berry: c.main, mound: c.accent, seed: c.light }) },
   lily: { id: "lily", aspect: 0.75, motif: MOTIF_IDS.lily, scale: "hero", draw: (k, x, y, s, c) => k.lily(x, y + s / 2, s, { stalk: c.dark, petal: c.main, side: c.light, cup: c.dark, leaf: c.leaf, bud: c.main, sepal: c.light }) },
   "ascend-star": { id: "ascend-star", scale: "companion", draw: (k, x, y, s, c, a = Math.PI / 4) => k.ascendStar(x, y, s * 0.32, c.dark, c.light, a) },
+  medallion: { id: "medallion", aspect: 0.75, scale: "hero", draw: (k, x, y, s, c) => medallion(k, x, y, s, sig(c)) },
+  "star-lily": { id: "star-lily", scale: "companion", draw: (k, x, y, s, c) => starLily(k, x, y + s * 0.15, s, sig(c)) },
+  snowflake: { id: "snowflake", scale: "filler", draw: (k, x, y, s, c) => snowflake(k, x, y, s, sig(c)) },
+  star5: { id: "star5", scale: "filler", draw: (k, x, y, s, c) => star5(k, x, y, s, sig(c)) },
+  fan: { id: "fan", aspect: 0.7, scale: "filler", draw: (k, x, y, s, c, a) => fan(k, x, y + s / 2, s, sig(c), a ?? -Math.PI / 2) },
   constellation: { id: "constellation", aspect: 1.1, motif: MOTIF_IDS.constellation, scale: "hero", draw: (k, x, y, s, c, _a, f = 1) => k.constellation(x, y, s / 2, { a: c.accent, b: c.light, seed: c.main, small: c.dark }, f > 0 ? 1 : 2) },
 };
 export const BRICK_IDS = Object.keys(BRICKS) as BrickId[];
