@@ -7,6 +7,7 @@ export type PatternPieceKind="front-left"|"front-right"|"back"|"yoke"|"sleeve-le
 export type SeamRef={
  id:string;kind:SeamKind;edge:string;joins?:{pieceId:string;seamId:string};
  allowanceMm:number;crossDesignAllowed:boolean;registrationToleranceMm?:number;
+ edgePath?:Point[];registrationAnchors?:Point[];
 };
 
 export type NoGoZone={id:string;reason:string;polygon:Point[];clearanceMm:number};

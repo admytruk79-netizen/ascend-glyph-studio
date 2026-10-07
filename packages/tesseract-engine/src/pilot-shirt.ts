@@ -36,11 +36,11 @@ function sourcedPattern(size:SizeProfile,block:PilotBlockSpec):ShirtPattern{
   for(const seam of supplied.seams){
    const target=seam.joins?byKind.get(seam.joins.pieceKind):undefined;
    p.seams.push({id:seam.id,kind:seam.kind,edge:seam.edge,joins:seam.joins&&target?{pieceId:target.id,seamId:seam.joins.seamId}:undefined,
-    allowanceMm:seam.allowanceMm,crossDesignAllowed:seam.crossDesignAllowed,registrationToleranceMm:seam.registrationToleranceMm});
+    allowanceMm:seam.allowanceMm,crossDesignAllowed:seam.crossDesignAllowed,registrationToleranceMm:seam.registrationToleranceMm,edgePath:seam.edgePath.map(q=>({...q})),registrationAnchors:seam.registrationAnchors?.map(q=>({...q}))});
    if(seam.joins&&target&&p.id<target.id)seamGraph.push({fromPiece:p.id,fromSeam:seam.id,toPiece:target.id,toSeam:seam.joins.seamId});
   }
  }
- return {id:`pilot-shirt:${size.id}:${block.id}`,size,pieces:[...byKind.values()].map(addConstructionNoGoZones),seamGraph};
+ return {id:`pilot-shirt:${size.id}:${block.id}`,size,pieces:[...byKind.values()],seamGraph};
 }
 
 export function buildPilotShirtPattern(size:SizeProfile,block?:PilotBlockSpec):ShirtPattern{

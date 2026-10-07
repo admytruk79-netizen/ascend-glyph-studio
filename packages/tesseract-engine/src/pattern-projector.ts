@@ -7,6 +7,7 @@ export type PieceProjectionPlan={
 };
 export type SeamTransfer={
  fromPiece:string;toPiece:string;fromPoint:Point;toPoint:Point;
+ fromEdgePath?:Point[];toEdgePath?:Point[];fromRegistrationAnchors?:Point[];toRegistrationAnchors?:Point[];
  registrationToleranceMm:number;allowed:boolean;
 };
 
@@ -37,9 +38,13 @@ export function seamTransfers(pattern:ShirtPattern,defaultToleranceMm=2):SeamTra
   const a=pieces.get(e.fromPiece),b=pieces.get(e.toPiece);
   const sa=a?.seams.find(s=>s.id===e.fromSeam),sb=b?.seams.find(s=>s.id===e.toSeam);
   const ba=a?bounds(a.outline):undefined,bb=b?bounds(b.outline):undefined;
-  return {fromPiece:e.fromPiece,toPiece:e.toPiece,
-   fromPoint:{x:ba?(ba.minX+ba.maxX)/2:0,y:ba?.maxY??0},
-   toPoint:{x:bb?(bb.minX+bb.maxX)/2:0,y:bb?.minY??0},
+  const midpoint=(path:Point[]|undefined,fallback:Point)=>path?.length?{x:(path[0]!.x+path[path.length-1]!.x)/2,y:(path[0]!.y+path[path.length-1]!.y)/2}:fallback;
+  const fromFallback={x:ba?(ba.minX+ba.maxX)/2:0,y:ba?.maxY??0},toFallback={x:bb?(bb.minX+bb.maxX)/2:0,y:bb?.minY??0};
+  const fromPoint=sa?.registrationAnchors?.[0]??midpoint(sa?.edgePath,fromFallback);
+  const toPoint=sb?.registrationAnchors?.[0]??midpoint(sb?.edgePath,toFallback);
+  return {fromPiece:e.fromPiece,toPiece:e.toPiece,fromPoint,toPoint,
+   fromEdgePath:sa?.edgePath?.map(p=>({...p})),toEdgePath:sb?.edgePath?.map(p=>({...p})),
+   fromRegistrationAnchors:sa?.registrationAnchors?.map(p=>({...p})),toRegistrationAnchors:sb?.registrationAnchors?.map(p=>({...p})),
    registrationToleranceMm:sa?.registrationToleranceMm??sb?.registrationToleranceMm??defaultToleranceMm,
    allowed:(sa?.crossDesignAllowed??true)&&(sb?.crossDesignAllowed??true)};
  });
