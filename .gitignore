@@ -3,4 +3,4 @@ dist/
 *.tsbuildinfo
 
 # order production folders hold customer details: never commit
-orders/
+/orders/
