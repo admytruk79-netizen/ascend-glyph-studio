@@ -41,7 +41,7 @@ export interface ProductionGlyphObject{
  form:string;
  geometryRef:string;
  physical:{widthMm:number;heightMm:number;minScale:number;maxScale:number;clearanceMm:number;rotationDeg:number};
- placement:{zoneId?:string;seamPolicy:"avoid"|"continuous"|"resolve";canRotate:boolean;wrapAllowed:boolean};
+ placement:{zoneId?:string;seamPolicy:"avoid"|"continuous"|"resolve";canRotate:boolean;wrapAllowed:boolean;xMm?:number;yMm?:number;rotationDeg?:number};
  relations:{ports:readonly ("north"|"south"|"east"|"west"|"diag-ne"|"diag-nw"|"diag-se"|"diag-sw")[];allowed:readonly ProductionRelation[]};
  embroidery:EmbroideryProductionProperties;
  sourceBasis:readonly ProductionReferenceId[];
@@ -104,4 +104,15 @@ export function assertProductionRelations(topology:Topology,objects:ProductionGl
   if(!a.relations.allowed.includes(e.relation as ProductionRelation)||!b.relations.allowed.includes(e.relation as ProductionRelation))
    throw new Error(`production relation not allowed: ${e.relation}`);
  }
+}
+
+
+export function placeProductionObjects(
+ objects:ProductionGlyphObject[],
+ points:Record<string,{x:number;y:number;angleDeg:number}>
+):ProductionGlyphObject[]{
+ return objects.map(o=>{
+  const p=points[o.id];
+  return p?{...o,physical:{...o.physical,rotationDeg:p.angleDeg},placement:{...o.placement,xMm:p.x,yMm:p.y,rotationDeg:p.angleDeg}}:o;
+ });
 }
