@@ -145,7 +145,8 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  const rendered=candidates.map((candidate,i)=>{
   const adapted=adaptForProduction(candidate.topology,medium,niche);
   const g=genomeFromTopology(`pattern:${input.seed}:${i}`,adapted.topology);
-  const projected=projectSemanticGeometry(g,width,height,zone);
+  const relationStride=medium==="embroidery"?(input.structuralFeedback?.crossingReduction??0)>.5?3:2:1;
+  const projected=projectSemanticGeometry(g,width,height,zone,{relationStride});
   const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`,sashGrammar,structuralFeedback:input.structuralFeedback});
   const svg=colorize(master,input.paletteId??"underdog-heritage");
   const finalCritique=critiqueFinalSvg(svg,medium,input.visualCorpus??[]);
