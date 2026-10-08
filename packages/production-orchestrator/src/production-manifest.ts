@@ -1,5 +1,19 @@
 export type ProductionGate="design-locked"|"production-validated"|"manufacturer-eligible"|"payment-captured"|"package-generated"|"manufacturer-accepted"|"in-production"|"qc-passed"|"shipped"|"delivered";
 
+export interface EncodedApparelLayerManifest {
+ id:string;
+ zoneId:string;
+ mode:"plain-text"|"secure-band";
+ codecVersion:string;
+ payloadHash:string;
+ widthMm:number;
+ heightMm:number;
+ repeats:number;
+ verified:boolean;
+ registryRef?:string;
+ keyId?:number;
+}
+
 export interface ProductionDesignManifest {
  schemaVersion:"1";
  designId:string;
@@ -10,6 +24,7 @@ export interface ProductionDesignManifest {
  garment:{styleId:string;revision:string;size:string;zoneIds:readonly string[]};
  material:{materialId:string;revision:string;colorId:string};
  manufacturing:{recipeIds:readonly string[];capabilityProfileVersion:string};
+ encodedLayers?:ReadonlyArray<EncodedApparelLayerManifest>;
  pricing:{currency:string;customerTotalMinor:number};
 }
 
@@ -20,5 +35,13 @@ export function assertLockedManifest(m:ProductionDesignManifest):void{
  if(!m.garment.styleId||!m.garment.revision||!m.garment.size)throw new Error("garment revision and size required");
  if(!m.material.materialId||!m.material.revision||!m.material.colorId)throw new Error("material revision and color required");
  if(m.manufacturing.recipeIds.length===0||!m.manufacturing.capabilityProfileVersion)throw new Error("approved manufacturing recipe/capability required");
+ const zones=new Set(m.garment.zoneIds);
+ for(const layer of m.encodedLayers??[]){
+  if(!layer.id||!layer.zoneId||!zones.has(layer.zoneId))throw new Error("encoded layer must target a locked garment zone");
+  if(!/^[a-f0-9]{64}$/i.test(layer.payloadHash))throw new Error("encoded layer requires sha256 payload hash");
+  if(!(layer.widthMm>0&&layer.heightMm>0&&layer.repeats>0))throw new Error("encoded layer geometry must be positive");
+  if(!layer.verified)throw new Error("encoded layer must be verified before production lock");
+  if(layer.mode==="secure-band"&&layer.keyId===undefined)throw new Error("secure encoded layer requires key id");
+ }
  if(!Number.isInteger(m.pricing.customerTotalMinor)||m.pricing.customerTotalMinor<0)throw new Error("valid integer minor-unit total required");
 }
