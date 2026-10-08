@@ -25,9 +25,11 @@ import type {PhysicalValidation} from "./physical-feedback";
 import {nichesForGarment} from "./niche-context";
 import type {ObjectiveVector} from "./pareto";
 import {renderLineageSpecimenSheet,type SpecimenSheet} from "./specimen-sheet";
+import {solveRelationalLayout} from "./relational-layout";
+import {evaluateSurfaceLayout,type SurfaceFootprint} from "./garment-surface-math";
 
 export type BatchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];antiStyle?:WeightedRef[];garment?:GarmentConfiguration;compatibilityRules?:CompatibilityRule[];visualCorpus?:ImageObservation[];medium?:MediumId;learnedConstraints?:LearnedConstraintSnapshot;physicalHistory?:PhysicalValidation[];machineProfileId?:string;population?:number;generations?:number;keep?:number};
-export type ZoneProjection={zoneId:string;kind:GarmentZone["kind"];surface:GarmentZone["surface"];wrap:boolean;behavior:ZoneBehavior;svg:SvgProjection};
+export type ZoneProjection={zoneId:string;kind:GarmentZone["kind"];surface:GarmentZone["surface"];wrap:boolean;behavior:ZoneBehavior;svg:SvgProjection;surfaceMath?:ReturnType<typeof evaluateSurfaceLayout>};
 export type BatchCandidate={rank:number;score:number;novelty:number;lineageId:string;objectives:ObjectiveVector;trace:string[];genomeId:string;projection:SvgProjection;zones:ZoneProjection[];continuity:ContinuityEvent[];registration:ContinuitySegment[];trajectories:GarmentTrajectory[];garmentProjection?:GarmentSvg;evolution:EvolutionPlan;visualAssessment?:VisualAssessment;productionAdaptation?:ProductionAdaptation;manufacturability?:ManufacturabilityReport};
 export type BatchResult={seed:string;candidateCount:number;garmentId?:string;configurationIssues:ConfigurationIssue[];candidates:BatchCandidate[];specimenSheet?:SpecimenSheet};
 
@@ -50,13 +52,26 @@ export function runTesseractBatch(input:BatchInput):BatchResult{
   const visualAssessment=input.visualCorpus?.length?assessVisual(topologyVisualVector(effectiveTopology),input.visualCorpus):undefined;
   const genome=genomeFromTopology(`${input.seed}:${i}`,effectiveTopology),projection=projectSemanticGeometry(genome);
   const zoneTopologies=Object.fromEntries(zones.map(z=>[z.id,composeTopologyForZone(effectiveTopology,z,`${input.seed}:${i}`)]));
-  let zoneProjections=zones.map(z=>{const canvas=zoneCanvas(z),zoneTopology=zoneTopologies[z.id]!,zoneGenome=genomeFromTopology(`${input.seed}:${i}:${z.id}`,zoneTopology);return {zoneId:z.id,kind:z.kind,surface:z.surface,wrap:z.wrapAllowed,behavior:behaviorForZone(z.kind),svg:projectSemanticGeometry(zoneGenome,canvas.width,canvas.height,z)};});
+  let zoneProjections=zones.map(z=>{
+   const canvas=zoneCanvas(z),zoneTopology=zoneTopologies[z.id]!,zoneGenome=genomeFromTopology(`${input.seed}:${i}:${z.id}`,zoneTopology);
+   const svg=projectSemanticGeometry(zoneGenome,canvas.width,canvas.height,z);
+   let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
+   if(z.wrapAllowed&&(z.surface==="cylinder"||z.surface==="tapered-cylinder")){
+    const layout=solveRelationalLayout(zoneTopology,canvas.width,canvas.height,zoneGenome.seed,z);
+    const items:SurfaceFootprint[]=zoneTopology.nodes.map(n=>{
+      const p=layout.points[n.id]!,r=Math.min(24,canvas.height*.105)*p.scale;
+      return {id:n.id,u:p.x,v:p.y,widthMm:r*2,heightMm:r*2,rotationDeg:p.angleDeg,clearanceMm:Math.max(1.5,r*.08)};
+    });
+    surfaceMath=evaluateSurfaceLayout(z,items);
+   }
+   return {zoneId:z.id,kind:z.kind,surface:z.surface,wrap:z.wrapAllowed,behavior:behaviorForZone(z.kind),svg,surfaceMath};
+  });
   const continuity=input.garment?connectGarmentZones(input.garment,zoneTopologies):[];
   const registration=input.garment?planContinuityRegistration(input.garment,continuity):[];
   const trajectories=input.garment?buildGarmentTrajectories(input.garment,registration):[];
   zoneProjections=injectTrajectoryMetadata(zoneProjections,trajectories).map(z=>({...z,svg:renderZoneTrajectories(z.svg,z.zoneId,trajectories)}));
   const garmentProjection=input.garment?renderGarmentAtlasSvg(buildGarmentAtlas(input.garment),trajectories):undefined;
-  return {rank:i+1,score:c.score,novelty:c.novelty,lineageId:c.lineageId,objectives:c.objectives,trace:[...c.trace,`garment:${input.garment?.id??"none"}`,`zones:${zoneProjections.length}`,`continuity:${continuity.length}`,`registration:${registration.filter(x=>x.manufacturable).length}/${registration.length}`,`trajectories:${trajectories.length}`,`grammar:${complexity.score.toFixed(2)}`,`recursive:${complexity.recursive}`],genomeId:genome.id,projection,zones:zoneProjections,continuity,registration,trajectories,garmentProjection,evolution,visualAssessment,productionAdaptation,manufacturability};
+  return {rank:i+1,score:c.score,novelty:c.novelty,lineageId:c.lineageId,objectives:c.objectives,trace:[...c.trace,`garment:${input.garment?.id??"none"}`,`zones:${zoneProjections.length}`,`continuity:${continuity.length}`,`registration:${registration.filter(x=>x.manufacturable).length}/${registration.length}`,`trajectories:${trajectories.length}`,`grammar:${complexity.score.toFixed(2)}`,`recursive:${complexity.recursive}`,...zoneProjections.filter(z=>z.surfaceMath).map(z=>`surface:${z.zoneId}:occupancy=${z.surfaceMath!.nominalOccupancy.toFixed(3)}:collisions=${z.surfaceMath!.invalidPairs.length}:seams=${z.surfaceMath!.seamCrossings.length}`)],genomeId:genome.id,projection,zones:zoneProjections,continuity,registration,trajectories,garmentProjection,evolution,visualAssessment,productionAdaptation,manufacturability};
  });
  const specimenSheet=renderLineageSpecimenSheet(found.map(c=>({lineageId:c.lineageId,topology:c.topology,objectives:c.objectives,score:c.score})));
  return {seed:input.seed,candidateCount:candidates.length,garmentId:input.garment?.id,configurationIssues:issues,candidates,specimenSheet};
