@@ -15,6 +15,7 @@
  */
 import { Kit, type Pt } from "./folk-rich.ts";
 import { densify } from "./densify.ts";
+import { stitchSafe } from "./stitch-safe.ts";
 import { pointInPolygon, pointSegDist } from "../../stitch-engine/src/index.ts";
 
 export type SignaturePalette = { ground: string; blue: string; teal: string; red: string; gold: string; green: string; olive: string };
@@ -164,7 +165,7 @@ export function vine(k: Kit, x: number, yBase: number, height: number, width: nu
       k.run("sprig", c.red, [P(px, y - 0.6), P(sx, sy + Math.max(1, width * 0.045) * 2.4), P(sx, sy)]);
       // a cluster of three berries, touching, at the sprig's end
       const br = Math.max(1, width * 0.045);
-      for (const [dx, dy] of [[0, 0], [-1.6, -1.05], [1.6, -1.05]]) k.disc(c.red, sx + dx * br, sy + dy * br, br, "berry");
+      for (const [dx, dy] of [[0, 0], [-1.6, -1.05], [1.6, -1.05]] as const) k.disc(c.red, sx + dx * br, sy + dy * br, br, "berry");
     }
   }
   starLily(k, X(1), yBase - top - width * 0.15, width * 0.9, c);
@@ -172,7 +173,7 @@ export function vine(k: Kit, x: number, yBase: number, height: number, width: nu
 
 /** Panel (yoke, placket, diary cover, boot shaft): vine columns with medallion columns between, star borders left and right. */
 /** `dense`: true fills every clearing; a number caps the fill motifs (used to fit a corpus complexity profile). */
-export function signaturePanel(width: number, height: number, c: SignaturePalette = SIGNATURE, columns = 2, dense: boolean | number = true): Kit {
+export function signaturePanel(width: number, height: number, c: SignaturePalette = SIGNATURE, columns = 2, dense: boolean | number = true): Kit | null {
   const k = new Kit("sig-");
   const border = 8, inner = width - 2 * border;
   for (const bx of [border / 2, width - border / 2]) {
@@ -198,12 +199,12 @@ export function signaturePanel(width: number, height: number, c: SignaturePalett
   k.resolveGaps();
   if (dense) densify(k, { width, height, colors: { main: c.red, dark: c.blue, leaf: c.green, light: c.gold, accent: c.teal }, mirrorX: width / 2, ...(typeof dense === "number" ? { maxMotifs: dense } : {}) });
   k.resolveGaps();
-  return k;
+  return stitchSafe(k);
 }
 
 /** Band (cuff, hem, collar): a star row above, chevrons below, and between them medallions threaded on a vine, each
  *  pair joined by an S-scroll of stem with leaves and a berry, as along the foot of the pattern board. */
-export function signatureBand(length: number, height: number, c: SignaturePalette = SIGNATURE, dense: boolean | number = true): Kit {
+export function signatureBand(length: number, height: number, c: SignaturePalette = SIGNATURE, dense: boolean | number = true): Kit | null {
   const k = new Kit("sigb-");
   const top = 7, bottom = height - 6, mid = (top + bottom) / 2, inner = bottom - top;
   for (let x = 4, i = 0; x < length; x += 8, i++) (i % 2 ? snowflake : star5)(k, x, 3.4, 5, c);
@@ -229,5 +230,5 @@ export function signatureBand(length: number, height: number, c: SignaturePalett
   }
   k.resolveGaps();
   if (dense) densify(k, { width: length, height, colors: { main: c.red, dark: c.blue, leaf: c.green, light: c.gold, accent: c.teal }, margin: 6.5, ...(typeof dense === "number" ? { maxMotifs: dense } : {}) });
-  return k;
+  return stitchSafe(k);
 }

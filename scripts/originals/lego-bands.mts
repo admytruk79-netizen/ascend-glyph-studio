@@ -5,6 +5,9 @@
  *   npx tsx scripts/originals/lego-bands.mts <out-dir> file:<grammar.json> [count] [seed]
  *
  * SIGNATURE=0.4 blends Oleksandr's signature pieces (medallion, star-lily, snowflake, fan) into the learned grammar.
+ * PRODUCT=shirt|towel|skirt fits every band to that product's complexity profile (learned_model 'complexity-profiles',
+ * or PROFILES=<file>): each band is built at several fill levels and the one closest to real pieces is kept; a band
+ * that passes no stitch gate, or sits further than MAX_SCORE (2.5) from the profile, is redrawn from a fresh seed.
  *
  * Reads learned_model 'tesseract-learned-latest' (body.lego) unless a grammar file is given. Writes per band an SVG,
  * a DST and its stitch preview, plus board.png and bands.json (pieces, novel pairings, stitches, gate).
@@ -12,6 +15,8 @@
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import sharp from "sharp";
 import { blendGrammars, composeBand, SIGNATURE_GRAMMAR, type LegoGrammar } from "../../packages/blend-engine/src/lego-compose.ts";
+import { fitToProfile } from "../study/fit.ts";
+import { CLOSEUP_WEIGHT, type Profile } from "../study/complexity.ts";
 import { estimateMinutes, plan, previewSvg, recipes, runGate, writeDst, type DesignObject } from "../../packages/stitch-engine/src/index.ts";
 
 const [out, scope = "all", countArg = "8", seed = "lego"] = process.argv.slice(2);
@@ -32,6 +37,21 @@ async function grammar(): Promise<LegoGrammar> {
   return g;
 }
 
+let closeup = false;
+async function profile(product: string): Promise<Profile> {
+  if (process.env.PROFILES) return JSON.parse(readFileSync(process.env.PROFILES, "utf8"))[product];
+  const { default: pg } = await import("pg");
+  const db = new pg.Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false }, max: 1 });
+  const body = (await db.query(`select body from learned_model where id = 'complexity-profiles'`)).rows[0]?.body;
+  await db.end();
+  // close-up profiles where there are enough close-ups, else the profile of all photos of that type
+  closeup = (body?.closeups?.[product]?.n ?? 0) >= 30;
+  const p = closeup ? body.closeups[product] : body?.types?.[product];
+  if (!p) throw new Error(`no complexity profile for ${product}`);
+  return p;
+}
+
+const product = process.env.PRODUCT, target = product ? await profile(product) : null;
 const learned = await grammar(), sigW = Number(process.env.SIGNATURE ?? 0);
 const g = sigW > 0 ? blendGrammars(learned, SIGNATURE_GRAMMAR, sigW) : learned;
 const roles = { main: "#b3332b", dark: "#1f2c4c", leaf: "#4f6b3a", light: "#d39b35", accent: "#2b8796" };
@@ -41,15 +61,34 @@ const svgOf = (objs: DesignObject[]) => objs.map((o) => o.kind === "fill" ? `<po
 const report: unknown[] = [], rows: string[] = [];
 for (let i = 0; i < Number(countArg); i++) {
   const id = `lego-${String(i + 1).padStart(2, "0")}`;
-  const { kit, plan: bandPlan } = composeBand(g, { seed: `${seed}-${i}`, roles, length: L, height: H });
+  const gateOf = (k: { objs: DesignObject[] }) => { const p = plan(k.objs, r); return runGate(k.objs, p.commands, r, { hoop: { name: "border frame 360x100", width: 360, height: 100 } }, estimateMinutes(p, r.speedSpm)).checks.filter((c) => !c.pass && c.id !== "recipe-validated"); };
+  // the closest fill level that also passes the stitch gate (falling back through the others by score); if none of
+  // them passes, the band is redrawn from a fresh seed (up to three times) rather than shipped failing
+  let build = (fill: number) => composeBand(g, { seed: `${seed}-${i}`, roles, length: L, height: H, fill });
+  let fit: Awaited<ReturnType<typeof fitToProfile>> | null = null, chosen = 0;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const s = attempt ? `${seed}-${i}-r${attempt}` : `${seed}-${i}`;
+    build = (fill: number) => composeBand(g, { seed: s, roles, length: L, height: H, fill });
+    fit = target ? await fitToProfile((f) => build(f)?.kit ?? null, L, H, "#efe6d2", target, undefined, closeup ? CLOSEUP_WEIGHT : undefined) : null;
+    if (target && !fit) continue; // every fill level rejected: redraw
+    const order = fit ? [...fit.tried].sort((a, b) => a.score - b.score).map((t) => t.fill) : [0];
+    // a level qualifies when it passes the stitch gate and sits near enough to real pieces (MAX_SCORE, default 2.5)
+    const maxScore = Number(process.env.MAX_SCORE ?? 2.5), scoreOf = (f: number) => fit?.tried.find((t) => t.fill === f)?.score ?? 0;
+    const ok = order.find((f) => { const b = build(f); return !!b && (attempt === 3 || scoreOf(f) <= maxScore) && !gateOf(b.kit).length; });
+    if (ok !== undefined) { chosen = ok; if (fit && ok !== fit.fill) fit = { ...fit, fill: ok, score: fit.tried.find((t) => t.fill === ok)!.score }; break; }
+    chosen = fit?.fill ?? 0;
+  }
+  const made = build(chosen);
+  if (!made) { console.log(id, "no stitchable band after four seeds: skipped"); continue; }
+  const { kit, plan: bandPlan } = made;
   const body = svgOf(kit.objs);
   writeFileSync(`${out}/${id}.svg`, `<svg xmlns="http://www.w3.org/2000/svg" width="${L}mm" height="${H}mm" viewBox="0 0 ${L} ${H}"><rect width="100%" height="100%" fill="#efe6d2"/>${body}</svg>`);
   const p = plan(kit.objs, r), min = estimateMinutes(p, r.speedSpm);
   const failed = runGate(kit.objs, p.commands, r, { hoop: { name: "border frame 360x100", width: 360, height: 100 } }, min).checks.filter((c) => !c.pass && c.id !== "recipe-validated").map((c) => `${c.id}: ${c.detail}`);
   if (!failed.length) { writeFileSync(`${out}/${id}.dst`, writeDst(p.commands, { label: id.toUpperCase() })); writeFileSync(`${out}/${id}-stitches.svg`, previewSvg(p.commands, p.colors)); }
-  report.push({ id, ...bandPlan, stitches: p.commands.filter((c) => c.cmd === "stitch").length, minutes: +min.toFixed(1), colors: p.colors.length, gateFailed: failed });
+  report.push({ id, ...bandPlan, ...(fit ? { product, fill: fit.fill, profileScore: fit.score, complexity: fit.tried.find((t) => t.fill === fit!.fill)?.complexity } : {}), stitches: p.commands.filter((c) => c.cmd === "stitch").length, minutes: +min.toFixed(1), colors: p.colors.length, gateFailed: failed });
   rows.push(`<g transform="translate(0 ${i * (H + 4)})"><rect width="${L}" height="${H}" fill="#efe6d2"/>${body}</g>`);
-  console.log(id, bandPlan.hero, "+", bandPlan.companions.join(","), bandPlan.filler ?? "", bandPlan.novelPairs.length ? `new pairing ${bandPlan.novelPairs.join(",")}` : "", failed.length ? `GATE ${failed.join(" | ")}` : "gate ok");
+  console.log(id, bandPlan.hero, "+", bandPlan.companions.join(","), bandPlan.filler ?? "", bandPlan.novelPairs.length ? `new pairing ${bandPlan.novelPairs.join(",")}` : "", fit ? `${product} fill ${fit.fill} score ${fit.score}` : "", failed.length ? `GATE ${failed.join(" | ")}` : "gate ok");
 }
 const n = Number(countArg), BH = n * (H + 4);
 await sharp(Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${L} ${BH}" width="${L * 5}" height="${BH * 5}"><rect width="100%" height="100%" fill="#fff"/>${rows.join("")}</svg>`)).png().toFile(`${out}/board.png`);

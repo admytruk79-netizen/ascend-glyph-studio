@@ -17,7 +17,9 @@ mkdirSync(out, { recursive: true });
 const draw = (objs: DesignObject[]) => objs.map((o) => o.kind === "fill" ? `<polygon points="${o.polygon.map((p) => `${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(" ")}" fill="${o.color}"/>`
   : `<polyline points="${o.path.map((p) => `${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(" ")}" fill="none" stroke="${o.color}" stroke-width="${o.kind === "satin" ? o.width : 0.9}" stroke-linecap="round" stroke-linejoin="round"/>`).join("");
 const r = recipes["linen-180-prewashed"]!, report: Record<string, unknown> = {};
-const pieces = [["panel", signaturePanel(pw, ph), pw, ph], ["band", signatureBand(bl, bh), bl, bh]] as const;
+const panelKit = signaturePanel(pw, ph), bandKit = signatureBand(bl, bh);
+if (!panelKit || !bandKit) throw new Error(`the signature style cannot be stitched at ${!panelKit ? `${pw}x${ph}` : `${bl}x${bh}`}: choose another size`);
+const pieces = [["panel", panelKit, pw, ph], ["band", bandKit, bl, bh]] as const;
 for (const [name, kit, w, h] of pieces) {
   writeFileSync(`${out}/${name}.svg`, `<svg xmlns="http://www.w3.org/2000/svg" width="${w}mm" height="${h}mm" viewBox="0 0 ${w} ${h}"><rect width="100%" height="100%" fill="${SIGNATURE.ground}"/>${draw(kit.objs)}</svg>`);
   const p = plan(kit.objs, r), min = estimateMinutes(p, r.speedSpm);
