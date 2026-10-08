@@ -17,12 +17,31 @@ export interface Plan { commands: Command[]; blocks: PlannedBlock[]; colors: str
 
 export const TRIM_OVER_MM = 7;
 
-export function stitchObject(o: DesignObject, r: StitchRecipe): Stitch[][] {
-  switch (o.kind) {
-    case "run": return [o.triple ? tripleRun(o.path, o.length ?? 2.5) : runStitch(o.path, o.length ?? 2.5)];
-    case "satin": return [satinColumn(o.path, o.width, { spacing: o.spacing ?? r.satinSpacing, pullComp: r.pullComp })];
-    case "fill": return tatamiFill(o.polygon, { angle: o.angle ?? 0, rowSpacing: o.rowSpacing ?? r.fillRowSpacing, pullComp: r.pullComp });
+function enforceMinimumNeedleSpacing(run: Stitch[], minimum: number): Stitch[] {
+  if(run.length<3||minimum<=0)return run.map(p=>({...p}));
+  const out:Stitch[]=[{...run[0]!}];
+  for(let i=1;i<run.length-1;i++){
+    const p=run[i]!,prev=out[out.length-1]!;
+    if(p.turn||p.tie||prev.tie||dist(prev,p)>=minimum-1e-9)out.push({...p});
   }
+  const last={...run[run.length-1]!};
+  while(out.length>1&&!last.turn&&!last.tie&&dist(out[out.length-1]!,last)<minimum-1e-9){
+    const before=out[out.length-2]!;
+    if(before.turn||before.tie||dist(before,last)>=minimum-1e-9){out.pop();break;}
+    out.pop();
+  }
+  if(out.length===0||dist(out[out.length-1]!,last)>0.05||last.turn||last.tie)out.push(last);
+  return out;
+}
+
+export function stitchObject(o: DesignObject, r: StitchRecipe): Stitch[][] {
+  let runs:Stitch[][];
+  switch (o.kind) {
+    case "run": runs=[o.triple ? tripleRun(o.path, o.length ?? 2.5) : runStitch(o.path, o.length ?? 2.5)];break;
+    case "satin": runs=[satinColumn(o.path, o.width, { spacing: o.spacing ?? r.satinSpacing, pullComp: r.pullComp })];break;
+    case "fill": runs=tatamiFill(o.polygon, { angle: o.angle ?? 0, rowSpacing: o.rowSpacing ?? r.fillRowSpacing, pullComp: r.pullComp });break;
+  }
+  return runs.map(run=>enforceMinimumNeedleSpacing(run,r.minStitch));
 }
 
 export function plan(objects: DesignObject[], r: StitchRecipe): Plan {
