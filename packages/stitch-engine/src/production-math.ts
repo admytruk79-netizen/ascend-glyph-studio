@@ -125,3 +125,44 @@ export function empiricalScaleExponent(n1:number,s1:number,n2:number,s2:number):
   if(!(n1>0&&n2>0&&s1>0&&s2>0&&s1!==s2))throw new Error("positive distinct scales and stitch counts required");
   return Math.log(n2/n1)/Math.log(s2/s1);
 }
+
+
+export interface RecursiveStitchSeries{
+ baseStitches:number;
+ branchingFactor:number;
+ scaleRatio:number;
+ scaleExponent:number;
+ depth:number;
+ ratio:number;
+ totalStitches:number;
+ levelStitches:number[];
+}
+
+/**
+ * Recursive expansion budget.
+ *
+ * One parent at level 0, b children per node, each child scaled by q.
+ * If stitch count for the stitch family scales as s^p:
+ *
+ *   N_k = N0 * (b * q^p)^k
+ *   N_total = N0 * sum(k=0..d) (b * q^p)^k
+ *
+ * This is the mathematical bridge between recursive/octave generation and
+ * embroidery cost. b=7 models a fully branching seven-stage octave; production
+ * normally uses pruned b values selected by space and stitch budgets.
+ */
+export function recursiveStitchSeries(input:{
+ baseStitches:number;
+ branchingFactor:number;
+ scaleRatio:number;
+ scaleExponent:number;
+ depth:number;
+}):RecursiveStitchSeries{
+ const {baseStitches,branchingFactor,scaleRatio,scaleExponent}=input;
+ const depth=Math.max(0,Math.floor(input.depth));
+ if(!(baseStitches>=0&&branchingFactor>=0&&scaleRatio>0&&scaleExponent>0))throw new Error("invalid recursive stitch parameters");
+ const ratio=branchingFactor*Math.pow(scaleRatio,scaleExponent);
+ const levelStitches=Array.from({length:depth+1},(_,k)=>baseStitches*Math.pow(ratio,k));
+ const totalStitches=levelStitches.reduce((a,b)=>a+b,0);
+ return {baseStitches,branchingFactor,scaleRatio,scaleExponent,depth,ratio,totalStitches,levelStitches};
+}
