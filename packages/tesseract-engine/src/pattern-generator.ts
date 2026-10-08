@@ -12,6 +12,7 @@ import {critiqueFinalSvg,type FinalSvgCritique} from "./final-svg-critic";
 import {compileMasterComposition} from "./master-composition";
 import {selectVisuallyDiverse} from "./design-fingerprint";
 import type {LearnedRelationPrior} from "./learned-relation-prior";
+import {mergeSashEvidencePrior,sashGrammarFor} from "./sash-evidence-grammar";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
@@ -117,6 +118,8 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  const cultureIds=input.cultureIds?.length?input.cultureIds:["ukraine","japan","britain","china","western-craft"];
  const placementTypes=input.placement?[input.placement,"garment","shirt","tunic","textile","textile-family","design-cloth","wrapper","sash","leather"]:undefined;
  const cultural=culturalSignals(cultureIds,placementTypes);
+ const sashGrammar=sashGrammarFor(cultureIds);
+ const relationPrior=mergeSashEvidencePrior(input.learnedGuidance?.relationPrior,sashGrammar);
  const culturalConcepts=cultural.features.map(([id,w])=>({id:`structure:${id}`,weight:Math.min(1,.3+w/4)}));
  const corpusConcepts=(input.corpusSignals??[]).slice(0,96).map(s=>({id:`corpus:${s.id}`,weight:Math.max(.15,Math.min(1,s.weight))}));
  const learnedConcepts=(input.learnedGuidance?.tags??[]).map(x=>({id:`learned-structure:${x.id}`,weight:Math.max(.15,Math.min(1,x.weight))}));
@@ -134,14 +137,14 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
     ...(input.placement?[{id:`placement:${input.placement}`,weight:.95}]:[])
    ]
   },
-  principles:[],niches:niche?[niche]:undefined,medium,visualCorpus:input.visualCorpus,relationPrior:input.learnedGuidance?.relationPrior,
+  principles:[],niches:niche?[niche]:undefined,medium,visualCorpus:input.visualCorpus,relationPrior,
   population:input.population??Math.round(32+complexity*64),generations:input.generations??Math.round(3+complexity*5),keep:searchKeep
  });
  const rendered=candidates.map((candidate,i)=>{
   const adapted=adaptForProduction(candidate.topology,medium,niche);
   const g=genomeFromTopology(`pattern:${input.seed}:${i}`,adapted.topology);
   const projected=projectSemanticGeometry(g,width,height,zone);
-  const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`});
+  const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`,sashGrammar});
   const svg=colorize(master,input.paletteId??"underdog-heritage");
   const finalCritique=critiqueFinalSvg(svg,medium,input.visualCorpus??[]);
   const combinedScore=candidate.score+finalCritique.score*.45;
