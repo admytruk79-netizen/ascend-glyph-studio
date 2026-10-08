@@ -25,13 +25,14 @@ import type {PhysicalValidation} from "./physical-feedback";
 import {nichesForGarment} from "./niche-context";
 import type {ObjectiveVector} from "./pareto";
 import {renderLineageSpecimenSheet,type SpecimenSheet} from "./specimen-sheet";
+import {deriveConstructionEnvelope,type ConstructionEnvelope} from "./construction-envelope";
 import {solveRelationalLayout} from "./relational-layout";
 import {evaluateSurfaceLayout,type SurfaceFootprint} from "./garment-surface-math";
 
 export type BatchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];antiStyle?:WeightedRef[];garment?:GarmentConfiguration;compatibilityRules?:CompatibilityRule[];visualCorpus?:ImageObservation[];medium?:MediumId;learnedConstraints?:LearnedConstraintSnapshot;physicalHistory?:PhysicalValidation[];machineProfileId?:string;population?:number;generations?:number;keep?:number};
 export type ZoneProjection={zoneId:string;kind:GarmentZone["kind"];surface:GarmentZone["surface"];wrap:boolean;behavior:ZoneBehavior;svg:SvgProjection;surfaceMath?:ReturnType<typeof evaluateSurfaceLayout>};
 export type BatchCandidate={rank:number;score:number;novelty:number;lineageId:string;objectives:ObjectiveVector;trace:string[];genomeId:string;projection:SvgProjection;zones:ZoneProjection[];continuity:ContinuityEvent[];registration:ContinuitySegment[];trajectories:GarmentTrajectory[];garmentProjection?:GarmentSvg;evolution:EvolutionPlan;visualAssessment?:VisualAssessment;productionAdaptation?:ProductionAdaptation;manufacturability?:ManufacturabilityReport};
-export type BatchResult={seed:string;candidateCount:number;garmentId?:string;configurationIssues:ConfigurationIssue[];candidates:BatchCandidate[];specimenSheet?:SpecimenSheet};
+export type BatchResult={seed:string;candidateCount:number;garmentId?:string;configurationIssues:ConfigurationIssue[];constructionEnvelope?:ConstructionEnvelope;candidates:BatchCandidate[];specimenSheet?:SpecimenSheet};
 
 function zoneCanvas(z:GarmentZone){return {width:Math.max(160,Math.round(z.circumferenceMm??z.widthMm??800)),height:Math.max(80,Math.round(z.heightMm??240))};}
 
@@ -39,11 +40,12 @@ export function runTesseractBatch(input:BatchInput):BatchResult{
  const issues:ConfigurationIssue[]=input.garment?validateGarmentConfiguration(input.garment,input.compatibilityRules??[]):[];
  if(issues.some(x=>x.severity==="error"))return {seed:input.seed,candidateCount:0,garmentId:input.garment?.id,configurationIssues:issues,candidates:[]};
  const intent:IntentVector={...input.intent,materialId:input.garment?.material.substrateId??input.intent.materialId};
+ const constructionEnvelope=input.medium?deriveConstructionEnvelope(input.garment,input.medium):undefined;
  const niches=nichesForGarment(input.garment);
  const found:SearchCandidate[]=searchDesignSpace({seed:input.seed,intent,principles:input.principles,antiStyle:input.antiStyle,visualCorpus:input.visualCorpus,niches:niches.length?niches:undefined,medium:input.medium,physicalHistory:input.physicalHistory,substrateId:input.garment?.material.substrateId,machineProfileId:input.machineProfileId,population:input.population??64,generations:input.generations??5,keep:input.keep??12});
  const zones=input.garment?designableZones(input.garment):[];
  const candidates=found.map((c,i)=>{
-  const enriched=expandRecursiveGrammar(c.topology,`${input.seed}:${i}`,{depth:2,maxNodes:48,mutationRate:.2}),complexity=grammarComplexity(enriched);
+  const enriched=expandRecursiveGrammar(c.topology,`${input.seed}:${i}`,{depth:constructionEnvelope?.maxRecursiveDepth??2,maxNodes:constructionEnvelope?.maxNodes??48,maxBranching:constructionEnvelope?.maxBranching??5,mutationRate:.2}),complexity=grammarComplexity(enriched);
   const learnedLimits=input.medium?chooseProductionLimits(input.medium,input.learnedConstraints):undefined;
   const productionAdaptation=input.medium?adaptForProduction(enriched,input.medium,undefined,learnedLimits):undefined;
   const effectiveTopology=productionAdaptation?.topology??enriched;
@@ -74,5 +76,5 @@ export function runTesseractBatch(input:BatchInput):BatchResult{
   return {rank:i+1,score:c.score,novelty:c.novelty,lineageId:c.lineageId,objectives:c.objectives,trace:[...c.trace,`garment:${input.garment?.id??"none"}`,`zones:${zoneProjections.length}`,`continuity:${continuity.length}`,`registration:${registration.filter(x=>x.manufacturable).length}/${registration.length}`,`trajectories:${trajectories.length}`,`grammar:${complexity.score.toFixed(2)}`,`recursive:${complexity.recursive}`,...zoneProjections.filter(z=>z.surfaceMath).map(z=>`surface:${z.zoneId}:occupancy=${z.surfaceMath!.nominalOccupancy.toFixed(3)}:collisions=${z.surfaceMath!.invalidPairs.length}:seams=${z.surfaceMath!.seamCrossings.length}`)],genomeId:genome.id,projection,zones:zoneProjections,continuity,registration,trajectories,garmentProjection,evolution,visualAssessment,productionAdaptation,manufacturability};
  });
  const specimenSheet=renderLineageSpecimenSheet(found.map(c=>({lineageId:c.lineageId,topology:c.topology,objectives:c.objectives,score:c.score})));
- return {seed:input.seed,candidateCount:candidates.length,garmentId:input.garment?.id,configurationIssues:issues,candidates,specimenSheet};
+ return {seed:input.seed,candidateCount:candidates.length,garmentId:input.garment?.id,configurationIssues:issues,constructionEnvelope,candidates,specimenSheet};
 }
