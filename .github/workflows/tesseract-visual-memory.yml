@@ -1,0 +1,41 @@
+name: Tesseract visual memory
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/score/backfill-embeddings.mts"
+      - "scripts/score/score-synthesis-neighbors.mts"
+      - "scripts/train/preference-model.mts"
+      - "db/migrations/013_visual_embeddings.sql"
+      - ".github/workflows/tesseract-visual-memory.yml"
+  schedule:
+    - cron: "41 */2 * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tesseract-visual-memory
+  cancel-in-progress: false
+jobs:
+  memory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 190
+    env:
+      DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+      EMBED_MAX: "5000"
+      EMBED_MAX_MINUTES: "150"
+      CANDIDATE_EMBED_LIMIT: "200"
+      NEAR_COPY_THRESHOLD: "0.95"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install visual memory runtime
+        run: npm install --no-save --no-audit --no-fund @huggingface/transformers@3 sharp pg
+      - name: Extend persistent visual memory
+        run: npx -y tsx@4 scripts/score/backfill-embeddings.mts
+      - name: Refresh preference model when enough human choices exist
+        run: npx -y tsx@4 scripts/train/preference-model.mts
+      - name: Gate new synthesis against indexed corpus imagery
+        run: npx -y tsx@4 scripts/score/score-synthesis-neighbors.mts
