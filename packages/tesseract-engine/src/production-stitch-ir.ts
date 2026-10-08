@@ -106,13 +106,14 @@ export function applyMasterCompositionToStitchIr(
  plan:MasterCompositionPlan,
  widthMm:number,
  heightMm:number,
- color="#111111"
+ color="#111111",
+ options:{applyPrimaryTransform?:boolean}={}
 ):StitchIrObject[]{
- const p=plan.primary;
- const mapPoint=(q:StitchIrPoint):StitchIrPoint=>({
+ const p=plan.primary,applyPrimary=options.applyPrimaryTransform??true;
+ const mapPoint=(q:StitchIrPoint):StitchIrPoint=>applyPrimary?({
   x:p.offsetX*widthMm+q.x*p.scaleX,
   y:p.offsetY*heightMm+q.y*p.scaleY
- });
+ }):q;
  const primary=objects.map(o=>{
   if(o.kind==="fill")return {...o,polygon:o.polygon.map(mapPoint)};
   return {...o,path:o.path.map(mapPoint)};
