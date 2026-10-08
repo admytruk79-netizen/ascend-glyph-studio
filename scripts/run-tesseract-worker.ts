@@ -7,6 +7,7 @@ import {deriveCorpusCanon} from "../packages/tesseract-engine/src/corpus-canonic
 import {installCorpusCanon} from "../packages/tesseract-engine/src/ascend-primitives";
 import {machineTemplate} from "../packages/tesseract-engine/src/machine-template";
 import {compileProductionIr,recipes,type ProductionStitchIrObject} from "../packages/stitch-engine/src/index";
+import {BRICKS} from "../packages/blend-engine/src/lego";
 
 const {Pool}=pg;
 const url=process.env.DATABASE_URL;
@@ -164,7 +165,48 @@ async function loadLearnedGuidance(){
    transform:.32+exploration*.7,radiate:.2+pairDensity*.45,ascend:.34,terminate:.12},
   preferredScaleRatio,mirrorStrength,repeatStrength,exploration,evidenceImages:Number(lego.images||0),sourceModel:String(body.version||"tesseract-learned")
  };
- return {density,tags:[...tagScores.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5).map(([id,weight])=>({id,weight})),palette:[...colorScores.entries()].sort((a,b)=>b[1]-a[1]).slice(0,6).map(([hex,weight])=>({hex,weight})),model:String(body.version||"tesseract-learned"),relationPrior};
+ type Role="hero"|"companion"|"filler"|"frame"|"connector";
+ const roleOf=(id:string):Role=>{
+  if(id==="border")return "frame";
+  const b=(BRICKS as any)[id];
+  if(b?.scale==="hero")return "hero";
+  if(b?.scale==="companion")return "companion";
+  if(b?.scale==="filler")return "filler";
+  return "connector";
+ };
+ const roleWeights:Partial<Record<Role,number>>={};
+ for(const [id,b] of Object.entries<any>(lego.bricks??{})){
+  const r=roleOf(id);roleWeights[r]=(roleWeights[r]??0)+Math.max(.001,Number(b.share||0));
+ }
+ const adjacency:Partial<Record<Role,Partial<Record<Role,number>>>>={};
+ let pairEvidence=0;
+ for(const [key,v] of Object.entries<any>(lego.pairs??{})){
+  const [a,b]=key.split("|"),ra=roleOf(a||""),rb=roleOf(b||"");
+  const n=Math.max(0,Number(v.n||0));if(!n)continue;pairEvidence+=n;
+  const row=(adjacency[ra]??={});row[rb]=(row[rb]??0)+n;
+ }
+ for(const row of Object.values(adjacency))if(row){
+  const sum=Object.values(row).reduce((s,x)=>s+Number(x||0),0)||1;
+  for(const k of Object.keys(row) as Role[])row[k]=Math.max(.0001,Number(row[k]||0)/sum);
+ }
+ const brickExtents=Object.values<any>(lego.bricks??{}).map(x=>Number(x.extent||0)).filter(x=>x>0).sort((a,b)=>a-b);
+ const hierarchyStrength=brickExtents.length?Math.max(0,Math.min(1,(brickExtents.at(-1)!/(brickExtents[Math.floor(brickExtents.length/2)]||1)-1)/4)):0;
+ const absDirs=Object.values<any>(lego.pairs??{}).map(x=>({x:Math.abs(Number(x.dx||0)),y:Math.abs(Number(x.dy||0)),n:Number(x.n||0)}));
+ const dirTotal=absDirs.reduce((s,x)=>s+x.n,0)||1;
+ const axialBias=absDirs.reduce((s,x)=>s+(Math.max(x.x,x.y)>=Math.min(x.x,x.y)*2?x.n:0),0)/dirTotal;
+ const diagonalBias=absDirs.reduce((s,x)=>s+(Math.max(x.x,x.y)<Math.min(x.x,x.y)*2?x.n:0),0)/dirTotal;
+ const regularities=Object.values<any>(lego.repeats??{}).map(x=>Number(x.regularity||0)).filter(Number.isFinite);
+ const gaps=Object.values<any>(lego.repeats??{}).map(x=>Number(x.gap||0)).filter(x=>x>0);
+ const median=(xs:number[])=>xs.length?[...xs].sort((a,b)=>a-b)[Math.floor(xs.length/2)]!:0;
+ const logRatios=ratios.map((x:number)=>Math.abs(Math.log(x/preferredScaleRatio)));
+ const assemblyPrior={
+  hierarchyStrength,adjacencyDensity:Math.min(1,pairs.length/360),axialBias,diagonalBias,
+  repeatRegularity:regularities.length?regularities.reduce((a,b)=>a+b,0)/regularities.length:repeatStrength,
+  repeatGap:median(gaps)||.15,scaleRatioMedian:preferredScaleRatio,scaleRatioSpread:median(logRatios)||.35,
+  evidencePairs:pairEvidence,evidenceBricks:Object.keys(lego.bricks??{}).length,sourceModel:String(body.version||"tesseract-learned"),
+  roleWeights,adjacency
+ };
+ return {density,tags:[...tagScores.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5).map(([id,weight])=>({id,weight})),palette:[...colorScores.entries()].sort((a,b)=>b[1]-a[1]).slice(0,6).map(([hex,weight])=>({hex,weight})),model:String(body.version||"tesseract-learned"),relationPrior,assemblyPrior};
 }
 
 async function loadPreferenceModel(){
