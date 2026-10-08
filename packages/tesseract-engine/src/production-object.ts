@@ -3,7 +3,7 @@ import type {ConstructionEnvelope} from "./construction-envelope";
 
 export type StitchFamily="run"|"satin"|"fill";
 export type UnderlayKind="center-walk"|"contour"|"zigzag"|"fill";
-export type ProductionRelation="anchor"|"flow"|"branch"|"oppose"|"intersect"|"enclose"|"transform"|"terminate"|"return"|"ascend";
+export type ProductionRelation="anchor"|"nest"|"orbit"|"intersect"|"bridge"|"oppose"|"mirror"|"radiate"|"flow"|"enclose"|"repeat"|"branch"|"transform"|"terminate"|"return"|"ascend";
 export type ProductionReferenceId=
  |"wilcom-object-properties"|"wilcom-auto-fabrics"|"wilcom-pull-comp"
  |"inkstitch-satin"|"inkstitch-fill"|"inkstitch-routing"
@@ -48,7 +48,7 @@ export interface ProductionGlyphObject{
  sourceBasis:readonly ProductionReferenceId[];
 }
 
-const ALL_RELATIONS:readonly ProductionRelation[]=["anchor","flow","branch","oppose","intersect","enclose","transform","terminate","return","ascend"];
+const ALL_RELATIONS:readonly ProductionRelation[]=["anchor","nest","orbit","intersect","bridge","oppose","mirror","radiate","flow","enclose","repeat","branch","transform","terminate","return","ascend"];
 
 function familyFor(form:string):StitchFamily{
  if(form==="enclosure"||form==="seed"||form==="mutation")return "satin";
