@@ -3,7 +3,7 @@
  * be compared with each other and with ASCEND designs (the same function scores a rendered design).
  *
  *   cover        share of the cloth covered by ornament (ink)
- *   elements     separate pieces of ornament in view (how busy), at the study resolution (longest side 384 px)
+ *   elements     separate pieces of ornament in view (how busy), at the study resolution (STUDY_PX)
  *
  * Photos and renders are both lightly blurred first, so crisp vector renders and soft photos compare fairly.
  *   levels       distinct size scales in use (big forms, medium motifs, small fillers, seeds: up to ~6)
@@ -13,6 +13,9 @@
  *   mirror       how far the ornament matches itself turned over about the vertical centre line (0–1)
  */
 import { components, foreground, paletteOf, type Raster } from "../train/learn.ts";
+
+/** Longest side, in pixels, at which museum photos and ASCEND designs are both measured. */
+export const STUDY_PX = 512;
 
 export type Complexity = { cover: number; elements: number; levels: number; fine: number; colors: number; edges: number; mirror: number };
 export const MEASURES: (keyof Complexity)[] = ["cover", "elements", "levels", "fine", "colors", "edges", "mirror"];
@@ -94,6 +97,8 @@ export function profileOf(cs: Complexity[]): Profile {
  * close-up study (study-complexity.mts, close-up profiles) gives comparable numbers.
  */
 export const MEASURE_WEIGHT: Record<keyof Complexity, number> = { cover: 1, elements: 1, levels: 1, fine: 0.5, colors: 0.5, edges: 0.25, mirror: 0.25 };
+/** Against close-up profiles (ornament filling the frame, same scale as the design) edge detail counts nearly in full. */
+export const CLOSEUP_WEIGHT: Record<keyof Complexity, number> = { cover: 1, elements: 1, levels: 1, fine: 0.5, colors: 0.5, edges: 0.75, mirror: 0.4 };
 
 /** How far a design sits from a profile: 0 = inside the middle half on every measure; each measure outside adds its weighted distance in inter-quartile ranges. */
 export function distanceToProfile(c: Complexity, p: Profile, weight: Record<keyof Complexity, number> = MEASURE_WEIGHT): { score: number; low: string[]; high: string[] } {

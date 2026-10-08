@@ -15,7 +15,7 @@ import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import sharp from "sharp";
 import { blendGrammars, composeBand, SIGNATURE_GRAMMAR, type LegoGrammar } from "../../packages/blend-engine/src/lego-compose.ts";
 import { fitToProfile } from "../study/fit.ts";
-import type { Profile } from "../study/complexity.ts";
+import { CLOSEUP_WEIGHT, type Profile } from "../study/complexity.ts";
 import { estimateMinutes, plan, previewSvg, recipes, runGate, writeDst, type DesignObject } from "../../packages/stitch-engine/src/index.ts";
 
 const [out, scope = "all", countArg = "8", seed = "lego"] = process.argv.slice(2);
@@ -36,13 +36,16 @@ async function grammar(): Promise<LegoGrammar> {
   return g;
 }
 
+let closeup = false;
 async function profile(product: string): Promise<Profile> {
   if (process.env.PROFILES) return JSON.parse(readFileSync(process.env.PROFILES, "utf8"))[product];
   const { default: pg } = await import("pg");
   const db = new pg.Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false }, max: 1 });
   const body = (await db.query(`select body from learned_model where id = 'complexity-profiles'`)).rows[0]?.body;
   await db.end();
-  const p = body?.types?.[product];
+  // close-up profiles where there are enough close-ups, else the profile of all photos of that type
+  closeup = (body?.closeups?.[product]?.n ?? 0) >= 30;
+  const p = closeup ? body.closeups[product] : body?.types?.[product];
   if (!p) throw new Error(`no complexity profile for ${product}`);
   return p;
 }
@@ -59,7 +62,7 @@ for (let i = 0; i < Number(countArg); i++) {
   const id = `lego-${String(i + 1).padStart(2, "0")}`;
   const build = (fill: number) => composeBand(g, { seed: `${seed}-${i}`, roles, length: L, height: H, fill });
   let fit: Awaited<ReturnType<typeof fitToProfile>> | null = null;
-  if (target) fit = await fitToProfile((f) => build(f).kit, L, H, "#efe6d2", target);
+  if (target) fit = await fitToProfile((f) => build(f).kit, L, H, "#efe6d2", target, undefined, closeup ? CLOSEUP_WEIGHT : undefined);
   // the closest fill level that also passes the stitch gate (falling back through the others by score)
   const gateOf = (k: typeof fit extends null ? never : any) => { const p = plan(k.objs, r); return runGate(k.objs, p.commands, r, { hoop: { name: "border frame 360x100", width: 360, height: 100 } }, estimateMinutes(p, r.speedSpm)).checks.filter((c) => !c.pass && c.id !== "recipe-validated"); };
   let chosen = fit?.fill ?? 0;
