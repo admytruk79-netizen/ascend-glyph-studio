@@ -1,7 +1,8 @@
 import type {SemanticStep} from "./intent";
 import type {RetrievedPrinciple} from "./knowledge";
 
-export type TopologyNode={id:string;conceptId:string;form:string;scale:number};
+export type OctaveStage="do"|"re"|"mi"|"fa"|"sol"|"la"|"si"|"do2";
+export type TopologyNode={id:string;conceptId:string;form:string;scale:number;octaveStage?:OctaveStage;octaveDepth?:number};
 export type TopologyEdge={from:string;to:string;relation:string;weight:number};
 export type Topology={nodes:TopologyNode[];edges:TopologyEdge[]};
 
