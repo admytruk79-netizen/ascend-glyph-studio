@@ -9,3 +9,5 @@ export * from "./runsheet.js";
 export * from "./preview.js";
 export * from "./calibration.js";
 export * from "./production-math.js";
+
+export * from "./production-ir.js";
