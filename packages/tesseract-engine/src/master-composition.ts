@@ -1,7 +1,8 @@
 import type {MediumId} from "./medium-compiler";
+import type {SashEvidenceGrammar} from "./sash-evidence-grammar";
 
 export type MasterCompositionMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
-export type MasterCompositionInput={svg:string;mode:MasterCompositionMode;complexity:number;medium:MediumId;width:number;height:number;seed:string};
+export type MasterCompositionInput={svg:string;mode:MasterCompositionMode;complexity:number;medium:MediumId;width:number;height:number;seed:string;sashGrammar?:SashEvidenceGrammar};
 
 const hash=(s:string)=>{let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
 const unit=(n:number,min:number,max:number)=>min+(n/0xffffffff)*(max-min);
@@ -11,9 +12,29 @@ function body(svg:string){
  return b;
 }
 function strokeFor(m:MediumId){return m==="print"?1.8:m==="embroidery"?2.65:m==="emboss"?3.15:3.35}
+function scholarlySashComposition(input:MasterCompositionInput,b:string){
+ const g=input.sashGrammar!;const {width,height,medium,mode}=input;
+ const centerH=height*g.centralShare;
+ const flankH=Math.max(1,(height-centerH)*.5);
+ const inner=Math.max(1.5,height*.018);
+ const sourceId="sash-source";
+ const defs=`<defs><g id="${sourceId}">${b}</g>
+  <clipPath id="sash-top"><rect x="0" y="0" width="${width}" height="${Math.max(1,flankH-inner).toFixed(2)}"/></clipPath>
+  <clipPath id="sash-center"><rect x="0" y="${flankH.toFixed(2)}" width="${width}" height="${centerH.toFixed(2)}"/></clipPath>
+  <clipPath id="sash-bottom"><rect x="0" y="${(flankH+centerH+inner).toFixed(2)}" width="${width}" height="${Math.max(1,flankH-inner).toFixed(2)}"/></clipPath>
+ </defs>`;
+ const topY=Math.max(0,flankH*.08),centerY=flankH,bottomY=flankH+centerH+inner;
+ const top=`<svg x="0" y="${topY.toFixed(2)}" width="${width}" height="${Math.max(1,flankH-inner).toFixed(2)}" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" clip-path="url(#sash-top)"><use href="#${sourceId}"/></svg>`;
+ const center=`<svg x="0" y="${centerY.toFixed(2)}" width="${width}" height="${centerH.toFixed(2)}" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" clip-path="url(#sash-center)"><use href="#${sourceId}"/></svg>`;
+ const bottom=`<svg x="0" y="${bottomY.toFixed(2)}" width="${width}" height="${Math.max(1,flankH-inner).toFixed(2)}" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" clip-path="url(#sash-bottom)"><use href="#${sourceId}" transform="translate(${width} 0) scale(-1 1)"/></svg>`;
+ const railY1=flankH,railY2=flankH+centerH;
+ const rails=`<g data-sash-layer="framing" opacity=".72"><path d="M0 ${railY1.toFixed(2)} H${width}"/><path d="M0 ${railY2.toFixed(2)} H${width}"/></g>`;
+ return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" data-master-composition="scholarly-sash-v1" data-mode="${mode}" data-medium="${medium}" data-source-grammar="${g.id}" data-source-doi="${g.source.doi}">${defs}<g fill="none" stroke="currentColor" stroke-width="${strokeFor(medium)}" stroke-linecap="round" stroke-linejoin="round">${top}${center}${bottom}${rails}</g></svg>`;
+}
 
 export function compileMasterComposition(input:MasterCompositionInput){
  const {mode,complexity,medium,width,height,seed}=input,b=body(input.svg),h=hash(seed+"|"+mode+"|"+medium);
+ if(input.sashGrammar&&(mode==="band"||mode==="sleeve"||mode==="cuff"||mode==="collar"))return scholarlySashComposition(input,b);
  const focalX=unit(h,.28,.43)*width,focalY=unit((h*2654435761)>>>0,.42,.58)*height;
  const counterX=unit((h^0x9e3779b9)>>>0,.66,.79)*width,counterY=unit((h^0x85ebca6b)>>>0,.28,.7)*height;
  const focalScale=.82+complexity*.24,counterScale=.42+complexity*.22,ghostScale=.28+complexity*.16;
