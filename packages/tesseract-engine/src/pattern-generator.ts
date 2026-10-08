@@ -13,6 +13,7 @@ import {compileMasterComposition} from "./master-composition";
 import {selectVisuallyDiverse} from "./design-fingerprint";
 import type {LearnedRelationPrior} from "./learned-relation-prior";
 import {mergeSashEvidencePrior,sashGrammarFor} from "./sash-evidence-grammar";
+import type {StructuralFeedback} from "./structural-feedback";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
@@ -22,6 +23,7 @@ export type PatternGeneratorInput={
  corpusSignals?:{id:string;weight:number;sourceIds?:string[]}[];
  population?:number;generations?:number;visualCorpus?:ImageObservation[];
  learnedGuidance?:{density:number;tags:{id:string;weight:number}[];palette:{hex:string;weight:number}[];model:string;relationPrior?:LearnedRelationPrior};
+ structuralFeedback?:StructuralFeedback;
 };
 export type GeneratedPattern={
  id:string;lineageId:string;score:number;novelty:number;svg:string;
@@ -137,14 +139,14 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
     ...(input.placement?[{id:`placement:${input.placement}`,weight:.95}]:[])
    ]
   },
-  principles:[],niches:niche?[niche]:undefined,medium,visualCorpus:input.visualCorpus,relationPrior,
+  principles:[],niches:niche?[niche]:undefined,medium,visualCorpus:input.visualCorpus,relationPrior,structuralFeedback:input.structuralFeedback,
   population:input.population??Math.round(32+complexity*64),generations:input.generations??Math.round(3+complexity*5),keep:searchKeep
  });
  const rendered=candidates.map((candidate,i)=>{
   const adapted=adaptForProduction(candidate.topology,medium,niche);
   const g=genomeFromTopology(`pattern:${input.seed}:${i}`,adapted.topology);
   const projected=projectSemanticGeometry(g,width,height,zone);
-  const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`,sashGrammar});
+  const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`,sashGrammar,structuralFeedback:input.structuralFeedback});
   const svg=colorize(master,input.paletteId??"underdog-heritage");
   const finalCritique=critiqueFinalSvg(svg,medium,input.visualCorpus??[]);
   const combinedScore=candidate.score+finalCritique.score*.45;
