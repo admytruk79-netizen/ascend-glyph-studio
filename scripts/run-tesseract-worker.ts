@@ -180,17 +180,27 @@ async function execute(run:any){
  const approvedCanon=await loadApprovedCanon();
  installCorpusCanon(approvedCanon);
  process.stdout.write(JSON.stringify({runId:run.id,stage:"canon-loaded",approved:approvedCanon.length})+"\n");
- const patterns=generatePatterns({seed:run.seed,concepts,paletteId:intent.paletteId,mode,complexity:intent.complexity??.72,variations:run.batch_size??12,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus,learnedGuidance});
- process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-complete",patterns:patterns.length})+"\n");
- // judge the rendered design, not its SVG text: tangles, overfilled or empty bands are rejected (kept with reasons)
- const judged:{p:(typeof patterns)[number];raster:RasterCritique|null;score:number}[]=[];
- for(const p of patterns){
-  let raster:RasterCritique|null=null;
-  try{raster=await critiqueRaster(p.svg)}catch(e){process.stdout.write(JSON.stringify({runId:run.id,stage:"raster-critic-error",pattern:p.id,message:String((e as Error).message).slice(0,120)})+"\n")}
-  const base=p.score+(raster?raster.quality*60-(raster.survive?0:80):0);
-  judged.push({p,raster,score:base+preferenceAdjustment(preferenceModel,p,raster,base)});
+ const batchSize=run.batch_size??12;
+ const judged:{p:any;raster:RasterCritique|null;score:number;feedbackPass:number}[]=[];
+ const baseComplexity=Number(intent.complexity??.72);
+ for(let feedbackPass=0;feedbackPass<3;feedbackPass++){
+  const passComplexity=Math.max(.52,baseComplexity-feedbackPass*.07);
+  const passSeed=feedbackPass===0?run.seed:run.seed+":feedback:"+feedbackPass;
+  const patterns=generatePatterns({seed:passSeed,concepts,paletteId:intent.paletteId,mode,complexity:passComplexity,variations:batchSize,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus,learnedGuidance});
+  process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-pass",feedbackPass,patterns:patterns.length,complexity:passComplexity})+"\n");
+  let passed=0;
+  for(const p of patterns){
+   let raster:RasterCritique|null=null;
+   try{raster=await critiqueRaster(p.svg)}catch(e){process.stdout.write(JSON.stringify({runId:run.id,stage:"raster-critic-error",pattern:p.id,message:String((e as Error).message).slice(0,120)})+"\n")}
+   const base=p.score+(raster?raster.quality*60-(raster.survive?0:80):0);
+   judged.push({p,raster,score:base+preferenceAdjustment(preferenceModel,p,raster,base),feedbackPass});
+   if(raster?.survive)passed++;
+  }
+  process.stdout.write(JSON.stringify({runId:run.id,stage:"critic-feedback",feedbackPass,passed,of:patterns.length})+"\n");
+  if(passed>=Math.min(3,Math.max(1,Math.ceil(batchSize/4))))break;
  }
  judged.sort((a,b)=>Number(b.raster?.survive??false)-Number(a.raster?.survive??false)||b.score-a.score);
+ judged.splice(batchSize);
  process.stdout.write(JSON.stringify({runId:run.id,stage:"raster-critic",passed:judged.filter(j=>j.raster?.survive).length,of:judged.length,preferencePairs:Number(preferenceModel?.pair_count||0)})+"\n");
  // Generation takes minutes of CPU; meanwhile Neon may suspend the idle compute and drop connections.
  // Save on a fresh connection with its own error handler (an unhandled client 'error' kills the process),
