@@ -218,3 +218,25 @@ jobs:
   # automatically when this workflow succeeds (workflow_run) and trains on every open-access image in six
   # parallel shards. A sampled run here would write the same learned_model ('tesseract-learned-latest') and
   # could overwrite the full model with a smaller one.
+
+
+  embeddings:
+    # Persist compact CLIP representations for retrieval/originality across all
+    # corpus splits. Holdout/validation are indexed but never used to train.
+    needs: analyze
+    if: always() && needs.analyze.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 190
+    env:
+      DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+      EMBED_MAX: "6000"
+      EMBED_MAX_MINUTES: "170"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install embedding runtime
+        run: npm install --no-save --no-audit --no-fund @huggingface/transformers@3 sharp pg
+      - name: Backfill visual embeddings
+        run: npx -y tsx@4 scripts/score/backfill-embeddings.mts
