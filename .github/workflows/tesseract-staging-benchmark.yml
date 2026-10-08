@@ -1,5 +1,6 @@
 name: Tesseract staging benchmark
 # benchmark contract: every production-path change must re-run this gate
+# triggered for integrated production-object benchmark 2026-10-08
 on:
   workflow_dispatch:
   push:
