@@ -14,7 +14,7 @@ export async function measureKit(k: Kit, width: number, height: number, ground: 
   return complexityOf({ data: r.data, width: r.info.width, height: r.info.height });
 }
 
-export async function fitToProfile(build: (fill: number) => Kit, width: number, height: number, ground: string, profile: Profile, levels = [0, 15, 40, 80, 160, 400]) {
+export async function fitToProfile(build: (fill: number) => Kit, width: number, height: number, ground: string, profile: Profile, levels = [0, 10, 20, 30, 45, 60, 80]) {
   const tried: { fill: number; complexity: Complexity; score: number; low: string[]; high: string[] }[] = [];
   let best: { kit: Kit; fill: number; score: number } | null = null;
   for (const fill of levels) {

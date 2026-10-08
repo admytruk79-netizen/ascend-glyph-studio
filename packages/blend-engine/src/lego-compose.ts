@@ -8,6 +8,7 @@
  */
 import { Kit } from "./folk-rich.ts";
 import { BRICKS, widthOf, type BrickId, type Roles } from "./lego.ts";
+import { densify } from "./densify.ts";
 
 export type LegoGrammar = {
   images: number;
@@ -46,7 +47,8 @@ export function planBand(g: LegoGrammar, seed: string, explore = 0.3): Omit<Band
 }
 
 /** Lay the plan out as a band `length` × `height` mm. */
-export function composeBand(g: LegoGrammar, o: { seed: string; length?: number; height?: number; roles: Roles; explore?: number }): { kit: Kit; plan: BandPlan } {
+/** `fill`: fill motifs grown into the ground after layout (true = every clearing, a number = at most that many, 0 = none). */
+export function composeBand(g: LegoGrammar, o: { seed: string; length?: number; height?: number; roles: Roles; explore?: number; fill?: boolean | number }): { kit: Kit; plan: BandPlan } {
   const L = o.length ?? 250, H = o.height ?? 60, CY = H / 2, c = o.roles;
   const p = planBand(g, o.seed, o.explore);
   const k = new Kit();
@@ -76,6 +78,11 @@ export function composeBand(g: LegoGrammar, o: { seed: string; length?: number; 
     if (filler) BRICKS[filler].draw(k, u * U, CY, Sf, c);
   }
   k.resolveGaps();
+  if (o.fill) {
+    // grow fill motifs into the ground inside the frame rows, mirrored when the band mirrors
+    densify(k, { width: L, height: H, colors: c, margin: 7, variant: Math.floor(rng(o.seed + "/fill")() * 3), ...(p.mirrored ? { mirrorX: L / 2 } : {}), ...(typeof o.fill === "number" ? { maxMotifs: o.fill } : {}) });
+    k.resolveGaps();
+  }
   return { kit: k, plan: { ...p, filler, units } };
 }
 

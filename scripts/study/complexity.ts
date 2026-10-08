@@ -88,13 +88,19 @@ export function profileOf(cs: Complexity[]): Profile {
   return out;
 }
 
-/** How far a design sits from a profile: 0 = inside the middle half on every measure; each measure outside adds its distance in inter-quartile ranges. */
-export function distanceToProfile(c: Complexity, p: Profile): { score: number; low: string[]; high: string[] } {
+/**
+ * How much each measure counts when fitting a design. Edge detail and mirror are measured on museum photos that are
+ * often whole garments at low resolution and rarely centred, so they read low there; they count a quarter until the
+ * close-up study (study-complexity.mts, close-up profiles) gives comparable numbers.
+ */
+export const MEASURE_WEIGHT: Record<keyof Complexity, number> = { cover: 1, elements: 1, levels: 1, fine: 0.5, colors: 0.5, edges: 0.25, mirror: 0.25 };
+
+/** How far a design sits from a profile: 0 = inside the middle half on every measure; each measure outside adds its weighted distance in inter-quartile ranges. */
+export function distanceToProfile(c: Complexity, p: Profile, weight: Record<keyof Complexity, number> = MEASURE_WEIGHT): { score: number; low: string[]; high: string[] } {
   let score = 0; const low: string[] = [], high: string[] = [];
   for (const m of MEASURES) {
-    const r = p[m], iqr = Math.max(1e-3, r.p75 - r.p25);
-    if (c[m] < r.p25) { score += (r.p25 - c[m]) / iqr; low.push(m); } else if (c[m] > r.p75) { score += (c[m] - r.p75) / iqr; high.push(m); }
+    const r = p[m], iqr = Math.max(1e-3, r.p75 - r.p25), w = weight[m];
+    if (c[m] < r.p25) { score += (w * (r.p25 - c[m])) / iqr; low.push(m); } else if (c[m] > r.p75) { score += (w * (c[m] - r.p75)) / iqr; high.push(m); }
   }
   return { score: +score.toFixed(2), low, high };
 }
-
