@@ -5,6 +5,8 @@ import {critiqueRaster,type RasterCritique} from "../packages/tesseract-engine/s
 import {deriveStructuralFeedback,type StructuralFeedback} from "../packages/tesseract-engine/src/structural-feedback";
 import {deriveCorpusCanon} from "../packages/tesseract-engine/src/corpus-canonical";
 import {installCorpusCanon} from "../packages/tesseract-engine/src/ascend-primitives";
+import {machineTemplate} from "../packages/tesseract-engine/src/machine-template";
+import {compileProductionIr,recipes,type ProductionStitchIrObject} from "../packages/stitch-engine/src/index";
 
 const {Pool}=pg;
 const url=process.env.DATABASE_URL;
@@ -65,7 +67,7 @@ const server=http.createServer(async(req,res)=>{
 });
 server.listen(Number(process.env.PORT||10000),"0.0.0.0",()=>process.stdout.write(JSON.stringify({status:"listening",port:Number(process.env.PORT||10000)})+"\n"));
 
-type Intent={concepts?:{id:string;weight:number}[];materialId?:string;zoneId?:string;mode?:PatternMode;paletteId?:string;complexity?:number;machineProfileId?:string;physicalWidthMm?:number;physicalHeightMm?:number;constructionIntent?:{targetOccupancy?:number;seamPolicy?:"avoid"|"continuous"|"resolve";maxColors?:number;hierarchyDepth?:number}};
+type Intent={concepts?:{id:string;weight:number}[];materialId?:string;recipeId?:string;zoneId?:string;mode?:PatternMode;paletteId?:string;complexity?:number;machineProfileId?:string;physicalWidthMm?:number;physicalHeightMm?:number;constructionIntent?:{targetOccupancy?:number;seamPolicy?:"avoid"|"continuous"|"resolve";maxColors?:number;hierarchyDepth?:number}};
 
 async function claim(){
  const c=await pool.connect();
@@ -261,7 +263,26 @@ async function persist(run:any,judged:{p:any;raster:RasterCritique|null;score:nu
   const corpusObjectCount=await corpusCount();
   for(let i=0;i<judged.length;i++){
    const {p,raster,score,feedbackPass}=judged[i]!;
-   const state={patternId:p.id,lineageId:p.lineageId,svg:p.svg,objectives:p.objectives,finalCritique:p.finalCritique,raster,feedbackPass,mode,concepts,corpusSignals,visualCorpusCount,corpusObjectCount,productionObjects:p.productionObjects,stitchObjects:p.stitchObjects,surfaceMath:p.surfaceMath,machineProfileId:p.machineProfileId,physicalSizeMm:p.physicalSizeMm,octave:p.octave};
+   let productionCompile:any=undefined;
+   if(Array.isArray(p.stitchObjects)&&p.stitchObjects.length&&intent.recipeId&&p.machineProfileId){
+    const recipe=recipes[intent.recipeId],machine=machineTemplate(p.machineProfileId);
+    if(recipe&&machine){
+     const compiled=compileProductionIr(p.stitchObjects as ProductionStitchIrObject[],recipe,{
+      hoop:{name:machine.id,width:machine.fieldX.value,height:machine.fieldY.value},
+      maxStitches:machine.maxPracticalStitches,maxMinutes:machine.maxContinuousRunMinutes
+     });
+     productionCompile={
+      recipeId:recipe.id,machineId:machine.id,
+      predictedStitches:compiled.math.predictedStitches,
+      compiledStitches:compiled.realized.stitchCount,
+      needleThreadM:compiled.math.needleThreadM,bobbinThreadM:compiled.math.bobbinThreadM,
+      totalThreadM:compiled.math.totalThreadM,minutes:compiled.minutes,
+      colors:compiled.plan.colors,trims:compiled.plan.trims,jumps:compiled.plan.jumps,
+      release:compiled.gate.release,checks:compiled.gate.checks
+     };
+    }
+   }
+   const state={patternId:p.id,lineageId:p.lineageId,svg:p.svg,objectives:p.objectives,finalCritique:p.finalCritique,raster,feedbackPass,mode,concepts,corpusSignals,visualCorpusCount,corpusObjectCount,productionObjects:p.productionObjects,stitchObjects:p.stitchObjects,surfaceMath:p.surfaceMath,machineProfileId:p.machineProfileId,physicalSizeMm:p.physicalSizeMm,octave:p.octave,productionCompile};
    const complexity={target:intent.complexity??.72,novelty:p.novelty};
    const disposition=raster&&!raster.survive?"rejected-raster":"candidate";
    await c.query(`insert into synthesis_candidate(id,run_id,ordinal,state,complexity,score,disposition)
