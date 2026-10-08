@@ -14,7 +14,7 @@ function desired(e:TopologyEdge,w:number,h:number){
 }
 function orientation(e:TopologyEdge){const m:Record<string,number>={ascend:-90,flow:-72,branch:-45,oppose:0,bridge:0,return:180,orbit:25,radiate:-35};return m[e.relation]??0}
 
-export function solveRelationalLayout(t:Topology,width:number,height:number,seed:string,zone?:GarmentZone):Layout{
+export function solveRelationalLayout(t:Topology,width:number,height:number,seed:string,zone?:GarmentZone,constraints?:{minGapMm?:number}):Layout{
  const pad=Math.max(18,Math.min(width,height)*.08),pts:Record<string,LayoutPoint>={};
  const n=Math.max(1,t.nodes.length),wrap=!!zone?.wrapAllowed,emergence=planEmergence(t,seed);
  t.nodes.forEach((node,i)=>{const u=(i+.5)/n,j=((hash(seed+node.id)%1000)/999-.5);
@@ -24,7 +24,8 @@ export function solveRelationalLayout(t:Topology,width:number,height:number,seed
   energy=0;
   const force:Record<string,{x:number;y:number}>=Object.fromEntries(t.nodes.map(x=>[x.id,{x:0,y:0}]));
   for(let i=0;i<t.nodes.length;i++)for(let j=i+1;j<t.nodes.length;j++){
-   const a=pts[t.nodes[i]!.id]!,b=pts[t.nodes[j]!.id]!,dx=b.x-a.x,dy=b.y-a.y,d=Math.max(1,Math.hypot(dx,dy)),min=(18+7*(a.scale+b.scale));
+   const a=pts[t.nodes[i]!.id]!,b=pts[t.nodes[j]!.id]!,dx=b.x-a.x,dy=b.y-a.y,d=Math.max(1,Math.hypot(dx,dy));
+   const rr=Math.min(24,height*.105),min=rr*a.scale+rr*b.scale+(constraints?.minGapMm??.8);
    if(d<min){const q=(min-d)/min*.9;force[t.nodes[i]!.id]!.x-=dx/d*q;force[t.nodes[i]!.id]!.y-=dy/d*q;force[t.nodes[j]!.id]!.x+=dx/d*q;force[t.nodes[j]!.id]!.y+=dy/d*q;energy+=q;}
   }
   for(const e of t.edges){const a=pts[e.from],b=pts[e.to];if(!a||!b)continue;let dx=b.x-a.x,dy=b.y-a.y;
@@ -38,6 +39,22 @@ export function solveRelationalLayout(t:Topology,width:number,height:number,seed
    for(const v of emergence.negativeSpace){const vx=v.u*width,vy=v.v*height,rr=v.radius*Math.min(width,height),dx=p.x-vx,dy=p.y-vy,d=Math.max(1,Math.hypot(dx,dy));if(d<rr){const q=(rr-d)/rr;f.x+=dx/d*q*2.4;f.y+=dy/d*q*2.4;}}
    const step=it<20?3.2:it<48?1.7:.7;p.x+=f.x*step;p.y+=f.y*step;
    if(wrap){p.x=((p.x%width)+width)%width}else p.x=clamp(p.x,pad,width-pad);p.y=clamp(p.y,pad,height-pad);}
+ }
+ // Final constructive clearance pass: coordinates leave the solver valid by construction.
+ for(let pass=0;pass<96;pass++){
+  let moved=false;
+  for(let i=0;i<t.nodes.length;i++)for(let j=i+1;j<t.nodes.length;j++){
+   const A=pts[t.nodes[i]!.id]!,B=pts[t.nodes[j]!.id]!,rr=Math.min(24,height*.105);
+   let dx=B.x-A.x;if(wrap&&Math.abs(dx)>width/2)dx-=Math.sign(dx)*width;
+   const dy=B.y-A.y,d=Math.max(.001,Math.hypot(dx,dy)),need=rr*A.scale+rr*B.scale+(constraints?.minGapMm??.8);
+   if(d+1e-6>=need)continue;
+   const push=(need-d)/2+.01,ux=dx/d,uy=dy/d;
+   A.x-=ux*push;A.y-=uy*push;B.x+=ux*push;B.y+=uy*push;
+   if(wrap){A.x=((A.x%width)+width)%width;B.x=((B.x%width)+width)%width}
+   else{A.x=clamp(A.x,pad,width-pad);B.x=clamp(B.x,pad,width-pad)}
+   A.y=clamp(A.y,pad,height-pad);B.y=clamp(B.y,pad,height-pad);moved=true;
+  }
+  if(!moved)break;
  }
  for(const e of t.edges){const a=pts[e.from],b=pts[e.to];if(a&&b){const ang=Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI;a.angleDeg=(a.angleDeg+ang)/2;}}
  energy+=emergencePenalty(emergence,pts,width,height)*10;
