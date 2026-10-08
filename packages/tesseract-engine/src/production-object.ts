@@ -44,6 +44,7 @@ export interface ProductionGlyphObject{
  placement:{zoneId?:string;seamPolicy:"avoid"|"continuous"|"resolve";canRotate:boolean;wrapAllowed:boolean;xMm?:number;yMm?:number;rotationDeg?:number};
  relations:{ports:readonly ("north"|"south"|"east"|"west"|"diag-ne"|"diag-nw"|"diag-se"|"diag-sw")[];allowed:readonly ProductionRelation[]};
  embroidery:EmbroideryProductionProperties;
+ threadColor:string;
  sourceBasis:readonly ProductionReferenceId[];
 }
 
@@ -51,7 +52,6 @@ const ALL_RELATIONS:readonly ProductionRelation[]=["anchor","flow","branch","opp
 
 function familyFor(form:string):StitchFamily{
  if(form==="enclosure"||form==="seed"||form==="mutation")return "satin";
- if(form==="void")return "fill";
  return "run";
 }
 function portsFor(form:string):ProductionGlyphObject["relations"]["ports"]{
@@ -91,7 +91,7 @@ export function productionObjectsFromTopology(
    physical:{widthMm:base*scale,heightMm:base*scale,minScale:.5,maxScale:envelope.maxScaleLevels,clearanceMm:envelope.minGapMm,rotationDeg:0},
    placement:{zoneId:options.zoneId,seamPolicy:options.seamPolicy??envelope.seamPolicy,canRotate:true,wrapAllowed:!!options.wrapAllowed},
    relations:{ports:portsFor(node.form),allowed:ALL_RELATIONS.filter(r=>r!=="intersect"||envelope.supportsCrossing)},
-   embroidery:embroideryFor(family,scale,envelope.minFeatureMm),sourceBasis:basis
+   embroidery:embroideryFor(family,scale,envelope.minFeatureMm),threadColor:"#111111",sourceBasis:basis
   };
  });
 }
