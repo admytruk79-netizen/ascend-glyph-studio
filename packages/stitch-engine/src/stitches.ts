@@ -52,7 +52,9 @@ export function satinColumn(center: Pt[], width: number | ((s: number) => number
         const h = Math.max(0.2, w(s) / 2 - 0.4);
         return { x: p.x - t.y * h * sd, y: p.y + t.x * h * sd };
       });
-      out.push(...edge(1), ...edge(-1).reverse());
+      const edgeA=edge(1),edgeB=edge(-1).reverse();
+      if(edgeB.length)edgeB[0]={...edgeB[0]!,turn:true};
+      out.push(...edgeA,...edgeB);
       const zig = Math.max(2, Math.ceil(L / 2));
       for (let i = 0; i <= zig; i++) {
         const s = (L * i) / zig;
@@ -60,7 +62,7 @@ export function satinColumn(center: Pt[], width: number | ((s: number) => number
         // finish on the rail opposite the satin's first stitch so the entry stitch spans the column
         const sd = (zig - i) % 2 === 0 ? -side(n) : side(n);
         const h = Math.max(0.2, w(s) / 2 - 0.4) * sd;
-        out.push({ x: p.x - t.y * h, y: p.y + t.x * h });
+        out.push({ x: p.x - t.y * h, y: p.y + t.x * h, ...(i===0?{turn:true}:{}) });
       }
     }
   }
