@@ -19,8 +19,9 @@ import {assessManufacturability} from "./manufacturability";
 import {nameLineage} from "./lineage";
 import type {LearnedRelationPrior} from "./learned-relation-prior";
 import {learnedRelationScore} from "./learned-relation-prior";
+import type {StructuralFeedback} from "./structural-feedback";
 
-export type SearchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];antiStyle?:WeightedRef[];visualCorpus?:ImageObservation[];selectionPolicy?:SelectionPolicy;niches?:DesignNicheId[];medium?:MediumId;physicalHistory?:PhysicalValidation[];substrateId?:string;machineProfileId?:string;population?:number;keep?:number;generations?:number;relationPrior?:LearnedRelationPrior};
+export type SearchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];antiStyle?:WeightedRef[];visualCorpus?:ImageObservation[];selectionPolicy?:SelectionPolicy;niches?:DesignNicheId[];medium?:MediumId;physicalHistory?:PhysicalValidation[];substrateId?:string;machineProfileId?:string;population?:number;keep?:number;generations?:number;relationPrior?:LearnedRelationPrior;structuralFeedback?:StructuralFeedback};
 export type SearchCandidate={topology:Topology;score:number;novelty:number;lineageId:string;objectives:ObjectiveVector;trace:string[]};
 type Scored={t:Topology;score:number;objectives?:ObjectiveVector};
 
@@ -34,7 +35,7 @@ export function searchDesignSpace(input:SearchInput):SearchCandidate[]{
  for(let g=0;g<gens;g++){
   const expanded:Topology[]=[];
   for(let i=0;i<pop;i++){
-   const parent=population[i%population.length]!,child=mutateTopology(parent,input.seed+":"+g,i,input.relationPrior);
+   const parent=population[i%population.length]!,child=mutateTopology(parent,input.seed+":"+g,i,input.relationPrior,input.structuralFeedback);
    const parentId=lineageIds.get(parent)??nameLineage(parent,g,input.niches).id;
    ancestry.set(child,[parentId]);expanded.push(child);
   }
