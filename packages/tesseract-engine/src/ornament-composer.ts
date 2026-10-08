@@ -41,6 +41,7 @@ export function composeOrnament(source:MotifGrammar,plan:OrnamentPlan):OrnamentR
    }
   }
  }
+ const links=instances.filter(i=>i.id.includes(":detail:")).map(i=>({from:i.id.split(":detail:")[0]!,to:i.id,relation:"surround" as const,weight:1}));
  const cells=Array.from({length:rows},(_,row)=>({id:"repeat-row:"+row,instanceIds:instances.filter(i=>i.id.startsWith("ornament:"+row+":")).map(i=>i.id),axis:"horizontal" as const,period01:spacingX,mirrorAlternate:plan.mirrorAlternate}));
- return {grammar:{...source,id:source.id+":ornament:"+plan.seed,instances,links:[],repeatCells:cells},placed:instances.length,rejected,violations:rejected?["instance-budget-exceeded"]:[]};
+ return {grammar:{...source,id:source.id+":ornament:"+plan.seed,instances,links,repeatCells:cells},placed:instances.length,rejected,violations:rejected?["instance-budget-exceeded"]:[]};
 }
