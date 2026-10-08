@@ -194,7 +194,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  const renderCandidates=drawableCandidates.length?drawableCandidates:candidates;
  const rendered=renderCandidates.map((candidate,i)=>{
   const enriched=expandRecursiveGrammar(candidate.topology,`${input.seed}:live:${i}`,{
-   depth:constructionEnvelope.maxRecursiveDepth,maxNodes:constructionEnvelope.maxNodes,maxBranching:constructionEnvelope.maxBranching,mutationRate:.2,
+   depth:constructionEnvelope.maxRecursiveDepth,maxNodes:Math.min(12,constructionEnvelope.maxNodes),maxBranching:constructionEnvelope.maxBranching,mutationRate:.2,
    octave:{enabled:true,minFeatureMm:constructionEnvelope.minFeatureMm,usableAreaMm2:octaveArea,maxEstimatedStitches:constructionEnvelope.machine?.maxStitches}
   });
   const octave=grammarComplexity(enriched);
