@@ -183,6 +183,13 @@ jobs:
           test -f out/master.ndjson.gz || exit 0
           npm install --no-audit --no-fund
           npx -y tsx@4 scripts/import-analysis.ts
+      - name: Rebuild corpus canon from all analysed imagery
+        if: always()
+        env:
+          DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+        run: |
+          test -n "$DATABASE_URL" || { echo "TESSERACT_DATABASE_URL not set; skipping"; exit 0; }
+          npx -y tsx@4 scripts/rebuild-corpus-canon.mts
       - name: Summary
         if: always()
         run: |
