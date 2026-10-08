@@ -189,7 +189,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
     ...(input.placement?[{id:`placement:${input.placement}`,weight:.95}]:[])
    ]
   },
-  principles:[],niches:niche?[niche]:undefined,medium,visualCorpus:input.visualCorpus,relationPrior,structuralFeedback:input.structuralFeedback,
+  principles:[],niches:niche?[niche]:undefined,medium,visualCorpus:input.visualCorpus,relationPrior,assemblyPrior:input.learnedGuidance?.assemblyPrior,structuralFeedback:input.structuralFeedback,
   population:input.population??Math.round(32+complexity*64),generations:input.generations??Math.round(3+complexity*5),keep:searchKeep
  });
  const minDrawableNodes=(mode==="band"||mode==="sleeve"||mode==="cuff"||mode==="collar")?3:2;
