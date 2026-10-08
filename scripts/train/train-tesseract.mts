@@ -89,8 +89,9 @@ async function main() {
 async function* records(): AsyncGenerator<any> {
   if (process.env.TRAIN_SOURCE === "neon") {
     const db = await pool();
-    const { rows } = await db.query(`select id, image_url as image, coalesce(cultural_access, 'open') as "culturalAccess", tradition, title, region,
-      raw->>'culture' as culture, raw->>'institution' as institution from research_corpus_object where image_url is not null`);
+    const { rows } = await db.query(`select o.id, o.image_url as image, coalesce(o.cultural_access, 'open') as "culturalAccess", o.tradition, o.title, o.region,
+      o.raw->>'culture' as culture, o.raw->>'institution' as institution, coalesce(a.split,'train') as split
+      from research_corpus_object o left join research_corpus_analysis a on a.id=o.id where o.image_url is not null`);
     await db.end();
     console.log(JSON.stringify({ source: "neon", objects: rows.length }));
     yield* rows;
@@ -104,7 +105,7 @@ async function extract(): Promise<{ kept: Kept[]; stats: Stats }> {
   // 1. select: per focus tradition (sampled) or, in a shard, every open-access image whose id hashes to it
   const groups = new Map<string, any[]>();
   for await (const r of records()) {
-    if (!r.image || (r.culturalAccess ?? "open") !== "open") continue;
+    if (!r.image || (r.culturalAccess ?? "open") !== "open" || (r.split && r.split !== "train")) continue;
     const t = traditionOf(r).replace(/ \(by query\)$/, "");
     if (STRUCTURE_ONLY.has(t)) continue;
     if (MODE === "extract" && shardOf(r.id) !== SHARD) continue;
@@ -117,7 +118,7 @@ async function extract(): Promise<{ kept: Kept[]; stats: Stats }> {
   // Focus traditions first (the time limit may stop a shard before the end), "Other" last; within that, rank in
   // its own group, so smaller traditions are not crowded out. Ranks are precomputed (indexOf in a sort is quadratic).
   const rank = new Map<any, number>(); for (const g of groups.values()) g.forEach((r, i) => rank.set(r, i));
-  const tier = (t: string) => (FOCUS.has(t) ? 0 : t === "Other" || t === "Unlabelled" ? 2 : 1);
+  const tier = (t: string) => (t === "Other" || t === "Unlabelled" ? 1 : 0);
   queue.sort((a, b) => tier(a.t) - tier(b.t) || rank.get(a.r)! - rank.get(b.r)! || a.t.localeCompare(b.t));
   console.log(JSON.stringify({ sampled: Object.fromEntries([...groups].map(([t, g]) => [t, g.length])) }));
 
