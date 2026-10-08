@@ -13,7 +13,7 @@ export interface ArtworkProjection{
 export interface ProjectionInput{
  zoneId:string;xMm:number;yMm:number;widthMm:number;heightMm:number;registrationDemandMm?:number;
 }
-const stable=(v:unknown):string=>Array.isArray(v)?"["+v.map(stable).join(",")+"]":v&&typeof v==="object"?"{"+Object.entries(v as Record<string,unknown>).sort(([a],[b])=>a.localeCompare(b)).map(([k,x])=>JSON.stringify(k)+":"+stable(x)).join(",")+"}":JSON.stringify(v);
+const stable=(v:unknown):string=>Array.isArray(v)?"["+v.map(stable).join(",")+"]":v&&typeof v==="object"?"{"+Object.entries(v as Record<string,unknown>).filter(([,x])=>x!==undefined).sort(([a],[b])=>a.localeCompare(b)).map(([k,x])=>JSON.stringify(k)+":"+stable(x)).join(",")+"}":JSON.stringify(v);
 export function hashCanonicalArtwork(a:Omit<CanonicalArtwork,"sourceHash">){
  return createHash("sha256").update(stable(a)).digest("hex");
 }
