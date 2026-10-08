@@ -49,6 +49,10 @@ export function addConstructionNoGoZones(piece:PatternPiece):PatternPiece{
  const b=bounds(piece.outline),w=b.maxX-b.minX,h=b.maxY-b.minY,z=[...piece.noGoZones];
  if(piece.kind==="front-left"||piece.kind==="front-right")z.push({id:`${piece.id}:placket-hardware`,reason:"buttons/buttonholes/placket construction",polygon:[{x:0,y:0},{x:55,y:0},{x:55,y:h},{x:0,y:h}],clearanceMm:8});
  if(piece.kind==="cuff-left"||piece.kind==="cuff-right")z.push({id:`${piece.id}:closure`,reason:"cuff closure/buttonhole",polygon:[{x:0,y:0},{x:35,y:0},{x:35,y:h},{x:0,y:h}],clearanceMm:8});
+ if(piece.kind==="sleeve-left"||piece.kind==="sleeve-right"){
+  const band=Math.min(40,Math.max(24,h*.08));
+  z.push({id:`${piece.id}:opening`,reason:"sleeve opening/cuff join construction",polygon:[{x:0,y:h-band},{x:w,y:h-band},{x:w,y:h},{x:0,y:h}],clearanceMm:8});
+ }
  if(piece.kind==="collar")z.push({id:`${piece.id}:ends`,reason:"collar end construction",polygon:[{x:0,y:0},{x:25,y:0},{x:25,y:h},{x:0,y:h},{x:w,y:0},{x:w-25,y:0},{x:w-25,y:h},{x:w,y:h}],clearanceMm:6});
  return {...piece,noGoZones:z};
 }
