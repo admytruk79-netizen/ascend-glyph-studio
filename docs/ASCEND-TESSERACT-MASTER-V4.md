@@ -1,4 +1,4 @@
-# ASCEND Tesseract: Master Document v4 (status 6 October 2026)
+# ASCEND Tesseract: Master Document v4 (status 8 October 2026)
 
 This updates the v3 project description (`docs/ASCEND-TESSERACT-PROJECT.md`). It records what now exists, what each function does, the decisions taken, and what comes next. The v3 principles still hold:
 - Tesseract is a language engine;
@@ -164,3 +164,111 @@ This updates the v3 project description (`docs/ASCEND-TESSERACT-PROJECT.md`). It
   - `BLEND-ENGINE.md`
   - `TESSERACT-DECONSTRUCTION.md`
   - `REFERENCES.md`
+
+---
+
+## 6. Integrated production-object architecture — October 8 update
+
+The current build is moving from an SVG-first generator to a **production-object-first language compiler**.
+
+The authoritative flow is now:
+
+**semantic intent → ASCEND topology → octave development state → structural grammar / evidence rules → ProductionGlyphObject IR → garment + machine construction envelope → wrapped/pattern-piece placement → embroidery compiler → SVG preview + stitch plan/DST → immutable production manifest → ROVIQ manufacturing orchestration**
+
+SVG is a preview/projection format. DST is a machine-output format. Neither is the canonical design object.
+
+### 6.1 Octave development controller
+
+The octave model is implemented as a hierarchical development controller, not as a literal seven-way fractal.
+
+Primary stages: **DO → RE → MI → FA → SOL → LA → SI → DO²**.
+
+Ordinary stages continue one main lineage. The **MI→FA** and **SI→DO²** transitions may open subordinate branches, but a branch exists only if production capacity permits it.
+
+The recursive allocator is bounded by garment usable area, minimum feature size, minimum gap, maximum node count, machine stitch capacity, machine color capacity, hierarchy depth, allowed relations, garment zone, and seam policy.
+
+Pre-allocation uses planning equations:
+
+`A(k+1) = b(k) × q(k)^2 × A(k)`
+
+`N(k+1) = b(k) × q(k)^p × N(k)`
+
+where the planning exponent is approximately `p=1` for run/satin behavior and `p=2` for area fill. These are admission estimates only. The compiled stitch plan remains authoritative.
+
+This converts the octave from a symbolic idea into a constrained development grammar: **continue → reach interval → transform/branch if capacity exists → integrate → resolve → promote to a new level**.
+
+### 6.2 ProductionGlyphObject intermediate representation
+
+Each generated semantic node is compiled into a typed production object before garment projection.
+
+A production object carries semantic concept and ASCEND form, canonical geometry reference, physical dimensions and valid scale interval, minimum clearance, connection ports and allowed relations, garment zone and seam policy, wrap/rotation permissions, stitch family, stitch spacing, underlay, pull/push compensation, satin/run/fill parameters, and production-reference basis.
+
+This architecture adapts established embroidery/CAD principles rather than copying proprietary code:
+
+- **Wilcom:** object geometry and stitch properties remain linked; scaling regenerates embroidery behavior.
+- **Wilcom Auto Fabric:** substrate changes a bounded set of production parameters.
+- **Ink/Stitch:** satin/fill/run objects have different attributes and routing is a later compiler concern.
+- **Brother PE-DESIGN:** sew attributes are stitch-type-specific.
+- **CLO / Marvelous Designer:** placement is solved on real pattern-piece/UV geometry with padding, scale and rotation constraints.
+
+The source references are recorded in `packages/tesseract-engine/src/production-object.ts`.
+
+### 6.3 Garment surface mathematics
+
+A sleeve is not treated as a flat canvas.
+
+`C(v) = C0 + (C1 − C0) × v/H`
+
+`r(v) = C(v) / (2π)`
+
+`θ = 2πu / C(v)`
+
+The engine maps each production object to the wrapped surface and evaluates physical footprint, angular footprint, seam crossing, shortest wrapped distance, all-pairs juxtaposition, minimum clearance, and usable surface occupancy.
+
+The layout solver now uses the production object's physical footprint rather than guessing from SVG scale.
+
+### 6.4 Stitch and thread mathematics
+
+The stitch engine carries a planning model:
+
+`N(s) = Σ[k(i) × N(i,1) × s^p(i)]`
+
+with family-specific scaling behavior. It also records predicted needle thread, bobbin thread, machine time, color count and trims.
+
+For recursive development:
+
+`N(total) = N0 × Σ(k=0..d) (b × q^p)^k`
+
+This is used for capacity planning. Final counts come from regenerated stitch objects and compiled machine commands.
+
+The production manifest can carry predicted and compiled stitch counts plus the equation/model version and calibration reference.
+
+### 6.5 Machine templates
+
+Machine capability is now an input to generation, not only a downstream validation check.
+
+A machine template includes maker/model, embroidery field, heads, needles per head, maximum colors, frame types, tubular/finished-sleeve capability, maximum SPM, supported stitch-file formats, registration tolerance, practical stitch ceiling, continuous-run limit, and confidence/validation state.
+
+Reference templates currently exist for Brother PR1055X, Tajima TMBP2-SC, and a manufacturer-supplied generic industrial multi-head profile.
+
+Reference templates are **not** production truth. A Chinese or other contract manufacturer must provide actual machine inventory and validated limits. Those values are stored as manufacturer-validated templates and become construction constraints.
+
+A selected machine can therefore change the legal design space before generation: no tubular capability can force flat-before-assembly; a small field can force registered segmentation; needle count constrains color plans; registration tolerance constrains continuity; stitch/run ceilings constrain recursive expansion.
+
+### 6.6 Manufacturable-by-construction rule
+
+Production validation remains fail-closed, but the design goal is stronger:
+
+> **Impossible states should not be generated.**
+
+The constructor should admit only structures satisfying semantic rules + cultural rules + garment geometry + material recipe + machine template + stitch-family rules + placement rules + octave capacity.
+
+The final gate verifies the compiled result and catches implementation/calibration errors. It should not be the primary mechanism for discovering obviously impossible designs.
+
+### 6.7 Manufacturer templates and scale production
+
+For contract manufacturing, each real factory receives a capability profile containing factory ID, machine templates and quantities, heads/needles, frames, accepted formats, supported fabrics, validated recipes, minimum reliable stroke/gap, density limits, registration tolerance, actual throughput, sampled defect history, and validation status.
+
+Tesseract generates against the selected profile. ROVIQ receives the immutable production package and handles routing, work order, materials, QC and shipment.
+
+This allows a local prototype machine and a large Chinese multi-head factory to use the same semantic design language while receiving different valid manufacturing projections.

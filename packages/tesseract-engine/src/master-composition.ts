@@ -1,6 +1,7 @@
 import type {MediumId} from "./medium-compiler";
 import type {SashEvidenceGrammar} from "./sash-evidence-grammar";
 import type {StructuralFeedback} from "./structural-feedback";
+import {buildMasterCompositionPlan} from "./master-composition-plan";
 
 export type MasterCompositionMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type MasterCompositionInput={svg:string;mode:MasterCompositionMode;complexity:number;medium:MediumId;width:number;height:number;seed:string;sashGrammar?:SashEvidenceGrammar;structuralFeedback?:StructuralFeedback};
@@ -14,23 +15,13 @@ function body(svg:string){
 }
 function strokeFor(m:MediumId){return m==="print"?1.8:m==="embroidery"?2.65:m==="emboss"?3.15:3.35}
 function scholarlySashComposition(input:MasterCompositionInput,b:string){
- const g=input.sashGrammar!;const {width,height,medium,mode}=input,fb=input.structuralFeedback;
- const centerShare=Math.max(.44,Math.min(.68,g.centralShare+(fb?.centralHierarchyBoost??0)*.14));
- const centerH=height*centerShare;
- const centerY=(height-centerH)/2;
- const railGap=Math.max(5,height*.028);
- const edgeInset=Math.max(8,width*.018);
- const scaleY=centerH/height;
- const primary=`<g data-sash-layer="primary-focal" transform="translate(0 ${centerY.toFixed(2)}) scale(1 ${scaleY.toFixed(4)})">${b}</g>`;
- const rails=`<g data-sash-layer="framing" opacity=".78">
-   <path d="M${edgeInset.toFixed(2)} ${Math.max(2,centerY-railGap).toFixed(2)} H${(width-edgeInset).toFixed(2)}"/>
-   <path d="M${edgeInset.toFixed(2)} ${Math.min(height-2,centerY+centerH+railGap).toFixed(2)} H${(width-edgeInset).toFixed(2)}"/>
- </g>`;
- const sideMarks=`<g data-sash-layer="edge-marks" opacity=".58">
-   <path d="M${edgeInset.toFixed(2)} ${(height*.18).toFixed(2)} V${(height*.36).toFixed(2)} M${edgeInset.toFixed(2)} ${(height*.64).toFixed(2)} V${(height*.82).toFixed(2)}"/>
-   <path d="M${(width-edgeInset).toFixed(2)} ${(height*.18).toFixed(2)} V${(height*.36).toFixed(2)} M${(width-edgeInset).toFixed(2)} ${(height*.64).toFixed(2)} V${(height*.82).toFixed(2)}"/>
- </g>`;
- return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" data-master-composition="scholarly-sash-v2-single-focal" data-mode="${mode}" data-medium="${medium}" data-source-grammar="${g.id}" data-source-doi="${g.source.doi}"><g fill="none" stroke="currentColor" stroke-width="${strokeFor(medium)}" stroke-linecap="round" stroke-linejoin="round">${primary}${rails}${sideMarks}</g></svg>`;
+ const g=input.sashGrammar!;const {width,height,medium,mode}=input;
+ const plan=buildMasterCompositionPlan({mode,medium,complexity:input.complexity,sashGrammar:g,structuralFeedback:input.structuralFeedback});
+ const p=plan.primary;
+ const primary=`<g data-sash-layer="primary-focal" transform="translate(${(p.offsetX*width).toFixed(2)} ${(p.offsetY*height).toFixed(2)}) scale(${p.scaleX.toFixed(4)} ${p.scaleY.toFixed(4)})">${b}</g>`;
+ const line=(x:typeof plan.auxiliaryLines[number])=>`<path data-composition-line="${x.id}" opacity="${x.opacity}" d="M${(x.x1*width).toFixed(2)} ${(x.y1*height).toFixed(2)} L${(x.x2*width).toFixed(2)} ${(x.y2*height).toFixed(2)}"/>`;
+ const auxiliaries=`<g data-sash-layer="production-auxiliary">${plan.auxiliaryLines.map(line).join("")}</g>`;
+ return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" data-master-composition="${plan.id}" data-mode="${mode}" data-medium="${medium}" data-source-grammar="${g.id}" data-source-doi="${g.source.doi}"><g fill="none" stroke="currentColor" stroke-width="${strokeFor(medium)}" stroke-linecap="round" stroke-linejoin="round">${primary}${auxiliaries}</g></svg>`;
 }
 
 export function compileMasterComposition(input:MasterCompositionInput){

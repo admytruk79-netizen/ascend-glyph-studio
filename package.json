@@ -13,7 +13,9 @@
     "test": "npm test --workspaces --if-present",
     "corpus:build": "tsx scripts/build-research-corpus.ts",
     "corpus:import": "tsx scripts/import-research-corpus.ts",
-    "tesseract:worker": "tsx scripts/run-tesseract-worker.ts"
+    "tesseract:worker": "tsx scripts/run-tesseract-worker.ts",
+    "verify:tesseract-worker": "npm run typecheck --workspace=@ascend/tesseract-engine && npm run build --workspace=@ascend/tesseract-engine && npm test --workspace=@ascend/tesseract-engine && npm run pilot --workspace=@ascend/tesseract-engine && npm run typecheck --workspace=@ascend/stitch-engine && npm test --workspace=@ascend/stitch-engine",
+    "render:build:tesseract": "npm install --no-audit --no-fund && npm run verify:tesseract-worker"
   },
   "devDependencies": {
     "tsx": "^4.19.2",

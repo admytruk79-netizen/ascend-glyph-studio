@@ -1,0 +1,51 @@
+name: Tesseract staging benchmark
+on:
+  workflow_dispatch:
+  push:
+    branches: [tesseract-staging]
+    paths:
+      - "packages/tesseract-engine/**"
+      - "packages/stitch-engine/**"
+      - "scripts/run-tesseract-worker.ts"
+      - "scripts/create-staging-benchmark-run.mts"
+      - "scripts/assert-tesseract-regression.mts"
+      - "scripts/assert-staging-production-metadata.mts"
+      - ".github/workflows/tesseract-staging-benchmark.yml"
+permissions:
+  contents: read
+concurrency:
+  group: tesseract-staging-benchmark
+  cancel-in-progress: true
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - name: Verify integrated engine
+        run: npm run verify:tesseract-worker
+      - name: Create isolated staging run
+        id: create
+        shell: bash
+        run: |
+          RUN_ID="$(npx tsx scripts/create-staging-benchmark-run.mts)"
+          echo "run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
+          echo "Created staging run $RUN_ID"
+      - name: Execute staging worker once
+        env:
+          WORKER_RUN_ID: ${{ steps.create.outputs.run_id }}
+          WORKER_ONCE: "1"
+          PORT: "10001"
+        run: npx tsx scripts/run-tesseract-worker.ts
+      - name: Print benchmark metrics
+        run: npx tsx scripts/benchmark-tesseract.mts "${{ steps.create.outputs.run_id }}"
+      - name: Assert integrated production metadata
+        run: npx tsx scripts/assert-staging-production-metadata.mts "${{ steps.create.outputs.run_id }}"
+      - name: Enforce 3.7 visual baseline
+        run: npx tsx scripts/assert-tesseract-regression.mts "${{ steps.create.outputs.run_id }}"

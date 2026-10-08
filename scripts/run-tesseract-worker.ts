@@ -5,6 +5,8 @@ import {critiqueRaster,type RasterCritique} from "../packages/tesseract-engine/s
 import {deriveStructuralFeedback,type StructuralFeedback} from "../packages/tesseract-engine/src/structural-feedback";
 import {deriveCorpusCanon} from "../packages/tesseract-engine/src/corpus-canonical";
 import {installCorpusCanon} from "../packages/tesseract-engine/src/ascend-primitives";
+import {machineTemplate} from "../packages/tesseract-engine/src/machine-template";
+import {compileProductionIr,recipes,type ProductionStitchIrObject} from "../packages/stitch-engine/src/index";
 
 const {Pool}=pg;
 const url=process.env.DATABASE_URL;
@@ -65,16 +67,22 @@ const server=http.createServer(async(req,res)=>{
 });
 server.listen(Number(process.env.PORT||10000),"0.0.0.0",()=>process.stdout.write(JSON.stringify({status:"listening",port:Number(process.env.PORT||10000)})+"\n"));
 
-type Intent={concepts?:{id:string;weight:number}[];materialId?:string;zoneId?:string;mode?:PatternMode;paletteId?:string;complexity?:number};
+type Intent={concepts?:{id:string;weight:number}[];materialId?:string;recipeId?:string;zoneId?:string;mode?:PatternMode;paletteId?:string;complexity?:number;machineProfileId?:string;physicalWidthMm?:number;physicalHeightMm?:number;constructionIntent?:{targetOccupancy?:number;seamPolicy?:"avoid"|"continuous"|"resolve";maxColors?:number;hierarchyDepth?:number}};
 
 async function claim(){
  const c=await pool.connect();
  try{
   await c.query("begin");
-  const q=await c.query(`select r.*,e.batch_size,e.population,e.generations
-   from synthesis_run r cross join engine_runtime e
-   where (r.status in ('queued','created') or (r.status='running' and r.solver_version='3.0.0-corpus-visual' and not exists (select 1 from synthesis_candidate sc where sc.run_id=r.id))) and e.id='tesseract-v2' and e.enabled=true
-   order by r.created_at for update of r skip locked limit 1`);
+  const exact=process.env.WORKER_RUN_ID;
+  const q=exact
+   ?await c.query(`select r.*,e.batch_size,e.population,e.generations
+      from synthesis_run r cross join engine_runtime e
+      where r.id=$1 and r.status in ('staging-created','queued','created') and e.id='tesseract-v2' and e.enabled=true
+      for update of r skip locked limit 1`,[exact])
+   :await c.query(`select r.*,e.batch_size,e.population,e.generations
+      from synthesis_run r cross join engine_runtime e
+      where (r.status in ('queued','created') or (r.status='running' and r.solver_version='3.0.0-corpus-visual' and not exists (select 1 from synthesis_candidate sc where sc.run_id=r.id))) and e.id='tesseract-v2' and e.enabled=true
+      order by r.created_at for update of r skip locked limit 1`);
   const run=q.rows[0]; if(!run){await c.query("rollback");return null}
   await c.query("update synthesis_run set status='running' where id=$1",[run.id]);
   await c.query("commit"); return run;
@@ -209,7 +217,7 @@ async function execute(run:any){
  for(let feedbackPass=0;feedbackPass<3;feedbackPass++){
   const passComplexity=Math.max(.52,baseComplexity-feedbackPass*.07);
   const passSeed=feedbackPass===0?run.seed:run.seed+":feedback:"+feedbackPass;
-  const patterns=generatePatterns({seed:passSeed,concepts,paletteId:intent.paletteId,mode,complexity:passComplexity,variations:batchSize,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus,learnedGuidance,structuralFeedback});
+  const patterns=generatePatterns({seed:passSeed,concepts,paletteId:intent.paletteId,mode,complexity:passComplexity,variations:batchSize,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus,learnedGuidance,structuralFeedback,machineProfileId:intent.machineProfileId,physicalWidthMm:intent.physicalWidthMm,physicalHeightMm:intent.physicalHeightMm,constructionIntent:intent.constructionIntent});
   process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-pass",feedbackPass,patterns:patterns.length,complexity:passComplexity})+"\n");
   let passed=0;
   for(const p of patterns){
@@ -255,7 +263,26 @@ async function persist(run:any,judged:{p:any;raster:RasterCritique|null;score:nu
   const corpusObjectCount=await corpusCount();
   for(let i=0;i<judged.length;i++){
    const {p,raster,score,feedbackPass}=judged[i]!;
-   const state={patternId:p.id,lineageId:p.lineageId,svg:p.svg,objectives:p.objectives,finalCritique:p.finalCritique,raster,feedbackPass,mode,concepts,corpusSignals,visualCorpusCount,corpusObjectCount};
+   let productionCompile:any=undefined;
+   if(Array.isArray(p.stitchObjects)&&p.stitchObjects.length&&intent.recipeId&&p.machineProfileId){
+    const recipe=recipes[intent.recipeId],machine=machineTemplate(p.machineProfileId);
+    if(recipe&&machine){
+     const compiled=compileProductionIr(p.stitchObjects as ProductionStitchIrObject[],recipe,{
+      hoop:{name:machine.id,width:machine.fieldX.value,height:machine.fieldY.value},
+      maxStitches:machine.maxPracticalStitches,maxMinutes:machine.maxContinuousRunMinutes
+     });
+     productionCompile={
+      recipeId:recipe.id,machineId:machine.id,
+      predictedStitches:compiled.math.predictedStitches,
+      compiledStitches:compiled.realized.stitchCount,
+      needleThreadM:compiled.math.needleThreadM,bobbinThreadM:compiled.math.bobbinThreadM,
+      totalThreadM:compiled.math.totalThreadM,minutes:compiled.minutes,
+      colors:compiled.plan.colors,trims:compiled.plan.trims,jumps:compiled.plan.jumps,
+      release:compiled.gate.release,checks:compiled.gate.checks
+     };
+    }
+   }
+   const state={patternId:p.id,lineageId:p.lineageId,svg:p.svg,objectives:p.objectives,finalCritique:p.finalCritique,raster,feedbackPass,mode,concepts,corpusSignals,visualCorpusCount,corpusObjectCount,productionObjects:p.productionObjects,stitchObjects:p.stitchObjects,surfaceMath:p.surfaceMath,machineProfileId:p.machineProfileId,physicalSizeMm:p.physicalSizeMm,octave:p.octave,productionCompile};
    const complexity={target:intent.complexity??.72,novelty:p.novelty};
    const disposition=raster&&!raster.survive?"rejected-raster":"candidate";
    await c.query(`insert into synthesis_candidate(id,run_id,ordinal,state,complexity,score,disposition)
@@ -277,14 +304,19 @@ async function main(){
  for(;;){
   let run:any=null;
   try{run=await claim()}catch(e){process.stdout.write(JSON.stringify({level:"warn",event:"claim_failed",message:String((e as Error).message).slice(0,160)})+"\n")}
-  if(!run){if(!idleLogged){process.stdout.write(JSON.stringify({status:"idle",candidatesPersisted:done,pollMs:poll})+"\n");idleLogged=true}await new Promise(r=>setTimeout(r,poll));continue}
+  if(!run){
+   if(process.env.WORKER_ONCE==="1"){await new Promise<void>(r=>server.close(()=>r()));await pool.end();return}
+   if(!idleLogged){process.stdout.write(JSON.stringify({status:"idle",candidatesPersisted:done,pollMs:poll})+"\n");idleLogged=true}
+   await new Promise(r=>setTimeout(r,poll));continue
+  }
   idleLogged=false;
   try{const n=await execute(run);done+=n;process.stdout.write(JSON.stringify({runId:run.id,candidates:n,status:"completed"})+"\n")}
   catch(e){
    process.stdout.write(JSON.stringify({level:"error",runId:run.id,event:"run_failed",message:String((e as Error).message).slice(0,200)})+"\n");
-   // mark it failed, or the claim query (running with no candidates) would pick the same run up forever
    await pool.query("update synthesis_run set status='failed' where id=$1",[run.id]).catch(()=>{});
+   if(process.env.WORKER_ONCE==="1"){await new Promise<void>(r=>server.close(()=>r()));await pool.end();throw e}
   }
+  if(process.env.WORKER_ONCE==="1"){await new Promise<void>(r=>server.close(()=>r()));await pool.end();return}
  }
 }
 main().catch(async e=>{console.error(e);await pool.end();process.exitCode=1});

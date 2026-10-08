@@ -9,12 +9,16 @@ All numbers below are **industry starting points**. Every one becomes a **valida
 ## 1. Pipeline
 
 ```
-Tesseract design (SVG, mm)
+Tesseract semantic topology
+ → octave-controlled structural development
+ → ProductionGlyphObject IR
  → product placement (pattern piece, size, zone)
- → wrap-around fit (integer repeats, seam position)
+ → machine + garment construction envelope
+ → wrap-around fit / registered segmentation
  → material compensation (shrinkage, take-up, pull/push)
- → digitizing (stitch types, angles, density, underlay, sequence)
- → stitch file (DST + PES/EXP as needed)
+ → stitch-family compilation (run / satin / fill)
+ → routing, underlay, density and sequence
+ → SVG preview + stitch file (DST + PES/EXP as needed)
  → run sheet (threads, needle, stabilizer, hoop, speed, placement)
  → sew-out → measure → corrected recipe → production
 ```
@@ -28,6 +32,41 @@ Tesseract design (SVG, mm)
 - starting recipes for linen, cotton, knit, terry and leather.
 
 `npm run demo -w @ascend/stitch-engine -- <outDir> 250 24` produces a cuff band (DST, preview, run sheet). Every recipe stays `validated: false`, so the gate blocks release until a sew-out stores measured values (§9).
+
+
+### Production-object rule
+
+The engine no longer treats SVG as the authoritative design representation. Each generated element is first represented as a production object carrying its semantic identity, physical footprint, allowed scale interval, minimum clearance, connection relationships, stitch family, spacing, underlay, compensation and placement/seam behavior.
+
+Scaling or moving an object causes its embroidery representation to be regenerated from those properties. The machine stitch file is never blindly geometrically scaled.
+
+### Machine templates
+
+`packages/tesseract-engine/src/machine-template.ts` defines construction-time machine templates.
+
+A template records:
+- maker/model;
+- embroidery field;
+- heads and needles per head;
+- frame types;
+- tubular/finished-sleeve support;
+- supported stitch formats;
+- color capacity;
+- maximum SPM;
+- registration tolerance;
+- practical stitch/run ceiling;
+- confidence state.
+
+The currently coded Brother PR1055X and Tajima TMBP2-SC profiles are reference templates only. The selected contract manufacturer's actual equipment must replace them with manufacturer-validated values before production approval.
+
+Machine capability changes generation. The constructor must choose one of:
+- single-field embroidery;
+- segmented embroidery with registration;
+- flat-before-assembly embroidery;
+- another compatible machine/profile.
+
+It must not generate a finished-sleeve construction for a machine that cannot physically execute it.
+
 
 ---
 
