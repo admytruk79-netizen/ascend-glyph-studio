@@ -2,7 +2,8 @@ import type {DesignObject,Plan} from "./plan.js";
 import {plan} from "./plan.js";
 import type {StitchRecipe} from "./recipes.js";
 import {estimateProductionMath,measureRealizedStitches,type ProductionMathEstimate} from "./production-math.js";
-import {estimateMinutes,runGate,type GateResult,type GateLimits} from "./gate.js";
+import {runGate,type GateResult,type GateLimits} from "./gate.js";
+import {estimateMinutes} from "./runsheet.js";
 
 export type ProductionStitchIrObject=DesignObject;
 
