@@ -27,6 +27,7 @@ type Scored={t:Topology;score:number;objectives?:ObjectiveVector};
 
 export function searchDesignSpace(input:SearchInput):SearchCandidate[]{
  const plan=compileIntent(input.intent),principles=retrievePrinciples(plan.intent,input.principles);
+ const searchCorpus=input.visualCorpus?.length?(input.visualCorpus.length>256?input.visualCorpus.filter((_,i)=>i%Math.ceil(input.visualCorpus!.length/256)===0).slice(0,256):input.visualCorpus):undefined;
  const root=buildTopology(plan.semanticSkeleton,principles),history:Topology[]=[root];
  const ancestry=new WeakMap<Topology,string[]>();
  const lineageIds=new WeakMap<Topology,string>();
@@ -44,11 +45,11 @@ export function searchDesignSpace(input:SearchInput):SearchCandidate[]{
    const c=checkConstraints(t,principles);if(c.hard.length)return {t,score:-Infinity};
    const e=evaluateTopology(t,plan.semanticSkeleton.length,principles.length,input.antiStyle);
    const novelty=noveltyAgainst(t,history);const soft=c.soft.reduce((s,x)=>s+x.penalty,0);
-   const survival=input.visualCorpus?.length?corpusSurvival(t,input.visualCorpus,input.selectionPolicy):undefined;
+   const survival=searchCorpus?.length?corpusSurvival(t,searchCorpus,input.selectionPolicy):undefined;
    if(survival&&!survival.survive)return {t,score:-Infinity};
    const niche=input.niches?.length?Math.max(...input.niches.map(id=>nicheFitness(t,DESIGN_NICHES[id]))):assignNiche(t).fitness;
    const pf=input.medium&&input.physicalHistory?.length?productionFitness(t,input.medium,input.physicalHistory,input.substrateId,input.machineProfileId):undefined;
-   const visual=input.visualCorpus?.length?assessVisual(topologyVisualVector(t),input.visualCorpus):undefined;
+   const visual=searchCorpus?.length?assessVisual(topologyVisualVector(t),searchCorpus):undefined;
    const manufacturing=input.medium?assessManufacturability(t,input.medium):undefined;
    const objectives=objectiveVector(t,{semanticScore:e.score,novelty,culturalConfidence:Math.max(0,1-soft),visual,manufacturing,physical:pf});
    return {t,score:e.score+novelty*18-soft*100+(survival?.fitnessDelta??0)+niche*16+(pf?pf.score*18:0)+learnedRelationScore(t,input.relationPrior),objectives};
