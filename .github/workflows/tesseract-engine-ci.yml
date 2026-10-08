@@ -1,7 +1,7 @@
 name: Tesseract engine CI
 on:
   push:
-    branches: [main]
+    branches: [main, tesseract-staging]
     paths:
       - "packages/tesseract-engine/**"
       - ".github/workflows/tesseract-engine-ci.yml"
@@ -23,5 +23,5 @@ jobs:
         with:
           node-version: 22
       - run: npm install --no-audit --no-fund
-      - run: npm run typecheck --workspace=@ascend/tesseract-engine
-      - run: npm test --workspace=@ascend/tesseract-engine
+      - name: Full worker verification
+        run: npm run verify:tesseract-worker
