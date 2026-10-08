@@ -20,7 +20,7 @@ import {expandRecursiveGrammar,grammarComplexity} from "./recursive-grammar";
 import {productionObjectsFromTopology,assertProductionRelations,placeProductionObjects,type ProductionGlyphObject} from "./production-object";
 import {compileProductionObjectsToStitchIr,applyMasterCompositionToStitchIr,stitchIrFootprints,type StitchIrObject} from "./production-stitch-ir";
 import {solveRelationalLayout} from "./relational-layout";
-import {evaluateSurfaceLayout,type SurfaceFootprint} from "./garment-surface-math";
+import {evaluateSurfaceLayout,circumferenceAt,type SurfaceFootprint} from "./garment-surface-math";
 import {buildMasterCompositionPlan} from "./master-composition-plan";
 import {applyAssemblyConstraintCollapse} from "./constraint-collapse";
 import type {LearnedAssemblyPrior} from "./learned-assembly-prior";
@@ -203,13 +203,19 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   });
   const octave=grammarComplexity(enriched);
   const adapted=adaptForProduction(enriched,medium,niche);
+  const compositionPlan=buildMasterCompositionPlan({mode,medium,complexity,sashGrammar,structuralFeedback:input.structuralFeedback});
+  const bandY=compositionPlan.primary.offsetY*physicalSize.height;
+  const bandHeight=Math.max(20,compositionPlan.primary.scaleY*physicalSize.height);
+  const layoutZone:GarmentZone=productionZone.surface==="tapered-cylinder"
+   ?{...productionZone,heightMm:bandHeight,circumferenceMm:circumferenceAt(productionZone,bandY),circumferenceEndMm:circumferenceAt(productionZone,bandY+bandHeight)}
+   :{...productionZone,heightMm:bandHeight};
   let productionObjects=productionObjectsFromTopology(adapted.topology,constructionEnvelope,{zoneId:productionZone.id,seamPolicy:constructionEnvelope.seamPolicy,wrapAllowed:productionZone.wrapAllowed});
   assertProductionRelations(adapted.topology,productionObjects);
-  const physicalLayout=solveRelationalLayout(adapted.topology,physicalSize.width,physicalSize.height,`${input.seed}:physical:${i}`,productionZone,{minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy});
-  productionObjects=placeProductionObjects(productionObjects,physicalLayout.points);
+  const localLayout=solveRelationalLayout(adapted.topology,physicalSize.width,bandHeight,`${input.seed}:physical:${i}`,layoutZone,{minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy});
+  const finalPoints=Object.fromEntries(Object.entries(localLayout.points).map(([id,p])=>[id,{...p,y:p.y+bandY}]));
+  productionObjects=placeProductionObjects(productionObjects,finalPoints);
   const baseStitchObjects=compileProductionObjectsToStitchIr(productionObjects);
-  const compositionPlan=buildMasterCompositionPlan({mode,medium,complexity,sashGrammar,structuralFeedback:input.structuralFeedback});
-  const stitchObjects=applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height);
+  const stitchObjects=applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height,"#111111",{applyPrimaryTransform:false});
   let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
   if(productionZone.wrapAllowed&&(productionZone.surface==="cylinder"||productionZone.surface==="tapered-cylinder")){
    const items:SurfaceFootprint[]=stitchIrFootprints(stitchObjects,constructionEnvelope.minGapMm);
