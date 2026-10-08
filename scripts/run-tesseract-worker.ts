@@ -39,6 +39,27 @@ const server=http.createServer(async(req,res)=>{
    const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#fff"/><g fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${paths.map(d=>`<path d="${d.replace(/"/g,"&quot;")}"/>`).join("")}</g></svg>`;
    res.writeHead(200,{"content-type":"image/svg+xml","cache-control":"no-store"});res.end(svg);return;
   }
+  const runMatch=req.url?.match(/^\/runs\/([0-9a-f-]{36})$/i);
+  if(runMatch){
+   const runId=runMatch[1]!;
+   const rq=await pool.query("select id,seed,solver_version,intent,status,created_at from synthesis_run where id=$1",[runId]);
+   if(!rq.rows[0]){res.writeHead(404);res.end("not found");return}
+   const cq=await pool.query(`select ordinal,score,disposition,
+     state->>'patternId' pattern_id,state->>'lineageId' lineage_id,
+     coalesce((state->>'feedbackPass')::int,0) feedback_pass,
+     state->'raster' raster,state->'finalCritique' final_critique,
+     state->>'visualCorpusCount' visual_corpus_count,state->>'corpusObjectCount' corpus_object_count
+     from synthesis_candidate where run_id=$1 order by ordinal`,[runId]);
+   const rows=cq.rows.map((x:any)=>({...x,svgUrl:`/runs/${runId}/${x.ordinal}.svg`}));
+   res.writeHead(200,{"content-type":"application/json","cache-control":"no-store"});
+   res.end(JSON.stringify({run:rq.rows[0],candidates:rows}));return;
+  }
+  const svgMatch=req.url?.match(/^\/runs\/([0-9a-f-]{36})\/(\d+)\.svg$/i);
+  if(svgMatch){
+   const q=await pool.query("select state->>'svg' svg from synthesis_candidate where run_id=$1 and ordinal=$2",[svgMatch[1],Number(svgMatch[2])]);
+   if(!q.rows[0]?.svg){res.writeHead(404);res.end("not found");return}
+   res.writeHead(200,{"content-type":"image/svg+xml","cache-control":"no-store"});res.end(q.rows[0].svg);return;
+  }
   res.writeHead(200,{"content-type":"text/plain"});res.end("tesseract worker ready");
  }catch(e){res.writeHead(500,{"content-type":"application/json"});res.end(JSON.stringify({error:String((e as Error).message)}))}
 });
@@ -203,7 +224,12 @@ async function execute(run:any){
   process.stdout.write(JSON.stringify({runId:run.id,stage:"critic-feedback",feedbackPass,passed,of:patterns.length,reasons:structuralFeedback.reasons,avoid:structuralFeedback.avoidRelations,centralHierarchyBoost:structuralFeedback.centralHierarchyBoost,repetitionReduction:structuralFeedback.repetitionReduction,crossingReduction:structuralFeedback.crossingReduction})+"\n");
   if(passed>=Math.min(3,Math.max(1,Math.ceil(batchSize/4))))break;
  }
- judged.sort((a,b)=>Number(b.raster?.survive??false)-Number(a.raster?.survive??false)||b.score-a.score);
+ judged.sort((a,b)=>{
+  const survival=Number(b.raster?.survive??false)-Number(a.raster?.survive??false);
+  if(survival)return survival;
+  if(!(a.raster?.survive)&&!(b.raster?.survive)&&a.feedbackPass!==b.feedbackPass)return b.feedbackPass-a.feedbackPass;
+  return b.score-a.score;
+ });
  judged.splice(batchSize);
  process.stdout.write(JSON.stringify({runId:run.id,stage:"raster-critic",passed:judged.filter(j=>j.raster?.survive).length,of:judged.length,preferencePairs:Number(preferenceModel?.pair_count||0)})+"\n");
  // Generation takes minutes of CPU; meanwhile Neon may suspend the idle compute and drop connections.
@@ -220,15 +246,16 @@ async function execute(run:any){
  }
 }
 async function corpusCount(){const q=await pool.query("select count(*)::int n from research_corpus_object where image_url is not null");return Number(q.rows[0]?.n||0)}
-async function persist(run:any,judged:{p:any;raster:RasterCritique|null;score:number}[],intent:Intent,mode:PatternMode,concepts:string[],corpusSignals:unknown[],visualCorpusCount:number){
+async function persist(run:any,judged:{p:any;raster:RasterCritique|null;score:number;feedbackPass:number}[],intent:Intent,mode:PatternMode,concepts:string[],corpusSignals:unknown[],visualCorpusCount:number){
  const c=await pool.connect();
  c.on("error",(err)=>process.stdout.write(JSON.stringify({level:"warn",event:"db_client_error",runId:run.id,message:err.message})+"\n"));
  try{
   await c.query("begin");
   await c.query("delete from synthesis_candidate where run_id=$1",[run.id]);
+  const corpusObjectCount=await corpusCount();
   for(let i=0;i<judged.length;i++){
-   const {p,raster,score}=judged[i]!;
-   const state={patternId:p.id,lineageId:p.lineageId,svg:p.svg,objectives:p.objectives,finalCritique:p.finalCritique,raster,mode,concepts,corpusSignals,visualCorpusCount,corpusObjectCount:await corpusCount()};
+   const {p,raster,score,feedbackPass}=judged[i]!;
+   const state={patternId:p.id,lineageId:p.lineageId,svg:p.svg,objectives:p.objectives,finalCritique:p.finalCritique,raster,feedbackPass,mode,concepts,corpusSignals,visualCorpusCount,corpusObjectCount};
    const complexity={target:intent.complexity??.72,novelty:p.novelty};
    const disposition=raster&&!raster.survive?"rejected-raster":"candidate";
    await c.query(`insert into synthesis_candidate(id,run_id,ordinal,state,complexity,score,disposition)
