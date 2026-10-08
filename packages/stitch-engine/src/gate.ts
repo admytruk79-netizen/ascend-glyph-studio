@@ -66,6 +66,10 @@ function outline(o: DesignObject): { pts: Pt[]; half: number } {
 }
 
 /** Smallest edge-to-edge gap between objects of different colours or non-touching objects (touching = overlapping by design). */
+function productionObjectId(id:string):string{
+  const m=id.match(/^(.*):p\d+$/);
+  return m?.[1]??id;
+}
 function minGap(objects: DesignObject[]): { value: number; pair: string } {
   let best = Infinity, pair = "";
   const outs = objects.map(outline);
@@ -74,6 +78,10 @@ function minGap(objects: DesignObject[]): { value: number; pair: string } {
   const inside = (P: Pt[], o: DesignObject) => o.kind === "fill" && P.some((p) => pointInPolygon(p, o.polygon));
   for (let i = 0; i < objects.length; i++)
     for (let j = i + 1; j < objects.length; j++) {
+      // Multiple paths compiled from one ProductionGlyphObject are one motif.
+      // Internal spacing is part of that object's canonical geometry, not an
+      // inter-object clearance violation.
+      if(productionObjectId(objects[i]!.id)===productionObjectId(objects[j]!.id))continue;
       const A = outs[i]!, B = outs[j]!, a = boxes[i]!, b = boxes[j]!;
       if (Math.max(a.minX - b.maxX, b.minX - a.maxX, a.minY - b.maxY, b.minY - a.maxY) >= best) continue; // cannot beat the current best
       if (inside(A.pts, objects[j]!) || inside(B.pts, objects[i]!)) continue;

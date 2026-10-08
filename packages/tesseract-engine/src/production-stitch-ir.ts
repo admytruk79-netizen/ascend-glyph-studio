@@ -8,8 +8,8 @@ export type StitchIrObject=
  |{kind:"satin";id:string;color:string;path:StitchIrPoint[];width:number;spacing?:number}
  |{kind:"fill";id:string;color:string;polygon:StitchIrPoint[];angle?:number;rowSpacing?:number};
 
-const NUM=/[-+]?(?:\d*\.?\d+)(?:[eE][-+]?\d+)?/g;
-const TOK=/[MLHVQCZmlhvqcz]|[-+]?(?:\d*\.?\d+)(?:[eE][-+]?\d+)?/g;
+const TOK=/[a-zA-Z]|[-+]?(?:\d*\.?\d+)(?:[eE][-+]?\d+)?/g;
+const SUPPORTED=/^[MLHVQCZmlhvqcz]$/;
 const lerp=(a:number,b:number,t:number)=>a+(b-a)*t;
 function cubic(a:StitchIrPoint,b:StitchIrPoint,c:StitchIrPoint,d:StitchIrPoint,t:number):StitchIrPoint{
  const u=1-t;
@@ -22,15 +22,19 @@ function quad(a:StitchIrPoint,b:StitchIrPoint,c:StitchIrPoint,t:number):StitchIr
 
 export function sampleSvgPath(d:string,curveSteps=10):StitchIrPoint[]{
  const tokens=d.match(TOK)??[];
+ if(tokens.join("")!==d.replace(/[\s,]+/g,""))throw new Error("invalid SVG path syntax");
+ if(tokens.some(t=>/^[a-zA-Z]$/.test(t)&&!SUPPORTED.test(t)))throw new Error("unsupported SVG path command");
  let i=0,cmd="",cur={x:0,y:0},start={x:0,y:0};
  const out:StitchIrPoint[]=[];
- const num=()=>Number(tokens[i++]!);
+ let contours=0;
+ const num=()=>{const token=tokens[i++];if(token===undefined||/^[a-zA-Z]$/.test(token))throw new Error("incomplete SVG path command");const value=Number(token);if(!Number.isFinite(value))throw new Error("non-finite SVG path coordinate");return value;};
  const point=(rel:boolean,x:number,y:number)=>rel?{x:cur.x+x,y:cur.y+y}:{x,y};
  while(i<tokens.length){
   if(/^[A-Za-z]$/.test(tokens[i]!))cmd=tokens[i++]!;
-  if(!cmd)break;
+  if(!cmd)throw new Error("SVG path requires an explicit command");
   const rel=cmd===cmd.toLowerCase(),op=cmd.toUpperCase();
   if(op==="M"){
+   if(++contours>1)throw new Error("multiple SVG contours require separate stitch objects");
    const p=point(rel,num(),num());cur=p;start={...p};out.push({...p});cmd=rel?"l":"L";
   }else if(op==="L"){
    const p=point(rel,num(),num());cur=p;out.push({...p});
@@ -49,8 +53,9 @@ export function sampleSvgPath(d:string,curveSteps=10):StitchIrPoint[]{
   }else if(op==="Z"){
    if(out.length&&(out.at(-1)!.x!==start.x||out.at(-1)!.y!==start.y))out.push({...start});
    cur={...start};cmd="";
-  }else break;
+  }else throw new Error("unsupported SVG path command");
  }
+ if(out.length<2)throw new Error("SVG path has insufficient geometry");
  return out;
 }
 
@@ -63,11 +68,6 @@ function transform(points:StitchIrPoint[],o:ProductionGlyphObject):StitchIrPoint
  });
 }
 
-function fallback(o:ProductionGlyphObject):StitchIrPoint[]{
- const w=o.physical.widthMm,h=o.physical.heightMm;
- return transform([{x:25,y:75},{x:50,y:25},{x:75,y:75}],o);
-}
-
 /**
  * Neutral stitch IR compiled from the same ASCEND primitive geometry used by
  * the preview. The stitch-engine can consume this structure directly because
@@ -77,10 +77,10 @@ export function compileProductionObjectsToStitchIr(objects:ProductionGlyphObject
  const out:StitchIrObject[]=[];
  for(const o of objects){
   const primitive=primitiveForForm(o.form);
-  const paths=(primitive?.paths??[]).map(d=>sampleSvgPath(d)).filter(p=>p.length>=2);
-  const geometry=paths.length?paths:[fallback(o)];
+  if(!primitive?.paths.length)throw new Error("missing ASCEND source geometry: "+o.id+" ("+o.form+")");
+  const geometry=primitive.paths.map(d=>sampleSvgPath(d));
   geometry.forEach((raw,j)=>{
-   const pts=paths.length?transform(raw,o):raw;
+   const pts=transform(raw,o);
    const id=`${o.id}:p${j}`;
    const e=o.embroidery;
    if(e.stitchFamily==="satin"){
