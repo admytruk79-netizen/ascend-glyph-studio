@@ -1,4 +1,5 @@
 import type {Topology} from "./topology";
+import type {StructuralFeedback} from "./structural-feedback";
 
 export type LearnedRelationPrior={
   relationWeights:Record<string,number>;
@@ -35,10 +36,16 @@ export function learnedRelationScore(t:Topology,prior?:LearnedRelationPrior){
   return relation*4+(1-Math.abs(repeatShare-p.repeatStrength))*3+(1-Math.abs(mirrorProxy-p.mirrorStrength))*2+ratioFit*3;
 }
 
-export function weightedRelation(seed:number,relations:string[],prior?:LearnedRelationPrior){
+export function weightedRelation(seed:number,relations:string[],prior?:LearnedRelationPrior,feedback?:StructuralFeedback){
   if(!prior)return relations[seed%relations.length]!;
   const p=normalizeRelationPrior(prior);
-  const ws=relations.map(r=>Math.max(.01,p.relationWeights[r]??.04));
+  const ws=relations.map(r=>{
+    if(feedback?.avoidRelations.includes(r))return .001;
+    const base=Math.max(.01,p.relationWeights[r]??.04);
+    const penalty=Math.max(0,Math.min(.98,feedback?.relationPenalties[r]??0));
+    const boost=Math.max(0,feedback?.relationBoosts[r]??0);
+    return Math.max(.001,base*(1-penalty)*(1+boost));
+  });
   const total=ws.reduce((a,b)=>a+b,0);
   let x=((seed>>>0)/4294967296)*total;
   for(let i=0;i<relations.length;i++){x-=ws[i]!;if(x<=0)return relations[i]!}
