@@ -76,14 +76,14 @@ async function loadCorpusSignals(seed:string){
 async function loadVisualCorpus(seed:string){
  const q=await pool.query(`
  with ranked as (
-   select a.id,a.source_key,a.tradition,a.kind,a.features,a.deconstruction,o.cultural_access,o.reliability,
+   select a.id,a.source_key,a.source_url,a.tradition,a.kind,a.features,a.deconstruction,o.cultural_access,o.reliability,
           row_number() over(partition by coalesce(nullif(a.tradition,''),'unknown') order by md5(a.id || $1)) rn
    from research_corpus_analysis a join research_corpus_object o on o.id=a.id
    where o.cultural_access in ('open','structure-only')
      and a.features <> '{}'::jsonb
      and coalesce(a.split,'train') <> 'holdout'
  )
- select id,source_key,tradition,kind,features,deconstruction,cultural_access,reliability
+ select id,source_key,source_url,tradition,kind,features,deconstruction,cultural_access,reliability
  from ranked where rn <= 32
  order by md5(id || $1)
  limit 4096`,[seed]);
@@ -94,7 +94,7 @@ async function loadVisualCorpus(seed:string){
   if(Math.abs(Number(f.mirrorX||0)-Number(f.mirrorY||0))>.12||Number(f.densityVariation||0)>.55)ops.push("interrupt");
   if(Number(f.radiality||0)>.5)ops.push("branch");
   const scale=Array.isArray(f.scaleHierarchy)?f.scaleHierarchy.length:1;
-  return {id:r.id,sourceRef:r.source_key,class:"real-historical" as const,evidenceTier:Number(r.reliability||0)>=.85?"A" as const:"B" as const,verifiedReal:true,trainingUse:"composition" as const,
+  return {id:r.id,sourceRef:r.source_url||r.source_key,class:"real-historical" as const,evidenceTier:Number(r.reliability||0)>=.85?"A" as const:"B" as const,verifiedReal:true,trainingUse:"composition" as const,
    features:{symmetry:(Number(f.mirrorX||.5)+Number(f.mirrorY||.5)+Number(f.rotation180||.5))/3,density:Number(f.edgeDensity||.5),voidRatio:Number(f.voidRatio||.5),scaleLevels:scale,dominantDirection:dirs,operations:ops,
     densityVariation:Number(f.densityVariation||.5),directionalEntropy:Array.isArray(f.orientation)?(()=>{const xs=f.orientation.map((x:any)=>Number(x||0)),sum=xs.reduce((a:number,b:number)=>a+b,0)||1;return -xs.reduce((h:number,x:number)=>{const p=x/sum;return p>0?h+p*Math.log(p):h},0)/Math.log(Math.max(2,xs.length))})():.5,
     axisStrength:Number(f.axisStrength||.5),rotation180:Number(f.rotation180||.5),periodicity:Math.max(Number(f.repetitionX||0),Number(f.repetitionY||0)),
