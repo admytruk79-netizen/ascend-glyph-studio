@@ -136,14 +136,25 @@ export type StitchIrFootprint={
  * be digitized instead of measuring the pre-composition semantic skeleton.
  */
 export function stitchIrFootprints(objects:StitchIrObject[],clearanceMm:number):StitchIrFootprint[]{
- return objects.map(o=>{
-  const pts=o.kind==="fill"?o.polygon:o.path;
-  if(!pts.length)throw new Error("stitch IR object has no geometry: "+o.id);
-  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
-  for(const p of pts){minX=Math.min(minX,p.x);minY=Math.min(minY,p.y);maxX=Math.max(maxX,p.x);maxY=Math.max(maxY,p.y);}
-  const stroke=o.kind==="satin"?o.width:o.kind==="run"?.5:0;
-  const widthMm=Math.max(.1,maxX-minX+stroke);
-  const heightMm=Math.max(.1,maxY-minY+stroke);
-  return {id:o.id,u:(minX+maxX)/2,v:(minY+maxY)/2,widthMm,heightMm,rotationDeg:0,clearanceMm};
- });
+ const groups=new Map<string,StitchIrObject[]>();
+ for(const o of objects){
+  // Primitive paths are emitted as <glyph-id>:pN. Group them back into the
+  // authoritative production glyph. Composition helpers intentionally remain
+  // separate because their IDs do not use the :pN suffix.
+  const id=o.id.replace(/:p\d+$/,"");
+  const row=groups.get(id)??[];row.push(o);groups.set(id,row);
+ }
+ const out:StitchIrFootprint[]=[];
+ for(const [id,group] of groups){
+  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity,stroke=0;
+  for(const o of group){
+   const pts=o.kind==="fill"?o.polygon:o.path;
+   if(!pts.length)throw new Error("stitch IR object has no geometry: "+o.id);
+   stroke=Math.max(stroke,o.kind==="satin"?o.width:o.kind==="run"?.5:0);
+   for(const p of pts){minX=Math.min(minX,p.x);minY=Math.min(minY,p.y);maxX=Math.max(maxX,p.x);maxY=Math.max(maxY,p.y);}
+  }
+  const widthMm=Math.max(.1,maxX-minX+stroke),heightMm=Math.max(.1,maxY-minY+stroke);
+  out.push({id,u:(minX+maxX)/2,v:(minY+maxY)/2,widthMm,heightMm,rotationDeg:0,clearanceMm:id.startsWith("composition:")?0:clearanceMm});
+ }
+ return out;
 }
