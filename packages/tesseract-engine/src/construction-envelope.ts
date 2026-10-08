@@ -2,6 +2,7 @@ import type {GarmentConfiguration,GarmentZone} from "./garment";
 import type {MediumId,ProductionLimits} from "./medium-compiler";
 import {DEFAULT_LIMITS} from "./medium-compiler";
 import {zoneSurfaceArea} from "./garment-surface-math";
+import type {MachineTemplate} from "./machine-template";
 
 export type ConstructionIntent={
  targetOccupancy?:number;
@@ -22,6 +23,17 @@ export type ConstructionEnvelope={
  targetOccupancy:number;
  seamPolicy:"avoid"|"continuous"|"resolve";
  maxColors?:number;
+ machine?:{
+  id:string;
+  fieldXmm:number;
+  fieldYmm:number;
+  supportsTubular:boolean;
+  supportsFinishedSleeve:boolean;
+  maxColors:number;
+  maxStitches?:number;
+  maxMinutes?:number;
+  registrationToleranceMm:number;
+ };
  zoneBudgets:ReadonlyArray<{
   zoneId:string;
   areaMm2:number;
@@ -40,7 +52,8 @@ export function deriveConstructionEnvelope(
  garment:GarmentConfiguration|undefined,
  medium:MediumId,
  limits:ProductionLimits=DEFAULT_LIMITS[medium],
- desired:ConstructionIntent={}
+ desired:ConstructionIntent={},
+ machine?:MachineTemplate
 ):ConstructionEnvelope{
  const zones=(garment?.zones??[]).filter(z=>z.editable);
  const nominalDiameter=Math.max(limits.minFeatureMm*8,limits.minGapMm*4,8);
@@ -58,9 +71,16 @@ export function deriveConstructionEnvelope(
  // Recursive branching is bounded by actual node capacity, not aesthetic preference.
  const maxRecursiveDepth=Math.max(1,Math.min(4,desired.hierarchyDepth??(maxNodes<8?1:maxNodes<20?2:maxNodes<40?3:4)));
  const maxBranching=maxNodes<10?2:maxNodes<24?3:maxNodes<40?4:5;
+ const maxColors=Math.max(1,Math.min(desired.maxColors??machine?.maxColors??16,machine?.maxColors??16));
  return {
   medium,minFeatureMm:limits.minFeatureMm,minGapMm:limits.minGapMm,
   maxScaleLevels:limits.maxScaleLevels,maxNodes,maxRecursiveDepth,maxBranching,
-  supportsCrossing:limits.supportsCrossing,targetOccupancy,seamPolicy:desired.seamPolicy??"avoid",maxColors:desired.maxColors,zoneBudgets
+  supportsCrossing:limits.supportsCrossing,targetOccupancy,seamPolicy:desired.seamPolicy??"avoid",maxColors,
+  machine:machine?{
+   id:machine.id,fieldXmm:machine.fieldX.value,fieldYmm:machine.fieldY.value,
+   supportsTubular:machine.supportsTubular,supportsFinishedSleeve:machine.supportsFinishedSleeve,
+   maxColors:machine.maxColors,maxStitches:machine.maxPracticalStitches,maxMinutes:machine.maxContinuousRunMinutes,
+   registrationToleranceMm:machine.registrationToleranceMm
+  }:undefined,zoneBudgets
  };
 }
