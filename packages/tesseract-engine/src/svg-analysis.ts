@@ -12,17 +12,19 @@ export type SvgStructuralAnalysis={
 
 export function analyzeSvgStructure(svg:string):SvgStructuralAnalysis{
  const flags:string[]=[];
- const paths=[...svg.matchAll(/<path\b[^>]*?(?:d="([^"]*)")?[^>]*>/g)].map(x=>x[1]??"");
+ const pathTags=[...svg.matchAll(/<path\b[^>]*>/g)].map(x=>x[0]);
+ const paths=pathTags.map(tag=>tag.match(/\bd="([^"]*)"/)?.[1]??"").filter(Boolean);
  const groups=count(svg,/<g\b/g),transforms=count(svg,/transform="/g),mirrors=count(svg,/scale\(\s*-1(?:\s|\))/g);
- const opacities=count(svg,/opacity="/g),layers=count(svg,/data-rich-layer=/g);
+ const opacities=count(svg,/opacity="/g),layers=count(svg,/data-(?:rich|composition|sash)-layer=/g);
  const strokes=[...svg.matchAll(/stroke-width="([\d.]+)"/g)].map(x=>Number(x[1])).filter(Number.isFinite);
  const strokeWidth=strokes.length?strokes.reduce((a,b)=>a+b,0)/strokes.length:2;
  const vb=svg.match(/viewBox="[-\d.]+\s+[-\d.]+\s+([\d.]+)\s+([\d.]+)"/);
  const w=Number(vb?.[1]||1),h=Number(vb?.[2]||1),aspect=w/Math.max(1,h);
- const unique=new Set(paths.filter(Boolean));
+ const unique=new Set(paths.map(d=>d.replace(/\s+/g," ").trim()));
  const uniquePathRatio=paths.length?unique.size/paths.length:0;
  const repeatedPathRatio=1-uniquePathRatio;
- const cmds={M:count(svg,/[Mm][-\d.]/g),L:count(svg,/[Ll][-\d.]/g),C:count(svg,/[Cc][-\d.]/g),Q:count(svg,/[Qq][-\d.]/g),A:count(svg,/[Aa][-\d.]/g),H:count(svg,/[Hh][-\d.]/g),V:count(svg,/[Vv][-\d.]/g)};
+ const pathData=paths.join(" ");
+ const cmds={M:count(pathData,/[Mm](?=[\s,.-]*\d)/g),L:count(pathData,/[Ll](?=[\s,.-]*\d)/g),C:count(pathData,/[Cc](?=[\s,.-]*\d)/g),Q:count(pathData,/[Qq](?=[\s,.-]*\d)/g),A:count(pathData,/[Aa](?=[\s,.-]*\d)/g),H:count(pathData,/[Hh](?=[\s,.-]*\d)/g),V:count(pathData,/[Vv](?=[\s,.-]*\d)/g)};
  const directionalEntropy=clamp(entropy([cmds.L+cmds.H,cmds.V,cmds.C+cmds.Q,cmds.A]));
  const commandTotal=Object.values(cmds).reduce((a,b)=>a+b,0);
  const density=clamp(commandTotal/900);
