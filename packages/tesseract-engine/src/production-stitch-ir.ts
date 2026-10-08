@@ -1,5 +1,6 @@
 import {primitiveForForm} from "./ascend-primitives";
 import type {ProductionGlyphObject} from "./production-object";
+import type {MasterCompositionPlan} from "./master-composition-plan";
 
 export type StitchIrPoint={x:number;y:number};
 export type StitchIrObject=
@@ -97,4 +98,29 @@ export function compileProductionObjectsToStitchIr(objects:ProductionGlyphObject
   });
  }
  return out;
+}
+
+
+export function applyMasterCompositionToStitchIr(
+ objects:StitchIrObject[],
+ plan:MasterCompositionPlan,
+ widthMm:number,
+ heightMm:number,
+ color="#111111"
+):StitchIrObject[]{
+ const p=plan.primary;
+ const mapPoint=(q:StitchIrPoint):StitchIrPoint=>({
+  x:p.offsetX*widthMm+q.x*p.scaleX,
+  y:p.offsetY*heightMm+q.y*p.scaleY
+ });
+ const primary=objects.map(o=>{
+  if(o.kind==="fill")return {...o,polygon:o.polygon.map(mapPoint)};
+  return {...o,path:o.path.map(mapPoint)};
+ });
+ const auxiliary:StitchIrObject[]=plan.auxiliaryLines.map(x=>({
+  kind:"run" as const,id:`composition:${x.id}`,color,
+  path:[{x:x.x1*widthMm,y:x.y1*heightMm},{x:x.x2*widthMm,y:x.y2*heightMm}],
+  length:2.5
+ }));
+ return [...primary,...auxiliary];
 }
