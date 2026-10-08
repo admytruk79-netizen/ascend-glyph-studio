@@ -49,7 +49,21 @@ export function runTesseractBatch(input:BatchInput):BatchResult{
  const found:SearchCandidate[]=searchDesignSpace({seed:input.seed,intent,principles:input.principles,antiStyle:input.antiStyle,visualCorpus:input.visualCorpus,niches:niches.length?niches:undefined,medium:input.medium,physicalHistory:input.physicalHistory,substrateId:input.garment?.material.substrateId,machineProfileId:input.machineProfileId,population:input.population??64,generations:input.generations??5,keep:input.keep??12});
  const zones=input.garment?designableZones(input.garment):[];
  const candidates=found.map((c,i)=>{
-  const enriched=expandRecursiveGrammar(c.topology,`${input.seed}:${i}`,{depth:constructionEnvelope?.maxRecursiveDepth??2,maxNodes:constructionEnvelope?.maxNodes??48,maxBranching:constructionEnvelope?.maxBranching??5,mutationRate:.2}),complexity=grammarComplexity(enriched);
+  const octaveUsableArea=constructionEnvelope
+   ?constructionEnvelope.zoneBudgets.reduce((n,z)=>n+z.usableAreaMm2*constructionEnvelope.targetOccupancy,0)
+   :undefined;
+  const enriched=expandRecursiveGrammar(c.topology,`${input.seed}:${i}`,{
+   depth:constructionEnvelope?.maxRecursiveDepth??2,
+   maxNodes:constructionEnvelope?.maxNodes??48,
+   maxBranching:constructionEnvelope?.maxBranching??5,
+   mutationRate:.2,
+   octave:{
+    enabled:true,
+    minFeatureMm:constructionEnvelope?.minFeatureMm,
+    usableAreaMm2:octaveUsableArea,
+    maxEstimatedStitches:constructionEnvelope?.machine?.maxStitches
+   }
+  }),complexity=grammarComplexity(enriched);
   const learnedLimits=input.medium?chooseProductionLimits(input.medium,input.learnedConstraints):undefined;
   const productionAdaptation=input.medium?adaptForProduction(enriched,input.medium,undefined,learnedLimits):undefined;
   const effectiveTopology=productionAdaptation?.topology??enriched;
@@ -82,7 +96,7 @@ export function runTesseractBatch(input:BatchInput):BatchResult{
   const trajectories=input.garment?buildGarmentTrajectories(input.garment,registration):[];
   zoneProjections=injectTrajectoryMetadata(zoneProjections,trajectories).map(z=>({...z,svg:renderZoneTrajectories(z.svg,z.zoneId,trajectories)}));
   const garmentProjection=input.garment?renderGarmentAtlasSvg(buildGarmentAtlas(input.garment),trajectories):undefined;
-  return {rank:i+1,score:c.score,novelty:c.novelty,lineageId:c.lineageId,objectives:c.objectives,trace:[...c.trace,`garment:${input.garment?.id??"none"}`,`zones:${zoneProjections.length}`,`continuity:${continuity.length}`,`registration:${registration.filter(x=>x.manufacturable).length}/${registration.length}`,`trajectories:${trajectories.length}`,`grammar:${complexity.score.toFixed(2)}`,`recursive:${complexity.recursive}`,...zoneProjections.filter(z=>z.surfaceMath).map(z=>`surface:${z.zoneId}:occupancy=${z.surfaceMath!.nominalOccupancy.toFixed(3)}:collisions=${z.surfaceMath!.invalidPairs.length}:seams=${z.surfaceMath!.seamCrossings.length}`)],genomeId:genome.id,productionObjects,projection,zones:zoneProjections,continuity,registration,trajectories,garmentProjection,evolution,visualAssessment,productionAdaptation,manufacturability};
+  return {rank:i+1,score:c.score,novelty:c.novelty,lineageId:c.lineageId,objectives:c.objectives,trace:[...c.trace,`garment:${input.garment?.id??"none"}`,`zones:${zoneProjections.length}`,`continuity:${continuity.length}`,`registration:${registration.filter(x=>x.manufacturable).length}/${registration.length}`,`trajectories:${trajectories.length}`,`grammar:${complexity.score.toFixed(2)}`,`recursive:${complexity.recursive}`,`octave-depth:${complexity.octaveDepth}`,...zoneProjections.filter(z=>z.surfaceMath).map(z=>`surface:${z.zoneId}:occupancy=${z.surfaceMath!.nominalOccupancy.toFixed(3)}:collisions=${z.surfaceMath!.invalidPairs.length}:seams=${z.surfaceMath!.seamCrossings.length}`)],genomeId:genome.id,productionObjects,projection,zones:zoneProjections,continuity,registration,trajectories,garmentProjection,evolution,visualAssessment,productionAdaptation,manufacturability};
  });
  const specimenSheet=renderLineageSpecimenSheet(found.map(c=>({lineageId:c.lineageId,topology:c.topology,objectives:c.objectives,score:c.score})));
  return {seed:input.seed,candidateCount:candidates.length,garmentId:input.garment?.id,machine,configurationIssues:issues,constructionEnvelope,candidates,specimenSheet};
