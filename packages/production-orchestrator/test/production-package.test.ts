@@ -6,4 +6,10 @@ const files=roles.map((role,i)=>({role,key:`f${i}`,sha256:"a".repeat(64)}));
 describe("production package",()=>{
  it("locks a complete hashed package",()=>expect(createProductionPackage({manifest,files,createdAt:"2026-10-02T01:00:00Z"}).packageId).toBe("ASC-1:v1"));
  it("rejects incomplete factory packages",()=>expect(()=>createProductionPackage({manifest,files:files.slice(1),createdAt:"2026-10-02T01:00:00Z"})).toThrow("missing production file"));
+ it("requires encoded-layer spec when the locked garment contains encoded ornament",()=>{
+  const encoded={...manifest,encodedLayers:[{id:"unit-band",zoneId:"cuff",mode:"secure-band" as const,codecVersion:"secure-glyph-v1",payloadHash:"b".repeat(64),widthMm:248,heightMm:36.5,repeats:1,verified:true,keyId:1}]};
+  expect(()=>createProductionPackage({manifest:encoded,files,createdAt:"2026-10-02T01:00:00Z"})).toThrow("encoded-layer-spec");
+  const withSpec=[...files,{role:"encoded-layer-spec" as const,key:"encoded.json",sha256:"c".repeat(64)}];
+  expect(createProductionPackage({manifest:encoded,files:withSpec,createdAt:"2026-10-02T01:00:00Z"}).manifest.encodedLayers?.[0]?.zoneId).toBe("cuff");
+ });
 });
