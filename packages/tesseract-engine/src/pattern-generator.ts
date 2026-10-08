@@ -11,6 +11,7 @@ import type {ImageObservation} from "./image-corpus";
 import {critiqueFinalSvg,type FinalSvgCritique} from "./final-svg-critic";
 import {compileMasterComposition} from "./master-composition";
 import {selectVisuallyDiverse} from "./design-fingerprint";
+import type {LearnedRelationPrior} from "./learned-relation-prior";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
@@ -19,7 +20,7 @@ export type PatternGeneratorInput={
  cultureIds?:string[];medium?:string;placement?:string;
  corpusSignals?:{id:string;weight:number;sourceIds?:string[]}[];
  population?:number;generations?:number;visualCorpus?:ImageObservation[];
- learnedGuidance?:{density:number;tags:{id:string;weight:number}[];palette:{hex:string;weight:number}[];model:string};
+ learnedGuidance?:{density:number;tags:{id:string;weight:number}[];palette:{hex:string;weight:number}[];model:string;relationPrior?:LearnedRelationPrior};
 };
 export type GeneratedPattern={
  id:string;lineageId:string;score:number;novelty:number;svg:string;
@@ -133,7 +134,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
     ...(input.placement?[{id:`placement:${input.placement}`,weight:.95}]:[])
    ]
   },
-  principles:[],niches:niche?[niche]:undefined,medium,visualCorpus:input.visualCorpus,
+  principles:[],niches:niche?[niche]:undefined,medium,visualCorpus:input.visualCorpus,relationPrior:input.learnedGuidance?.relationPrior,
   population:input.population??Math.round(32+complexity*64),generations:input.generations??Math.round(3+complexity*5),keep:searchKeep
  });
  const rendered=candidates.map((candidate,i)=>{
