@@ -46,7 +46,7 @@ export function satinColumn(center: Pt[], width: number | ((s: number) => number
       out.push(...resample(center, 2)); // centre run, out
     } else {
       // edge run up one rail and back the other (0.4 mm inside), then an open zigzag out to the end
-      const edge = (sd: 1 | -1) => resample(center, 2).map((_, i, arr) => {
+      const edge = (sd: 1 | -1): Stitch[] => resample(center, 2).map((_, i, arr) => {
         const s = (L * i) / (arr.length - 1);
         const { p, t } = sampleAt(center, s);
         const h = Math.max(0.2, w(s) / 2 - 0.4);
