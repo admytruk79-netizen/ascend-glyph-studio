@@ -74,10 +74,19 @@ async function loadCorpusSignals(seed:string){
  return [...m.entries()].sort((a,b)=>b[1].score-a[1].score).slice(0,96).map(([id,v])=>({id,weight:Math.min(1,.15+Math.log1p(v.score)/8),sourceIds:v.ids}));
 }
 async function loadVisualCorpus(seed:string){
- const q=await pool.query(`select a.id,a.source_key,a.tradition,a.kind,a.features,a.deconstruction,o.cultural_access,o.reliability
- from research_corpus_analysis a join research_corpus_object o on o.id=a.id
- where o.cultural_access in ('open','structure-only') and a.features <> '{}'::jsonb
- order by md5(a.id || $1)`,[seed]);
+ const q=await pool.query(`
+ with ranked as (
+   select a.id,a.source_key,a.tradition,a.kind,a.features,a.deconstruction,o.cultural_access,o.reliability,
+          row_number() over(partition by coalesce(nullif(a.tradition,''),'unknown') order by md5(a.id || $1)) rn
+   from research_corpus_analysis a join research_corpus_object o on o.id=a.id
+   where o.cultural_access in ('open','structure-only')
+     and a.features <> '{}'::jsonb
+     and coalesce(a.split,'train') <> 'holdout'
+ )
+ select id,source_key,tradition,kind,features,deconstruction,cultural_access,reliability
+ from ranked where rn <= 32
+ order by md5(id || $1)
+ limit 4096`,[seed]);
  return q.rows.map((r:any)=>{const f=r.features||{},d=r.deconstruction||{},dirs:string[]=[];
   if(f.dominantAxis==="horizontal")dirs.push("horizontal"); else if(f.dominantAxis==="vertical")dirs.push("vertical"); else dirs.push("field");
   if(Number(f.radiality||0)>.48)dirs.push("radial"); if(r.kind==="frieze"||r.kind==="band")dirs.push("wrap");
@@ -133,11 +142,9 @@ async function execute(run:any){
  process.stdout.write(JSON.stringify({runId:run.id,stage:"corpus-signals-loaded",signals:corpusSignals.length})+"\n");
  const visualCorpus=await loadVisualCorpus(run.seed);
  process.stdout.write(JSON.stringify({runId:run.id,stage:"visual-corpus-loaded",observations:visualCorpus.length})+"\n");
- const canon=deriveCorpusCanon(visualCorpus,{count:16,minTraditions:4,minSources:8,minSupport:24,minReferenceDistance:.035});
- await persistCorpusCanon(canon);
  const approvedCanon=await loadApprovedCanon();
  installCorpusCanon(approvedCanon);
- process.stdout.write(JSON.stringify({runId:run.id,stage:"corpus-canon-derived",canonical:canon.filter(x=>x.status==="canonical").length,total:canon.length})+"\n");
+ process.stdout.write(JSON.stringify({runId:run.id,stage:"canon-loaded",approved:approvedCanon.length})+"\n");
  const patterns=generatePatterns({seed:run.seed,concepts,paletteId:intent.paletteId,mode,complexity:intent.complexity??.72,variations:run.batch_size??12,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus,learnedGuidance});
  process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-complete",patterns:patterns.length})+"\n");
  // judge the rendered design, not its SVG text: tangles, overfilled or empty bands are rejected (kept with reasons)
@@ -162,6 +169,7 @@ async function execute(run:any){
   }
  }
 }
+async function corpusCount(){const q=await pool.query("select count(*)::int n from research_corpus_object where image_url is not null");return Number(q.rows[0]?.n||0)}
 async function persist(run:any,judged:{p:any;raster:RasterCritique|null;score:number}[],intent:Intent,mode:PatternMode,concepts:string[],corpusSignals:unknown[],visualCorpusCount:number){
  const c=await pool.connect();
  c.on("error",(err)=>process.stdout.write(JSON.stringify({level:"warn",event:"db_client_error",runId:run.id,message:err.message})+"\n"));
@@ -170,7 +178,7 @@ async function persist(run:any,judged:{p:any;raster:RasterCritique|null;score:nu
   await c.query("delete from synthesis_candidate where run_id=$1",[run.id]);
   for(let i=0;i<judged.length;i++){
    const {p,raster,score}=judged[i]!;
-   const state={patternId:p.id,lineageId:p.lineageId,svg:p.svg,objectives:p.objectives,raster,mode,concepts,corpusSignals,visualCorpusCount,corpusObjectCount:28265};
+   const state={patternId:p.id,lineageId:p.lineageId,svg:p.svg,objectives:p.objectives,finalCritique:p.finalCritique,raster,mode,concepts,corpusSignals,visualCorpusCount,corpusObjectCount:await corpusCount()};
    const complexity={target:intent.complexity??.72,novelty:p.novelty};
    const disposition=raster&&!raster.survive?"rejected-raster":"candidate";
    await c.query(`insert into synthesis_candidate(id,run_id,ordinal,state,complexity,score,disposition)
@@ -182,12 +190,9 @@ async function persist(run:any,judged:{p:any;raster:RasterCritique|null;score:nu
  }catch(e){await c.query("rollback").catch(()=>{});throw e}finally{c.release(true)}
 }
 async function main(){
- const bootstrapVisual=await loadVisualCorpus("corpus-canonical-bootstrap-v1");
- const bootstrapCanon=deriveCorpusCanon(bootstrapVisual,{count:16,minTraditions:4,minSources:8,minSupport:24,minReferenceDistance:.02});
- await persistCorpusCanon(bootstrapCanon);
  const approvedCanon=await loadApprovedCanon();
  installCorpusCanon(approvedCanon);
- process.stdout.write(JSON.stringify({stage:"corpus-canon-bootstrap",observations:bootstrapVisual.length,canonical:bootstrapCanon.filter(x=>x.status==="canonical").length,total:bootstrapCanon.length})+"\n");
+ process.stdout.write(JSON.stringify({stage:"canon-bootstrap",approved:approvedCanon.length,mode:"persisted-canon"})+"\n");
  // Keep polling: new runs are queued automatically (daily designs workflow) and must be picked up without a
  // redeploy. A failed claim (e.g. Neon waking up) waits and tries again instead of ending the worker.
  const poll=Number(process.env.WORKER_POLL_MS??30000);
