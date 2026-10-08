@@ -1,6 +1,6 @@
 import type {Topology,TopologyNode,TopologyEdge} from "./topology";
 
-export type RecursiveGrammarOptions={depth?:number;maxNodes?:number;mutationRate?:number};
+export type RecursiveGrammarOptions={depth?:number;maxNodes?:number;mutationRate?:number;maxBranching?:number};
 const expandable=new Set(["seed","bifurcation","branch","orbit","axis","mutation","enclosure"]);
 function hash(s:string){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
 function childForms(form:string):string[]{
@@ -17,12 +17,12 @@ function childForms(form:string):string[]{
 function relation(parent:string,child:string,i:number){if(parent==="orbit")return "orbit";if(parent==="enclosure")return "enclose";if(child==="bifurcation")return "branch";if(child==="seed")return i?"repeat":"anchor";return "flow";}
 
 export function expandRecursiveGrammar(base:Topology,seed:string,opt:RecursiveGrammarOptions={}):Topology{
- const depth=Math.max(0,Math.min(4,opt.depth??2)),maxNodes=Math.max(base.nodes.length,opt.maxNodes??48),mutation=opt.mutationRate??.22;
+ const depth=Math.max(0,Math.min(4,opt.depth??2)),maxNodes=Math.max(base.nodes.length,opt.maxNodes??48),mutation=opt.mutationRate??.22,maxBranching=Math.max(1,Math.floor(opt.maxBranching??5));
  const nodes:TopologyNode[]=base.nodes.map(n=>({...n})),edges:TopologyEdge[]=base.edges.map(e=>({...e}));
  let frontier=base.nodes.map(n=>({node:n,level:0}));
  while(frontier.length&&nodes.length<maxNodes){
   const current=frontier.shift()!;if(current.level>=depth||!expandable.has(current.node.form))continue;
-  const forms=childForms(current.node.form),next:{node:TopologyNode;level:number}[]=[];
+  const forms=childForms(current.node.form).slice(0,maxBranching),next:{node:TopologyNode;level:number}[]=[];
   forms.forEach((raw,i)=>{
    if(nodes.length>=maxNodes)return;
    const roll=(hash(seed+current.node.id+":"+current.level+":"+i)%1000)/1000;
