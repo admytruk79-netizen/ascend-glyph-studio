@@ -128,12 +128,17 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  const candidates=searchDesignSpace({
   seed:input.seed,
   intent:{
-   concepts:[...concepts.map((id,i)=>({id,weight:Math.max(.35,1-i*.09)})),...culturalConcepts,...corpusConcepts,...learnedConcepts],
+   // Only semantic intent becomes drawable topology. Corpus/cultural/learned evidence
+   // conditions the search but must never explode into hundreds of drawable nodes.
+   concepts:concepts.map((id,i)=>({id,weight:Math.max(.35,1-i*.09)})),
    traditions:[{id:"ascend-universal",weight:1},...cultureIds.map((id,i)=>({id:`evidence:${id}`,weight:Math.max(.35,.75-i*.05)}))],
    character:[
     {id:"ordered-organic",weight:.55+complexity*.35},
     {id:"minimal-complex",weight:complexity},
     {id:"learned-density",weight:learnedDensity},
+    ...culturalConcepts.slice(0,8),
+    ...corpusConcepts.slice(0,12),
+    ...learnedConcepts.slice(0,5),
     ...(input.learnedGuidance?.tags??[]).slice(0,3).map(x=>({id:`learned:${x.id}`,weight:x.weight})),
     ...(input.medium?[{id:`medium:${input.medium}`,weight:.9}]:[]),
     ...(input.placement?[{id:`placement:${input.placement}`,weight:.95}]:[])
