@@ -14,6 +14,13 @@ import {selectVisuallyDiverse} from "./design-fingerprint";
 import type {LearnedRelationPrior} from "./learned-relation-prior";
 import {mergeSashEvidencePrior,sashGrammarFor} from "./sash-evidence-grammar";
 import type {StructuralFeedback} from "./structural-feedback";
+import {deriveZoneConstructionEnvelope,type ConstructionIntent} from "./construction-envelope";
+import {machineTemplate,assertUsableMachineTemplate} from "./machine-template";
+import {expandRecursiveGrammar,grammarComplexity} from "./recursive-grammar";
+import {productionObjectsFromTopology,assertProductionRelations,placeProductionObjects,type ProductionGlyphObject} from "./production-object";
+import {compileProductionObjectsToStitchIr,type StitchIrObject} from "./production-stitch-ir";
+import {solveRelationalLayout} from "./relational-layout";
+import {evaluateSurfaceLayout,type SurfaceFootprint} from "./garment-surface-math";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
@@ -24,11 +31,21 @@ export type PatternGeneratorInput={
  population?:number;generations?:number;visualCorpus?:ImageObservation[];
  learnedGuidance?:{density:number;tags:{id:string;weight:number}[];palette:{hex:string;weight:number}[];model:string;relationPrior?:LearnedRelationPrior};
  structuralFeedback?:StructuralFeedback;
+ machineProfileId?:string;
+ constructionIntent?:ConstructionIntent;
+ physicalWidthMm?:number;
+ physicalHeightMm?:number;
 };
 export type GeneratedPattern={
  id:string;lineageId:string;score:number;novelty:number;svg:string;
  objectives:ReturnType<typeof searchDesignSpace>[number]["objectives"];
  finalCritique:FinalSvgCritique;
+ productionObjects?:ProductionGlyphObject[];
+ stitchObjects?:StitchIrObject[];
+ surfaceMath?:ReturnType<typeof evaluateSurfaceLayout>;
+ machineProfileId?:string;
+ physicalSizeMm?:{width:number;height:number};
+ octave?:ReturnType<typeof grammarComplexity>;
 };
 
 const nicheForMode=(mode:PatternMode):DesignNicheId|undefined=>({
@@ -70,6 +87,27 @@ function richOrnament(svg:string,mode:PatternMode,complexity:number,medium:Mediu
  const filter=medium==="emboss"||medium==="leather-tooling"?` filter="url(#rich-relief)"`:"";
  const defs=(medium==="emboss"||medium==="leather-tooling")?`<defs><filter id="rich-relief"><feGaussianBlur in="SourceAlpha" stdDeviation="1.2" result="b"/><feSpecularLighting in="b" surfaceScale="3" specularConstant=".55" specularExponent="18" lighting-color="white" result="s"><feDistantLight azimuth="225" elevation="45"/></feSpecularLighting><feComposite in="s" in2="SourceAlpha" operator="in" result="si"/><feMerge><feMergeNode in="si"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`:"";
  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" data-rich-composition="true" data-medium="${medium}" data-levels="${levels}">${defs}<g fill="none" stroke="currentColor" stroke-width="${stroke}" stroke-linecap="round" stroke-linejoin="round"${filter}>${transforms.join("")}</g></svg>`;
+}
+
+function physicalSizeForMode(mode:PatternMode,input:PatternGeneratorInput){
+ const defaults:Record<PatternMode,{width:number;height:number}>={
+  band:{width:250,height:60},cuff:{width:250,height:60},collar:{width:420,height:50},
+  sleeve:{width:360,height:500},field:{width:360,height:420},emblem:{width:100,height:100}
+ };
+ const d=defaults[mode];
+ return {width:Math.max(20,input.physicalWidthMm??d.width),height:Math.max(20,input.physicalHeightMm??d.height)};
+}
+function physicalZone(mode:PatternMode,widthMm:number,heightMm:number):GarmentZone{
+ const wrap=mode==="band"||mode==="cuff"||mode==="collar"||mode==="sleeve";
+ const kind=mode==="band"?"hem":mode==="field"?"back":mode==="emblem"?"chest":mode;
+ return {
+  id:`production:${mode}`,kind,
+  surface:mode==="sleeve"?"tapered-cylinder":wrap?"cylinder":"flat",
+  widthMm:wrap?undefined:widthMm,heightMm,
+  circumferenceMm:wrap?widthMm:undefined,
+  circumferenceEndMm:mode==="sleeve"?Math.max(120,widthMm*.68):undefined,
+  editable:true,wrapAllowed:wrap,seamPositions:wrap?[0]:undefined
+ };
 }
 
 function projectionZone(mode:PatternMode,width:number,height:number):GarmentZone{
@@ -114,6 +152,10 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  const mode=input.mode??"band",niche=nicheForMode(mode),variations=Math.max(4,Math.min(input.variations??12,32));
  const searchKeep=Math.min(32,Math.max(variations+4,variations*2));
  const width=input.width??960,height=input.height??260,medium=mediumForMode(mode,input.medium),zone=projectionZone(mode,width,height);
+ const physicalSize=physicalSizeForMode(mode,input),productionZone=physicalZone(mode,physicalSize.width,physicalSize.height);
+ const machine=machineTemplate(input.machineProfileId);if(machine)assertUsableMachineTemplate(machine);
+ const constructionEnvelope=deriveZoneConstructionEnvelope([productionZone],medium,undefined,input.constructionIntent??{},machine);
+ const octaveArea=constructionEnvelope.zoneBudgets.reduce((n,z)=>n+z.usableAreaMm2*constructionEnvelope.targetOccupancy,0);
  const requestedComplexity=Math.max(0,Math.min(1,input.complexity??.65));
  const learnedDensity=Math.max(0,Math.min(1,input.learnedGuidance?.density??requestedComplexity));
  const complexity=Math.max(0,Math.min(1,requestedComplexity*.72+learnedDensity*.28));
@@ -151,15 +193,31 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  const drawableCandidates=candidates.filter(c=>c.topology.nodes.length>=minDrawableNodes);
  const renderCandidates=drawableCandidates.length?drawableCandidates:candidates;
  const rendered=renderCandidates.map((candidate,i)=>{
-  const adapted=adaptForProduction(candidate.topology,medium,niche);
+  const enriched=expandRecursiveGrammar(candidate.topology,`${input.seed}:live:${i}`,{
+   depth:constructionEnvelope.maxRecursiveDepth,maxNodes:constructionEnvelope.maxNodes,maxBranching:constructionEnvelope.maxBranching,mutationRate:.2,
+   octave:{enabled:true,minFeatureMm:constructionEnvelope.minFeatureMm,usableAreaMm2:octaveArea,maxEstimatedStitches:constructionEnvelope.machine?.maxStitches}
+  });
+  const octave=grammarComplexity(enriched);
+  const adapted=adaptForProduction(enriched,medium,niche);
+  let productionObjects=productionObjectsFromTopology(adapted.topology,constructionEnvelope,{zoneId:productionZone.id,seamPolicy:constructionEnvelope.seamPolicy,wrapAllowed:productionZone.wrapAllowed});
+  assertProductionRelations(adapted.topology,productionObjects);
+  const physicalLayout=solveRelationalLayout(adapted.topology,physicalSize.width,physicalSize.height,`${input.seed}:physical:${i}`,productionZone,{minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy});
+  productionObjects=placeProductionObjects(productionObjects,physicalLayout.points);
+  const stitchObjects=compileProductionObjectsToStitchIr(productionObjects);
+  let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
+  if(productionZone.wrapAllowed&&(productionZone.surface==="cylinder"||productionZone.surface==="tapered-cylinder")){
+   const byId=new Map(productionObjects.map(o=>[o.id,o]));
+   const items:SurfaceFootprint[]=adapted.topology.nodes.map(n=>{const p=physicalLayout.points[n.id]!,o=byId.get(n.id)!;return{id:n.id,u:p.x,v:p.y,widthMm:o.physical.widthMm,heightMm:o.physical.heightMm,rotationDeg:p.angleDeg,clearanceMm:o.physical.clearanceMm};});
+   surfaceMath=evaluateSurfaceLayout(productionZone,items);
+  }
   const g=genomeFromTopology(`pattern:${input.seed}:${i}`,adapted.topology);
   const relationStride=medium==="embroidery"?((input.structuralFeedback?.crossingReduction??0)>.5?0:3):1;
-  const projected=projectSemanticGeometry(g,width,height,zone,{relationStride});
+  const projected=projectSemanticGeometry(g,width,height,zone,{relationStride,minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy});
   const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`,sashGrammar,structuralFeedback:input.structuralFeedback});
   const svg=colorize(master,input.paletteId??"underdog-heritage");
   const finalCritique=critiqueFinalSvg(svg,medium,input.visualCorpus??[]);
   const combinedScore=candidate.score+finalCritique.score*.45;
-  return {id:`pat-${input.seed}-${i+1}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,finalCritique};
+  return {id:`pat-${input.seed}-${i+1}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,finalCritique,productionObjects,stitchObjects,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave};
  }).sort((a,b)=>b.score-a.score);
  const survivors=rendered.filter(x=>x.finalCritique.survive);
  const pool=survivors.length>=Math.min(4,variations)?survivors:rendered;
