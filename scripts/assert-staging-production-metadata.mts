@@ -18,6 +18,16 @@ for(const r of q.rows){
  if(!(Number(s.physicalSizeMm?.width)>0&&Number(s.physicalSizeMm?.height)>0))failures.push(`${r.ordinal}:missing-physical-size`);
  if(!s.octave||!Number.isFinite(Number(s.octave.nodes)))failures.push(`${r.ordinal}:missing-octave-state`);
  if(!s.surfaceMath||!Number.isFinite(Number(s.surfaceMath.nominalOccupancy)))failures.push(`${r.ordinal}:missing-surface-math`);
+ const pc=s.productionCompile;
+ if(!pc)failures.push(`${r.ordinal}:missing-production-compile`);
+ else{
+  if(!(Number(pc.compiledStitches)>0))failures.push(`${r.ordinal}:missing-compiled-stitches`);
+  if(!(Number(pc.totalThreadM)>0))failures.push(`${r.ordinal}:missing-thread-estimate`);
+  if(!(Number(pc.minutes)>0))failures.push(`${r.ordinal}:missing-machine-time`);
+  if(!Array.isArray(pc.checks)||!pc.checks.length)failures.push(`${r.ordinal}:missing-machine-gate`);
+  // Reference linen recipe is intentionally unvalidated, so release must remain false.
+  if(pc.release!==false)failures.push(`${r.ordinal}:reference-recipe-incorrectly-released`);
+ }
 }
 console.log(JSON.stringify({runId,candidates:q.rows.length,pass:failures.length===0,failures},null,2));
 await pool.end();
