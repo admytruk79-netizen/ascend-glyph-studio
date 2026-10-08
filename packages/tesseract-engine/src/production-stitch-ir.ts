@@ -124,3 +124,26 @@ export function applyMasterCompositionToStitchIr(
  }));
  return [...primary,...auxiliary];
 }
+
+
+export type StitchIrFootprint={
+ id:string;u:number;v:number;widthMm:number;heightMm:number;rotationDeg:number;clearanceMm:number;
+};
+
+/**
+ * Derive physical surface footprints from the FINAL stitch IR after master
+ * composition. This keeps surface validation aligned with what will actually
+ * be digitized instead of measuring the pre-composition semantic skeleton.
+ */
+export function stitchIrFootprints(objects:StitchIrObject[],clearanceMm:number):StitchIrFootprint[]{
+ return objects.map(o=>{
+  const pts=o.kind==="fill"?o.polygon:o.path;
+  if(!pts.length)throw new Error("stitch IR object has no geometry: "+o.id);
+  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+  for(const p of pts){minX=Math.min(minX,p.x);minY=Math.min(minY,p.y);maxX=Math.max(maxX,p.x);maxY=Math.max(maxY,p.y);}
+  const stroke=o.kind==="satin"?o.width:o.kind==="run"?.5:0;
+  const widthMm=Math.max(.1,maxX-minX+stroke);
+  const heightMm=Math.max(.1,maxY-minY+stroke);
+  return {id:o.id,u:(minX+maxX)/2,v:(minY+maxY)/2,widthMm,heightMm,rotationDeg:0,clearanceMm};
+ });
+}
