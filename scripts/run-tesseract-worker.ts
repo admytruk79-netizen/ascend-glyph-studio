@@ -124,6 +124,27 @@ async function loadLearnedGuidance(){
  return {density,tags:[...tagScores.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5).map(([id,weight])=>({id,weight})),palette:[...colorScores.entries()].sort((a,b)=>b[1]-a[1]).slice(0,6).map(([hex,weight])=>({hex,weight})),model:String(body.version||"tesseract-learned")};
 }
 
+async function loadPreferenceModel(){
+ const q=await pool.query("select feature_order,weights,bias,pair_count,metrics from preference_model where id='preference-latest' limit 1");
+ return q.rows[0]??null;
+}
+function preferenceAdjustment(model:any,p:any,raster:any,baseScore:number){
+ if(!model||Number(model.pair_count||0)<8)return 0;
+ const f=p.finalCritique||{},cx=p.novelty??0;
+ const raw:Record<string,number>={
+  svgQuality:Number(f.quality||0),originality:Number(f.originality||0),genericRisk:Number(f.genericRisk||0),
+  derivativeRisk:Number(f.derivativeRisk||0),rasterQuality:Number(raster?.quality||0),rasterBalance:Number(raster?.balance||0),
+  novelty:Number(cx||0),baseScore:Number(baseScore||0)/100
+ };
+ const mean=model.metrics?.mean??[],sd=model.metrics?.sd??[];
+ let z=Number(model.bias||0);
+ for(let i=0;i<(model.feature_order??[]).length;i++){
+  const name=model.feature_order[i],v=raw[name]??0,m=Number(mean[i]||0),s=Number(sd[i]||1)||1;
+  z+=Number(model.weights?.[i]||0)*((v-m)/s);
+ }
+ return Math.max(-20,Math.min(20,z))*2.5;
+}
+
 async function persistCorpusCanon(canon:any[]){
  for(const x of canon){
   await pool.query(`insert into corpus_canonical(id,version,status,support,traditions,sources,centroid,paths,nearest_reference_distance,provenance,built_at)
@@ -139,6 +160,7 @@ async function execute(run:any){
  const mode=(intent.mode??(intent.zoneId?.includes("sleeve")?"sleeve":"band")) as PatternMode;
  const corpusSignals=await loadCorpusSignals(run.seed);
  const learnedGuidance=await loadLearnedGuidance();
+ const preferenceModel=await loadPreferenceModel();
  process.stdout.write(JSON.stringify({runId:run.id,stage:"corpus-signals-loaded",signals:corpusSignals.length})+"\n");
  const visualCorpus=await loadVisualCorpus(run.seed);
  process.stdout.write(JSON.stringify({runId:run.id,stage:"visual-corpus-loaded",observations:visualCorpus.length})+"\n");
@@ -152,10 +174,11 @@ async function execute(run:any){
  for(const p of patterns){
   let raster:RasterCritique|null=null;
   try{raster=await critiqueRaster(p.svg)}catch(e){process.stdout.write(JSON.stringify({runId:run.id,stage:"raster-critic-error",pattern:p.id,message:String((e as Error).message).slice(0,120)})+"\n")}
-  judged.push({p,raster,score:p.score+(raster?raster.quality*60-(raster.survive?0:80):0)});
+  const base=p.score+(raster?raster.quality*60-(raster.survive?0:80):0);
+  judged.push({p,raster,score:base+preferenceAdjustment(preferenceModel,p,raster,base)});
  }
  judged.sort((a,b)=>Number(b.raster?.survive??false)-Number(a.raster?.survive??false)||b.score-a.score);
- process.stdout.write(JSON.stringify({runId:run.id,stage:"raster-critic",passed:judged.filter(j=>j.raster?.survive).length,of:judged.length})+"\n");
+ process.stdout.write(JSON.stringify({runId:run.id,stage:"raster-critic",passed:judged.filter(j=>j.raster?.survive).length,of:judged.length,preferencePairs:Number(preferenceModel?.pair_count||0)})+"\n");
  // Generation takes minutes of CPU; meanwhile Neon may suspend the idle compute and drop connections.
  // Save on a fresh connection with its own error handler (an unhandled client 'error' kills the process),
  // retrying with backoff while the compute wakes up.
