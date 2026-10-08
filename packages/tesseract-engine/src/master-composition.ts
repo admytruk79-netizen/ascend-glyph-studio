@@ -1,8 +1,9 @@
 import type {MediumId} from "./medium-compiler";
 import type {SashEvidenceGrammar} from "./sash-evidence-grammar";
+import type {StructuralFeedback} from "./structural-feedback";
 
 export type MasterCompositionMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
-export type MasterCompositionInput={svg:string;mode:MasterCompositionMode;complexity:number;medium:MediumId;width:number;height:number;seed:string;sashGrammar?:SashEvidenceGrammar};
+export type MasterCompositionInput={svg:string;mode:MasterCompositionMode;complexity:number;medium:MediumId;width:number;height:number;seed:string;sashGrammar?:SashEvidenceGrammar;structuralFeedback?:StructuralFeedback};
 
 const hash=(s:string)=>{let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
 const unit=(n:number,min:number,max:number)=>min+(n/0xffffffff)*(max-min);
@@ -13,8 +14,9 @@ function body(svg:string){
 }
 function strokeFor(m:MediumId){return m==="print"?1.8:m==="embroidery"?2.65:m==="emboss"?3.15:3.35}
 function scholarlySashComposition(input:MasterCompositionInput,b:string){
- const g=input.sashGrammar!;const {width,height,medium,mode}=input;
- const centerH=height*g.centralShare;
+ const g=input.sashGrammar!;const {width,height,medium,mode}=input,fb=input.structuralFeedback;
+ const centerShare=Math.max(.38,Math.min(.66,g.centralShare+(fb?.centralHierarchyBoost??0)*.12));
+ const centerH=height*centerShare;
  const flankH=Math.max(1,(height-centerH)*.5);
  const inner=Math.max(1.5,height*.018);
  const sourceId="sash-source";
