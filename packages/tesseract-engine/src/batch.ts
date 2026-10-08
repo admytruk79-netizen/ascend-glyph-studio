@@ -54,7 +54,7 @@ export function runTesseractBatch(input:BatchInput):BatchResult{
   const visualAssessment=input.visualCorpus?.length?assessVisual(topologyVisualVector(effectiveTopology),input.visualCorpus):undefined;
   const genome=genomeFromTopology(`${input.seed}:${i}`,effectiveTopology),projection=projectSemanticGeometry(genome);
   const zoneTopologies=Object.fromEntries(zones.map(z=>[z.id,composeTopologyForZone(effectiveTopology,z,`${input.seed}:${i}`)]));
-  let zoneProjections=zones.map(z=>{
+  let zoneProjections:ZoneProjection[]=zones.map(z=>{
    const canvas=zoneCanvas(z),zoneTopology=zoneTopologies[z.id]!,zoneGenome=genomeFromTopology(`${input.seed}:${i}:${z.id}`,zoneTopology);
    const svg=projectSemanticGeometry(zoneGenome,canvas.width,canvas.height,z,{minGapMm:constructionEnvelope?.minGapMm,seamPolicy:constructionEnvelope?.seamPolicy});
    let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
