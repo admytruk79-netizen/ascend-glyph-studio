@@ -18,9 +18,10 @@ import {deriveZoneConstructionEnvelope,type ConstructionIntent} from "./construc
 import {machineTemplate,assertUsableMachineTemplate} from "./machine-template";
 import {expandRecursiveGrammar,grammarComplexity} from "./recursive-grammar";
 import {productionObjectsFromTopology,assertProductionRelations,placeProductionObjects,type ProductionGlyphObject} from "./production-object";
-import {compileProductionObjectsToStitchIr,type StitchIrObject} from "./production-stitch-ir";
+import {compileProductionObjectsToStitchIr,applyMasterCompositionToStitchIr,type StitchIrObject} from "./production-stitch-ir";
 import {solveRelationalLayout} from "./relational-layout";
 import {evaluateSurfaceLayout,type SurfaceFootprint} from "./garment-surface-math";
+import {buildMasterCompositionPlan} from "./master-composition-plan";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
@@ -203,7 +204,9 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   assertProductionRelations(adapted.topology,productionObjects);
   const physicalLayout=solveRelationalLayout(adapted.topology,physicalSize.width,physicalSize.height,`${input.seed}:physical:${i}`,productionZone,{minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy});
   productionObjects=placeProductionObjects(productionObjects,physicalLayout.points);
-  const stitchObjects=compileProductionObjectsToStitchIr(productionObjects);
+  const baseStitchObjects=compileProductionObjectsToStitchIr(productionObjects);
+  const compositionPlan=buildMasterCompositionPlan({mode,medium,complexity,sashGrammar,structuralFeedback:input.structuralFeedback});
+  const stitchObjects=applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height);
   let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
   if(productionZone.wrapAllowed&&(productionZone.surface==="cylinder"||productionZone.surface==="tapered-cylinder")){
    const byId=new Map(productionObjects.map(o=>[o.id,o]));
