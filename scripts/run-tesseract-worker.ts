@@ -199,7 +199,7 @@ async function loadLearnedGuidance(){
  const gaps=Object.values<any>(lego.repeats??{}).map(x=>Number(x.gap||0)).filter(x=>x>0);
  const median=(xs:number[])=>xs.length?[...xs].sort((a,b)=>a-b)[Math.floor(xs.length/2)]!:0;
  const logRatios=ratios.map((x:number)=>Math.abs(Math.log(x/preferredScaleRatio)));
- const assemblyPrior={
+ const assemblyPrior=body.assemblyPrior??{
   hierarchyStrength,adjacencyDensity:Math.min(1,pairs.length/360),axialBias,diagonalBias,
   repeatRegularity:regularities.length?regularities.reduce((a,b)=>a+b,0)/regularities.length:repeatStrength,
   repeatGap:median(gaps)||.15,scaleRatioMedian:preferredScaleRatio,scaleRatioSpread:median(logRatios)||.35,
