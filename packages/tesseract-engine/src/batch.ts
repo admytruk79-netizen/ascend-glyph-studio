@@ -30,9 +30,10 @@ import {solveRelationalLayout} from "./relational-layout";
 import {evaluateSurfaceLayout,type SurfaceFootprint} from "./garment-surface-math";
 import {productionObjectsFromTopology,assertProductionRelations,placeProductionObjects,type ProductionGlyphObject} from "./production-object";
 import {machineTemplate,assertUsableMachineTemplate,type MachineTemplate} from "./machine-template";
+import {compileProductionObjectsToStitchIr,type StitchIrObject} from "./production-stitch-ir";
 
 export type BatchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];constructionIntent?:ConstructionIntent;antiStyle?:WeightedRef[];garment?:GarmentConfiguration;compatibilityRules?:CompatibilityRule[];visualCorpus?:ImageObservation[];medium?:MediumId;learnedConstraints?:LearnedConstraintSnapshot;physicalHistory?:PhysicalValidation[];machineProfileId?:string;population?:number;generations?:number;keep?:number};
-export type ZoneProjection={zoneId:string;kind:GarmentZone["kind"];surface:GarmentZone["surface"];wrap:boolean;behavior:ZoneBehavior;svg:SvgProjection;productionObjects?:ProductionGlyphObject[];surfaceMath?:ReturnType<typeof evaluateSurfaceLayout>};
+export type ZoneProjection={zoneId:string;kind:GarmentZone["kind"];surface:GarmentZone["surface"];wrap:boolean;behavior:ZoneBehavior;svg:SvgProjection;productionObjects?:ProductionGlyphObject[];stitchObjects?:StitchIrObject[];surfaceMath?:ReturnType<typeof evaluateSurfaceLayout>};
 export type BatchCandidate={rank:number;score:number;novelty:number;lineageId:string;objectives:ObjectiveVector;trace:string[];genomeId:string;productionObjects?:ProductionGlyphObject[];projection:SvgProjection;zones:ZoneProjection[];continuity:ContinuityEvent[];registration:ContinuitySegment[];trajectories:GarmentTrajectory[];garmentProjection?:GarmentSvg;evolution:EvolutionPlan;visualAssessment?:VisualAssessment;productionAdaptation?:ProductionAdaptation;manufacturability?:ManufacturabilityReport};
 export type BatchResult={seed:string;candidateCount:number;garmentId?:string;machine?:MachineTemplate;configurationIssues:ConfigurationIssue[];constructionEnvelope?:ConstructionEnvelope;candidates:BatchCandidate[];specimenSheet?:SpecimenSheet};
 
@@ -90,7 +91,8 @@ export function runTesseractBatch(input:BatchInput):BatchResult{
     });
     surfaceMath=evaluateSurfaceLayout(z,items);
    }
-   return {zoneId:z.id,kind:z.kind,surface:z.surface,wrap:z.wrapAllowed,behavior:behaviorForZone(z.kind),svg,productionObjects:zoneProductionObjects,surfaceMath};
+   const stitchObjects=zoneProductionObjects?compileProductionObjectsToStitchIr(zoneProductionObjects):undefined;
+   return {zoneId:z.id,kind:z.kind,surface:z.surface,wrap:z.wrapAllowed,behavior:behaviorForZone(z.kind),svg,productionObjects:zoneProductionObjects,stitchObjects,surfaceMath};
   });
   const continuity=input.garment?connectGarmentZones(input.garment,zoneTopologies):[];
   const registration=input.garment?planContinuityRegistration(input.garment,continuity):[];
