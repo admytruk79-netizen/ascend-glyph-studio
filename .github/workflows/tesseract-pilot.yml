@@ -22,3 +22,10 @@ jobs:
         run: npm run build --workspace=@ascend/tesseract-engine
       - name: Run pilot production
         run: npm run pilot --workspace=@ascend/tesseract-engine
+      - name: Upload pilot artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tesseract-pilot-output
+          path: packages/tesseract-engine/tesseract-pilot-output
+          if-no-files-found: warn

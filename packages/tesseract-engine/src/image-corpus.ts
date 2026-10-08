@@ -2,7 +2,7 @@ export type ImageCorpusClass="source-drawing"|"real-historical"|"real-manufactur
 export type EvidenceTier="A"|"B"|"C"|"D";
 export type ImageObservation={
  id:string;sourceRef:string;class:ImageCorpusClass;evidenceTier:EvidenceTier;
- verifiedReal:boolean;trainingUse:"geometry"|"composition"|"material"|"manufacturing"|"negative-example";
+ verifiedReal:boolean;trainingUse:"geometry"|"composition"|"material"|"manufacturing"|"negative-example";tradition?:string;
  features:{
   symmetry?:number;density?:number;voidRatio?:number;scaleLevels?:number;
   densityVariation?:number;directionalEntropy?:number;axisStrength?:number;rotation180?:number;
