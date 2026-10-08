@@ -182,15 +182,19 @@ async function extract(): Promise<{ kept: Kept[]; stats: Stats }> {
       const raw = await sharp(buf).rotate().resize(384, 384, { fit: "inside" }).removeAlpha().raw().toBuffer({ resolveWithObject: true });
       const img = { data: raw.data, width: raw.info.width, height: raw.info.height };
       const L = learnImage(img);
-      const A = assemble(img, sigs, sigScale, 40, L);
+      // greyscale book scans (archive.org pages) are kept for tags but not for pieces or motif shapes: grey blobs on a
+      // printed page read as birds and trees, and they have no thread colours to learn
+      let chroma = 0; for (let q = 0; q < raw.data.length; q += 9) chroma += Math.max(raw.data[q]!, raw.data[q + 1]!, raw.data[q + 2]!) - Math.min(raw.data[q]!, raw.data[q + 1]!, raw.data[q + 2]!);
+      const grey = chroma / (raw.data.length / 9) < 14;
+      const A = grey ? null : assemble(img, sigs, sigScale, 40, L);
       kept.push({
         id: r.id, tradition: t, region: t === "Ukrainian" ? regionOf(r) : undefined, ornamentP: +ornamentP.toFixed(3),
         tags: Object.fromEntries(types.map((k, i) => [k, +tp[i]!.toFixed(3)])),
         palette: L.palette.slice(0, 5).map((s) => ({ hex: hex(s.rgb), share: +s.share.toFixed(3) })), ground: hex(L.ground), density: +L.density.toFixed(3),
         // motif elements are only clustered for the focus traditions; keep the shard files small otherwise
-        elements: FOCUS.has(t) ? L.elements.map((e) => ({ ...e, profile: e.profile.map((v) => +v.toFixed(3)) })) : [],
+        elements: FOCUS.has(t) && !grey ? L.elements.map((e) => ({ ...e, profile: e.profile.map((v) => +v.toFixed(3)) })) : [],
         // pieces without their shape vectors (novel ones keep theirs, for clustering into new bricks)
-        lego: { ...A, pieces: A.pieces.map((p) => (p.brick === "novel" ? p : { ...p, f: undefined })) },
+        ...(A ? { lego: { ...A, pieces: A.pieces.map((p) => (p.brick === "novel" ? p : { ...p, f: undefined })) } } : {}),
       });
       done.set(t, (done.get(t) ?? 0) + 1); stats.kept++; stats.perTradition[t] = done.get(t)!;
       if (stats.kept % 100 === 0) console.log(JSON.stringify({ progress: stats }));

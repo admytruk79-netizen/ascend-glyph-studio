@@ -115,9 +115,9 @@ export function densify(k: Kit, o: DensifyOptions): number {
         const v = (o.variant ?? 0) % 3, up = -Math.PI / 2;
         if (v === 0) { for (const s of [-1, 0, 1]) k.leaf(s ? c.leaf : c.accent, P(px, py + R * 0.55), up + s * 0.65 * f, R * 1.35, Math.max(1, R * 0.22), 0, 0.45, "sprig"); k.disc(c.main, px, py + R * 0.6, Math.max(1, R * 0.16), "sprig-seed"); }
         else if (v === 1) { k.bud(P(px, py + R * 0.15), up, R * 0.95, c.main, c.leaf); for (const s of [-1, 1]) k.leaf(c.leaf, P(px, py + R * 0.6), up + s * 1.05, R * 0.85, Math.max(1, R * 0.17), -s * 0.3, 0.42, "sprig"); }
-        else { const br = Math.max(1, R * 0.2); for (const [dx, dy] of [[0, -0.6], [-0.9, 0.0], [0.9, 0.0], [0, 0.6]]) k.disc(c.main, px + dx * br * 1.55, py - R * 0.25 + dy * br * 1.55, br, "berry"); for (const s of [-1, 1]) k.leaf(c.leaf, P(px, py + R * 0.62), up + s * 0.95 * f, R * 0.8, Math.max(1, R * 0.17), -s * 0.3, 0.42, "sprig"); }
+        else { const br = Math.max(1, R * 0.2); for (const [dx, dy] of [[0, -0.6], [-0.9, 0.0], [0.9, 0.0], [0, 0.6]] as const) k.disc(c.main, px + dx * br * 1.55, py - R * 0.25 + dy * br * 1.55, br, "berry"); for (const s of [-1, 1]) k.leaf(c.leaf, P(px, py + R * 0.62), up + s * 0.95 * f, R * 0.8, Math.max(1, R * 0.17), -s * 0.3, 0.42, "sprig"); }
       }
-      else if (R >= 3.2) { const r = Math.max(1, R * 0.32); for (const [dx, dy] of [[0, -1.05], [-0.95, 0.55], [0.95, 0.55]]) k.disc(c.main, px + dx * r, py + dy * r, r, "kalyna"); }
+      else if (R >= 3.2) { const r = Math.max(1, R * 0.32); for (const [dx, dy] of [[0, -1.05], [-0.95, 0.55], [0.95, 0.55]] as const) k.disc(c.main, px + dx * r, py + dy * r, r, "kalyna"); }
       else k.disc(R >= 2.6 ? c.accent : c.light, px, py, Math.max(1, R * 0.55), "seed");
       k.objs.slice(before).forEach((ob, i) => stamp(grid, gw, gh, cell, ob, owner, before + i));
     };
