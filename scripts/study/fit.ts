@@ -14,13 +14,15 @@ export async function measureKit(k: Kit, width: number, height: number, ground: 
   return complexityOf({ data: r.data, width: r.info.width, height: r.info.height });
 }
 
-export async function fitToProfile(build: (fill: number) => Kit, width: number, height: number, ground: string, profile: Profile, levels = [0, 10, 20, 30, 45, 60, 80], weight?: Parameters<typeof distanceToProfile>[2]) {
+export async function fitToProfile(build: (fill: number) => Kit | null, width: number, height: number, ground: string, profile: Profile, levels = [0, 10, 20, 30, 45, 60, 80], weight?: Parameters<typeof distanceToProfile>[2]) {
   const tried: { fill: number; complexity: Complexity; score: number; low: string[]; high: string[] }[] = [];
   let best: { kit: Kit; fill: number; score: number } | null = null;
   for (const fill of levels) {
-    const kit = build(fill), complexity = await measureKit(kit, width, height, ground), d = distanceToProfile(complexity, profile, weight);
+    // a fill level the engine rejected (fail closed) is simply not a candidate
+    const kit = build(fill); if (!kit) continue;
+    const complexity = await measureKit(kit, width, height, ground), d = distanceToProfile(complexity, profile, weight);
     tried.push({ fill, complexity, ...d });
     if (!best || d.score < best.score) best = { kit, fill, score: d.score };
   }
-  return { ...best!, tried };
+  return best ? { ...best, tried } : null;
 }

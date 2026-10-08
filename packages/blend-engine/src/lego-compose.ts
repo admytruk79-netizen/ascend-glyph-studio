@@ -9,6 +9,7 @@
 import { Kit } from "./folk-rich.ts";
 import { BRICKS, outlineBrick, widthOf, type BrickId, type Roles } from "./lego.ts";
 import { densify } from "./densify.ts";
+import { stitchSafe } from "./stitch-safe.ts";
 
 export type LegoGrammar = {
   images: number;
@@ -59,8 +60,11 @@ export function planBand(g: LegoGrammar, seed: string, explore = 0.3): Omit<Band
 }
 
 /** Lay the plan out as a band `length` × `height` mm. */
-/** `fill`: fill motifs grown into the ground after layout (true = every clearing, a number = at most that many, 0 = none). */
-export function composeBand(g: LegoGrammar, o: { seed: string; length?: number; height?: number; roles: Roles; explore?: number; fill?: boolean | number }): { kit: Kit; plan: BandPlan } {
+/**
+ * `fill`: fill motifs grown into the ground after layout (true = every clearing, a number = at most that many, 0 = none).
+ * Returns null when the band cannot be made stitchable (fail closed: see stitch-safe.ts).
+ */
+export function composeBand(g: LegoGrammar, o: { seed: string; length?: number; height?: number; roles: Roles; explore?: number; fill?: boolean | number }): { kit: Kit; plan: BandPlan } | null {
   const L = o.length ?? 250, H = o.height ?? 60, CY = H / 2, c = o.roles;
   const p = planBand(g, o.seed, o.explore);
   const k = new Kit();
@@ -95,7 +99,7 @@ export function composeBand(g: LegoGrammar, o: { seed: string; length?: number; 
     densify(k, { width: L, height: H, colors: c, margin: 7, variant: Math.floor(rng(o.seed + "/fill")() * 3), ...(p.mirrored ? { mirrorX: L / 2 } : {}), ...(typeof o.fill === "number" ? { maxMotifs: o.fill } : {}) });
     k.resolveGaps();
   }
-  return { kit: k, plan: { ...p, filler, units } };
+  return stitchSafe(k) ? { kit: k, plan: { ...p, filler, units } } : null;
 }
 
 /**

@@ -19,7 +19,9 @@ const seedBase = process.env.SEED ?? "field"; // a new seed per day gives new fi
 let x = 0;
 for (let i = 0; i < count; i++) for (const [kind, w, h] of [["panel", 130, 200], ["band", 250, 60]] as const) {
   const id = `field-${kind}-${i + 1}`, seed = `${seedBase}-${i}`;
-  const { kit, plan: fp } = kind === "panel" ? fieldPanel(w, h, { seed, roles }) : fieldBand(w, h, { seed, roles });
+  const made = kind === "panel" ? fieldPanel(w, h, { seed, roles }) : fieldBand(w, h, { seed, roles });
+  if (!made) { console.log(id, "not stitchable at this size: skipped"); continue; }
+  const { kit, plan: fp } = made;
   writeFileSync(`${out}/${id}.svg`, `<svg xmlns="http://www.w3.org/2000/svg" width="${w}mm" height="${h}mm" viewBox="0 0 ${w} ${h}"><rect width="100%" height="100%" fill="${ground}"/>${draw(kit.objs)}</svg>`);
   const p = plan(kit.objs, r), min = estimateMinutes(p, r.speedSpm);
   const failed = runGate(kit.objs, p.commands, r, { hoop: { name: "frame 360x360", width: 360, height: 360 } }, min).checks.filter((c) => !c.pass && c.id !== "recipe-validated").map((c) => `${c.id}: ${c.detail}`);

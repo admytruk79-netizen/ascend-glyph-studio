@@ -38,6 +38,13 @@ function sourcedPattern(size:SizeProfile,block:PilotBlockSpec):ShirtPattern{
    p.seams.push({id:seam.id,kind:seam.kind,edge:seam.edge,joins:seam.joins&&target?{pieceId:target.id,seamId:seam.joins.seamId}:undefined,
     allowanceMm:seam.allowanceMm,crossDesignAllowed:seam.crossDesignAllowed,registrationToleranceMm:seam.registrationToleranceMm});
    if(seam.joins&&target&&p.id<target.id)seamGraph.push({fromPiece:p.id,fromSeam:seam.id,toPiece:target.id,toSeam:seam.joins.seamId});
+   // the seam allowance is folded into the seam: no embroidery within allowanceMm of the sourced seam path
+   const path=seam.edgePath??[];
+   for(let i=1;i<path.length;i++){
+    const a=path[i-1]!,b=path[i]!,L=Math.hypot(b.x-a.x,b.y-a.y);if(L<1e-6)continue;
+    const nx=-(b.y-a.y)/L*seam.allowanceMm,ny=(b.x-a.x)/L*seam.allowanceMm;
+    p.noGoZones.push({id:`${p.id}:${seam.id}:allowance-${i}`,reason:`seam allowance (${seam.kind})`,polygon:[{x:a.x+nx,y:a.y+ny},{x:b.x+nx,y:b.y+ny},{x:b.x-nx,y:b.y-ny},{x:a.x-nx,y:a.y-ny}],clearanceMm:2});
+   }
   }
  }
  return {id:`pilot-shirt:${size.id}:${block.id}`,size,pieces:[...byKind.values()].map(addConstructionNoGoZones),seamGraph};

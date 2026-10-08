@@ -69,15 +69,18 @@ for (let i = 0; i < Number(countArg); i++) {
   for (let attempt = 0; attempt < 4; attempt++) {
     const s = attempt ? `${seed}-${i}-r${attempt}` : `${seed}-${i}`;
     build = (fill: number) => composeBand(g, { seed: s, roles, length: L, height: H, fill });
-    fit = target ? await fitToProfile((f) => build(f).kit, L, H, "#efe6d2", target, undefined, closeup ? CLOSEUP_WEIGHT : undefined) : null;
+    fit = target ? await fitToProfile((f) => build(f)?.kit ?? null, L, H, "#efe6d2", target, undefined, closeup ? CLOSEUP_WEIGHT : undefined) : null;
+    if (target && !fit) continue; // every fill level rejected: redraw
     const order = fit ? [...fit.tried].sort((a, b) => a.score - b.score).map((t) => t.fill) : [0];
     // a level qualifies when it passes the stitch gate and sits near enough to real pieces (MAX_SCORE, default 2.5)
     const maxScore = Number(process.env.MAX_SCORE ?? 2.5), scoreOf = (f: number) => fit?.tried.find((t) => t.fill === f)?.score ?? 0;
-    const ok = order.find((f) => (attempt === 3 || scoreOf(f) <= maxScore) && !gateOf(build(f).kit).length);
+    const ok = order.find((f) => { const b = build(f); return !!b && (attempt === 3 || scoreOf(f) <= maxScore) && !gateOf(b.kit).length; });
     if (ok !== undefined) { chosen = ok; if (fit && ok !== fit.fill) fit = { ...fit, fill: ok, score: fit.tried.find((t) => t.fill === ok)!.score }; break; }
     chosen = fit?.fill ?? 0;
   }
-  const { kit, plan: bandPlan } = build(chosen);
+  const made = build(chosen);
+  if (!made) { console.log(id, "no stitchable band after four seeds: skipped"); continue; }
+  const { kit, plan: bandPlan } = made;
   const body = svgOf(kit.objs);
   writeFileSync(`${out}/${id}.svg`, `<svg xmlns="http://www.w3.org/2000/svg" width="${L}mm" height="${H}mm" viewBox="0 0 ${L} ${H}"><rect width="100%" height="100%" fill="#efe6d2"/>${body}</svg>`);
   const p = plan(kit.objs, r), min = estimateMinutes(p, r.speedSpm);

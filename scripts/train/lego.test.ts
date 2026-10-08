@@ -28,7 +28,7 @@ test("composes stitchable bands from a grammar", async () => {
   const sigs = await brickSignatures(), sc = scalesOf(sigs);
   const g = grammarOf([assemble(await read("01-ascend-roots"), sigs, sc), assemble(await read("02-mountain-path"), sigs, sc)]);
   const roles = { main: "#b3332b", dark: "#1f2c4c", leaf: "#4f6b3a", light: "#d39b35", accent: "#2b8796" };
-  const a = composeBand(g, { seed: "t1", roles }), b = composeBand(g, { seed: "t1", roles });
+  const a = composeBand(g, { seed: "t1", roles })!, b = composeBand(g, { seed: "t1", roles })!;
   assert.deepEqual(a.plan, b.plan, "same seed, same band");
   assert.ok(["tree", "horns", "rhomb-frame"].includes(a.plan.hero));
   const r = recipes["linen-180-prewashed"]!, p = plan(a.kit.objs, r);

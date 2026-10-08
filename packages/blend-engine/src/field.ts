@@ -7,9 +7,11 @@
  * seeded rhomb or ASCEND star) in a contrasting colour, cells alternate colours in a checker, and lattice lines in the
  * dark thread run along both diagonals so the whole field is one piece. Solid tooth borders («зубці») close it top and
  * bottom (and at the sides of a panel). Every part is a fill, a satin or a run; smaller fills lie on larger ones.
+ * Fail closed: null when a size cannot be made stitchable.
  */
 import { Kit, type Pt } from "./folk-rich.ts";
 import type { Roles } from "./lego.ts";
+import { stitchSafe } from "./stitch-safe.ts";
 
 const P = (x: number, y: number): Pt => ({ x, y });
 function rng(seed: string) {
@@ -76,7 +78,7 @@ function lattice(k: Kit, x0: number, y0: number, w: number, h: number, o: FieldO
 }
 
 /** A panel (yoke, sleeve «полик», diary cover): the lattice framed by tooth borders on all four sides. */
-export function fieldPanel(width: number, height: number, o: FieldOptions): { kit: Kit; plan: FieldPlan } {
+export function fieldPanel(width: number, height: number, o: FieldOptions): { kit: Kit; plan: FieldPlan } | null {
   const k = new Kit("fld-"), c = o.roles, t = Math.min(6, Math.min(width, height) * 0.05), m = 2;
   const pair: [string, string] = [c.main, c.dark];
   // frame: a solid strip with teeth pointing inward
@@ -87,16 +89,16 @@ export function fieldPanel(width: number, height: number, o: FieldOptions): { ki
   const pad = m + 1.6 + t * 0.8 + 2.2;
   const plan = lattice(k, pad, pad, width - 2 * pad, height - 2 * pad, o, o.cell ?? Math.max(12, Math.min(width, height) / 7));
   k.resolveGaps();
-  return { kit: k, plan: { ...plan, teeth: t } };
+  return stitchSafe(k) ? { kit: k, plan: { ...plan, teeth: t } } : null;
 }
 
 /** A band (cuff, hem, collar): one or two rows of the lattice between tooth borders. */
-export function fieldBand(length: number, height: number, o: FieldOptions): { kit: Kit; plan: FieldPlan } {
+export function fieldBand(length: number, height: number, o: FieldOptions): { kit: Kit; plan: FieldPlan } | null {
   const k = new Kit("fldb-"), c = o.roles, t = Math.min(5, height * 0.09), pair: [string, string] = [c.main, c.dark];
   for (const y of [1.5, height - 1.5]) k.satin("strip", c.dark, [P(0, y), P(length, y)], 1.4);
   teeth(k, 0, length, 3.1, t, 1, pair); teeth(k, 0, length, height - 3.1, t, -1, pair);
   const pad = 3.1 + t * 0.8 + 2.2;
   const plan = lattice(k, 0, pad, length, height - 2 * pad, o, o.cell ?? (height - 2 * pad) / (height > 50 ? 2 : 1));
   k.resolveGaps();
-  return { kit: k, plan: { ...plan, teeth: t } };
+  return stitchSafe(k) ? { kit: k, plan: { ...plan, teeth: t } } : null;
 }
