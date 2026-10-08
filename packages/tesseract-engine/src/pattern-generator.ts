@@ -18,7 +18,7 @@ import {deriveZoneConstructionEnvelope,type ConstructionIntent} from "./construc
 import {machineTemplate,assertUsableMachineTemplate} from "./machine-template";
 import {expandRecursiveGrammar,grammarComplexity} from "./recursive-grammar";
 import {productionObjectsFromTopology,assertProductionRelations,placeProductionObjects,type ProductionGlyphObject} from "./production-object";
-import {compileProductionObjectsToStitchIr,applyMasterCompositionToStitchIr,type StitchIrObject} from "./production-stitch-ir";
+import {compileProductionObjectsToStitchIr,applyMasterCompositionToStitchIr,stitchIrFootprints,type StitchIrObject} from "./production-stitch-ir";
 import {solveRelationalLayout} from "./relational-layout";
 import {evaluateSurfaceLayout,type SurfaceFootprint} from "./garment-surface-math";
 import {buildMasterCompositionPlan} from "./master-composition-plan";
@@ -212,8 +212,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const stitchObjects=applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height);
   let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
   if(productionZone.wrapAllowed&&(productionZone.surface==="cylinder"||productionZone.surface==="tapered-cylinder")){
-   const byId=new Map(productionObjects.map(o=>[o.id,o]));
-   const items:SurfaceFootprint[]=adapted.topology.nodes.map(n=>{const p=physicalLayout.points[n.id]!,o=byId.get(n.id)!;return{id:n.id,u:p.x,v:p.y,widthMm:o.physical.widthMm,heightMm:o.physical.heightMm,rotationDeg:p.angleDeg,clearanceMm:o.physical.clearanceMm};});
+   const items:SurfaceFootprint[]=stitchIrFootprints(stitchObjects,constructionEnvelope.minGapMm);
    surfaceMath=evaluateSurfaceLayout(productionZone,items);
   }
   const g=genomeFromTopology(`pattern:${input.seed}:${i}`,adapted.topology);
