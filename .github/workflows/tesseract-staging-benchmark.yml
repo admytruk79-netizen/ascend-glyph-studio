@@ -1,4 +1,5 @@
 name: Tesseract staging benchmark
+# benchmark contract: every production-path change must re-run this gate
 on:
   workflow_dispatch:
   push:
