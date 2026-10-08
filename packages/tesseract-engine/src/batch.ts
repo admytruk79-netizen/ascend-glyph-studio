@@ -28,7 +28,7 @@ import {renderLineageSpecimenSheet,type SpecimenSheet} from "./specimen-sheet";
 import {deriveConstructionEnvelope,type ConstructionEnvelope,type ConstructionIntent} from "./construction-envelope";
 import {solveRelationalLayout} from "./relational-layout";
 import {evaluateSurfaceLayout,type SurfaceFootprint} from "./garment-surface-math";
-import {productionObjectsFromTopology,assertProductionRelations,type ProductionGlyphObject} from "./production-object";
+import {productionObjectsFromTopology,assertProductionRelations,placeProductionObjects,type ProductionGlyphObject} from "./production-object";
 import {machineTemplate,assertUsableMachineTemplate,type MachineTemplate} from "./machine-template";
 
 export type BatchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];constructionIntent?:ConstructionIntent;antiStyle?:WeightedRef[];garment?:GarmentConfiguration;compatibilityRules?:CompatibilityRule[];visualCorpus?:ImageObservation[];medium?:MediumId;learnedConstraints?:LearnedConstraintSnapshot;physicalHistory?:PhysicalValidation[];machineProfileId?:string;population?:number;generations?:number;keep?:number};
@@ -76,12 +76,13 @@ export function runTesseractBatch(input:BatchInput):BatchResult{
   const zoneTopologies=Object.fromEntries(zones.map(z=>[z.id,composeTopologyForZone(effectiveTopology,z,`${input.seed}:${i}`)]));
   let zoneProjections:ZoneProjection[]=zones.map(z=>{
    const canvas=zoneCanvas(z),zoneTopology=zoneTopologies[z.id]!,zoneGenome=genomeFromTopology(`${input.seed}:${i}:${z.id}`,zoneTopology);
-   const zoneProductionObjects=constructionEnvelope?productionObjectsFromTopology(zoneTopology,constructionEnvelope,{zoneId:z.id,seamPolicy:constructionEnvelope.seamPolicy,wrapAllowed:z.wrapAllowed}):undefined;
+   let zoneProductionObjects=constructionEnvelope?productionObjectsFromTopology(zoneTopology,constructionEnvelope,{zoneId:z.id,seamPolicy:constructionEnvelope.seamPolicy,wrapAllowed:z.wrapAllowed}):undefined;
    if(zoneProductionObjects)assertProductionRelations(zoneTopology,zoneProductionObjects);
+   const layout=solveRelationalLayout(zoneTopology,canvas.width,canvas.height,zoneGenome.seed,z,{minGapMm:constructionEnvelope?.minGapMm,seamPolicy:constructionEnvelope?.seamPolicy});
+   if(zoneProductionObjects)zoneProductionObjects=placeProductionObjects(zoneProductionObjects,layout.points);
    const svg=projectSemanticGeometry(zoneGenome,canvas.width,canvas.height,z,{minGapMm:constructionEnvelope?.minGapMm,seamPolicy:constructionEnvelope?.seamPolicy});
    let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
    if(z.wrapAllowed&&(z.surface==="cylinder"||z.surface==="tapered-cylinder")){
-    const layout=solveRelationalLayout(zoneTopology,canvas.width,canvas.height,zoneGenome.seed,z,{minGapMm:constructionEnvelope?.minGapMm,seamPolicy:constructionEnvelope?.seamPolicy});
     const byId=new Map((zoneProductionObjects??[]).map(o=>[o.id,o]));
     const items:SurfaceFootprint[]=zoneTopology.nodes.map(n=>{
       const p=layout.points[n.id]!,o=byId.get(n.id),r=Math.min(24,canvas.height*.105)*p.scale;
