@@ -13,7 +13,7 @@ function stable(xs:WeightedRef[]){return [...xs].sort((a,b)=>b.weight-a.weight||
 
 export function compileIntent(intent:IntentVector):IntentPlan{
  if(!intent.concepts.length)throw new Error("intent-requires-concepts");
- const semanticSkeleton=stable(intent.concepts).map(c=>({
+ const semanticSkeleton=stable(intent.concepts).slice(0,12).map(c=>({
   conceptId:c.id,weight:c.weight,operation:operationHints[c.id.toLowerCase()]??"continue"
  }));
  return {intent:{...intent,concepts:stable(intent.concepts)},semanticSkeleton,exclusions:new Set(intent.exclusions??[])};
