@@ -22,7 +22,9 @@ export function analyzeSvgStructure(svg:string):SvgStructuralAnalysis{
  const w=Number(vb?.[1]||1),h=Number(vb?.[2]||1),aspect=w/Math.max(1,h);
  const unique=new Set(paths.map(d=>d.replace(/\s+/g," ").trim()));
  const uniquePathRatio=paths.length?unique.size/paths.length:0;
- const repeatedPathRatio=1-uniquePathRatio;
+ const rawRepeatedPathRatio=1-uniquePathRatio;
+ const transformRelief=Math.min(.72,transforms/Math.max(1,paths.length)*.9);
+ const repeatedPathRatio=clamp(rawRepeatedPathRatio*(1-transformRelief));
  const pathData=paths.join(" ");
  const cmds={M:count(pathData,/[Mm](?=[\s,.-]*\d)/g),L:count(pathData,/[Ll](?=[\s,.-]*\d)/g),C:count(pathData,/[Cc](?=[\s,.-]*\d)/g),Q:count(pathData,/[Qq](?=[\s,.-]*\d)/g),A:count(pathData,/[Aa](?=[\s,.-]*\d)/g),H:count(pathData,/[Hh](?=[\s,.-]*\d)/g),V:count(pathData,/[Vv](?=[\s,.-]*\d)/g)};
  const directionalEntropy=clamp(entropy([cmds.L+cmds.H,cmds.V,cmds.C+cmds.Q,cmds.A]));
