@@ -6,7 +6,8 @@
  *
  * SIGNATURE=0.4 blends Oleksandr's signature pieces (medallion, star-lily, snowflake, fan) into the learned grammar.
  * PRODUCT=shirt|towel|skirt fits every band to that product's complexity profile (learned_model 'complexity-profiles',
- * or PROFILES=<file>): each band is built at several fill levels and the one closest to real pieces is kept.
+ * or PROFILES=<file>): each band is built at several fill levels and the one closest to real pieces is kept; a band
+ * that passes no stitch gate, or sits further than MAX_SCORE (2.5) from the profile, is redrawn from a fresh seed.
  *
  * Reads learned_model 'tesseract-learned-latest' (body.lego) unless a grammar file is given. Writes per band an SVG,
  * a DST and its stitch preview, plus board.png and bands.json (pieces, novel pairings, stitches, gate).
@@ -60,13 +61,22 @@ const svgOf = (objs: DesignObject[]) => objs.map((o) => o.kind === "fill" ? `<po
 const report: unknown[] = [], rows: string[] = [];
 for (let i = 0; i < Number(countArg); i++) {
   const id = `lego-${String(i + 1).padStart(2, "0")}`;
-  const build = (fill: number) => composeBand(g, { seed: `${seed}-${i}`, roles, length: L, height: H, fill });
-  let fit: Awaited<ReturnType<typeof fitToProfile>> | null = null;
-  if (target) fit = await fitToProfile((f) => build(f).kit, L, H, "#efe6d2", target, undefined, closeup ? CLOSEUP_WEIGHT : undefined);
-  // the closest fill level that also passes the stitch gate (falling back through the others by score)
-  const gateOf = (k: typeof fit extends null ? never : any) => { const p = plan(k.objs, r); return runGate(k.objs, p.commands, r, { hoop: { name: "border frame 360x100", width: 360, height: 100 } }, estimateMinutes(p, r.speedSpm)).checks.filter((c) => !c.pass && c.id !== "recipe-validated"); };
-  let chosen = fit?.fill ?? 0;
-  if (fit) for (const t of [...fit.tried].sort((a, b) => a.score - b.score)) { if (!gateOf(build(t.fill).kit).length) { chosen = t.fill; if (chosen !== fit.fill) fit = { ...fit, fill: chosen, score: t.score }; break; } }
+  const gateOf = (k: { objs: DesignObject[] }) => { const p = plan(k.objs, r); return runGate(k.objs, p.commands, r, { hoop: { name: "border frame 360x100", width: 360, height: 100 } }, estimateMinutes(p, r.speedSpm)).checks.filter((c) => !c.pass && c.id !== "recipe-validated"); };
+  // the closest fill level that also passes the stitch gate (falling back through the others by score); if none of
+  // them passes, the band is redrawn from a fresh seed (up to three times) rather than shipped failing
+  let build = (fill: number) => composeBand(g, { seed: `${seed}-${i}`, roles, length: L, height: H, fill });
+  let fit: Awaited<ReturnType<typeof fitToProfile>> | null = null, chosen = 0;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const s = attempt ? `${seed}-${i}-r${attempt}` : `${seed}-${i}`;
+    build = (fill: number) => composeBand(g, { seed: s, roles, length: L, height: H, fill });
+    fit = target ? await fitToProfile((f) => build(f).kit, L, H, "#efe6d2", target, undefined, closeup ? CLOSEUP_WEIGHT : undefined) : null;
+    const order = fit ? [...fit.tried].sort((a, b) => a.score - b.score).map((t) => t.fill) : [0];
+    // a level qualifies when it passes the stitch gate and sits near enough to real pieces (MAX_SCORE, default 2.5)
+    const maxScore = Number(process.env.MAX_SCORE ?? 2.5), scoreOf = (f: number) => fit?.tried.find((t) => t.fill === f)?.score ?? 0;
+    const ok = order.find((f) => (attempt === 3 || scoreOf(f) <= maxScore) && !gateOf(build(f).kit).length);
+    if (ok !== undefined) { chosen = ok; if (fit && ok !== fit.fill) fit = { ...fit, fill: ok, score: fit.tried.find((t) => t.fill === ok)!.score }; break; }
+    chosen = fit?.fill ?? 0;
+  }
   const { kit, plan: bandPlan } = build(chosen);
   const body = svgOf(kit.objs);
   writeFileSync(`${out}/${id}.svg`, `<svg xmlns="http://www.w3.org/2000/svg" width="${L}mm" height="${H}mm" viewBox="0 0 ${L} ${H}"><rect width="100%" height="100%" fill="#efe6d2"/>${body}</svg>`);
