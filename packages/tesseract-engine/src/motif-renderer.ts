@@ -6,7 +6,7 @@ export function renderMotifGrammar(g:MotifGrammar,width=960,height=260):string{
  const esc=(s:string)=>s.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
  const draw=(i:MotifInstance)=>{
   const part=parts.get(i.partId);if(!part)return "";
-  const aspect=Math.max(.001,part.geometry.aspect),w=i.scale*aspect*width,h=i.scale*height;
+  const aspect=Math.max(.001,part.geometry.aspect),unit=Math.min(width,height),w=i.scale*aspect*unit,h=i.scale*unit;
   const x=i.x01*width,y=i.y01*height;
   const paths=[part.geometry.silhouette,...(part.geometry.holes??[])];
   const d=paths.map(p=>'<path d="'+esc(p)+'"/>').join("");
