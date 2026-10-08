@@ -15,23 +15,22 @@ function body(svg:string){
 function strokeFor(m:MediumId){return m==="print"?1.8:m==="embroidery"?2.65:m==="emboss"?3.15:3.35}
 function scholarlySashComposition(input:MasterCompositionInput,b:string){
  const g=input.sashGrammar!;const {width,height,medium,mode}=input,fb=input.structuralFeedback;
- const centerShare=Math.max(.38,Math.min(.66,g.centralShare+(fb?.centralHierarchyBoost??0)*.12));
+ const centerShare=Math.max(.44,Math.min(.68,g.centralShare+(fb?.centralHierarchyBoost??0)*.14));
  const centerH=height*centerShare;
- const flankH=Math.max(1,(height-centerH)*.5);
- const inner=Math.max(1.5,height*.018);
- const sourceId="sash-source";
- const defs=`<defs><g id="${sourceId}">${b}</g>
-  <clipPath id="sash-top"><rect x="0" y="0" width="${width}" height="${Math.max(1,flankH-inner).toFixed(2)}"/></clipPath>
-  <clipPath id="sash-center"><rect x="0" y="${flankH.toFixed(2)}" width="${width}" height="${centerH.toFixed(2)}"/></clipPath>
-  <clipPath id="sash-bottom"><rect x="0" y="${(flankH+centerH+inner).toFixed(2)}" width="${width}" height="${Math.max(1,flankH-inner).toFixed(2)}"/></clipPath>
- </defs>`;
- const topY=Math.max(0,flankH*.08),centerY=flankH,bottomY=flankH+centerH+inner;
- const top=`<svg x="0" y="${topY.toFixed(2)}" width="${width}" height="${Math.max(1,flankH-inner).toFixed(2)}" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" clip-path="url(#sash-top)"><use href="#${sourceId}"/></svg>`;
- const center=`<svg x="0" y="${centerY.toFixed(2)}" width="${width}" height="${centerH.toFixed(2)}" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" clip-path="url(#sash-center)"><use href="#${sourceId}"/></svg>`;
- const bottom=`<svg x="0" y="${bottomY.toFixed(2)}" width="${width}" height="${Math.max(1,flankH-inner).toFixed(2)}" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" clip-path="url(#sash-bottom)"><use href="#${sourceId}" transform="translate(${width} 0) scale(-1 1)"/></svg>`;
- const railY1=flankH,railY2=flankH+centerH;
- const rails=`<g data-sash-layer="framing" opacity=".72"><path d="M0 ${railY1.toFixed(2)} H${width}"/><path d="M0 ${railY2.toFixed(2)} H${width}"/></g>`;
- return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" data-master-composition="scholarly-sash-v1" data-mode="${mode}" data-medium="${medium}" data-source-grammar="${g.id}" data-source-doi="${g.source.doi}">${defs}<g fill="none" stroke="currentColor" stroke-width="${strokeFor(medium)}" stroke-linecap="round" stroke-linejoin="round">${top}${center}${bottom}${rails}</g></svg>`;
+ const centerY=(height-centerH)/2;
+ const railGap=Math.max(5,height*.028);
+ const edgeInset=Math.max(8,width*.018);
+ const scaleY=centerH/height;
+ const primary=`<g data-sash-layer="primary-focal" transform="translate(0 ${centerY.toFixed(2)}) scale(1 ${scaleY.toFixed(4)})">${b}</g>`;
+ const rails=`<g data-sash-layer="framing" opacity=".78">
+   <path d="M${edgeInset.toFixed(2)} ${Math.max(2,centerY-railGap).toFixed(2)} H${(width-edgeInset).toFixed(2)}"/>
+   <path d="M${edgeInset.toFixed(2)} ${Math.min(height-2,centerY+centerH+railGap).toFixed(2)} H${(width-edgeInset).toFixed(2)}"/>
+ </g>`;
+ const sideMarks=`<g data-sash-layer="edge-marks" opacity=".58">
+   <path d="M${edgeInset.toFixed(2)} ${(height*.18).toFixed(2)} V${(height*.36).toFixed(2)} M${edgeInset.toFixed(2)} ${(height*.64).toFixed(2)} V${(height*.82).toFixed(2)}"/>
+   <path d="M${(width-edgeInset).toFixed(2)} ${(height*.18).toFixed(2)} V${(height*.36).toFixed(2)} M${(width-edgeInset).toFixed(2)} ${(height*.64).toFixed(2)} V${(height*.82).toFixed(2)}"/>
+ </g>`;
+ return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" data-master-composition="scholarly-sash-v2-single-focal" data-mode="${mode}" data-medium="${medium}" data-source-grammar="${g.id}" data-source-doi="${g.source.doi}"><g fill="none" stroke="currentColor" stroke-width="${strokeFor(medium)}" stroke-linecap="round" stroke-linejoin="round">${primary}${rails}${sideMarks}</g></svg>`;
 }
 
 export function compileMasterComposition(input:MasterCompositionInput){
