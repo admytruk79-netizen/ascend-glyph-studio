@@ -1,5 +1,7 @@
 import type {Topology} from "./topology";
 
+import type {AssemblyRole} from "./topology";
+
 export type LearnedAssemblyPrior={
   hierarchyStrength:number;
   adjacencyDensity:number;
@@ -12,6 +14,8 @@ export type LearnedAssemblyPrior={
   evidencePairs:number;
   evidenceBricks:number;
   sourceModel:string;
+ roleWeights?:Partial<Record<AssemblyRole,number>>;
+ adjacency?:Partial<Record<AssemblyRole,Partial<Record<AssemblyRole,number>>>>;
 };
 
 const clamp=(n:number)=>Math.max(0,Math.min(1,n));
@@ -28,7 +32,9 @@ export function normalizeAssemblyPrior(p:LearnedAssemblyPrior):LearnedAssemblyPr
   scaleRatioMedian:Math.max(.2,Math.min(5,p.scaleRatioMedian||1)),
   scaleRatioSpread:Math.max(.01,Math.min(3,p.scaleRatioSpread||.35)),
   evidencePairs:Math.max(0,p.evidencePairs||0),
-  evidenceBricks:Math.max(0,p.evidenceBricks||0)
+  evidenceBricks:Math.max(0,p.evidenceBricks||0),
+  roleWeights:p.roleWeights,
+  adjacency:p.adjacency
  };
 }
 
