@@ -71,10 +71,16 @@ async function claim(){
  const c=await pool.connect();
  try{
   await c.query("begin");
-  const q=await c.query(`select r.*,e.batch_size,e.population,e.generations
-   from synthesis_run r cross join engine_runtime e
-   where (r.status in ('queued','created') or (r.status='running' and r.solver_version='3.0.0-corpus-visual' and not exists (select 1 from synthesis_candidate sc where sc.run_id=r.id))) and e.id='tesseract-v2' and e.enabled=true
-   order by r.created_at for update of r skip locked limit 1`);
+  const exact=process.env.WORKER_RUN_ID;
+  const q=exact
+   ?await c.query(`select r.*,e.batch_size,e.population,e.generations
+      from synthesis_run r cross join engine_runtime e
+      where r.id=$1 and r.status in ('staging-created','queued','created') and e.id='tesseract-v2' and e.enabled=true
+      for update of r skip locked limit 1`,[exact])
+   :await c.query(`select r.*,e.batch_size,e.population,e.generations
+      from synthesis_run r cross join engine_runtime e
+      where (r.status in ('queued','created') or (r.status='running' and r.solver_version='3.0.0-corpus-visual' and not exists (select 1 from synthesis_candidate sc where sc.run_id=r.id))) and e.id='tesseract-v2' and e.enabled=true
+      order by r.created_at for update of r skip locked limit 1`);
   const run=q.rows[0]; if(!run){await c.query("rollback");return null}
   await c.query("update synthesis_run set status='running' where id=$1",[run.id]);
   await c.query("commit"); return run;
@@ -277,14 +283,19 @@ async function main(){
  for(;;){
   let run:any=null;
   try{run=await claim()}catch(e){process.stdout.write(JSON.stringify({level:"warn",event:"claim_failed",message:String((e as Error).message).slice(0,160)})+"\n")}
-  if(!run){if(!idleLogged){process.stdout.write(JSON.stringify({status:"idle",candidatesPersisted:done,pollMs:poll})+"\n");idleLogged=true}await new Promise(r=>setTimeout(r,poll));continue}
+  if(!run){
+   if(process.env.WORKER_ONCE==="1"){await new Promise<void>(r=>server.close(()=>r()));await pool.end();return}
+   if(!idleLogged){process.stdout.write(JSON.stringify({status:"idle",candidatesPersisted:done,pollMs:poll})+"\n");idleLogged=true}
+   await new Promise(r=>setTimeout(r,poll));continue
+  }
   idleLogged=false;
   try{const n=await execute(run);done+=n;process.stdout.write(JSON.stringify({runId:run.id,candidates:n,status:"completed"})+"\n")}
   catch(e){
    process.stdout.write(JSON.stringify({level:"error",runId:run.id,event:"run_failed",message:String((e as Error).message).slice(0,200)})+"\n");
-   // mark it failed, or the claim query (running with no candidates) would pick the same run up forever
    await pool.query("update synthesis_run set status='failed' where id=$1",[run.id]).catch(()=>{});
+   if(process.env.WORKER_ONCE==="1"){await new Promise<void>(r=>server.close(()=>r()));await pool.end();throw e}
   }
+  if(process.env.WORKER_ONCE==="1"){await new Promise<void>(r=>server.close(()=>r()));await pool.end();return}
  }
 }
 main().catch(async e=>{console.error(e);await pool.end();process.exitCode=1});
