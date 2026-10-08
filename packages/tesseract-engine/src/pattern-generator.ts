@@ -147,7 +147,10 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   principles:[],niches:niche?[niche]:undefined,medium,visualCorpus:input.visualCorpus,relationPrior,structuralFeedback:input.structuralFeedback,
   population:input.population??Math.round(32+complexity*64),generations:input.generations??Math.round(3+complexity*5),keep:searchKeep
  });
- const rendered=candidates.map((candidate,i)=>{
+ const minDrawableNodes=(mode==="band"||mode==="sleeve"||mode==="cuff"||mode==="collar")?3:2;
+ const drawableCandidates=candidates.filter(c=>c.topology.nodes.length>=minDrawableNodes);
+ const renderCandidates=drawableCandidates.length?drawableCandidates:candidates;
+ const rendered=renderCandidates.map((candidate,i)=>{
   const adapted=adaptForProduction(candidate.topology,medium,niche);
   const g=genomeFromTopology(`pattern:${input.seed}:${i}`,adapted.topology);
   const relationStride=medium==="embroidery"?((input.structuralFeedback?.crossingReduction??0)>.5?0:3):1;
