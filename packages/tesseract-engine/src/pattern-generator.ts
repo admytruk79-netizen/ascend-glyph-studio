@@ -22,6 +22,8 @@ import {compileProductionObjectsToStitchIr,applyMasterCompositionToStitchIr,type
 import {solveRelationalLayout} from "./relational-layout";
 import {evaluateSurfaceLayout,type SurfaceFootprint} from "./garment-surface-math";
 import {buildMasterCompositionPlan} from "./master-composition-plan";
+import {applyAssemblyConstraintCollapse} from "./constraint-collapse";
+import type {LearnedAssemblyPrior} from "./learned-assembly-prior";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
@@ -30,7 +32,7 @@ export type PatternGeneratorInput={
  cultureIds?:string[];medium?:string;placement?:string;
  corpusSignals?:{id:string;weight:number;sourceIds?:string[]}[];
  population?:number;generations?:number;visualCorpus?:ImageObservation[];
- learnedGuidance?:{density:number;tags:{id:string;weight:number}[];palette:{hex:string;weight:number}[];model:string;relationPrior?:LearnedRelationPrior};
+ learnedGuidance?:{density:number;tags:{id:string;weight:number}[];palette:{hex:string;weight:number}[];model:string;relationPrior?:LearnedRelationPrior;assemblyPrior?:LearnedAssemblyPrior};
  structuralFeedback?:StructuralFeedback;
  machineProfileId?:string;
  constructionIntent?:ConstructionIntent;
@@ -194,7 +196,8 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  const drawableCandidates=candidates.filter(c=>c.topology.nodes.length>=minDrawableNodes);
  const renderCandidates=drawableCandidates.length?drawableCandidates:candidates;
  const rendered=renderCandidates.map((candidate,i)=>{
-  const enriched=expandRecursiveGrammar(candidate.topology,`${input.seed}:live:${i}`,{
+  const scaffolded=applyAssemblyConstraintCollapse(candidate.topology,`${input.seed}:assembly:${i}`,input.learnedGuidance?.assemblyPrior);
+  const enriched=expandRecursiveGrammar(scaffolded,`${input.seed}:live:${i}`,{
    depth:constructionEnvelope.maxRecursiveDepth,maxNodes:Math.min(12,constructionEnvelope.maxNodes),maxBranching:constructionEnvelope.maxBranching,mutationRate:.2,
    octave:{enabled:true,minFeatureMm:constructionEnvelope.minFeatureMm,usableAreaMm2:octaveArea,maxEstimatedStitches:constructionEnvelope.machine?.maxStitches}
   });
