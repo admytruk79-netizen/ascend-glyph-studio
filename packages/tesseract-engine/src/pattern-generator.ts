@@ -20,7 +20,8 @@ export type PatternGeneratorInput={
  cultureIds?:string[];medium?:string;placement?:string;
  corpusSignals?:{id:string;weight:number;sourceIds?:string[]}[];
  population?:number;generations?:number;visualCorpus?:ImageObservation[];
- learnedGuidance?:{density:number;tags:{id:string;weight:number}[];palette:{hex:string;weight:number}[];model:string};\n traditionMix?:Record<string,number>;
+ learnedGuidance?:{density:number;tags:{id:string;weight:number}[];palette:{hex:string;weight:number}[];model:string};
+ traditionMix?:Record<string,number>;
 };
 export type GeneratedPattern={
  id:string;lineageId:string;score:number;novelty:number;svg:string;
