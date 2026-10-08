@@ -1,6 +1,6 @@
 # ASCEND Tesseract Production Engine — Plan of Action
 
-Updated: 2026-10-03
+Updated: 2026-10-08
 
 ## Objective
 Deliver one end-to-end production path first: configurable men's long-sleeve linen shirt -> body/size state -> pattern pieces -> ASCEND semantic intent -> garment-level composition -> cross-zone continuity -> embroidery feasibility -> production package -> physical sample feedback.
@@ -101,14 +101,38 @@ These remain REFERENCE until validated against the actual ASCEND manufacturer/ma
 - live Neon production schema.
 
 ## Immediate build order
-1. implement pattern-piece + seam graph types;
-2. implement pilot shirt measurement resolver;
-3. map garment zones to pieces;
-4. implement piece-aware projection and no-go clipping;
-5. add production-package manifest;
-6. run first deterministic complete-shirt candidate batch;
-7. produce first sample package;
-8. incorporate manufacturer and sew-out feedback.
+1. stabilize the production-object compiler path on `tesseract-staging`;
+2. bind garment + material + machine templates into the construction envelope;
+3. compile octave-controlled topology into production objects rather than SVG-first geometry;
+4. adapt production objects into stitch-engine run/satin/fill objects;
+5. regenerate stitches after every scale/placement change;
+6. run deterministic complete-shirt and sleeve benchmarks against the 3.7 golden baseline;
+7. produce one machine-specific pilot package with DST, tech pack, placement, stitch/thread math and manifest;
+8. perform the first physical sew-out and store measured corrections;
+9. replace reference machine limits with the selected manufacturer's validated machine templates;
+10. only then promote staging to production.
 
 ## Non-negotiable
 The engine may generate and rank aggressively, but it may not label a result production-approved without physical/manufacturer validation.
+
+
+## Machine-template contract
+
+A machine is part of the construction input.
+
+Each template must record:
+- maker/model and confidence state;
+- embroidery field;
+- head and needle count;
+- supported frames;
+- tubular and finished-sleeve capability;
+- supported file formats;
+- maximum colors;
+- practical SPM;
+- registration tolerance;
+- practical stitch/run ceiling;
+- material/process recipes validated on that machine.
+
+Reference values may guide prototypes but cannot become production truth without manufacturer or sew-out validation.
+
+The generator uses the selected template before creating geometry. If a machine cannot execute a requested construction directly, the constructor must choose a legal alternative such as flat-before-assembly, registered segmentation, reduced color plan, or a different machine profile. It must not create an impossible design and leave the factory to discover the problem.
