@@ -56,10 +56,10 @@ export function runTesseractBatch(input:BatchInput):BatchResult{
   const zoneTopologies=Object.fromEntries(zones.map(z=>[z.id,composeTopologyForZone(effectiveTopology,z,`${input.seed}:${i}`)]));
   let zoneProjections=zones.map(z=>{
    const canvas=zoneCanvas(z),zoneTopology=zoneTopologies[z.id]!,zoneGenome=genomeFromTopology(`${input.seed}:${i}:${z.id}`,zoneTopology);
-   const svg=projectSemanticGeometry(zoneGenome,canvas.width,canvas.height,z,{minGapMm:constructionEnvelope?.minGapMm});
+   const svg=projectSemanticGeometry(zoneGenome,canvas.width,canvas.height,z,{minGapMm:constructionEnvelope?.minGapMm,seamPolicy:constructionEnvelope?.seamPolicy});
    let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
    if(z.wrapAllowed&&(z.surface==="cylinder"||z.surface==="tapered-cylinder")){
-    const layout=solveRelationalLayout(zoneTopology,canvas.width,canvas.height,zoneGenome.seed,z,{minGapMm:constructionEnvelope?.minGapMm});
+    const layout=solveRelationalLayout(zoneTopology,canvas.width,canvas.height,zoneGenome.seed,z,{minGapMm:constructionEnvelope?.minGapMm,seamPolicy:constructionEnvelope?.seamPolicy});
     const items:SurfaceFootprint[]=zoneTopology.nodes.map(n=>{
       const p=layout.points[n.id]!,r=Math.min(24,canvas.height*.105)*p.scale;
       return {id:n.id,u:p.x,v:p.y,widthMm:r*2,heightMm:r*2,rotationDeg:p.angleDeg,clearanceMm:Math.max(1.5,r*.08)};
