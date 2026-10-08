@@ -259,10 +259,37 @@ async function aggregate(kept: Kept[], stats: Stats) {
 
   if (process.env.DATABASE_URL) {
     const db = await pool();
-    await db.query(`insert into learned_model(id, built_at, body) values($1, now(), $2::jsonb) on conflict (id) do update set built_at = now(), body = excluded.body`, ["tesseract-learned-latest", JSON.stringify(model)]);
+    const traditionCount=Object.keys(model.traditions).length;
+    const imageCount=stats.kept;
+    const pairCount=Object.keys(model.lego.all.pairs??{}).length;
+    const brickCount=Object.keys(model.lego.all.bricks??{}).length;
+    const corpusQ=await db.query("select count(*)::int n from research_corpus_object where image_url is not null");
+    const splitQ=await db.query("select count(*)::int n,min(id) lo,max(id) hi from research_corpus_analysis where split='holdout'");
+    const corpusCount=Number(corpusQ.rows[0]?.n||0);
+    const holdoutFingerprint=`${splitQ.rows[0]?.n||0}:${splitQ.rows[0]?.lo||""}:${splitQ.rows[0]?.hi||""}`;
+    const activeQ=await db.query("select id,image_count,tradition_count,metrics from tesseract_model_checkpoint where kind='image-learning' and status='active' order by promoted_at desc nulls last,built_at desc limit 1");
+    const active=activeQ.rows[0];
+    const coveragePass=!active || imageCount>=Math.floor(Number(active.image_count||0)*.8);
+    const traditionPass=!active || traditionCount>=Math.floor(Number(active.tradition_count||0)*.9);
+    const priorPairs=Number(active?.metrics?.pairCount||0);
+    const grammarPass=!active || pairCount>=Math.floor(priorPairs*.75);
+    const promote=coveragePass&&traditionPass&&grammarPass;
+    const metrics={imageCount,traditionCount,pairCount,brickCount,novelShare:model.lego.all.novelShare,coveragePass,traditionPass,grammarPass};
+    const cp=await db.query(`insert into tesseract_model_checkpoint(kind,version,parent_id,status,corpus_count,image_count,tradition_count,holdout_fingerprint,metrics,body,promoted_at)
+      values('image-learning',$1,$2,$3,$4,$5,$6,$7,$8::jsonb,$9::jsonb,$10)
+      returning id`,[
+      model.version+"@"+model.builtAt,
+      active?.id??null,
+      promote?"active":"candidate",
+      corpusCount,imageCount,traditionCount,holdoutFingerprint,JSON.stringify(metrics),JSON.stringify(model),promote?new Date():null
+    ]);
+    if(promote){
+      if(active?.id)await db.query("update tesseract_model_checkpoint set status='archived' where id=$1",[active.id]);
+      await db.query(`insert into learned_model(id, built_at, body) values($1, now(), $2::jsonb) on conflict (id) do update set built_at = now(), body = excluded.body`, ["tesseract-learned-latest", JSON.stringify(model)]);
+    }
     if (MODE !== "merge") await writeTags(db, kept); // shards already wrote their tags
     await db.end();
-    console.log(`NEON learned_model${MODE === "merge" ? "" : ` + ${kept.length} research_image_tag rows`}`);
+    console.log(JSON.stringify({checkpoint:cp.rows[0]?.id,promoted:promote,metrics}));
   }
 }
 
