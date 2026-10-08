@@ -20,7 +20,7 @@ const q=await pool.query(`
  `staging-production-${sha}`,
  JSON.stringify({
   concepts:[{id:"ancestry",weight:1},{id:"protection",weight:.92},{id:"ascent",weight:.88}],
-  mode:"sleeve",complexity:.86,materialId:"embroidery",zoneId:"sleeve",
+  mode:"sleeve",complexity:.86,materialId:"embroidery",recipeId:"linen-180-prewashed",zoneId:"sleeve",
   machineProfileId:"tajima-tmbp2-sc-reference",
   physicalWidthMm:360,physicalHeightMm:500,
   constructionIntent:{targetOccupancy:.42,seamPolicy:"continuous",maxColors:8,hierarchyDepth:3}
