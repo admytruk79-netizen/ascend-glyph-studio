@@ -24,9 +24,10 @@ function geometry(form:string,p:Point,r:number,id:string):string{
  }
 }
 
-export function projectSemanticGeometry(g:DesignGenome,width=800,height=240,zone?:GarmentZone):SvgProjection{
+export function projectSemanticGeometry(g:DesignGenome,width=800,height=240,zone?:GarmentZone,options?:{relationStride?:number}):SvgProjection{
  const nodes=g.topology.nodes,layout=solveRelationalLayout(g.topology,width,height,g.seed,zone),pos=new Map(nodes.map(v=>[v.id,layout.points[v.id]!]));
- const paths=g.topology.edges.flatMap((e,i)=>{const a=pos.get(e.from),b=pos.get(e.to);if(!a||!b)return [];let dx=b.x-a.x;
+ const stride=Math.max(1,Math.floor(options?.relationStride??1));
+ const paths=g.topology.edges.flatMap((e,i)=>{if(i%stride!==0)return [];const a=pos.get(e.from),b=pos.get(e.to);if(!a||!b)return [];let dx=b.x-a.x;
   const wrap=!!zone?.wrapAllowed&&Math.abs(dx)>width/2,tx=wrap?b.x-Math.sign(dx)*width:b.x,mid=(a.x+tx)/2,bend=(i%2?1:-1)*Math.min(38,height*.14)*(1-e.weight*.35);
   const main=`<path id="relation-${i}" data-relation="${esc(e.relation)}" data-weight="${f(e.weight)}" d="M ${f(a.x)} ${f(a.y)} Q ${f(mid)} ${f((a.y+b.y)/2+bend)} ${f(tx)} ${f(b.y)}"/>`;
   if(!wrap)return [main];const mirror=tx<0?tx+width:tx-width;return [main,`<path data-wrap-continuation="relation-${i}" d="M ${f(mirror)} ${f(b.y)} Q ${f((mirror+b.x)/2)} ${f((a.y+b.y)/2+bend)} ${f(b.x)} ${f(b.y)}"/>`];
