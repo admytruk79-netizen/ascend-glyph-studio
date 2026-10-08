@@ -121,7 +121,20 @@ async function loadLearnedGuidance(){
   for(const [k,x] of Object.entries<number>(v.tags??{}))tagScores.set(k,(tagScores.get(k)||0)+Number(x)*w);
   for(const sw of (v.palette??[]))colorScores.set(String(sw.hex),(colorScores.get(String(sw.hex))||0)+Number(sw.share||0)*w);
  }
- return {density,tags:[...tagScores.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5).map(([id,weight])=>({id,weight})),palette:[...colorScores.entries()].sort((a,b)=>b[1]-a[1]).slice(0,6).map(([hex,weight])=>({hex,weight})),model:String(body.version||"tesseract-learned")};
+ const lego=body.lego?.all??{},pairs=Object.values<any>(lego.pairs??{}),repeats=Object.values<any>(lego.repeats??{});
+ const repeatStrength=repeats.length?repeats.reduce((s:any,x:any)=>s+Number(x.regularity||0),0)/repeats.length:0;
+ const mirrorStrength=Math.max(0,Math.min(1,(Number(lego.mirrorV||0)+Number(lego.mirrorH||0))/2));
+ const ratios=pairs.map((x:any)=>Number(x.ratio||1)).filter((x:number)=>Number.isFinite(x)&&x>0).sort((a:number,b:number)=>a-b);
+ const preferredScaleRatio=ratios.length?ratios[Math.floor(ratios.length/2)]!:1;
+ const pairDensity=Math.min(1,pairs.length/240),exploration=Math.max(.05,Math.min(.9,Number(lego.novelShare??.25)));
+ const relationPrior={
+  relationWeights:{anchor:.25,flow:.35+repeatStrength*1.3,repeat:.25+repeatStrength*1.8,return:.2+repeatStrength,
+   oppose:.18+mirrorStrength*1.4,enclose:.2+mirrorStrength,orbit:.2+mirrorStrength*.9,
+   branch:.2+pairDensity*.9,bridge:.18+pairDensity*.7,nest:.18+pairDensity*.65,intersect:.14+pairDensity*.55,
+   transform:.32+exploration*.7,radiate:.2+pairDensity*.45,ascend:.34,terminate:.12},
+  preferredScaleRatio,mirrorStrength,repeatStrength,exploration,evidenceImages:Number(lego.images||0),sourceModel:String(body.version||"tesseract-learned")
+ };
+ return {density,tags:[...tagScores.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5).map(([id,weight])=>({id,weight})),palette:[...colorScores.entries()].sort((a,b)=>b[1]-a[1]).slice(0,6).map(([hex,weight])=>({hex,weight})),model:String(body.version||"tesseract-learned"),relationPrior};
 }
 
 async function loadPreferenceModel(){
