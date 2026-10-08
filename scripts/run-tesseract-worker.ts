@@ -2,6 +2,7 @@ import pg from "pg";
 import http from "node:http";
 import {generatePatterns,type PatternMode} from "../packages/tesseract-engine/src/pattern-generator";
 import {critiqueRaster,type RasterCritique} from "../packages/tesseract-engine/src/raster-critic";
+import {deriveStructuralFeedback,type StructuralFeedback} from "../packages/tesseract-engine/src/structural-feedback";
 import {deriveCorpusCanon} from "../packages/tesseract-engine/src/corpus-canonical";
 import {installCorpusCanon} from "../packages/tesseract-engine/src/ascend-primitives";
 
@@ -183,10 +184,11 @@ async function execute(run:any){
  const batchSize=run.batch_size??12;
  const judged:{p:any;raster:RasterCritique|null;score:number;feedbackPass:number}[]=[];
  const baseComplexity=Number(intent.complexity??.72);
+ let structuralFeedback:StructuralFeedback|undefined;
  for(let feedbackPass=0;feedbackPass<3;feedbackPass++){
   const passComplexity=Math.max(.52,baseComplexity-feedbackPass*.07);
   const passSeed=feedbackPass===0?run.seed:run.seed+":feedback:"+feedbackPass;
-  const patterns=generatePatterns({seed:passSeed,concepts,paletteId:intent.paletteId,mode,complexity:passComplexity,variations:batchSize,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus,learnedGuidance});
+  const patterns=generatePatterns({seed:passSeed,concepts,paletteId:intent.paletteId,mode,complexity:passComplexity,variations:batchSize,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus,learnedGuidance,structuralFeedback});
   process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-pass",feedbackPass,patterns:patterns.length,complexity:passComplexity})+"\n");
   let passed=0;
   for(const p of patterns){
@@ -196,7 +198,9 @@ async function execute(run:any){
    judged.push({p,raster,score:base+preferenceAdjustment(preferenceModel,p,raster,base),feedbackPass});
    if(raster?.survive)passed++;
   }
-  process.stdout.write(JSON.stringify({runId:run.id,stage:"critic-feedback",feedbackPass,passed,of:patterns.length})+"\n");
+  const passRows=judged.filter(x=>x.feedbackPass===feedbackPass);
+  structuralFeedback=deriveStructuralFeedback(passRows.map(x=>({raster:x.raster,finalCritique:x.p.finalCritique})));
+  process.stdout.write(JSON.stringify({runId:run.id,stage:"critic-feedback",feedbackPass,passed,of:patterns.length,reasons:structuralFeedback.reasons,avoid:structuralFeedback.avoidRelations,centralHierarchyBoost:structuralFeedback.centralHierarchyBoost,repetitionReduction:structuralFeedback.repetitionReduction,crossingReduction:structuralFeedback.crossingReduction})+"\n");
   if(passed>=Math.min(3,Math.max(1,Math.ceil(batchSize/4))))break;
  }
  judged.sort((a,b)=>Number(b.raster?.survive??false)-Number(a.raster?.survive??false)||b.score-a.score);
