@@ -272,3 +272,50 @@ For contract manufacturing, each real factory receives a capability profile cont
 Tesseract generates against the selected profile. ROVIQ receives the immutable production package and handles routing, work order, materials, QC and shipment.
 
 This allows a local prototype machine and a large Chinese multi-head factory to use the same semantic design language while receiving different valid manufacturing projections.
+
+
+### 6.8 Open constraint-collapse assembly algorithm
+
+Tesseract now uses a clean-room constraint-collapse layer inspired by the MIT-licensed Wave Function Collapse family of algorithms.
+
+The algorithm is used for **abstract assembly structure only**. It does not import or reproduce historical motif geometry.
+
+The learned corpus is reduced to transferable construction statistics:
+
+- abstract role frequency: hero, companion, filler, frame, connector;
+- role-to-role adjacency probabilities;
+- relative scale distributions;
+- axial vs diagonal adjacency;
+- repeat spacing and regularity;
+- hierarchy strength;
+- local pair density.
+
+Generation proceeds as follows:
+
+1. semantic topology defines meaning and allowable ASCEND operations;
+2. corpus-trained assembly statistics define a probability/compatibility field over abstract structural roles;
+3. the solver selects the lowest-entropy unresolved position;
+4. one role is collapsed according to learned probability;
+5. adjacency constraints propagate to neighboring positions;
+6. if a local contradiction appears, the solver backtracks to the previous choice instead of emitting a failed candidate;
+7. the resolved role scaffold is mapped to **ASCEND-native forms only**;
+8. the Law-of-Octaves controller develops that scaffold through DO→RE→MI→FA→SOL→LA→SI→DO², with subordinate branches permitted only at the two interval/shock transitions;
+9. garment, material and machine capacity limit every recursive expansion before it exists;
+10. production objects, physical placement and stitch compilation follow.
+
+This gives Tesseract three distinct levels of generative control:
+
+**local coherence:** constraint collapse / learned adjacency;
+
+**development through time and hierarchy:** octave state machine;
+
+**physical truth:** garment + material + machine + stitch constraints.
+
+The implementation is in `packages/tesseract-engine/src/constraint-collapse.ts` and uses backtracking plus constraint propagation so contradictions are resolved inside construction rather than passed downstream as failed output.
+
+The open algorithmic references are:
+- Maxim Gumin, WaveFunctionCollapse (MIT): entropy-based observation + constraint propagation;
+- model synthesis / arc-consistency lineage described by the WFC project;
+- no source code from proprietary embroidery engines is copied.
+
+Wilcom, Ink/Stitch, Brother, CLO and Marvelous Designer remain **behavioral/architectural references** for production objects, stitch-family-specific parameters, garment placement and machine constraints. Their proprietary implementations are not copied.
