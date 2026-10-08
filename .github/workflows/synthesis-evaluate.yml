@@ -1,0 +1,35 @@
+name: Tesseract synthesis evaluation
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 * * * *"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/score/score-synthesis-neighbors.mts"
+      - "scripts/train/preference-model.mts"
+      - ".github/workflows/synthesis-evaluate.yml"
+permissions:
+  contents: read
+concurrency:
+  group: tesseract-synthesis-evaluation
+  cancel-in-progress: false
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+      CANDIDATE_EMBED_LIMIT: "100"
+      NEAR_COPY_THRESHOLD: "0.95"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install evaluation runtime
+        run: npm install --no-save --no-audit --no-fund @huggingface/transformers@3 sharp pg
+      - name: Refresh human preference model
+        run: npx -y tsx@4 scripts/train/preference-model.mts
+      - name: Score generated candidates against corpus embeddings
+        run: npx -y tsx@4 scripts/score/score-synthesis-neighbors.mts
