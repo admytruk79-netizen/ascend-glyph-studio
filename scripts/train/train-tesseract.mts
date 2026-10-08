@@ -28,6 +28,7 @@ import { USER_AGENT } from "../corpus/sources.ts";
 import { featureOf, hex, kmeans, learnImage, prototypeShape, type Element } from "./learn.ts";
 import { assemble, brickSignatures, grammarOf, scalesOf, type Assembly } from "./lego.ts";
 import { CLIP_MODEL as MODEL, MOTIF_TYPES, NOT_ORNAMENT, ORNAMENT, regionOf } from "./labels.ts";
+import { BRICKS } from "../../packages/blend-engine/src/lego.ts";
 
 const per = Number(process.env.TRAIN_PER_TRADITION ?? 600);
 const maxImages = Number(process.env.TRAIN_MAX_IMAGES ?? 25000);
@@ -213,6 +214,56 @@ async function extract(): Promise<{ kept: Kept[]; stats: Stats }> {
   return { kept, stats };
 }
 
+
+type AssemblyRole="hero"|"companion"|"filler"|"frame"|"connector";
+function deriveAssemblyPrior(lego:any,sourceModel:string){
+ const roleOf=(id:string):AssemblyRole=>{
+  if(id==="border")return "frame";
+  const b=(BRICKS as any)[id];
+  if(b?.scale==="hero")return "hero";
+  if(b?.scale==="companion")return "companion";
+  if(b?.scale==="filler")return "filler";
+  return "connector";
+ };
+ const roleWeights:Partial<Record<AssemblyRole,number>>={};
+ for(const [id,b] of Object.entries<any>(lego.bricks??{})){
+  const r=roleOf(id);roleWeights[r]=(roleWeights[r]??0)+Math.max(.001,Number(b.share||0));
+ }
+ const adjacency:Partial<Record<AssemblyRole,Partial<Record<AssemblyRole,number>>>>={};
+ const ratios:number[]=[];let pairEvidence=0,axial=0,diagonal=0;
+ for(const [key,v] of Object.entries<any>(lego.pairs??{})){
+  const [a,b]=key.split("|"),ra=roleOf(a||""),rb=roleOf(b||"");
+  const n=Math.max(0,Number(v.n||0));if(!n)continue;
+  pairEvidence+=n;
+  const row=(adjacency[ra]??={});row[rb]=(row[rb]??0)+n;
+  const dx=Math.abs(Number(v.dx||0)),dy=Math.abs(Number(v.dy||0));
+  if(Math.max(dx,dy)>=Math.min(dx,dy)*2)axial+=n;else diagonal+=n;
+  const r=Number(v.ratio||0);if(Number.isFinite(r)&&r>0)ratios.push(r);
+ }
+ for(const row of Object.values(adjacency))if(row){
+  const sum=Object.values(row).reduce((s,x)=>s+Number(x||0),0)||1;
+  for(const k of Object.keys(row) as AssemblyRole[])row[k]=Math.max(.0001,Number(row[k]||0)/sum);
+ }
+ const median=(xs:number[])=>xs.length?[...xs].sort((a,b)=>a-b)[Math.floor(xs.length/2)]!:0;
+ const extents=Object.values<any>(lego.bricks??{}).map(x=>Number(x.extent||0)).filter(x=>x>0).sort((a,b)=>a-b);
+ const medExtent=median(extents)||1,maxExtent=extents.at(-1)??medExtent;
+ const preferredScaleRatio=median(ratios)||1;
+ const spread=median(ratios.map(x=>Math.abs(Math.log(x/preferredScaleRatio))))||.35;
+ const repeats=Object.values<any>(lego.repeats??{});
+ const regs=repeats.map(x=>Number(x.regularity||0)).filter(Number.isFinite);
+ const gaps=repeats.map(x=>Number(x.gap||0)).filter(x=>x>0);
+ const dirTotal=axial+diagonal||1;
+ return {
+  hierarchyStrength:Math.max(0,Math.min(1,(maxExtent/medExtent-1)/4)),
+  adjacencyDensity:Math.min(1,Object.keys(lego.pairs??{}).length/360),
+  axialBias:axial/dirTotal,diagonalBias:diagonal/dirTotal,
+  repeatRegularity:regs.length?regs.reduce((a,b)=>a+b,0)/regs.length:0,
+  repeatGap:median(gaps)||.15,scaleRatioMedian:preferredScaleRatio,scaleRatioSpread:spread,
+  evidencePairs:pairEvidence,evidenceBricks:Object.keys(lego.bricks??{}).length,
+  sourceModel,roleWeights,adjacency
+ };
+}
+
 async function aggregate(kept: Kept[], stats: Stats) {
   const types = Object.keys(MOTIF_TYPES);
 
@@ -242,13 +293,16 @@ async function aggregate(kept: Kept[], stats: Stats) {
     return out.sort((a, b) => b.n - a.n);
   };
   const summarise = (ks: Kept[]) => ({ images: ks.length, tags: tagMix(ks), palette: paletteOfGroup(ks), density: +(ks.map((k) => k.density).sort((a, b) => a - b)[Math.floor(ks.length / 2)] ?? 0).toFixed(3), elementsPerImage: +(ks.reduce((a, k) => a + k.elements.length, 0) / ks.length).toFixed(1), codebook: codebookOf(ks) });
+  const legoAll=grammarOf(kept.flatMap((k) => (k.lego ? [k.lego] : [])));
+  const version="tesseract-learned/0.4-collapse";
   const model = {
-    version: "tesseract-learned/0.3-lego", builtAt: new Date().toISOString(), clip: MODEL, stats,
+    version, builtAt: new Date().toISOString(), clip: MODEL, stats,
     traditions: Object.fromEntries([...groupOf((k) => k.tradition)].map(([t, ks]) => [t, summarise(ks)])),
     regions: Object.fromEntries([...groupOf((k) => k.region)].filter(([, ks]) => ks.length >= 5).map(([r, ks]) => [r, summarise(ks)])),
-    // Lego grammar: which pieces each tradition and region uses, how they sit together, mirror and repeat
+    assemblyPrior:deriveAssemblyPrior(legoAll,version),
+    // Lego grammar is retained as evidence; generation consumes only abstract assembly statistics.
     lego: {
-      all: grammarOf(kept.flatMap((k) => (k.lego ? [k.lego] : []))),
+      all: legoAll,
       traditions: Object.fromEntries([...groupOf((k) => k.tradition)].map(([t, ks]) => [t, grammarOf(ks.flatMap((k) => (k.lego ? [k.lego] : [])))])),
       regions: Object.fromEntries([...groupOf((k) => k.region)].filter(([, ks]) => ks.length >= 5).map(([r, ks]) => [r, grammarOf(ks.flatMap((k) => (k.lego ? [k.lego] : [])))])),
     },
