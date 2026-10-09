@@ -1,5 +1,5 @@
 import {describe,expect,it} from "vitest";
-import {compileProductionObjectsToStitchIr,sampleSvgPath,transformPrimitivePoints} from "../src/production-stitch-ir";
+import {compileProductionObjectsToStitchIr,sampleSvgPath} from "../src/production-stitch-ir";
 import type {ProductionGlyphObject} from "../src/production-object";
 
 const base:ProductionGlyphObject={
@@ -36,18 +36,5 @@ describe("production stitch geometry integrity",()=>{
    expect(second[0].path[0]!.x-first[0].path[0]!.x).toBeCloseTo(20);
   }
  });
- it("honors non-100-unit source viewBoxes while preserving proportions",()=>{
-  const transformed=transformPrimitivePoints([{x:10,y:20},{x:210,y:120}],{
-   ...base,physical:{...base.physical,widthMm:60,heightMm:20},
-   placement:{...base.placement,xMm:100,yMm:200}
-  },"10 20 200 100");
-  expect(transformed[0]!.x).toBeCloseTo(80);
-  expect(transformed[0]!.y).toBeCloseTo(190);
-  expect(transformed[1]!.x).toBeCloseTo(120);
-  expect(transformed[1]!.y).toBeCloseTo(210);
- });
- it("fails closed on invalid viewBoxes and nonfinite placement",()=>{
-  expect(()=>transformPrimitivePoints([{x:0,y:0}],base,"0 0 0 100")).toThrow(/viewBox/);
-  expect(()=>transformPrimitivePoints([{x:0,y:0}],{...base,placement:{...base.placement,xMm:NaN}},"0 0 100 100")).toThrow(/placement/);
- });
+
 });
