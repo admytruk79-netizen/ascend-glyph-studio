@@ -11,21 +11,62 @@ jobs:
   evaluate:
     runs-on: ubuntu-latest
     timeout-minutes: 40
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm install --no-audit --no-fund
-      - run: npm run typecheck --workspace=@ascend/tesseract-engine
-      - run: npm test --workspace=@ascend/tesseract-engine
-      - run: npm run build --workspace=@ascend/tesseract-engine
-      - run: npx tsx scripts/evaluate-tesseract-40.mts
+          package-manager-cache: false
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Prepare diagnostics
+        run: mkdir -p tesseract-evaluation/diagnostics
+      - name: Typecheck
+        id: typecheck
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          npm run typecheck --workspace=@ascend/tesseract-engine 2>&1 | tee tesseract-evaluation/diagnostics/typecheck.log
+      - name: Unit tests
+        id: tests
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          npm test --workspace=@ascend/tesseract-engine 2>&1 | tee tesseract-evaluation/diagnostics/tests.log
+      - name: Compile
+        id: build
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          npm run build --workspace=@ascend/tesseract-engine 2>&1 | tee tesseract-evaluation/diagnostics/build.log
+      - name: Generate evaluation designs
+        id: evaluation
+        continue-on-error: true
+        shell: bash
         env:
           TESSERACT_EVALUATION_OUTPUT: tesseract-evaluation
-      - uses: actions/upload-artifact@v4
+        run: |
+          set -o pipefail
+          npx --no-install tsx scripts/evaluate-tesseract-40.mts 2>&1 | tee tesseract-evaluation/diagnostics/generation.log
+      - name: Save diagnostics and pattern previews
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: tesseract-evaluation-40
           path: tesseract-evaluation/
-          if-no-files-found: warn
+          if-no-files-found: error
+      - name: Enforce validation result
+        if: always()
+        env:
+          TYPECHECK: ${{ steps.typecheck.outcome }}
+          TESTS: ${{ steps.tests.outcome }}
+          BUILD: ${{ steps.build.outcome }}
+          EVALUATION: ${{ steps.evaluation.outcome }}
+        run: |
+          echo "typecheck=$TYPECHECK tests=$TESTS build=$BUILD generation=$EVALUATION"
+          test "$TYPECHECK" = success && test "$TESTS" = success && test "$BUILD" = success && test "$EVALUATION" = success
