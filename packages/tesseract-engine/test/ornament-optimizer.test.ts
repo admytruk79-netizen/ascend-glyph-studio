@@ -59,6 +59,10 @@ describe("ornament optimization",()=>{
   const footprints={a:{widthMm:80,heightMm:80,originalScale:1},b:{widthMm:80,heightMm:80,originalScale:1}};
   expect(()=>refineOrnamentalLayout(t,layout,220,90,"physical",undefined,{iterations:0,physicalFootprints:footprints})).toThrow(/ornament-/);
  });
+ it("rejects production scale beyond the permitted ratio",()=>{
+  const object={id:"a",physical:{widthMm:20,heightMm:20,minScale:.5,maxScale:3,clearanceMm:1,rotationDeg:0},placement:{zoneId:"cuff",seamPolicy:"avoid",canRotate:true,wrapAllowed:false},embroidery:{stitchFamily:"run",spacingMm:2.5,underlay:[],pullCompMm:{left:0,right:0},runLengthMm:2.5,repeats:1,preserveRoutingParameters:true}} as ProductionGlyphObject;
+  expect(()=>placeProductionObjects([object],{a:{x:30,y:40,angleDeg:0,scale:2}},{a:{scale:1}})).toThrow("ornament-production-scale-out-of-range");
+ });
  it("supports zero iterations without changing the original coordinates",()=>{
   const x=refineOrnamentalLayout(topology,layout,220,90,"off",undefined,{iterations:0});
   expect(x.points).toEqual(layout.points);
