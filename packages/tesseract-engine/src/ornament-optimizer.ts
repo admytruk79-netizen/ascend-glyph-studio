@@ -60,6 +60,23 @@ function measure(t:Topology,pts:Record<string,LayoutPoint>,w:number,h:number,wra
  }
  return cost;
 }
+function geometryError(t:Topology,pts:Record<string,LayoutPoint>,w:number,h:number,wrap:boolean,gap:number):string|undefined {
+ const nodes=t.nodes,radius=Math.min(24,h*.105);
+ for(let i=0;i<nodes.length;i++){
+  const a=nodes[i]!,p=pts[a.id],ra=p?radius*p.scale:NaN;
+  if(!p||!Number.isFinite(p.x+p.y+p.scale+p.angleDeg)||p.scale<=0)return "ornament-nonfinite-placement:"+a.id;
+  if(p.y-ra-gap<0||p.y+ra+gap>h)return "ornament-outside-height:"+a.id;
+  if(!wrap&&(p.x-ra-gap<0||p.x+ra+gap>w))return "ornament-outside-width:"+a.id;
+  for(let j=i+1;j<nodes.length;j++){
+   const b=nodes[j]!,q=pts[b.id];if(!q)return "ornament-nonfinite-placement:"+b.id;
+   const rb=radius*q.scale,dx=wrap?wrapDelta(q.x-p.x,w):q.x-p.x,d=Math.hypot(dx,q.y-p.y);
+   const containing=t.edges.some(e=>((e.from===a.id&&e.to===b.id)||(e.from===b.id&&e.to===a.id))&&(e.relation==="nest"||e.relation==="enclose"));
+   if(containing){if(d+Math.min(ra,rb)+gap>Math.max(ra,rb)+1e-6)return "ornament-nesting-clearance:"+a.id+":"+b.id;}
+   else if(d+1e-6<ra+rb+gap)return "ornament-collision:"+a.id+":"+b.id;
+  }
+ }
+}
+
 export function refineOrnamentalLayout(
  t:Topology,layout:Layout,w:number,h:number,seed:string,
  zone?:GarmentZone,options:RefineOptions={}
@@ -70,6 +87,15 @@ export function refineOrnamentalLayout(
  const base:Record<string,LayoutPoint>=Object.fromEntries(Object.entries(layout.points).map(([id,p])=>[id,{...p}]));
  const pts:Record<string,LayoutPoint>=Object.fromEntries(Object.entries(layout.points).map(([id,p])=>[id,{...p}]));
  let cost=measure(t,pts,w,h,wrap,gap,options.symmetry??"none",base);
+ let bestValid:Record<string,LayoutPoint>|undefined;
+ let bestCost=Infinity;
+ const capture=()=>{
+  if(geometryError(t,pts,w,h,wrap,gap)===undefined&&cost<bestCost){
+   bestCost=cost;
+   bestValid=Object.fromEntries(Object.entries(pts).map(([id,p])=>[id,{...p}]));
+  }
+ };
+ capture();
  const count=clamp(Math.floor(options.iterations??320),0,3000),nodes=t.nodes;
  for(let i=0;i<count;i++){
   const node=nodes[Math.floor(random()*nodes.length)]!,p=pts[node.id]!;
@@ -87,25 +113,13 @@ export function refineOrnamentalLayout(
   p.x=wrap?((p.x%w)+w)%w:clamp(p.x,margin,Math.max(margin,w-margin));
   p.y=clamp(p.y,margin,Math.max(margin,h-margin));
   const next=measure(t,pts,w,h,wrap,gap,options.symmetry??"none",base);
-  if(next<=cost||random()<Math.exp((cost-next)/temp)){cost=next;}
+  if(next<=cost||random()<Math.exp((cost-next)/temp)){cost=next;capture();}
   else Object.assign(p,old);
  }
- // Revert optimization if it cannot satisfy the manufacturing clearance gate.
- // This prevents invalid placement from silently entering stitch compilation.
+ // Return the best manufacturable candidate encountered, not the last random state.
  if(options.strictGeometry!==false){
-  for(let i=0;i<nodes.length;i++){
-   const a=nodes[i]!,p=pts[a.id]!,ra=radius*p.scale;
-   if(!Number.isFinite(p.x+p.y+p.scale+p.angleDeg)||p.scale<=0)throw new Error("ornament-nonfinite-placement:"+a.id);
-   if(p.y-ra-gap<0||p.y+ra+gap>h)throw new Error("ornament-outside-height:"+a.id);
-   if(!wrap&&(p.x-ra-gap<0||p.x+ra+gap>w))throw new Error("ornament-outside-width:"+a.id);
-   for(let j=i+1;j<nodes.length;j++){
-    const b=nodes[j]!,q=pts[b.id]!,rb=radius*q.scale;
-    const dx=wrap?wrapDelta(q.x-p.x,w):q.x-p.x,d=Math.hypot(dx,q.y-p.y);
-    const containing=t.edges.some(e=>((e.from===a.id&&e.to===b.id)||(e.from===b.id&&e.to===a.id))&&(e.relation==="nest"||e.relation==="enclose"));
-    if(containing){if(d+Math.min(ra,rb)+gap>Math.max(ra,rb)+1e-6)throw new Error("ornament-nesting-clearance:"+a.id+":"+b.id);}
-    else if(d+1e-6<ra+rb+gap)throw new Error("ornament-collision:"+a.id+":"+b.id);
-   }
-  }
+  if(!bestValid)throw new Error(geometryError(t,pts,w,h,wrap,gap)??"ornament-no-valid-layout");
+  return {points:bestValid,iterations:layout.iterations+count,energy:bestCost};
  }
  return {points:pts,iterations:layout.iterations+count,energy:cost};
 }
