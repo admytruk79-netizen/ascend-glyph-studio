@@ -7,7 +7,8 @@
  * CORPUS_VISUAL_OUT=data/research/visual-learning.ndjson
  * CORPUS_VISUAL_SUMMARY=data/research/visual-learning-summary.json
  */
-import {createReadStream,createWriteStream,writeFileSync} from "node:fs";
+import {createReadStream,createWriteStream,writeFileSync,mkdirSync} from "node:fs";
+import {dirname} from "node:path";
 import {createInterface} from "node:readline";
 import type {ImageObservation} from "../../packages/tesseract-engine/src/image-corpus.ts";
 import {assignSplit,type AnalyzedRow} from "./store.ts";
@@ -54,11 +55,14 @@ export function visualObservationFromAnalyzed(r:Row):ImageObservation|null{
  return observation;
 }
 async function main(){
+ mkdirSync(dirname(output),{recursive:true});
+ mkdirSync(dirname(summaryPath),{recursive:true});
  const stream=createWriteStream(output,{flags:"w"});
  const stats={read:0,eligible:0,train:0,validation:0,holdout:0,excluded:0,byTradition:{} as Record<string,number>,bySource:{} as Record<string,number>};
  for await(const line of createInterface({input:createReadStream(input),crlfDelay:Infinity})){
   if(!line.trim())continue;stats.read++;
   const r=JSON.parse(line) as Row,split=r.split??assignSplit(r);
+  if(!["train","validation","holdout"].includes(split))throw new Error("Invalid corpus split for "+r.id);
   const obs=visualObservationFromAnalyzed(r);
   if(!obs){stats.excluded++;continue;}
   stats.eligible++;
