@@ -14,6 +14,10 @@ for(const [mode,seed] of [["band","integration-band-001"],["emblem","integration
    for(const o of d.productionObjects){
     if(!Number.isFinite(o.placement.xMm)||!Number.isFinite(o.placement.yMm)||!Number.isFinite(o.physical.widthMm)||o.physical.widthMm<=0)throw new Error("invalid production object "+o.id);
    }
+   for(const stitch of d.stitchObjects??[]){
+    const points=stitch.kind==="fill"?stitch.polygon:stitch.path;
+    if(points.length<2||points.some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y)))throw new Error("invalid stitch coordinates "+stitch.id);
+   }
   }
   if(outDir){
    designs.forEach((d,i)=>writeFileSync(join(outDir,`${mode}-${i+1}.svg`),d.svg));
