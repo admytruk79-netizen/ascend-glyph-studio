@@ -29,7 +29,10 @@ type Scored={t:Topology;score:number;objectives?:ObjectiveVector};
 
 export function searchDesignSpace(input:SearchInput):SearchCandidate[]{
  const plan=compileIntent(input.intent),principles=retrievePrinciples(plan.intent,input.principles);
- const searchCorpus=input.visualCorpus?.length?(input.visualCorpus.length>256?input.visualCorpus.filter((_,i)=>i%Math.ceil(input.visualCorpus!.length/256)===0).slice(0,256):input.visualCorpus):undefined;
+ // Generated concept boards are not positive evidence for visual selection.
+ // Keep real, provenance-backed observations and original source drawings only.
+ const eligibleCorpus=input.visualCorpus?.filter(o=>o.trainingUse!=="negative-example"&&(o.verifiedReal||o.class==="source-drawing"))??[];
+ const searchCorpus=eligibleCorpus.length?(eligibleCorpus.length>256?eligibleCorpus.filter((_,i)=>i%Math.ceil(eligibleCorpus.length/256)===0).slice(0,256):eligibleCorpus):undefined;
  const root=buildTopology(plan.semanticSkeleton,principles),history:Topology[]=[root];
  const ancestry=new WeakMap<Topology,string[]>();
  const lineageIds=new WeakMap<Topology,string>();
@@ -63,9 +66,9 @@ export function searchDesignSpace(input:SearchInput):SearchCandidate[]{
  }
  const finalists=population.map(t=>{
   const e=evaluateTopology(t,plan.semanticSkeleton.length,principles.length,input.antiStyle),novelty=noveltyAgainst(t,[root]);
-  const survival=input.visualCorpus?.length?corpusSurvival(t,input.visualCorpus,input.selectionPolicy):undefined;
+  const survival=searchCorpus?.length?corpusSurvival(t,searchCorpus,input.selectionPolicy):undefined;
   const lineage=nameLineage(t,gens,input.niches,ancestry.get(t)??[]);
-  const visual=input.visualCorpus?.length?assessVisual(topologyVisualVector(t),input.visualCorpus):undefined;
+  const visual=searchCorpus?.length?assessVisual(topologyVisualVector(t),searchCorpus):undefined;
   const manufacturing=input.medium?assessManufacturability(t,input.medium):undefined;
   const physical=input.medium&&input.physicalHistory?.length?productionFitness(t,input.medium,input.physicalHistory,input.substrateId,input.machineProfileId):undefined;
   const objectives=objectiveVector(t,{semanticScore:e.score,novelty,culturalConfidence:1,visual,manufacturing,physical});
