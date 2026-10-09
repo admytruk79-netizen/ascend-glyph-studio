@@ -10,7 +10,7 @@ const topology:Topology={
   {id:"b",conceptId:"lineage",form:"seed",scale:1},
   {id:"c",conceptId:"ascent",form:"axis",scale:1}
  ],
- edges:[{from:"a",to:"b",relation:"nest",weight:1},{from:"b",to:"c",relation:"flow",weight:1}]
+ edges:[{from:"a",to:"b",relation:"flow",weight:1},{from:"b",to:"c",relation:"flow",weight:1}]
 };
 const layout:Layout={iterations:72,energy:1,points:{
  a:{x:45,y:40,angleDeg:0,scale:1,layer:1},
