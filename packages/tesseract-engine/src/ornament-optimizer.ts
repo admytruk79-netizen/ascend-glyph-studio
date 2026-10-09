@@ -7,6 +7,7 @@
 import type {Topology} from "./topology";
 import type {GarmentZone} from "./garment";
 import type {Layout,LayoutPoint} from "./relational-layout";
+import {insideZone,nestedRotated,overlapsRotated,type RectPose} from "./rotated-footprints";
 
 export interface RefineOptions {
   minGapMm?:number;
@@ -26,6 +27,12 @@ function angleDist(a:number,b:number){return Math.abs(((a-b+540)%360)-180);}
 function physicalRadius(id:string,p:LayoutPoint,h:number,footprints?:RefineOptions["physicalFootprints"]){
  const f=footprints?.[id];
  return f?Math.hypot(f.widthMm,f.heightMm)*.5*(p.scale/Math.max(.001,f.originalScale)):Math.min(24,h*.105)*p.scale;
+}
+function pose(id:string,p:LayoutPoint,footprints:RefineOptions["physicalFootprints"]):RectPose|undefined {
+ const f=footprints?.[id];
+ if(!f)return undefined;
+ const scale=p.scale/Math.max(.001,f.originalScale);
+ return {x:p.x,y:p.y,width:f.widthMm*scale,height:f.heightMm*scale,angleDeg:p.angleDeg};
 }
 function measure(t:Topology,pts:Record<string,LayoutPoint>,w:number,h:number,wrap:boolean,gap:number,symmetry:string,base:Record<string,LayoutPoint>,footprints?:RefineOptions["physicalFootprints"]){
  let cost=0;
@@ -71,14 +78,21 @@ function geometryError(t:Topology,pts:Record<string,LayoutPoint>,w:number,h:numb
  for(let i=0;i<nodes.length;i++){
   const a=nodes[i]!,p=pts[a.id],ra=p?physicalRadius(a.id,p,h,footprints):NaN;
   if(!p||!Number.isFinite(p.x+p.y+p.scale+p.angleDeg)||p.scale<=0)return "ornament-nonfinite-placement:"+a.id;
-  if(p.y-ra-gap<0||p.y+ra+gap>h)return "ornament-outside-height:"+a.id;
-  if(!wrap&&(p.x-ra-gap<0||p.x+ra+gap>w))return "ornament-outside-width:"+a.id;
+  const ap=pose(a.id,p,footprints);
+  if(ap?!insideZone(ap,w,h,gap,wrap):p.y-ra-gap<0||p.y+ra+gap>h)return "ornament-outside-height:"+a.id;
+  if(!wrap&&!ap&&(p.x-ra-gap<0||p.x+ra+gap>w))return "ornament-outside-width:"+a.id;
   for(let j=i+1;j<nodes.length;j++){
    const b=nodes[j]!,q=pts[b.id];if(!q)return "ornament-nonfinite-placement:"+b.id;
    const rb=physicalRadius(b.id,q,h,footprints),dx=wrap?wrapDelta(q.x-p.x,w):q.x-p.x,d=Math.hypot(dx,q.y-p.y);
    const containing=t.edges.some(e=>((e.from===a.id&&e.to===b.id)||(e.from===b.id&&e.to===a.id))&&(e.relation==="nest"||e.relation==="enclose"));
-   if(containing){if(d+Math.min(ra,rb)+gap>Math.max(ra,rb)+1e-6)return "ornament-nesting-clearance:"+a.id+":"+b.id;}
-   else if(d+1e-6<ra+rb+gap)return "ornament-collision:"+a.id+":"+b.id;
+   const bp=pose(b.id,q,footprints);
+   if(containing){
+    if(ap&&bp){
+     const big=ap.width*ap.height>=bp.width*bp.height?ap:bp;
+     const small=big===ap?bp:ap;
+     if(!nestedRotated(big,small,gap,wrap?w:undefined))return "ornament-nesting-clearance:"+a.id+":"+b.id;
+    }else if(d+Math.min(ra,rb)+gap>Math.max(ra,rb)+1e-6)return "ornament-nesting-clearance:"+a.id+":"+b.id;
+   }else if(ap&&bp?overlapsRotated(ap,bp,gap,wrap?w:undefined):d+1e-6<ra+rb+gap)return "ornament-collision:"+a.id+":"+b.id;
   }
  }
 }
