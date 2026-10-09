@@ -196,6 +196,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  const minDrawableNodes=(mode==="band"||mode==="sleeve"||mode==="cuff"||mode==="collar")?3:2;
  const drawableCandidates=candidates.filter(c=>c.topology.nodes.length>=minDrawableNodes);
  const renderCandidates=drawableCandidates.length?drawableCandidates:candidates;
+ const candidateFailures:string[]=[];
  const rendered=renderCandidates.flatMap((candidate,i)=>{
   try {
   const enriched=expandRecursiveGrammar(candidate.topology,`${input.seed}:live:${i}`,{
@@ -228,10 +229,14 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const combinedScore=candidate.score+finalCritique.score*.45;
   return [{id:`pat-${input.seed}-${i+1}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,conceptSvg,finalCritique,productionObjects,stitchObjects,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave}];
   } catch (error) {
-   if(error instanceof Error && /^(ornament-|scaled satin width out of machine-safe range)/.test(error.message))return [];
+   if(error instanceof Error && /^(ornament-|scaled satin width out of machine-safe range)/.test(error.message)){
+    candidateFailures.push(`${i}:${error.message}`);
+    return [];
+   }
    throw error;
   }
  }).sort((a,b)=>b.score-a.score);
+ if(!rendered.length)throw new Error(`pattern-no-manufacturable-candidates mode=${mode} searched=${renderCandidates.length} failures=${candidateFailures.slice(0,12).join("|")}`);
  const survivors=rendered.filter(x=>x.finalCritique.survive);
  const pool=survivors.length>=Math.min(4,variations)?survivors:rendered;
  return selectVisuallyDiverse(pool,variations,.11);
