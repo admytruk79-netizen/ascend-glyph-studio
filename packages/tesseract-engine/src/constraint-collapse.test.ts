@@ -1,4 +1,4 @@
-import test from "node:test";
+import {test} from "vitest";
 import assert from "node:assert/strict";
 import {collapseAssemblyRoles,applyAssemblyConstraintCollapse} from "./constraint-collapse.js";
 import type {LearnedAssemblyPrior} from "./learned-assembly-prior.js";
@@ -26,8 +26,14 @@ test("constraint collapse is deterministic and respects fixed hero/frame roles",
  assert.equal(a[4],"frame");
 });
 
-test("constraint collapse backtracks to a valid adjacency solution",()=>{
- const roles=collapseAssemblyRoles(3,"backtrack",prior,{1:"hero"});
+// Omitted learned pairs have a fallback weight. Encode hard constraints explicitly.
+const roles = ["hero","companion","filler","frame","connector"] as const;
+const strictPrior:LearnedAssemblyPrior = {...prior, adjacency:Object.fromEntries(
+ roles.map(a=>[a,Object.fromEntries(roles.map(b=>[b,prior.adjacency?.[a]?.[b] ?? prior.adjacency?.[b]?.[a] ?? 0]))])
+)};
+
+test("constraint collapse propagates explicit adjacency restrictions",()=>{
+ const roles=collapseAssemblyRoles(3,"backtrack",strictPrior,{1:"hero"});
  assert.equal(roles[1],"hero");
  assert.equal(roles[0],"companion");
  assert.equal(roles[2],"companion");
@@ -49,4 +55,13 @@ test("ASCEND topology keeps semantics while receiving assembly roles",()=>{
  assert.equal(out.nodes[0]!.assemblyRole,"frame");
  assert.equal(out.nodes[2]!.assemblyRole,"hero");
  assert.equal(out.nodes[3]!.assemblyRole,"frame");
+});
+
+
+test("constraint collapse rejects contradictory explicit restrictions",()=>{
+ assert.throws(()=>collapseAssemblyRoles(2,"contradiction",strictPrior,{0:"hero",1:"filler"}),/no valid initial solution/);
+});
+
+test("constraint collapse preserves fallback for unobserved learned pairs",()=>{
+ assert.deepEqual(collapseAssemblyRoles(2,"fallback",prior,{0:"hero",1:"filler"}),["hero","filler"]);
 });
