@@ -19,10 +19,15 @@ jobs:
         with:
           node-version: '22'
           package-manager-cache: false
-      - name: Install dependencies
-        run: npm install --no-audit --no-fund
       - name: Prepare diagnostics
         run: mkdir -p tesseract-evaluation/diagnostics
+      - name: Install dependencies
+        id: install
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          npm install --no-audit --no-fund 2>&1 | tee tesseract-evaluation/diagnostics/install.log
       - name: Typecheck
         id: typecheck
         continue-on-error: true
@@ -63,10 +68,11 @@ jobs:
       - name: Enforce validation result
         if: always()
         env:
+          INSTALL: ${{ steps.install.outcome }}
           TYPECHECK: ${{ steps.typecheck.outcome }}
           TESTS: ${{ steps.tests.outcome }}
           BUILD: ${{ steps.build.outcome }}
           EVALUATION: ${{ steps.evaluation.outcome }}
         run: |
-          echo "typecheck=$TYPECHECK tests=$TESTS build=$BUILD generation=$EVALUATION"
-          test "$TYPECHECK" = success && test "$TESTS" = success && test "$BUILD" = success && test "$EVALUATION" = success
+          echo "install=$INSTALL typecheck=$TYPECHECK tests=$TESTS build=$BUILD generation=$EVALUATION"
+          test "$INSTALL" = success && test "$TYPECHECK" = success && test "$TESTS" = success && test "$BUILD" = success && test "$EVALUATION" = success
