@@ -25,6 +25,7 @@ import {evaluateSurfaceLayout,type SurfaceFootprint} from "./garment-surface-mat
 import {buildMasterCompositionPlan} from "./master-composition-plan";
 import {stitchIrToSvg} from "./canonical-preview";
 import {optimizeStitchTravel} from "./stitch-travel-optimizer";
+import {planEmbroideryJob,type ManufacturingJobPlan} from "./manufacturing-job-plan";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
@@ -47,6 +48,7 @@ export type GeneratedPattern={
  conceptSvg?:string;
  productionObjects?:ProductionGlyphObject[];
  stitchObjects?:StitchIrObject[];
+ manufacturingJob?:ManufacturingJobPlan;
  surfaceMath?:ReturnType<typeof evaluateSurfaceLayout>;
  machineProfileId?:string;
  physicalSizeMm?:{width:number;height:number};
@@ -217,6 +219,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const baseStitchObjects=compileProductionObjectsToStitchIr(productionObjects);
   const compositionPlan=buildMasterCompositionPlan({mode,medium,complexity,sashGrammar,structuralFeedback:input.structuralFeedback});
   const stitchObjects=optimizeStitchTravel(applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height)).objects;
+  const manufacturingJob=planEmbroideryJob(stitchObjects,{widthMm:physicalSize.width,heightMm:physicalSize.height});
   let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
   if(productionZone.wrapAllowed&&(productionZone.surface==="cylinder"||productionZone.surface==="tapered-cylinder")){
    const byId=new Map(productionObjects.map(o=>[o.id,o]));
@@ -231,7 +234,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const svg=stitchIrToSvg(stitchObjects,physicalSize.width,physicalSize.height);
   const finalCritique=critiqueFinalSvg(conceptSvg,medium,input.visualCorpus??[]);
   const combinedScore=candidate.score+finalCritique.score*.45-(compact?.15:0);
-  return [{id:`pat-${input.seed}-${i+1}${compact?"-compact":""}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,conceptSvg,finalCritique,productionObjects,stitchObjects,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave}];
+  return [{id:`pat-${input.seed}-${i+1}${compact?"-compact":""}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,conceptSvg,finalCritique,productionObjects,stitchObjects,manufacturingJob,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave}];
   } catch (error) {
    if(error instanceof Error && /^(ornament-|scaled satin width out of machine-safe range)/.test(error.message)){
     candidateFailures.push(`${i}:${compact?"compact":"full"}:${error.message}`);
