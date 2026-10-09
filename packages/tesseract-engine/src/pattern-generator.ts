@@ -205,7 +205,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   let productionObjects=productionObjectsFromTopology(adapted.topology,constructionEnvelope,{zoneId:productionZone.id,seamPolicy:constructionEnvelope.seamPolicy,wrapAllowed:productionZone.wrapAllowed});
   assertProductionRelations(adapted.topology,productionObjects);
   const initialLayout=solveRelationalLayout(adapted.topology,physicalSize.width,physicalSize.height,`${input.seed}:physical:${i}`,productionZone,{minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy});
-  const physicalLayout=refineOrnamentalLayout(adapted.topology,initialLayout,physicalSize.width,physicalSize.height,`${input.seed}:ornament:${i}`,productionZone,{minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy,symmetry:mode==="emblem"?"mirror-y":"none"});
+  const physicalLayout=refineOrnamentalLayout(adapted.topology,initialLayout,physicalSize.width,physicalSize.height,`${input.seed}:ornament:${i}`,productionZone,{minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy,symmetry:mode==="emblem"?"mirror-y":"none",physicalFootprints:Object.fromEntries(productionObjects.map(o=>[o.id,{widthMm:o.physical.widthMm,heightMm:o.physical.heightMm,originalScale:initialLayout.points[o.id]?.scale??1}]))});
   productionObjects=placeProductionObjects(productionObjects,physicalLayout.points,initialLayout.points);
   const baseStitchObjects=compileProductionObjectsToStitchIr(productionObjects);
   const compositionPlan=buildMasterCompositionPlan({mode,medium,complexity,sashGrammar,structuralFeedback:input.structuralFeedback});
