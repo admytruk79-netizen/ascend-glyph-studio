@@ -109,10 +109,17 @@ export function assertProductionRelations(topology:Topology,objects:ProductionGl
 
 export function placeProductionObjects(
  objects:ProductionGlyphObject[],
- points:Record<string,{x:number;y:number;angleDeg:number}>
+ points:Record<string,{x:number;y:number;angleDeg:number;scale?:number}>,
+ originalPoints?:Record<string,{scale?:number}>
 ):ProductionGlyphObject[]{
  return objects.map(o=>{
   const p=points[o.id];
-  return p?{...o,physical:{...o.physical,rotationDeg:p.angleDeg},placement:{...o.placement,xMm:p.x,yMm:p.y,rotationDeg:p.angleDeg}}:o;
+  if(!p)return o;
+  const original=originalPoints?.[o.id]?.scale;
+  const factor=original&&p.scale?Math.max(.5,Math.min(1.5,p.scale/original)):1;
+  const satin=o.embroidery.satinWidthMm;
+  const width=satin===undefined?undefined:satin*factor;
+  if(width!==undefined&&(width<.7||width>8))throw new Error(`scaled satin width out of machine-safe range: ${o.id}`);
+  return {...o,physical:{...o.physical,widthMm:o.physical.widthMm*factor,heightMm:o.physical.heightMm*factor,rotationDeg:p.angleDeg},embroidery:{...o.embroidery,...(width===undefined?{}:{satinWidthMm:width})},placement:{...o.placement,xMm:p.x,yMm:p.y,rotationDeg:p.angleDeg}};
  });
 }
