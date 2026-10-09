@@ -32,3 +32,31 @@ of a particular cultural attribution.
    do not copy museum motif geometry or treat cultural/sacred motifs as free assets.
 5. Keep source-specific and Ukrainian-regional metrics separate from Global/Other.
 6. Measure change in held-out pattern quality and physical production compliance.
+
+
+## Database audit results (read-only; 2026-10-09)
+
+Executed against Neon project `ascend-glyph-studio`:
+- 4,283 research objects explicitly labeled `Ukraine`.
+- 3,785 of those objects have a matching analysis record.
+- Sources: Wikimedia Commons 2,430; Internet Archive 1,849; Art Institute of Chicago 4.
+- One additional Met object mentions Ukraine but is labeled `Sasanian`: **do not reclassify automatically**.
+- No further non-`Ukraine` objects matched the tested Poltava/Bukov/Hutsul/rushnyk/vyshyv title/region terms.
+- This is a catalog audit, **not** proof of 4,283 usable training examples.
+
+## Newly reviewed Sloboda Ukraine catalog metadata (not ingested)
+
+The project confirms 500 digitized museum artefacts:
+https://slobocode.art/en-US/about
+
+Candidate object pages, each with its own accession and creation-place metadata:
+- TK-10: https://slobocode.art/en-US/collection/156
+- TK-111: https://slobocode.art/en-US/collection/195
+- TK-86: https://slobocode.art/en-US/collection/226
+- TK-170: https://slobocode.art/en-US/collection/223
+- TK-109: https://slobocode.art/en-US/collection/348
+- TK-14: https://slobocode.art/en-US/collection/416
+- TK-2089: https://slobocode.art/en-US/collection/161
+- TK-4441: https://slobocode.art/en-US/collection/217
+
+These eight are catalog leads only, not new training images or licensed model inputs.
