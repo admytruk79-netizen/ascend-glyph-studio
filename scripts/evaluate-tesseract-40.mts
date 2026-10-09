@@ -17,9 +17,11 @@ for(const suite of suites){
  const accepted:ReturnType<typeof generatePatterns>=[];
  const seen=new Set<string>();
  const failures:string[]=[];
+ const diagnostics:{batch:number;generated:number;accepted:number;rejected:number}[]=[];
  for(let batch=0;batch<8&&accepted.length<10;batch++){
   try{
    const designs=generatePatterns({seed:`evaluation:${suite.name}:${batch}`,concepts:suite.concepts,mode:suite.mode,medium:suite.medium,cultureIds:suite.cultureIds,complexity:.7,variations:10,population:32,generations:4});
+   const before=accepted.length;
    for(const d of designs){
     if(!d.svg.includes("<svg")||!d.productionObjects?.length||!d.stitchObjects?.length)continue;
     if(d.stitchObjects.some(o=>(o.kind==="fill"?o.polygon:o.path).some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y))))continue;
@@ -29,7 +31,9 @@ for(const suite of suites){
     seen.add(key);accepted.push(d);
     if(accepted.length===10)break;
    }
-  }catch(e){failures.push(String(e));}
+   diagnostics.push({batch,generated:designs.length,accepted:accepted.length-before,rejected:Math.max(0,designs.length-(accepted.length-before))});
+   if(designs.length===0)failures.push(`batch ${batch}: generator returned zero viable designs`);
+  }catch(e){failures.push(`batch ${batch}: ${String(e)}`);}
  }
  const folder=join(dir,suite.name);mkdirSync(folder,{recursive:true});
  for(const [i,d] of accepted.entries()){
@@ -37,11 +41,12 @@ for(const suite of suites){
   writeFileSync(join(folder,`design-${String(i+1).padStart(2,"0")}.concept.svg`),d.svg);
   writeFileSync(join(folder,`design-${String(i+1).padStart(2,"0")}.stitch-ir.json`),JSON.stringify(d.stitchObjects,null,2));
  }
- const summary={suite:suite.name,requested:10,produced:accepted.length,failures,designs:accepted.map((d,i)=>({file:`design-${String(i+1).padStart(2,"0")}.svg`,id:d.id,score:d.score,novelty:d.novelty,manufacturingStatus:"stitch-ir-preview-not-machine-validated",stitchObjectCount:d.stitchObjects?.length??0,physicalSizeMm:d.physicalSizeMm}))};
+ const summary={suite:suite.name,requested:10,produced:accepted.length,failures,diagnostics,designs:accepted.map((d,i)=>({file:`design-${String(i+1).padStart(2,"0")}.svg`,id:d.id,score:d.score,novelty:d.novelty,manufacturingStatus:"stitch-ir-preview-not-machine-validated",stitchObjectCount:d.stitchObjects?.length??0,physicalSizeMm:d.physicalSizeMm}))};
  writeFileSync(join(folder,"manifest.json"),JSON.stringify(summary,null,2));
  results.push(summary);
  if(accepted.length<10)failureCount++;
- process.stdout.write(`${suite.name}: ${accepted.length}/10 generated\n`);
+ process.stdout.write(`${suite.name}: ${accepted.length}/10 generated; batches=${diagnostics.length}; errors=${failures.length}\n`);
+ if(accepted.length<10)process.stderr.write(`${suite.name}: ${failures.slice(0,8).join(" | ") || "not enough unique viable candidates"}\n`);
 }
 writeFileSync(join(dir,"evaluation-summary.json"),JSON.stringify(results,null,2));
 const esc=(s:string)=>s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
