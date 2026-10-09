@@ -1,6 +1,7 @@
 import {generatePatterns,type PatternMode} from "../packages/tesseract-engine/src/pattern-generator";
 import {mkdirSync,writeFileSync} from "node:fs";
 import {join} from "node:path";
+import {stitchIrPreview} from "./stitch-ir-preview";
 
 const suites:{name:string;mode:PatternMode;medium:string;concepts:string[];cultureIds:string[]}[]=[
  {name:"ukrainian-bands",mode:"band",medium:"embroidery",concepts:["lineage","growth","protection"],cultureIds:["ukraine"]},
@@ -32,10 +33,11 @@ for(const suite of suites){
  }
  const folder=join(dir,suite.name);mkdirSync(folder,{recursive:true});
  for(const [i,d] of accepted.entries()){
-  writeFileSync(join(folder,`design-${String(i+1).padStart(2,"0")}.svg`),d.svg);
+  writeFileSync(join(folder,`design-${String(i+1).padStart(2,"0")}.svg`),stitchIrPreview(d.stitchObjects??[],d.physicalSizeMm?.width??250,d.physicalSizeMm?.height??60));
+  writeFileSync(join(folder,`design-${String(i+1).padStart(2,"0")}.concept.svg`),d.svg);
   writeFileSync(join(folder,`design-${String(i+1).padStart(2,"0")}.stitch-ir.json`),JSON.stringify(d.stitchObjects,null,2));
  }
- const summary={suite:suite.name,requested:10,produced:accepted.length,failures,designs:accepted.map((d,i)=>({file:`design-${String(i+1).padStart(2,"0")}.svg`,id:d.id,score:d.score,novelty:d.novelty,manufacturingStatus:"digital-evaluation-only",stitchObjectCount:d.stitchObjects?.length??0,physicalSizeMm:d.physicalSizeMm}))};
+ const summary={suite:suite.name,requested:10,produced:accepted.length,failures,designs:accepted.map((d,i)=>({file:`design-${String(i+1).padStart(2,"0")}.svg`,id:d.id,score:d.score,novelty:d.novelty,manufacturingStatus:"stitch-ir-preview-not-machine-validated",stitchObjectCount:d.stitchObjects?.length??0,physicalSizeMm:d.physicalSizeMm}))};
  writeFileSync(join(folder,"manifest.json"),JSON.stringify(summary,null,2));
  results.push(summary);
  if(accepted.length<10)failureCount++;
