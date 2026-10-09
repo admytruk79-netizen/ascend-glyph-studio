@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'scripts/evaluate-tesseract-40.mts'
+      - 'packages/tesseract-engine/**'
       - '.github/workflows/tesseract-40-evaluation.yml'
 jobs:
   evaluate:
@@ -16,6 +17,8 @@ jobs:
           node-version: '22'
       - run: npm install --no-audit --no-fund
       - run: npm run typecheck --workspace=@ascend/tesseract-engine
+      - run: npm test --workspace=@ascend/tesseract-engine
+      - run: npm run build --workspace=@ascend/tesseract-engine
       - run: npx tsx scripts/evaluate-tesseract-40.mts
         env:
           TESSERACT_EVALUATION_OUTPUT: tesseract-evaluation
