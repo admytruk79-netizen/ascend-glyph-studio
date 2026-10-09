@@ -1,5 +1,6 @@
 import {describe,it,expect} from "vitest";
 import {refineOrnamentalLayout} from "../src/ornament-optimizer";
+import {placeProductionObjects,type ProductionGlyphObject} from "../src/production-object";
 import type {Topology} from "../src/topology";
 import type {Layout} from "../src/relational-layout";
 
@@ -32,6 +33,13 @@ describe("ornament optimization",()=>{
    expect(p.x).toBeGreaterThan(0);expect(p.x).toBeLessThan(220);
    expect(p.y).toBeGreaterThan(0);expect(p.y).toBeLessThan(90);
   }
+ });
+ it("propagates optimized scale into production dimensions and satin stitch width",()=>{
+  const object={id:"a",physical:{widthMm:20,heightMm:20,minScale:.5,maxScale:3,clearanceMm:1,rotationDeg:0},placement:{zoneId:"cuff",seamPolicy:"avoid",canRotate:true,wrapAllowed:false},embroidery:{stitchFamily:"satin",spacingMm:.4,underlay:["center-walk"],pullCompMm:{left:.25,right:.25},satinWidthMm:2,repeats:1,preserveRoutingParameters:true}} as ProductionGlyphObject;
+  const out=placeProductionObjects([object],{a:{x:30,y:40,angleDeg:30,scale:1.2}},{a:{scale:1}});
+  expect(out[0]!.physical.widthMm).toBeCloseTo(24);
+  expect(out[0]!.embroidery.satinWidthMm).toBeCloseTo(2.4);
+  expect(out[0]!.placement.rotationDeg).toBe(30);
  });
  it("supports zero iterations without changing the original coordinates",()=>{
   const x=refineOrnamentalLayout(topology,layout,220,90,"off",undefined,{iterations:0});
