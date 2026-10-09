@@ -30,7 +30,6 @@ function corpusPrimitiveForForm(form:string):PrimitiveGeometry|undefined{
  return {id,viewBox:c.viewBox,paths:c.paths,ports:[],closure:c.centroid.closure>.58?"closed":c.centroid.closure>.28?"mixed":"open",status:"corpus-canonical",source:`full-corpus:${c.id};support=${c.support};traditions=${c.traditions.length};sources=${c.sources.length}`};
 }
 export function primitiveForForm(form:string):PrimitiveGeometry|undefined{
- const corpus=corpusPrimitiveForForm(form);if(corpus)return corpus;
  const map:Record<string,PrimitiveId>={seed:"seed",axis:"axis",torus:"torus",bifurcation:"branch",branch:"branch",opposition:"opposition",crossing:"crossing",enclosure:"torus",mutation:"spatial-flow","spatial-flow":"spatial-flow","radial-emission":"radial-emission",void:"void",orbit:"orbit"};
  return ASCEND_PRIMITIVES[map[form]];
 }
