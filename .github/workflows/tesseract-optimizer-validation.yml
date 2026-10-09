@@ -1,5 +1,6 @@
 name: Tesseract optimizer validation
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'packages/tesseract-engine/**'
