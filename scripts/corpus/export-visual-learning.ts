@@ -19,7 +19,7 @@ const output=process.env.CORPUS_VISUAL_OUT??"data/research/visual-learning.ndjso
 const summaryPath=process.env.CORPUS_VISUAL_SUMMARY??"data/research/visual-learning-summary.json";
 const banned=(r:Row)=>["review","restricted","structure-excluded","no-access","sacred","ceremonial","funerary"].includes(String(r.culturalAccess??"").toLowerCase());
 export function visualObservationFromAnalyzed(r:Row):ImageObservation|null{
- if(!r.id||!r.source||!r.features||!r.deconstruction||(r.stage!==undefined&&r.stage!=="analyzed")||!r.image||!r.dhash||!r.analyzerVersion||banned(r))return null;
+ if(!r.id||!r.source||!r.features||!r.deconstruction||(r.stage!==undefined&&r.stage!=="analyzed")||!r.image||!r.dhash||!r.analyzerVersion||!r.objectURL||banned(r))return null;
  const d=r.deconstruction,f=r.features as Record<string,unknown>;
  const bands=Array.isArray(d.bands)?d.bands:[];
  const best=bands.reduce((a:any,b:any)=>!a||(b.periodicity??0)>(a.periodicity??0)?b:a,null);
