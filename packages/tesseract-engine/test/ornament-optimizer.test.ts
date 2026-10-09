@@ -45,6 +45,15 @@ describe("ornament optimization",()=>{
   const nested:Topology={nodes:topology.nodes.slice(0,2),edges:[{from:"a",to:"b",relation:"nest",weight:1}]};
   expect(()=>refineOrnamentalLayout(nested,layout,220,90,"invalid-nest",undefined,{iterations:0})).toThrow("ornament-nesting-clearance");
  });
+ it("returns a valid packed state rather than an invalid final annealing step",()=>{
+  const x=refineOrnamentalLayout(topology,layout,220,90,"packed",undefined,{iterations:500,minGapMm:3});
+  const ids=topology.nodes.map(n=>n.id);
+  const radius=Math.min(24,90*.105);
+  for(let i=0;i<ids.length;i++)for(let j=i+1;j<ids.length;j++){
+   const a=x.points[ids[i]!]!,b=x.points[ids[j]!]!;
+   expect(Math.hypot(a.x-b.x,a.y-b.y)+1e-6).toBeGreaterThanOrEqual(radius*(a.scale+b.scale)+3);
+  }
+ });
  it("supports zero iterations without changing the original coordinates",()=>{
   const x=refineOrnamentalLayout(topology,layout,220,90,"off",undefined,{iterations:0});
   expect(x.points).toEqual(layout.points);
