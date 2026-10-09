@@ -111,7 +111,10 @@ export function refineOrnamentalLayout(
   // Bounded scale mutation allows a nested motif to shrink within a larger one.
   if(random()<.38){
    const minScale=options.minScale??.55,maxScale=options.maxScale??1.45;
-   p.scale=clamp(p.scale*(random()<.5?.94:1.06),minScale,maxScale);
+   const originalScale=footprints?.[node.id]?.originalScale;
+   const low=originalScale?Math.max(minScale,originalScale*.5):minScale;
+   const high=originalScale?Math.min(maxScale,originalScale*1.5):maxScale;
+   p.scale=clamp(p.scale*(random()<.5?.94:1.06),low,Math.max(low,high));
   }
   // Rotate instances in manufacturable increments; canonical paths are unchanged.
   if(random()<.35)p.angleDeg=Math.round((p.angleDeg+(random()<.5?-15:15))/15)*15;
