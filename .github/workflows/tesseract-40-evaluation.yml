@@ -7,6 +7,9 @@ on:
       - 'scripts/stitch-ir-preview.ts'
       - 'packages/tesseract-engine/**'
       - '.github/workflows/tesseract-40-evaluation.yml'
+concurrency:
+  group: tesseract-evaluation-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   evaluate:
     runs-on: ubuntu-latest
@@ -75,4 +78,16 @@ jobs:
           EVALUATION: ${{ steps.evaluation.outcome }}
         run: |
           echo "install=$INSTALL typecheck=$TYPECHECK tests=$TESTS build=$BUILD generation=$EVALUATION"
+          {
+            echo "## Tesseract validation"
+            echo "| Stage | Outcome |"
+            echo "| --- | --- |"
+            echo "| Dependencies | $INSTALL |"
+            echo "| TypeScript | $TYPECHECK |"
+            echo "| Unit tests | $TESTS |"
+            echo "| Build | $BUILD |"
+            echo "| 40-design evaluation | $EVALUATION |"
+            echo ""
+            echo "Download the `tesseract-evaluation-40` artifact for individual diagnostics and previews."
+          } >> "$GITHUB_STEP_SUMMARY"
           test "$INSTALL" = success && test "$TYPECHECK" = success && test "$TESTS" = success && test "$BUILD" = success && test "$EVALUATION" = success
