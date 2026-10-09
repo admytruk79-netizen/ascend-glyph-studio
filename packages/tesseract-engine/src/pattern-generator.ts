@@ -23,6 +23,7 @@ import {solveRelationalLayout} from "./relational-layout";
 import {refineOrnamentalLayout} from "./ornament-optimizer";
 import {evaluateSurfaceLayout,type SurfaceFootprint} from "./garment-surface-math";
 import {buildMasterCompositionPlan} from "./master-composition-plan";
+import {stitchIrToSvg} from "./canonical-preview";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
@@ -42,6 +43,7 @@ export type GeneratedPattern={
  id:string;lineageId:string;score:number;novelty:number;svg:string;
  objectives:ReturnType<typeof searchDesignSpace>[number]["objectives"];
  finalCritique:FinalSvgCritique;
+ conceptSvg?:string;
  productionObjects?:ProductionGlyphObject[];
  stitchObjects?:StitchIrObject[];
  surfaceMath?:ReturnType<typeof evaluateSurfaceLayout>;
@@ -220,10 +222,11 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const relationStride=medium==="embroidery"?((input.structuralFeedback?.crossingReduction??0)>.5?0:3):1;
   const projected=projectSemanticGeometry(g,width,height,zone,{relationStride,minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy});
   const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`,sashGrammar,structuralFeedback:input.structuralFeedback});
-  const svg=colorize(master,input.paletteId??"underdog-heritage");
-  const finalCritique=critiqueFinalSvg(svg,medium,input.visualCorpus??[]);
+  const conceptSvg=colorize(master,input.paletteId??"underdog-heritage");
+  const svg=stitchIrToSvg(stitchObjects,physicalSize.width,physicalSize.height);
+  const finalCritique=critiqueFinalSvg(conceptSvg,medium,input.visualCorpus??[]);
   const combinedScore=candidate.score+finalCritique.score*.45;
-  return [{id:`pat-${input.seed}-${i+1}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,finalCritique,productionObjects,stitchObjects,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave}];
+  return [{id:`pat-${input.seed}-${i+1}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,conceptSvg,finalCritique,productionObjects,stitchObjects,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave}];
   } catch (error) {
    if(error instanceof Error && /^(ornament-|scaled satin width out of machine-safe range)/.test(error.message))return [];
    throw error;
