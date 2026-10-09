@@ -1,7 +1,20 @@
 {
-  "$schema":"node_modules/wrangler/config-schema.json",
-  "name":"ascend-glyph-studio",
-  "main":"src/worker.ts",
-  "compatibility_date":"2026-10-01",
-  "r2_buckets":[{"binding":"GLYPH_ASSETS","bucket_name":"ascend-glyph-assets"}]
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ascend-glyph-studio",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-10-01",
+  "r2_buckets": [
+    {
+      "binding": "GLYPH_ASSETS",
+      "bucket_name": "ascend-glyph-assets"
+    }
+  ],
+  "previews": {
+    "r2_buckets": [
+      {
+        "binding": "GLYPH_ASSETS",
+        "bucket_name": "ascend-glyph-assets"
+      }
+    ]
+  }
 }
