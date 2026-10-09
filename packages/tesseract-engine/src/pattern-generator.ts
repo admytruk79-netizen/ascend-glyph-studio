@@ -24,6 +24,7 @@ import {refineOrnamentalLayout} from "./ornament-optimizer";
 import {evaluateSurfaceLayout,type SurfaceFootprint} from "./garment-surface-math";
 import {buildMasterCompositionPlan} from "./master-composition-plan";
 import {stitchIrToSvg} from "./canonical-preview";
+import {optimizeStitchTravel} from "./stitch-travel-optimizer";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
@@ -215,7 +216,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   productionObjects=placeProductionObjects(productionObjects,physicalLayout.points,initialLayout.points);
   const baseStitchObjects=compileProductionObjectsToStitchIr(productionObjects);
   const compositionPlan=buildMasterCompositionPlan({mode,medium,complexity,sashGrammar,structuralFeedback:input.structuralFeedback});
-  const stitchObjects=applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height);
+  const stitchObjects=optimizeStitchTravel(applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height)).objects;
   let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
   if(productionZone.wrapAllowed&&(productionZone.surface==="cylinder"||productionZone.surface==="tapered-cylinder")){
    const byId=new Map(productionObjects.map(o=>[o.id,o]));
