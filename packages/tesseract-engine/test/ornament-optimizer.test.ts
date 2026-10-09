@@ -41,6 +41,10 @@ describe("ornament optimization",()=>{
   expect(out[0]!.embroidery.satinWidthMm).toBeCloseTo(2.4);
   expect(out[0]!.placement.rotationDeg).toBe(30);
  });
+ it("rejects invalid containment rather than passing it to embroidery",()=>{
+  const nested:Topology={nodes:topology.nodes.slice(0,2),edges:[{from:"a",to:"b",relation:"nest",weight:1}]};
+  expect(()=>refineOrnamentalLayout(nested,layout,220,90,"invalid-nest",undefined,{iterations:0})).toThrow("ornament-nesting-clearance");
+ });
  it("supports zero iterations without changing the original coordinates",()=>{
   const x=refineOrnamentalLayout(topology,layout,220,90,"off",undefined,{iterations:0});
   expect(x.points).toEqual(layout.points);
