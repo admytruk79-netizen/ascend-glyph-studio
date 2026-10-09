@@ -19,7 +19,7 @@ const output=process.env.CORPUS_VISUAL_OUT??"data/research/visual-learning.ndjso
 const summaryPath=process.env.CORPUS_VISUAL_SUMMARY??"data/research/visual-learning-summary.json";
 const banned=(r:Row)=>["review","restricted","structure-excluded","no-access","sacred","ceremonial","funerary"].includes(String(r.culturalAccess??"").toLowerCase());
 export function visualObservationFromAnalyzed(r:Row):ImageObservation|null{
- if(!r.id||!r.source||!r.features||!r.deconstruction||r.stage!=="analyzed"||banned(r))return null;
+ if(!r.id||!r.source||!r.features||!r.deconstruction||(r.stage!==undefined&&r.stage!=="analyzed")||!r.image||!r.dhash||!r.analyzerVersion||banned(r))return null;
  const d=r.deconstruction,f=r.features as Record<string,unknown>;
  const bands=Array.isArray(d.bands)?d.bands:[];
  const best=bands.reduce((a:any,b:any)=>!a||(b.periodicity??0)>(a.periodicity??0)?b:a,null);
@@ -41,11 +41,11 @@ export function visualObservationFromAnalyzed(r:Row):ImageObservation|null{
   provenance:JSON.stringify({source:r.source,accession:r.accession,institution:r.institution,tradition:r.tradition,region:r.region,date:r.date,analyzerVersion:r.analyzerVersion,split:r.split??assignSplit(r)}),
   features:{
    symmetry:clamp(best?.frieze?.scores?.vertical??best?.frieze?.scores?.horizontal,.5),
-   density:edge,voidRatio:1-edge,scaleLevels:[d.scale?.stitch,d.scale?.motif,d.scale?.band,d.scale?.field].filter((v:unknown)=>typeof v==="number"&&v>0).length,
+   density:edge,scaleLevels:[d.scale?.stitch,d.scale?.motif,d.scale?.band,d.scale?.field].filter((v:unknown)=>typeof v==="number"&&v>0).length,
    densityVariation:contrast,periodicity:clamp(best?.periodicity??d.repeat?.strength,0),
    rotation180:clamp(best?.frieze?.scores?.rotation,0),
    dominantDirection:directions,operations,
-   focalDominance:clamp(d.crop?.coverage!==undefined?1-d.crop.coverage:.5),
+
    compositionalDepth:clamp((bands.length+Number(Boolean(d.wallpaper))+Number(Boolean(d.rosette)))/6),
    materials:[],techniques:[],
   },
