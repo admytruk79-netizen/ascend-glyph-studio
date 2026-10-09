@@ -19,4 +19,21 @@ describe("constructive geometry recovery",()=>{
   for(let i=0;i<rects.length;i++)for(let j=i+1;j<rects.length;j++)expect(overlapsRotated(rects[i]!,rects[j]!,2)).toBe(false);
   expect(refineOrnamentalLayout(topology,layout,200,60,"construct",undefined,{iterations:0,physicalFootprints:footprints,minGapMm:2})).toEqual(result);
  });
+ it("shrinks a nested child independently rather than shrinking its parent",()=>{
+  const topology:Topology={nodes:[
+   {id:"parent",conceptId:"protection",form:"enclosure",scale:1},
+   {id:"child",conceptId:"lineage",form:"seed",scale:1}
+  ],edges:[{from:"parent",to:"child",relation:"enclose",weight:1}]};
+  const layout:Layout={iterations:0,energy:0,points:{
+   parent:{x:70,y:45,scale:1,angleDeg:0,layer:1},
+   child:{x:70,y:45,scale:1,angleDeg:0,layer:1}
+  }};
+  const physicalFootprints={
+   parent:{widthMm:40,heightMm:40,originalScale:1},
+   child:{widthMm:40,heightMm:40,originalScale:1}
+  };
+  const result=refineOrnamentalLayout(topology,layout,160,90,"nested-recovery",undefined,{iterations:0,physicalFootprints,minGapMm:2});
+  expect(result.points.parent!.scale).toBe(1);
+  expect(result.points.child!.scale).toBeLessThan(result.points.parent!.scale);
+ });
 });
