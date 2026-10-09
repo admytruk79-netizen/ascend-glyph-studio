@@ -1,4 +1,5 @@
 import {primitiveForForm} from "./ascend-primitives";
+import type {PrimitiveGeometry} from "./ascend-primitives";
 import type {ProductionGlyphObject} from "./production-object";
 import type {MasterCompositionPlan} from "./master-composition-plan";
 
@@ -59,11 +60,9 @@ export function sampleSvgPath(d:string,curveSteps=10):StitchIrPoint[]{
  return out;
 }
 
-function transform(points:StitchIrPoint[],o:ProductionGlyphObject):StitchIrPoint[]{
+function transform(points:StitchIrPoint[],o:ProductionGlyphObject,primitive:PrimitiveGeometry):StitchIrPoint[]{
  const cx=o.placement.xMm??0,cy=o.placement.yMm??0,w=o.physical.widthMm,h=o.physical.heightMm;
- const primitive=primitiveForForm(o.form);
- if(!primitive)throw new Error("missing source viewBox: "+o.form);
- const bounds=primitive.viewBox.trim().split(/[\\s,]+/).map(Number);
+ const bounds=primitive.viewBox.trim().split(/\s*,\s*|\s+/).map(Number);
  if(bounds.length!==4||bounds.some(n=>!Number.isFinite(n))||bounds[2]!<=0||bounds[3]!<=0)throw new Error("invalid source viewBox: "+primitive.viewBox);
  const [minX,minY,sourceW,sourceH]=bounds as [number,number,number,number];
  const ang=((o.placement.rotationDeg??o.physical.rotationDeg??0)*Math.PI)/180,co=Math.cos(ang),si=Math.sin(ang);
@@ -85,7 +84,7 @@ export function compileProductionObjectsToStitchIr(objects:ProductionGlyphObject
   if(!primitive?.paths.length)throw new Error("missing ASCEND source geometry: "+o.id+" ("+o.form+")");
   const geometry=primitive.paths.map(d=>sampleSvgPath(d));
   geometry.forEach((raw,j)=>{
-   const pts=transform(raw,o);
+   const pts=transform(raw,o,primitive);
    const id=`${o.id}:p${j}`;
    const e=o.embroidery;
    if(e.stitchFamily==="satin"){
