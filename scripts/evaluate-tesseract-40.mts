@@ -42,4 +42,11 @@ for(const suite of suites){
  process.stdout.write(`${suite.name}: ${accepted.length}/10 generated\n`);
 }
 writeFileSync(join(dir,"evaluation-summary.json"),JSON.stringify(results,null,2));
+const esc=(s:string)=>s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+const gallery=(results as {suite:string;produced:number;designs:{file:string;score:number;stitchObjectCount:number}[]}[]).map(group=>
+ `<section><h2>${esc(group.suite)} — ${group.produced}/10</h2><div class="grid">`+
+ group.designs.map(d=>`<article><img loading="lazy" src="${encodeURIComponent(group.suite)}/${encodeURIComponent(d.file)}" alt="Pattern preview"><p>${esc(d.file)} · score ${d.score.toFixed(1)} · ${d.stitchObjectCount} stitch objects</p></article>`).join("")+
+ "</div></section>").join("");
+writeFileSync(join(dir,"index.html"),`<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Tesseract 40-design evaluation</title><style>body{font:16px system-ui;background:#121925;color:#f0ebe0;margin:24px}h1{font-size:2rem}h2{margin-top:2rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}article{background:#263143;padding:12px;border-radius:12px}img{display:block;width:100%;aspect-ratio:4/3;object-fit:contain;background:#eee}p{font-size:13px}</style><h1>Tesseract evaluation — digital previews only</h1><p>These SVGs are not proof of stitch-layout equivalence or factory approval. Inspect the JSON stitch data before any sew-out.</p>${gallery}</html>`);
+
 if(failureCount)process.exitCode=1;
