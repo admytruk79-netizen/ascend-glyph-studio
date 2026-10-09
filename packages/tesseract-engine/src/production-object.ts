@@ -116,7 +116,8 @@ export function placeProductionObjects(
   const p=points[o.id];
   if(!p)return o;
   const original=originalPoints?.[o.id]?.scale;
-  const factor=original&&p.scale?Math.max(.5,Math.min(1.5,p.scale/original)):1;
+  const factor=original&&p.scale?p.scale/original:1;
+  if(!Number.isFinite(factor)||factor<.5||factor>1.5)throw new Error(`ornament-production-scale-out-of-range: ${o.id}`);
   const satin=o.embroidery.satinWidthMm;
   const width=satin===undefined?undefined:satin*factor;
   if(width!==undefined&&(width<.7||width>8))throw new Error(`scaled satin width out of machine-safe range: ${o.id}`);
