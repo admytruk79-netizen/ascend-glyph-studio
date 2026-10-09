@@ -13,6 +13,8 @@ export interface RefineOptions {
   iterations?:number;
   symmetry?:"none"|"mirror-y";
   seamPolicy?:"avoid"|"continuous"|"resolve";
+  minScale?:number;
+  maxScale?:number;
 }
 function hash(s:string){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0;}
 function rng(seed:string){let s=hash(seed)||1;return ()=>{s^=s<<13;s^=s>>>17;s^=s<<5;return (s>>>0)/4294967296;};}
@@ -33,7 +35,10 @@ function measure(t:Topology,pts:Record<string,LayoutPoint>,w:number,h:number,wra
    const ux=wrap?wrapDelta(p.x-q.x,w):p.x-q.x;
    const d=Math.hypot(ux,p.y-q.y);
    const required=rad+Math.min(24,h*.105)*q.scale+gap;
-   if(d<required)cost+=15*(required-d)**2;
+   const nested=t.edges.some(e=>((e.from===a.id&&e.to===b.id)||(e.from===b.id&&e.to===a.id))&&(e.relation==="nest"||e.relation==="enclose"));
+   // Containment is not a collision: fit the small glyph inside the large one.
+   if(nested){const big=Math.max(rad,Math.min(24,h*.105)*q.scale),small=Math.min(rad,Math.min(24,h*.105)*q.scale);const overflow=Math.max(0,d+small+gap-big);cost+=30*overflow*overflow;}
+   else if(d<required)cost+=15*(required-d)**2;
   }
  }
  for(const e of t.edges){
@@ -43,7 +48,7 @@ function measure(t:Topology,pts:Record<string,LayoutPoint>,w:number,h:number,wra
   const bdx=wrap?wrapDelta(bq.x-bp.x,w):bq.x-bp.x;
   const length=Math.hypot(dx,q.y-p.y),original=Math.hypot(bdx,bq.y-bp.y);
   cost+=.05*e.weight*(length-original)**2;
-  if(e.relation==="nest"||e.relation==="enclose")cost+=.08*e.weight*length**2;
+  if(e.relation==="nest"||e.relation==="enclose"){const a=pts[e.from]!,b=pts[e.to]!;const big=Math.max(a.scale,b.scale),small=Math.min(a.scale,b.scale);cost+=.1*e.weight*length**2+20*Math.max(0,small-big*.65)**2;}
  }
  if(symmetry==="mirror-y"){
   for(let i=0;i<Math.floor(t.nodes.length/2);i++){
@@ -70,7 +75,12 @@ export function refineOrnamentalLayout(
   const old={...p},temp=Math.max(.05,4*(1-i/Math.max(1,count)));
   const step=Math.min(w,h)*(.04*(1-i/Math.max(1,count))+.002);
   p.x+= (random()*2-1)*step;p.y+=(random()*2-1)*step;
-  // Rotate glyph instances freely, but retain 15-degree manufacturable increments.
+  // Bounded scale mutation allows a nested motif to shrink within a larger one.
+  if(random()<.38){
+   const minScale=options.minScale??.55,maxScale=options.maxScale??1.45;
+   p.scale=clamp(p.scale*(random()<.5?.94:1.06),minScale,maxScale);
+  }
+  // Rotate instances in manufacturable increments; canonical paths are unchanged.
   if(random()<.35)p.angleDeg=Math.round((p.angleDeg+(random()<.5?-15:15))/15)*15;
   const margin=radius*p.scale+gap;
   p.x=wrap?((p.x%w)+w)%w:clamp(p.x,margin,Math.max(margin,w-margin));
