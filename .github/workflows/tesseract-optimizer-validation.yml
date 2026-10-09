@@ -1,0 +1,23 @@
+name: Tesseract optimizer validation
+on:
+  push:
+    paths:
+      - 'packages/tesseract-engine/**'
+      - '.github/workflows/tesseract-optimizer-validation.yml'
+  pull_request:
+    paths:
+      - 'packages/tesseract-engine/**'
+      - '.github/workflows/tesseract-optimizer-validation.yml'
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck --workspace=@ascend/tesseract-engine
+      - run: npm test --workspace=@ascend/tesseract-engine
+      - run: npm run build --workspace=@ascend/tesseract-engine
