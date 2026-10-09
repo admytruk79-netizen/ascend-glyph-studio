@@ -17,7 +17,15 @@ export function adaptForProduction(t:Topology,medium:MediumId,niche?:DesignNiche
  const changes:string[]=[],warnings:string[]=[];let nodes=t.nodes.map(n=>({...n})),edges=t.edges.map(e=>({...e}));
  const scaleLevels=[...new Set(nodes.map(n=>n.scale))].sort((a,b)=>a-b);
  if(scaleLevels.length>limits.maxScaleLevels){const allowed=scaleLevels.slice(-limits.maxScaleLevels);nodes=nodes.map(n=>allowed.includes(n.scale)?n:{...n,scale:allowed[0]!});changes.push("compressed-scale-hierarchy");}
- if(!limits.supportsCrossing){const before=edges.length;edges=edges.filter(e=>e.relation!=="intersect");if(edges.length<before)changes.push("removed-unsupported-crossings");}
+ if(!limits.supportsCrossing){
+  // Use an open branching form while preserving the node's semantic identity.
+  // Removing intersect edges alone leaves crossing primitives uncompilable.
+  if(nodes.some(n=>n.form==="crossing")){
+   nodes=nodes.map(n=>n.form==="crossing"?{...n,form:"bifurcation"}:n);
+   changes.push("replaced-unsupported-crossing-forms");
+  }
+  const before=edges.length;edges=edges.filter(e=>e.relation!=="intersect");if(edges.length<before)changes.push("removed-unsupported-crossings");
+ }
  const density=(nodes.length+edges.length)/Math.max(1,nodes.length*3);
  if(density>limits.maxDensity){const target=Math.max(nodes.length-1,Math.floor(nodes.length*3*limits.maxDensity)-nodes.length);edges=edges.slice(0,target);changes.push("reduced-edge-density");}
  if(nodes.length>1&&edges.length===0){warnings.push("production-adaptation-disconnected-graph");}
