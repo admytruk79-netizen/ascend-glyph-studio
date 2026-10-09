@@ -21,3 +21,12 @@ jobs:
       - run: npm test --workspace=@ascend/tesseract-engine
       - run: npm run build --workspace=@ascend/tesseract-engine
       - run: npm run pilot --workspace=@ascend/tesseract-engine
+      - run: npx tsx scripts/verify-pattern-generation.mts
+        env:
+          TESSERACT_SMOKE_OUTPUT: pattern-smoke-artifacts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tesseract-pattern-smoke
+          path: pattern-smoke-artifacts/
+          if-no-files-found: ignore
