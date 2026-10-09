@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'scripts/evaluate-tesseract-40.mts'
+      - 'scripts/stitch-ir-preview.ts'
       - 'packages/tesseract-engine/**'
       - '.github/workflows/tesseract-40-evaluation.yml'
 jobs:
