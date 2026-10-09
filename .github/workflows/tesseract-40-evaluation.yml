@@ -88,6 +88,6 @@ jobs:
             echo "| Build | $BUILD |"
             echo "| 40-design evaluation | $EVALUATION |"
             echo ""
-            echo "Download the `tesseract-evaluation-40` artifact for individual diagnostics and previews."
+            echo 'Download the `tesseract-evaluation-40` artifact for individual diagnostics and previews.'
           } >> "$GITHUB_STEP_SUMMARY"
           test "$INSTALL" = success && test "$TYPECHECK" = success && test "$TESTS" = success && test "$BUILD" = success && test "$EVALUATION" = success
