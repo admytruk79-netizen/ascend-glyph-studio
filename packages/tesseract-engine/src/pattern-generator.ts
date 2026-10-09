@@ -170,6 +170,8 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  const culturalConcepts=cultural.features.map(([id,w])=>({id:`structure:${id}`,weight:Math.min(1,.3+w/4)}));
  const corpusConcepts=(input.corpusSignals??[]).slice(0,96).map(s=>({id:`corpus:${s.id}`,weight:Math.max(.15,Math.min(1,s.weight))}));
  const learnedConcepts=(input.learnedGuidance?.tags??[]).map(x=>({id:`learned-structure:${x.id}`,weight:Math.max(.15,Math.min(1,x.weight))}));
+ // Only verified observations and source drawings may positively guide generation or final critique.
+ const trustedVisualCorpus=(input.visualCorpus??[]).filter(o=>o.trainingUse!=="negative-example"&&(o.verifiedReal||o.class==="source-drawing"));
  const candidates=searchDesignSpace({
   seed:input.seed,
   intent:{
@@ -189,7 +191,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
     ...(input.placement?[{id:`placement:${input.placement}`,weight:.95}]:[])
    ]
   },
-  principles:[],niches:niche?[niche]:undefined,medium,visualCorpus:input.visualCorpus,relationPrior,assemblyPrior:input.learnedGuidance?.assemblyPrior,structuralFeedback:input.structuralFeedback,
+  principles:[],niches:niche?[niche]:undefined,medium,visualCorpus:trustedVisualCorpus,relationPrior,assemblyPrior:input.learnedGuidance?.assemblyPrior,structuralFeedback:input.structuralFeedback,
   population:input.population??Math.round(32+complexity*64),generations:input.generations??Math.round(3+complexity*5),keep:searchKeep
  });
  const minDrawableNodes=(mode==="band"||mode==="sleeve"||mode==="cuff"||mode==="collar")?3:2;
@@ -226,7 +228,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const projected=projectSemanticGeometry(g,width,height,zone,{relationStride,minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy});
   const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`,sashGrammar,structuralFeedback:input.structuralFeedback});
   const svg=colorize(master,input.paletteId??"underdog-heritage");
-  const finalCritique=critiqueFinalSvg(svg,medium,input.visualCorpus??[]);
+  const finalCritique=critiqueFinalSvg(svg,medium,trustedVisualCorpus);
   const combinedScore=candidate.score+finalCritique.score*.45;
   return {id:`pat-${input.seed}-${i+1}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,finalCritique,productionObjects,stitchObjects,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave};
  }).sort((a,b)=>b.score-a.score);
