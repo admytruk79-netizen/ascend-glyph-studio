@@ -118,13 +118,13 @@ export function refineOrnamentalLayout(
   const margin=physicalRadius(node.id,p,h,footprints)+gap;
   p.x=wrap?((p.x%w)+w)%w:clamp(p.x,margin,Math.max(margin,w-margin));
   p.y=clamp(p.y,margin,Math.max(margin,h-margin));
-  const next=measure(t,pts,w,h,wrap,gap,options.symmetry??"none",base);
+  const next=measure(t,pts,w,h,wrap,gap,options.symmetry??"none",base,footprints);
   if(next<=cost||random()<Math.exp((cost-next)/temp)){cost=next;capture();}
   else Object.assign(p,old);
  }
  // Return the best manufacturable candidate encountered, not the last random state.
  if(options.strictGeometry!==false){
-  if(!bestValid)throw new Error(geometryError(t,pts,w,h,wrap,gap)??"ornament-no-valid-layout");
+  if(!bestValid)throw new Error(geometryError(t,pts,w,h,wrap,gap,footprints)??"ornament-no-valid-layout");
   return {points:bestValid,iterations:layout.iterations+count,energy:bestCost};
  }
  return {points:pts,iterations:layout.iterations+count,energy:cost};
