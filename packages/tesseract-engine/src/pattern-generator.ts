@@ -194,7 +194,8 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  const minDrawableNodes=(mode==="band"||mode==="sleeve"||mode==="cuff"||mode==="collar")?3:2;
  const drawableCandidates=candidates.filter(c=>c.topology.nodes.length>=minDrawableNodes);
  const renderCandidates=drawableCandidates.length?drawableCandidates:candidates;
- const rendered=renderCandidates.map((candidate,i)=>{
+ const rendered=renderCandidates.flatMap((candidate,i)=>{
+  try {
   const enriched=expandRecursiveGrammar(candidate.topology,`${input.seed}:live:${i}`,{
    depth:constructionEnvelope.maxRecursiveDepth,maxNodes:Math.min(12,constructionEnvelope.maxNodes),maxBranching:constructionEnvelope.maxBranching,mutationRate:.2,
    octave:{enabled:true,minFeatureMm:constructionEnvelope.minFeatureMm,usableAreaMm2:octaveArea,maxEstimatedStitches:constructionEnvelope.machine?.maxStitches}
@@ -222,7 +223,11 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const svg=colorize(master,input.paletteId??"underdog-heritage");
   const finalCritique=critiqueFinalSvg(svg,medium,input.visualCorpus??[]);
   const combinedScore=candidate.score+finalCritique.score*.45;
-  return {id:`pat-${input.seed}-${i+1}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,finalCritique,productionObjects,stitchObjects,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave};
+  return [{id:`pat-${input.seed}-${i+1}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,finalCritique,productionObjects,stitchObjects,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave}];
+  } catch (error) {
+   if(error instanceof Error && /^(ornament-|scaled satin width out of machine-safe range)/.test(error.message))return [];
+   throw error;
+  }
  }).sort((a,b)=>b.score-a.score);
  const survivors=rendered.filter(x=>x.finalCritique.survive);
  const pool=survivors.length>=Math.min(4,variations)?survivors:rendered;
