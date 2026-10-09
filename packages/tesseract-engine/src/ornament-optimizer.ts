@@ -7,7 +7,7 @@
 import type {Topology} from "./topology";
 import type {GarmentZone} from "./garment";
 import type {Layout,LayoutPoint} from "./relational-layout";
-import {insideZone,nestedRotated,overlapsRotated,type RectPose} from "./rotated-footprints";
+import {insideZone,nestedRotated,overlapsRotated,rotatedExtents,type RectPose} from "./rotated-footprints";
 
 export interface RefineOptions {
   minGapMm?:number;
@@ -39,8 +39,13 @@ function measure(t:Topology,pts:Record<string,LayoutPoint>,w:number,h:number,wra
  for(let i=0;i<t.nodes.length;i++){
   const a=t.nodes[i]!,p=pts[a.id]!,p0=base[a.id]!;
   const rad=physicalRadius(a.id,p,h,footprints);
-  if(!wrap&&(p.x<rad+gap||p.x>w-rad-gap))cost+=200;
-  if(p.y<rad+gap||p.y>h-rad-gap)cost+=200;
+  const pp=pose(a.id,p,footprints);
+  if(pp){
+   if(!insideZone(pp,w,h,gap,wrap))cost+=200;
+  }else{
+   if(!wrap&&(p.x<rad+gap||p.x>w-rad-gap))cost+=200;
+   if(p.y<rad+gap||p.y>h-rad-gap)cost+=200;
+  }
   const dx=wrap?wrapDelta(p.x-p0.x,w):p.x-p0.x;
   cost+=.003*(dx*dx+(p.y-p0.y)**2)+.0006*angleDist(p.angleDeg,p0.angleDeg)**2;
   for(let j=i+1;j<t.nodes.length;j++){
@@ -51,8 +56,16 @@ function measure(t:Topology,pts:Record<string,LayoutPoint>,w:number,h:number,wra
    const required=rad+qr+gap;
    const nested=t.edges.some(e=>((e.from===a.id&&e.to===b.id)||(e.from===b.id&&e.to===a.id))&&(e.relation==="nest"||e.relation==="enclose"));
    // Containment is not a collision: fit the small glyph inside the large one.
-   if(nested){const big=Math.max(rad,qr),small=Math.min(rad,qr);const overflow=Math.max(0,d+small+gap-big);cost+=30*overflow*overflow;}
-   else if(d<required)cost+=15*(required-d)**2;
+   const qp=pose(b.id,q,footprints);
+   if(pp&&qp){
+    if(nested){
+     const big=pp.width*pp.height>=qp.width*qp.height?pp:qp,small=big===pp?qp:pp;
+     if(!nestedRotated(big,small,gap,wrap?w:undefined))cost+=600;
+    }else if(overlapsRotated(pp,qp,gap,wrap?w:undefined))cost+=600;
+   }else if(nested){
+    const big=Math.max(rad,qr),small=Math.min(rad,qr);
+    const overflow=Math.max(0,d+small+gap-big);cost+=30*overflow*overflow;
+   }else if(d<required)cost+=15*(required-d)**2;
   }
  }
  for(const e of t.edges){
@@ -132,9 +145,12 @@ export function refineOrnamentalLayout(
   }
   // Rotate instances in manufacturable increments; canonical paths are unchanged.
   if(random()<.35)p.angleDeg=Math.round((p.angleDeg+(random()<.5?-15:15))/15)*15;
-  const margin=physicalRadius(node.id,p,h,footprints)+gap;
-  p.x=wrap?((p.x%w)+w)%w:clamp(p.x,margin,Math.max(margin,w-margin));
-  p.y=clamp(p.y,margin,Math.max(margin,h-margin));
+  const rectangle=pose(node.id,p,footprints);
+  const extent=rectangle?rotatedExtents(rectangle):undefined;
+  const marginX=(extent?.x??physicalRadius(node.id,p,h,footprints))+gap;
+  const marginY=(extent?.y??physicalRadius(node.id,p,h,footprints))+gap;
+  p.x=wrap?((p.x%w)+w)%w:clamp(p.x,marginX,Math.max(marginX,w-marginX));
+  p.y=clamp(p.y,marginY,Math.max(marginY,h-marginY));
   const next=measure(t,pts,w,h,wrap,gap,options.symmetry??"none",base,footprints);
   if(next<=cost||random()<Math.exp((cost-next)/temp)){cost=next;capture();}
   else Object.assign(p,old);
