@@ -3,6 +3,7 @@ import {refineOrnamentalLayout} from "../src/ornament-optimizer";
 import {placeProductionObjects,type ProductionGlyphObject} from "../src/production-object";
 import type {Topology} from "../src/topology";
 import type {Layout} from "../src/relational-layout";
+import {insideZone,overlapsRotated} from "../src/rotated-footprints";
 
 const topology:Topology={
  nodes:[
@@ -54,10 +55,25 @@ describe("ornament optimization",()=>{
    expect(Math.hypot(a.x-b.x,a.y-b.y)+1e-6).toBeGreaterThanOrEqual(radius*(a.scale+b.scale)+3);
   }
  });
- it("rejects a collision visible only with actual production dimensions",()=>{
+ it("repairs a collision visible only with actual production dimensions",()=>{
   const t:Topology={nodes:topology.nodes.slice(0,2),edges:[]};
   const footprints={a:{widthMm:80,heightMm:80,originalScale:1},b:{widthMm:80,heightMm:80,originalScale:1}};
-  expect(()=>refineOrnamentalLayout(t,layout,220,90,"physical",undefined,{iterations:0,physicalFootprints:footprints})).toThrow(/ornament-/);
+  const initial=JSON.stringify(layout),gap=2;
+  const options={iterations:0,physicalFootprints:footprints,minGapMm:gap};
+  const result=refineOrnamentalLayout(t,layout,220,90,"physical",undefined,options);
+  const rects=t.nodes.map(n=>{
+   const p=result.points[n.id]!,f=footprints[n.id as keyof typeof footprints];
+   return {x:p.x,y:p.y,angleDeg:p.angleDeg,width:f.widthMm*p.scale/f.originalScale,height:f.heightMm*p.scale/f.originalScale};
+  });
+  for(const rect of rects)expect(insideZone(rect,220,90,gap)).toBe(true);
+  expect(overlapsRotated(rects[0]!,rects[1]!,gap)).toBe(false);
+  expect(JSON.stringify(layout)).toBe(initial);
+  expect(refineOrnamentalLayout(t,layout,220,90,"physical",undefined,options)).toEqual(result);
+ });
+ it("rejects physical footprints that cannot fit even after constructive recovery",()=>{
+  const t:Topology={nodes:topology.nodes.slice(0,2),edges:[]};
+  const footprints={a:{widthMm:400,heightMm:400,originalScale:1},b:{widthMm:400,heightMm:400,originalScale:1}};
+  expect(()=>refineOrnamentalLayout(t,layout,220,90,"impossible",undefined,{iterations:0,physicalFootprints:footprints})).toThrow(/ornament-outside-height/);
  });
  it("rejects production scale beyond the permitted ratio",()=>{
   const object:ProductionGlyphObject={id:"a",conceptId:"test",form:"axis",geometryRef:"ascend:axis",relations:{ports:["north","south"],allowed:["flow"]},threadColor:"#111111",sourceBasis:["wilcom-object-properties"],physical:{widthMm:20,heightMm:20,minScale:.5,maxScale:3,clearanceMm:1,rotationDeg:0},placement:{zoneId:"cuff",seamPolicy:"avoid",canRotate:true,wrapAllowed:false},embroidery:{stitchFamily:"run",spacingMm:2.5,underlay:[],pullCompMm:{left:0,right:0},runLengthMm:2.5,repeats:1,preserveRoutingParameters:true}};
