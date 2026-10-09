@@ -61,9 +61,14 @@ export function sampleSvgPath(d:string,curveSteps=10):StitchIrPoint[]{
 
 function transform(points:StitchIrPoint[],o:ProductionGlyphObject):StitchIrPoint[]{
  const cx=o.placement.xMm??0,cy=o.placement.yMm??0,w=o.physical.widthMm,h=o.physical.heightMm;
+ const primitive=primitiveForForm(o.form);
+ if(!primitive)throw new Error("missing source viewBox: "+o.form);
+ const bounds=primitive.viewBox.trim().split(/[\\s,]+/).map(Number);
+ if(bounds.length!==4||bounds.some(n=>!Number.isFinite(n))||bounds[2]!<=0||bounds[3]!<=0)throw new Error("invalid source viewBox: "+primitive.viewBox);
+ const [minX,minY,sourceW,sourceH]=bounds as [number,number,number,number];
  const ang=((o.placement.rotationDeg??o.physical.rotationDeg??0)*Math.PI)/180,co=Math.cos(ang),si=Math.sin(ang);
  return points.map(p=>{
-  const x=(p.x-50)*(w/100),y=(p.y-50)*(h/100);
+  const x=((p.x-minX)/sourceW-.5)*w,y=((p.y-minY)/sourceH-.5)*h;
   return {x:cx+x*co-y*si,y:cy+x*si+y*co};
  });
 }
