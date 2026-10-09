@@ -54,6 +54,11 @@ describe("ornament optimization",()=>{
    expect(Math.hypot(a.x-b.x,a.y-b.y)+1e-6).toBeGreaterThanOrEqual(radius*(a.scale+b.scale)+3);
   }
  });
+ it("rejects a collision visible only with actual production dimensions",()=>{
+  const t:Topology={nodes:topology.nodes.slice(0,2),edges:[]};
+  const footprints={a:{widthMm:80,heightMm:80,originalScale:1},b:{widthMm:80,heightMm:80,originalScale:1}};
+  expect(()=>refineOrnamentalLayout(t,layout,220,90,"physical",undefined,{iterations:0,physicalFootprints:footprints})).toThrow(/ornament-/);
+ });
  it("supports zero iterations without changing the original coordinates",()=>{
   const x=refineOrnamentalLayout(topology,layout,220,90,"off",undefined,{iterations:0});
   expect(x.points).toEqual(layout.points);
