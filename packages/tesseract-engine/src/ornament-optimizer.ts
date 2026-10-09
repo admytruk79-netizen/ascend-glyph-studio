@@ -110,6 +110,52 @@ function geometryError(t:Topology,pts:Record<string,LayoutPoint>,w:number,h:numb
  }
 }
 
+
+/** Deterministic constructive restart: simulated annealing alone cannot escape
+ * an initially invalid configuration when strict validation captures no states.
+ * Place the largest envelopes first, checking each partial packing. */
+function constructValidLayout(
+ t:Topology,original:Record<string,LayoutPoint>,w:number,h:number,wrap:boolean,gap:number,
+ footprints:RefineOptions["physicalFootprints"]
+):Record<string,LayoutPoint>|undefined {
+ if(!footprints)return undefined;
+ const nodes=[...t.nodes].sort((a,b)=>{
+  const fa=footprints[a.id],fb=footprints[b.id];
+  return (fb?.widthMm??0)*(fb?.heightMm??0)-(fa?.widthMm??0)*(fa?.heightMm??0);
+ });
+ const candidates=[1,.85,.7,.55,.5];
+ for(const shrink of candidates){
+  const placed:Record<string,LayoutPoint>={};
+  let success=true;
+  for(const node of nodes){
+   const start=original[node.id]!,foot=footprints[node.id];
+   if(!foot){success=false;break;}
+   const trialScale=start.scale*shrink;
+   const positions:{x:number;y:number}[]=[];
+   positions.push({x:start.x,y:start.y});
+   // Spread candidates over the complete textile area, not only near an
+   // invalid spring-layout starting point.
+   for(let yi=0;yi<10;yi++)for(let xi=0;xi<24;xi++)
+    positions.push({x:(xi+.5)*w/24,y:(yi+.5)*h/10});
+   let chosen:LayoutPoint|undefined;
+   for(const angle of [0,90,45,-45,start.angleDeg]){
+    for(const pos of positions){
+     const p={...start,x:pos.x,y:pos.y,scale:trialScale,angleDeg:angle};
+     const partial={...placed,[node.id]:p};
+     const included=new Set(Object.keys(partial));
+     const sub:Topology={...t,nodes:t.nodes.filter(n=>included.has(n.id)),edges:t.edges.filter(e=>included.has(e.from)&&included.has(e.to))};
+     if(!geometryError(sub,partial,w,h,wrap,gap,footprints)){chosen=p;break;}
+    }
+    if(chosen)break;
+   }
+   if(!chosen){success=false;break;}
+   placed[node.id]=chosen;
+  }
+  if(success&&!geometryError(t,placed,w,h,wrap,gap,footprints))return placed;
+ }
+ return undefined;
+}
+
 export function refineOrnamentalLayout(
  t:Topology,layout:Layout,w:number,h:number,seed:string,
  zone?:GarmentZone,options:RefineOptions={}
@@ -157,7 +203,11 @@ export function refineOrnamentalLayout(
  }
  // Return the best manufacturable candidate encountered, not the last random state.
  if(options.strictGeometry!==false){
-  if(!bestValid)throw new Error(geometryError(t,pts,w,h,wrap,gap,footprints)??"ornament-no-valid-layout");
+  if(!bestValid){
+   const constructed=constructValidLayout(t,base,w,h,wrap,gap,footprints);
+   if(constructed)return {points:constructed,iterations:layout.iterations+count,energy:measure(t,constructed,w,h,wrap,gap,options.symmetry??"none",base,footprints)};
+   throw new Error(geometryError(t,pts,w,h,wrap,gap,footprints)??"ornament-no-valid-layout");
+  }
   return {points:bestValid,iterations:layout.iterations+count,energy:bestCost};
  }
  return {points:pts,iterations:layout.iterations+count,energy:cost};
