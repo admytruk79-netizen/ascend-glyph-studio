@@ -23,14 +23,15 @@ function corpusScore(form:string,c:CorpusCanonicalGeometry){
  const target:Record<string,number>={seed:v.focalDominance+v.closure+v.voidRatio*.3,axis:v.axisStrength+v.vertical*.6,torus:v.closure+v.radial+v.voidRatio*.4,bifurcation:v.branching+v.directionalEntropy*.5,branch:v.branching+v.directionalEntropy*.55,opposition:v.asymmetryBalance+v.interruption+v.directionalEntropy*.35,crossing:v.interruption+v.directionalEntropy+v.axisStrength*.2,enclosure:v.closure+v.voidRatio+v.radial*.35,mutation:v.densityVariation+v.asymmetryBalance+v.interruption*.5,"spatial-flow":v.directionalEntropy+v.asymmetryBalance+v.horizontal*.35,"radial-emission":v.radial+v.branching+v.directionalEntropy*.35,void:v.voidRatio+v.interruption+v.asymmetryBalance*.25,orbit:v.radial+v.closure+v.directionalEntropy*.3};
  return (target[form]??v.compositionalDepth)+Math.log1p(c.support)*.015+c.nearestReferenceDistance*.2;
 }
-function corpusPrimitiveForForm(form:string):PrimitiveGeometry|undefined{
+/** Research-only corpus geometry. Never substitute it for ASCEND source DNA. */
+export function corpusPrimitiveForForm(form:string):PrimitiveGeometry|undefined{
  const c=CORPUS_CANON.length?[...CORPUS_CANON].sort((a,b)=>corpusScore(form,b)-corpusScore(form,a))[0]:undefined;
  if(!c)return undefined;
  const id=(form==="bifurcation"?"branch":form==="enclosure"?"torus":form==="mutation"?"spatial-flow":form) as PrimitiveId;
  return {id,viewBox:c.viewBox,paths:c.paths,ports:[],closure:c.centroid.closure>.58?"closed":c.centroid.closure>.28?"mixed":"open",status:"corpus-canonical",source:`full-corpus:${c.id};support=${c.support};traditions=${c.traditions.length};sources=${c.sources.length}`};
 }
 export function primitiveForForm(form:string):PrimitiveGeometry|undefined{
- const corpus=corpusPrimitiveForForm(form);if(corpus)return corpus;
+ // Corpus measurements may guide composition, but cannot supply ASCEND paths.
  const map:Record<string,PrimitiveId>={seed:"seed",axis:"axis",torus:"torus",bifurcation:"branch",branch:"branch",opposition:"opposition",crossing:"crossing",enclosure:"torus",mutation:"spatial-flow","spatial-flow":"spatial-flow","radial-emission":"radial-emission",void:"void",orbit:"orbit"};
  return ASCEND_PRIMITIVES[map[form]];
 }
