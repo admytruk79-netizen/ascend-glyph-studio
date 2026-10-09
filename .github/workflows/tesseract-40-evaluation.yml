@@ -1,0 +1,27 @@
+name: Tesseract 40-design evaluation
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/evaluate-tesseract-40.mts'
+      - '.github/workflows/tesseract-40-evaluation.yml'
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npm run typecheck --workspace=@ascend/tesseract-engine
+      - run: npx tsx scripts/evaluate-tesseract-40.mts
+        env:
+          TESSERACT_EVALUATION_OUTPUT: tesseract-evaluation
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tesseract-evaluation-40
+          path: tesseract-evaluation/
+          if-no-files-found: warn
