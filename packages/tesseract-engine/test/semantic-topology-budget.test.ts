@@ -16,7 +16,7 @@ describe("Tesseract semantic topology budget",()=>{
   });
   expect(out.length).toBeGreaterThan(0);
   for(const p of out){
-   const nodeCount=(p.svg.match(/data-node=/g)??[]).length;
+   const nodeCount=p.productionObjects?.length??0;
    expect(nodeCount).toBeGreaterThanOrEqual(3);
    expect(nodeCount).toBeLessThanOrEqual(12);
    expect(p.svg).not.toContain("evidence-95");
