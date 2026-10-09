@@ -123,21 +123,31 @@ function constructValidLayout(
   const fa=footprints[a.id],fb=footprints[b.id];
   return (fb?.widthMm??0)*(fb?.heightMm??0)-(fa?.widthMm??0)*(fa?.heightMm??0);
  });
- const candidates=[1,.85,.7,.55,.5];
- for(const shrink of candidates){
-  const placed:Record<string,LayoutPoint>={};
-  let success=true;
-  for(const node of nodes){
-   const start=original[node.id]!,foot=footprints[node.id];
-   if(!foot){success=false;break;}
+ const shrinkOptions=[1,.85,.7,.55,.5];
+ const placed:Record<string,LayoutPoint>={};
+ // Parents must be placed before their children to make nested relations
+ // geometrically possible. Cycles are rejected by final validation.
+ const order=[...nodes].sort((a,b)=>{
+  const parentA=t.edges.filter(e=>e.to===a.id&&(e.relation==="nest"||e.relation==="enclose")).length;
+  const parentB=t.edges.filter(e=>e.to===b.id&&(e.relation==="nest"||e.relation==="enclose")).length;
+  return parentA-parentB;
+ });
+ for(const node of order){
+  const start=original[node.id]!,foot=footprints[node.id];
+  if(!foot)return undefined;
+  const parent=t.edges.find(e=>e.to===node.id&&(e.relation==="nest"||e.relation==="enclose")&&placed[e.from]);
+  const anchor=parent?placed[parent.from]!:undefined;
+  const positions:{x:number;y:number}[]=[];
+  if(anchor)positions.push({x:anchor.x,y:anchor.y});
+  positions.push({x:start.x,y:start.y});
+  // Explore the whole usable area in deterministic order.
+  for(let yi=0;yi<10;yi++)for(let xi=0;xi<24;xi++)
+   positions.push({x:(xi+.5)*w/24,y:(yi+.5)*h/10});
+  let chosen:LayoutPoint|undefined;
+  // Scale each object independently; shrinking every motif by the same
+  // factor cannot make an equally-sized child fit inside its parent.
+  for(const shrink of shrinkOptions){
    const trialScale=start.scale*shrink;
-   const positions:{x:number;y:number}[]=[];
-   positions.push({x:start.x,y:start.y});
-   // Spread candidates over the complete textile area, not only near an
-   // invalid spring-layout starting point.
-   for(let yi=0;yi<10;yi++)for(let xi=0;xi<24;xi++)
-    positions.push({x:(xi+.5)*w/24,y:(yi+.5)*h/10});
-   let chosen:LayoutPoint|undefined;
    for(const angle of [0,90,45,-45,start.angleDeg]){
     for(const pos of positions){
      const p={...start,x:pos.x,y:pos.y,scale:trialScale,angleDeg:angle};
@@ -148,11 +158,12 @@ function constructValidLayout(
     }
     if(chosen)break;
    }
-   if(!chosen){success=false;break;}
-   placed[node.id]=chosen;
+   if(chosen)break;
   }
-  if(success&&!geometryError(t,placed,w,h,wrap,gap,footprints))return placed;
+  if(!chosen)return undefined;
+  placed[node.id]=chosen;
  }
+ if(!geometryError(t,placed,w,h,wrap,gap,footprints))return placed;
  return undefined;
 }
 
