@@ -34,16 +34,16 @@ export function visualObservationFromAnalyzed(r:Row):ImageObservation|null{
  if(kind==="frieze"||kind==="mixed")directions.push("horizontal");
  if(kind==="field"||kind==="mixed")directions.push("field");
  if(d.rosette)directions.push("radial");
- const edge=clamp(f.edgeDensity,.4),contrast=clamp(f.contrast,.5);
+ const edge=clamp(f.edgeDensity,.4);
  const observation:ImageObservation={
   id:"museum:"+r.source+":"+r.id,sourceRef:r.objectURL??r.source+":"+r.id,
   class:"real-historical",evidenceTier:"B",verifiedReal:true,trainingUse:"composition",
   provenance:JSON.stringify({source:r.source,accession:r.accession,institution:r.institution,tradition:r.tradition,region:r.region,date:r.date,analyzerVersion:r.analyzerVersion,split:r.split??assignSplit(r)}),
   features:{
-   symmetry:clamp(best?.frieze?.scores?.vertical??best?.frieze?.scores?.horizontal,.5),
-   density:edge,scaleLevels:[d.scale?.stitch,d.scale?.motif,d.scale?.band,d.scale?.field].filter((v:unknown)=>typeof v==="number"&&v>0).length,
-   densityVariation:contrast,periodicity:clamp(best?.periodicity??d.repeat?.strength,0),
-   rotation180:clamp(best?.frieze?.scores?.rotation,0),
+   symmetry:clamp(Math.max(Number(f.mirrorX??0),Number(f.mirrorY??0))),
+   density:edge,voidRatio:clamp(f.voidRatio),scaleLevels:Array.isArray(f.scaleHierarchy)?f.scaleHierarchy.length:1,
+   densityVariation:clamp(f.densityVariation),axisStrength:clamp(f.axisStrength),periodicity:clamp(best?.periodicity??Math.max(Number(f.repetitionX??0),Number(f.repetitionY??0)),0),
+   rotation180:clamp(f.rotation180,0),
    dominantDirection:directions,operations,
 
    compositionalDepth:clamp((bands.length+Number(Boolean(d.wallpaper))+Number(Boolean(d.rosette)))/6),
