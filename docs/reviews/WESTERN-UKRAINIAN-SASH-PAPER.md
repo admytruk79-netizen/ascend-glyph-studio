@@ -33,3 +33,9 @@ Following visual feedback that the generated bands were empty, the renderer now 
 Boundary-centred miniature diamonds and oblique-cross interiors occupy the interstitial field between principal figures. Subsidiary panels and separator rows are patterned throughout, with no transparent gutters. These are new constructions informed by the relationships described on pp. 1154–1158, not traced historical figures.
 
 The Studio reports ornament-cell coverage separately from ink coverage: a plain black background no longer makes the ornament-density figure look high. Regression checks cover all three families, all supported band counts and low/high repeat settings, verifying full bounds and more than half the cells carrying ornament colour rather than the dark ground.
+
+## More detailed construction families
+
+The hooked-medallion and joined-diamond-network families use a 49-cell horizontal unit and a 45-row main panel, allowing several nested outlines and subdivisions. These dimensions are implementation choices. The medallion divides into four smaller diamond figures with turned-in orthogonal hooks around the interior. The network joins paired half-motifs across the main panel axis. Both use smaller related diamond figures in flanking bands, patterned separators and interstitial figures.
+
+These are new constructions informed by the descriptions and illustrated relationships on pp. 1157–1158 (figs. 13–14), not reconstructions traced from a museum object. The Studio opens the hooked-medallion family, supports all five families, and the real engine CLI exports each in one-, three- and five-band compositions (15 designs). Seed changes can alter internal line construction for hooked medallions as well as colours; they do not constitute learned historical variation.

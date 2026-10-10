@@ -159,7 +159,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   if(input.medium&&input.medium!=="print"&&input.medium!=="embroidery")throw new Error("Unsupported counted-band medium");
   const count=Math.max(1,Math.min(12,input.variations??3));
   return Array.from({length:count},(_,i)=>{
-   const band=generateUkrainianBand({seed:`${input.seed}:${i}`,kind:input.bandKind??UKRAINIAN_BAND_KINDS[i%3]!,widthMm:input.physicalWidthMm??250,heightMm:input.physicalHeightMm??60,repeats:input.bandRepeats,bands:input.bandCount,palette:input.bandPalette});
+   const band=generateUkrainianBand({seed:`${input.seed}:${i}`,kind:input.bandKind??UKRAINIAN_BAND_KINDS[i%UKRAINIAN_BAND_KINDS.length]!,widthMm:input.physicalWidthMm??250,heightMm:input.physicalHeightMm??60,repeats:input.bandRepeats,bands:input.bandCount,palette:input.bandPalette});
    const finalCritique=critiqueFinalSvg(band.svg,mediumForMode(input.mode??"band",input.medium),input.visualCorpus??[]);
    return {id:`uk-band-${input.seed}-${i}`,lineageId:`uk-band:${band.metadata.sourceIds.join(",")}`,score:finalCritique.score,novelty:0,
     objectives:{meaning:0,novelty:0,culturalIntegrity:0,manufacturability:0,visualIdentity:finalCritique.score,physicalConfidence:0,genericResistance:0},

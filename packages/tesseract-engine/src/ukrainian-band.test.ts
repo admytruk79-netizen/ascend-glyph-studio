@@ -13,7 +13,7 @@ describe("reviewed Ukrainian counted band",()=>{
  it("preserves reflection and exact repeat boundaries in every family",()=>{
   for(const kind of UKRAINIAN_BAND_KINDS){
    const b=generateUkrainianBand({seed:"mirror",kind,widthMm:250,heightMm:60,repeats:6});
-   for(const row of b.grid){expect(row.slice(0,25)).toEqual(row.slice(0,25).reverse());expect(row[0]).toBe(row[24]);}
+   for(const row of b.grid){expect(row.slice(0,b.metadata.repeatUnitCells)).toEqual(row.slice(0,b.metadata.repeatUnitCells).reverse());expect(row[0]).toBe(row[b.metadata.repeatUnitCells-1]);}
    for(const o of b.objects){expect(o.kind).toBe("fill");if(o.kind==="fill")for(const p of o.polygon){expect(p.x).toBeGreaterThanOrEqual(0);expect(p.x).toBeLessThanOrEqual(250.00001);expect(p.y).toBeGreaterThanOrEqual(0);expect(p.y).toBeLessThanOrEqual(60.00001);}}
    expect(generateUkrainianBand({seed:"mirror",kind,widthMm:250,heightMm:60,repeats:6})).toEqual(b);
   }
@@ -45,6 +45,18 @@ describe("reviewed Ukrainian counted band",()=>{
    expect(points.reduce((n,p)=>Math.min(n,p.y),Infinity)).toBe(0);
    expect(points.reduce((n,p)=>Math.max(n,p.y),-Infinity)).toBeCloseTo(60);
   }
+ });
+
+ it("offers structurally distinct medallions and joined networks through the actual engine",()=>{
+  const options={seed:"complex",widthMm:250,heightMm:60,bands:3 as const};
+  const medallion=generateUkrainianBand({...options,kind:"hooked-medallions"});
+  const network=generateUkrainianBand({...options,kind:"joined-diamond-network"});
+  expect(medallion.metadata.repeatUnitCells).toBe(49);
+  expect(medallion.grid).not.toEqual(network.grid);
+  const alternatives=Array.from({length:12},(_,n)=>generateUkrainianBand({...options,kind:"hooked-medallions",seed:`variant:${n}`}).grid);
+  expect(new Set(alternatives.map(g=>JSON.stringify(g))).size).toBeGreaterThan(2);
+  const generated=generatePatterns({seed:"complex",concepts:[],compositionStyle:"ukrainian-counted-band",mode:"band",variations:5});
+  expect(new Set(generated.map(p=>p.sourceEvidence?.kind)).size).toBe(5);
  });
 
 });
