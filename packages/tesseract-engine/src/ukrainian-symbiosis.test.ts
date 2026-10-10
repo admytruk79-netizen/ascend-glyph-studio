@@ -29,8 +29,19 @@ describe('Penrose substitution and contemporary symbiosis',()=>{
   }
  });
  it('routes the real engine through both families and rejects invalid refinement',()=>{
-  const designs=generatePatterns({seed:'fusion',concepts:[],mode:'field',compositionStyle:'ukrainian-symbiosis',variations:2});expect(designs.map(d=>d.sourceEvidence?.kind)).toEqual([...SYMBIOSIS_KINDS]);
+  const designs=generatePatterns({seed:'fusion',concepts:[],mode:'field',compositionStyle:'ukrainian-symbiosis',variations:4});expect(designs.map(d=>d.sourceEvidence?.kind)).toEqual([...SYMBIOSIS_KINDS]);
   expect(designs[1]!.stitchObjects!.some(o=>o.id.startsWith('ibex:'))).toBe(true);
   expect(()=>penroseSun(7)).toThrow();expect(()=>generateUkrainianSymbiosis({seed:'x',kind:'penrose-garden',depth:2 as never})).toThrow();
  });
+ it('constructs outlined flowers, veined leaves and alternating ribbon bridges in the detailed families',()=>{
+  const d=generateUkrainianSymbiosis({seed:'illumination',kind:'illuminated-garden'});
+  expect(d.metadata.penrose.depth).toBe(5);
+  expect(d.metadata.interlace?.alternatingOverpasses).toBe(true);
+  expect(d.objects.some(o=>o.id.includes(':petal:2:'))).toBe(true);
+  expect(d.objects.some(o=>o.id.includes('braid:overpass:'))).toBe(true);
+  expect(d.objects.some(o=>o.id.includes(':vein:'))).toBe(true);
+  const lower=generateUkrainianSymbiosis({seed:'illumination',kind:'penrose-garden'});
+  expect(d.objects.map(o=>o.id)).not.toEqual(lower.objects.map(o=>o.id));
+ });
+
 });

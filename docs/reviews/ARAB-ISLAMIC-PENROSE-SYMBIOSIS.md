@@ -16,10 +16,16 @@ The original Ukrainian tree composer forms the plant hierarchy and flower vocabu
 
 The patch is triangular half-tile geometry, not a repeated diamond grid. It is a finite patch and is not claimed to verify all matching arrows of a fully assembled rhomb tiling or to prove aperiodicity from a screenshot. Its decagonal starting boundary is preserved; the patch is not stretched into a rectangular repeat. No mathematical-fractal claim is made for the historical motifs.
 
-Both families are contemporary fusion, not historic hybrid objects or a learned model. There is no Arabic calligraphy in these designs. Colours, layout, dimensions and animal geometry are new design decisions.
+All four families are contemporary fusion, not historic hybrid objects or a learned model. There is no Arabic calligraphy in these designs. Colours, layout, dimensions and animal geometry are new design decisions.
 
 ## Geometry and validation
 
-The real generatePatterns route, Studio preview and CLI share fill/satin objects. Four exports cover two families and two palettes. Tests verify conserved patch area, golden-ratio triangle edge ratios, positive tile areas, triangle counts, absence of interior overlap at a sampled refinement, export object identity, bounds, source attribution and actual-engine dispatch. The worker accepts symbiosis family and refinement controls; GitHub uploads ukrainian-symbiosis.
+The real generatePatterns route, Studio preview and CLI share fill/satin objects. Eight exports cover four families and two palettes. Tests verify conserved patch area, golden-ratio triangle edge ratios, positive tile areas, triangle counts, absence of interior overlap at a sampled refinement, export object identity, bounds, source attribution and actual-engine dispatch. The worker accepts symbiosis family and refinement controls; GitHub uploads ukrainian-symbiosis.
 
 SVGs and geometry plans are design prototypes for print or subsequent embroidery digitisation. Physical sampling remains necessary for textile production.
+
+## Advanced independently drawn families
+
+The illuminated garden and horned-guardian families replace the simpler botanical geometry with three petal whorls, scalloped calyces, fine petal veins, serrated foliage with spine and lateral veins, forked branches, terminal scrolls, subordinate flowers and a decorated vessel. Two border ribbons alternate explicit overpasses using ordered bridge geometry. The animals gain internal rosettes and contrasted horn ridges. These are contemporary design decisions developed from the separately documented relationships above; no historical illuminated manuscript or additional source object is claimed. The advanced families default to refinement level five (890 half triangles). The classic families remain selectable.
+
+Validation: 80 engine tests pass; engine typecheck and web build pass. Browser checks exercise the new default, guardian selection, palette, branch tiers, refinement, variation, mobile bounds and geometric-band navigation.
