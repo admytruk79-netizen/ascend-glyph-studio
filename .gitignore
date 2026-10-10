@@ -4,3 +4,6 @@ dist/
 
 # order production folders hold customer details: never commit
 /orders/
+
+# Reproducible motif benchmark artifacts and execution logs
+/artifacts/motif-reconstruction/

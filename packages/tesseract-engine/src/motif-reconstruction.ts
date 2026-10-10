@@ -5,10 +5,14 @@ import {productionObjectsFromTopology,placeProductionObjects} from './production
 import type {ConstructionEnvelope} from './construction-envelope';
 import {primitiveForForm} from './ascend-primitives';
 import {planEmbroideryJob} from './manufacturing-job-plan';
+import type {MachineTemplate} from './machine-template';
+import {measureMotifClearance} from './motif-clearance';
+import {inferAnnotatedRepeatLattices} from './motif-repeat-inference';
 
 /** Baseline consumes explicit annotations, not unannotated raster images or a trained model. */
-export function decomposeAnnotatedMotif(annotations:MotifGraph):MotifGraph {
- const graph=JSON.parse(JSON.stringify(annotations)) as MotifGraph;assertMotifGraph(graph);return graph;
+export function decomposeAnnotatedMotif(annotations:MotifGraph,options:{inferRepeats?:boolean}={}):MotifGraph {
+ const graph=JSON.parse(JSON.stringify(annotations)) as MotifGraph;assertMotifGraph(graph);
+ return options.inferRepeats?inferAnnotatedRepeatLattices(graph):graph;
 }
 export function reconstructMotif(graph:MotifGraph):StitchIrObject[]{
  assertMotifGraph(graph);
@@ -37,8 +41,10 @@ export function measureMotifStructure(graph:MotifGraph){
 }
 /** Explicit design mapping, not inferred cultural equivalence or historical-to-canonical relabeling.
  * Reuses canonical production objects and compiler; unsupported distortions fail closed. */
-export function assembleAscendMotif(graph:MotifGraph,mapping:Record<string,string>,envelope:ConstructionEnvelope){
+export function assembleAscendMotif(graph:MotifGraph,mapping:Record<string,string>,envelope:ConstructionEnvelope,options:{machine?:MachineTemplate}={}){
  assertMotifGraph(graph);const elements=graph.nodes.filter(n=>n.kind==='element');
+ if(envelope.machine&&!options.machine)throw new Error('motif-machine-template-required');
+ if(envelope.machine&&envelope.machine.id!==options.machine?.id)throw new Error('motif-machine-envelope-mismatch');
  if(Object.keys(mapping).length!==elements.length||elements.some(n=>!mapping[n.id]))throw new Error('explicit ASCEND mapping required for every element');
  const base=Math.max(8,envelope.minFeatureMm*8);
  const nodes=elements.map(n=>{const form=mapping[n.id];if(!primitiveForForm(form))throw new Error('unknown canonical ASCEND form');
@@ -49,9 +55,13 @@ export function assembleAscendMotif(graph:MotifGraph,mapping:Record<string,strin
   return {id:n.id,conceptId:`explicit-mapping:${n.id}`,form,scale};});
  const objects=productionObjectsFromTopology({nodes,edges:[]},envelope);
  const placed=placeProductionObjects(objects,Object.fromEntries(elements.map(n=>{const p=transformMotifPoint(graph,n.id,{x:50,y:50}),a=transformMotifPoint(graph,n.id,{x:0,y:0}),b=transformMotifPoint(graph,n.id,{x:1,y:0});return [n.id,{x:p.x,y:p.y,angleDeg:Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI}];})));
- const stitchObjects=compileProductionObjectsToStitchIr(placed),job=planEmbroideryJob(stitchObjects,{widthMm:graph.widthMm,heightMm:graph.heightMm});
+ const stitchObjects=compileProductionObjectsToStitchIr(placed),job=planEmbroideryJob(stitchObjects,{widthMm:graph.widthMm,heightMm:graph.heightMm,machine:options.machine});
+ const referenceStructure=measureMotifStructure(graph),referenceClearance=measureMotifClearance(graph);
+ if(referenceStructure.brokenJunctions||referenceStructure.brokenRepeats||referenceStructure.negativeSpaceViolations
+  ||referenceClearance.clearanceViolations.length||referenceClearance.portsOffPath.length||referenceClearance.outsideEnvelope.length)
+  job.validation.errors.push('motif-reference-layout-invalid');
  // A reference graph's ports and clearances cannot certify different, explicitly mapped glyph geometry.
  job.validation.valid=false;job.validation.errors.push('motif-canonical-layout-unvalidated');
- return {state:'REFERENCE' as const,productionObjects:placed,stitchObjects,job,provenance:graph.provenance,
+ return {state:'REFERENCE' as const,productionObjects:placed,stitchObjects,job,provenance:graph.provenance,referenceStructure,referenceClearance,
   warnings:['Reference relations do not certify junctions or clearance in the separately mapped ASCEND design.','Machine feasibility, stitch count, calibration and sew-out remain required.']};
 }

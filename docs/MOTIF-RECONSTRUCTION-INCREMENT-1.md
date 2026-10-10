@@ -1,5 +1,7 @@
 # Motif reconstruction increment 1
 
+Historical record of the first increment. See [increment 2](MOTIF-RECONSTRUCTION-INCREMENT-2.md) for current inference, clearance and machine integration results.
+
 This implements the first scaffold requested by `TESSERACT-MOTIF-RECONSTRUCTION-CODEX-BRIEF.md` and `PRODUCTION-ENGINE-POA.md`. Every output remains **REFERENCE**. No model training, historical-image analysis, machine approval, or physical validation has occurred.
 
 ## Implemented

@@ -18,10 +18,16 @@ jobs:
         with:
           node-version: 22
       - run: npm install --no-audit --no-fund
-      - run: npm run typecheck --workspace=@ascend/tesseract-engine
-      - run: npm test --workspace=@ascend/tesseract-engine
-      - run: npm run benchmark:motif
+      - name: Verify integrated worker and retain logs
+        shell: bash
+        run: |
+          mkdir -p artifacts/motif-reconstruction
+          npm run verify:tesseract-worker 2>&1 | tee artifacts/motif-reconstruction/verification.log
+      - name: Reconstruct and benchmark reference fixtures
+        shell: bash
+        run: npm run benchmark:motif 2>&1 | tee artifacts/motif-reconstruction/benchmark.log
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: motif-reconstruction-reference
           path: artifacts/motif-reconstruction/
