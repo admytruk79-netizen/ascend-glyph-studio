@@ -1,3 +1,4 @@
+import {generateUkrainianSymbiosis,SYMBIOSIS_KINDS,type SymbiosisKind} from "./ukrainian-symbiosis";
 import {generateUkrainianBotanical,BOTANICAL_KINDS,type BotanicalKind} from "./ukrainian-botanical";
 import {generateUkrainianBand,UKRAINIAN_BAND_KINDS,type UkrainianBandKind} from "./ukrainian-band";
 import {searchDesignSpace} from "./search";
@@ -29,7 +30,7 @@ import type {LearnedAssemblyPrior} from "./learned-assembly-prior";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
- compositionStyle?:"ukrainian-counted-band"|"ukrainian-botanical";botanicalKind?:BotanicalKind;botanicalTiers?:3|4|5;botanicalPalette?:"red-cream"|"garden-dark";bandKind?:UkrainianBandKind;bandRepeats?:number;bandCount?:1|3|5;bandPalette?:"hutsul"|"red-black";
+ compositionStyle?:"ukrainian-counted-band"|"ukrainian-botanical"|"ukrainian-symbiosis";symbiosisKind?:SymbiosisKind;penroseDepth?:3|4|5;botanicalKind?:BotanicalKind;botanicalTiers?:3|4|5;botanicalPalette?:"red-cream"|"garden-dark";bandKind?:UkrainianBandKind;bandRepeats?:number;bandCount?:1|3|5;bandPalette?:"hutsul"|"red-black";
  seed:string;concepts:string[];paletteId?:string;mode?:PatternMode;
  width?:number;height?:number;variations?:number;complexity?:number;
  cultureIds?:string[];medium?:string;placement?:string;
@@ -51,7 +52,7 @@ export type GeneratedPattern={
  surfaceMath?:ReturnType<typeof evaluateSurfaceLayout>;
  machineProfileId?:string;
  physicalSizeMm?:{width:number;height:number};
- sourceEvidence?:ReturnType<typeof generateUkrainianBand>["metadata"]|ReturnType<typeof generateUkrainianBotanical>["metadata"];
+ sourceEvidence?:ReturnType<typeof generateUkrainianBand>["metadata"]|ReturnType<typeof generateUkrainianBotanical>["metadata"]|ReturnType<typeof generateUkrainianSymbiosis>["metadata"];
  octave?:ReturnType<typeof grammarComplexity>;
 };
 
@@ -155,11 +156,11 @@ function colorize(svg:string,paletteId:string){
 function culturalSignals(cultureIds:string[],objectTypes?:string[]){const signals=deriveSignals(worldPatternGraph(),{cultureIds,objectTypes,minSupport:.25});return{features:signals.filter(s=>s.kind!=="semantic").slice(0,24).map(s=>[s.value,s.support] as [string,number])};}
 
 export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]{
- if(input.compositionStyle==="ukrainian-botanical"){
+ if(input.compositionStyle==="ukrainian-botanical"||input.compositionStyle==="ukrainian-symbiosis"){
   if(input.mode&&!["field","emblem"].includes(input.mode))throw new Error("Botanical compositions support fields and emblems");
   if(input.medium&&!["print","embroidery"].includes(input.medium))throw new Error("Unsupported botanical medium");
   return Array.from({length:Math.max(1,Math.min(12,input.variations??3))},(_,i)=>{
-   const design=generateUkrainianBotanical({seed:`${input.seed}:${i}`,kind:input.botanicalKind??BOTANICAL_KINDS[i%BOTANICAL_KINDS.length]!,tiers:input.botanicalTiers,palette:input.botanicalPalette,widthMm:input.physicalWidthMm,heightMm:input.physicalHeightMm});
+   const design=input.compositionStyle==="ukrainian-symbiosis"?generateUkrainianSymbiosis({seed:`${input.seed}:${i}`,kind:input.symbiosisKind??SYMBIOSIS_KINDS[i%2]!,depth:input.penroseDepth,tiers:input.botanicalTiers,palette:input.botanicalPalette,widthMm:input.physicalWidthMm,heightMm:input.physicalHeightMm}):generateUkrainianBotanical({seed:`${input.seed}:${i}`,kind:input.botanicalKind??BOTANICAL_KINDS[i%BOTANICAL_KINDS.length]!,tiers:input.botanicalTiers,palette:input.botanicalPalette,widthMm:input.physicalWidthMm,heightMm:input.physicalHeightMm});
    const finalCritique=critiqueFinalSvg(design.svg,mediumForMode(input.mode??"field",input.medium),input.visualCorpus??[]);
    return {id:`uk-botanical-${input.seed}-${i}`,lineageId:`uk-botanical:${design.metadata.sourceIds.join(",")}`,score:finalCritique.score,novelty:0,
     objectives:{meaning:0,novelty:0,culturalIntegrity:0,manufacturability:0,visualIdentity:finalCritique.score,physicalConfidence:0,genericResistance:0},

@@ -68,7 +68,7 @@ const server=http.createServer(async(req,res)=>{
 });
 server.listen(Number(process.env.PORT||10000),"0.0.0.0",()=>process.stdout.write(JSON.stringify({status:"listening",port:Number(process.env.PORT||10000)})+"\n"));
 
-type Intent={compositionStyle?:"ukrainian-counted-band"|"ukrainian-botanical";botanicalKind?:"flowering-tree"|"curling-vine"|"paired-bird-garden";botanicalTiers?:3|4|5;botanicalPalette?:"red-cream"|"garden-dark";bandKind?:"stepped-cross"|"diamond-rosette"|"linked-diamonds"|"hooked-medallions"|"joined-diamond-network";bandRepeats?:number;bandCount?:1|3|5;bandPalette?:"hutsul"|"red-black";concepts?:{id:string;weight:number}[];materialId?:string;recipeId?:string;zoneId?:string;mode?:PatternMode;paletteId?:string;complexity?:number;machineProfileId?:string;physicalWidthMm?:number;physicalHeightMm?:number;constructionIntent?:{targetOccupancy?:number;seamPolicy?:"avoid"|"continuous"|"resolve";maxColors?:number;hierarchyDepth?:number}};
+type Intent={compositionStyle?:"ukrainian-counted-band"|"ukrainian-botanical"|"ukrainian-symbiosis";symbiosisKind?:"penrose-garden"|"penrose-ibex";penroseDepth?:3|4|5;botanicalKind?:"flowering-tree"|"curling-vine"|"paired-bird-garden";botanicalTiers?:3|4|5;botanicalPalette?:"red-cream"|"garden-dark";bandKind?:"stepped-cross"|"diamond-rosette"|"linked-diamonds"|"hooked-medallions"|"joined-diamond-network";bandRepeats?:number;bandCount?:1|3|5;bandPalette?:"hutsul"|"red-black";concepts?:{id:string;weight:number}[];materialId?:string;recipeId?:string;zoneId?:string;mode?:PatternMode;paletteId?:string;complexity?:number;machineProfileId?:string;physicalWidthMm?:number;physicalHeightMm?:number;constructionIntent?:{targetOccupancy?:number;seamPolicy?:"avoid"|"continuous"|"resolve";maxColors?:number;hierarchyDepth?:number}};
 
 async function claim(){
  const c=await pool.connect();
@@ -242,7 +242,7 @@ async function persistCorpusCanon(canon:any[]){
 async function execute(run:any){
  const intent=(run.intent??{}) as Intent;
  const concepts=(intent.concepts??[]).sort((a,b)=>b.weight-a.weight).map(x=>x.id);
- const mode=(intent.mode??(intent.compositionStyle==="ukrainian-botanical"?"field":intent.zoneId?.includes("sleeve")?"sleeve":"band")) as PatternMode;
+ const mode=(intent.mode??((intent.compositionStyle==="ukrainian-botanical"||intent.compositionStyle==="ukrainian-symbiosis")?"field":intent.zoneId?.includes("sleeve")?"sleeve":"band")) as PatternMode;
  const corpusSignals=await loadCorpusSignals(run.seed);
  const learnedGuidance=await loadLearnedGuidance();
  const preferenceModel=await loadPreferenceModel();
@@ -259,7 +259,7 @@ async function execute(run:any){
  for(let feedbackPass=0;feedbackPass<3;feedbackPass++){
   const passComplexity=Math.max(.52,baseComplexity-feedbackPass*.07);
   const passSeed=feedbackPass===0?run.seed:run.seed+":feedback:"+feedbackPass;
-  const patterns=generatePatterns({compositionStyle:intent.compositionStyle,botanicalKind:intent.botanicalKind,botanicalTiers:intent.botanicalTiers,botanicalPalette:intent.botanicalPalette,bandKind:intent.bandKind,bandRepeats:intent.bandRepeats,bandCount:intent.bandCount,bandPalette:intent.bandPalette,seed:passSeed,concepts,paletteId:intent.paletteId,mode,complexity:passComplexity,variations:batchSize,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus,learnedGuidance,structuralFeedback,machineProfileId:intent.machineProfileId,physicalWidthMm:intent.physicalWidthMm,physicalHeightMm:intent.physicalHeightMm,constructionIntent:intent.constructionIntent});
+  const patterns=generatePatterns({compositionStyle:intent.compositionStyle,symbiosisKind:intent.symbiosisKind,penroseDepth:intent.penroseDepth,botanicalKind:intent.botanicalKind,botanicalTiers:intent.botanicalTiers,botanicalPalette:intent.botanicalPalette,bandKind:intent.bandKind,bandRepeats:intent.bandRepeats,bandCount:intent.bandCount,bandPalette:intent.bandPalette,seed:passSeed,concepts,paletteId:intent.paletteId,mode,complexity:passComplexity,variations:batchSize,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus,learnedGuidance,structuralFeedback,machineProfileId:intent.machineProfileId,physicalWidthMm:intent.physicalWidthMm,physicalHeightMm:intent.physicalHeightMm,constructionIntent:intent.constructionIntent});
   process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-pass",feedbackPass,patterns:patterns.length,complexity:passComplexity})+"\n");
   let passed=0;
   for(const p of patterns){

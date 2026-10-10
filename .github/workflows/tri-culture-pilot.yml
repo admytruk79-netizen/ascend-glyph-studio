@@ -18,6 +18,7 @@ jobs:
       - run: node packages/tesseract-engine/dist/src/tri-culture-cli.js
       - run: node packages/tesseract-engine/dist/src/ukrainian-band-cli.js
       - run: node packages/tesseract-engine/dist/src/ukrainian-botanical-cli.js
+      - run: node packages/tesseract-engine/dist/src/ukrainian-symbiosis-cli.js
       - run: |
           test -s artifacts/tri-culture/report.json
           test -s artifacts/tri-culture/compound-stitch-ir.json
@@ -41,3 +42,8 @@ jobs:
         with:
           name: ukrainian-botanical
           path: artifacts/ukrainian-botanical
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ukrainian-symbiosis
+          path: artifacts/ukrainian-symbiosis
