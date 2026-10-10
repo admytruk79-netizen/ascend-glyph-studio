@@ -16,6 +16,7 @@ jobs:
       - run: npm run test --workspace=@ascend/tesseract-engine
       - run: npm run build --workspace=@ascend/tesseract-engine
       - run: node packages/tesseract-engine/dist/src/tri-culture-cli.js
+      - run: node packages/tesseract-engine/dist/src/ukrainian-band-cli.js
       - run: |
           test -s artifacts/tri-culture/report.json
           test -s artifacts/tri-culture/compound-stitch-ir.json
@@ -30,3 +31,7 @@ jobs:
         with:
           name: tri-culture-svg
           path: artifacts/tri-culture
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ukrainian-source-bands
+          path: artifacts/ukrainian-bands

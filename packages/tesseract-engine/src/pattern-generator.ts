@@ -1,3 +1,4 @@
+import {generateUkrainianBand,UKRAINIAN_BAND_KINDS,type UkrainianBandKind} from "./ukrainian-band";
 import {searchDesignSpace} from "./search";
 import {genomeFromTopology} from "./genome";
 import {projectSemanticGeometry} from "./semantic-projector";
@@ -27,6 +28,7 @@ import type {LearnedAssemblyPrior} from "./learned-assembly-prior";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
+ compositionStyle?:"ukrainian-counted-band";bandKind?:UkrainianBandKind;bandRepeats?:number;bandPalette?:"hutsul"|"red-black";
  seed:string;concepts:string[];paletteId?:string;mode?:PatternMode;
  width?:number;height?:number;variations?:number;complexity?:number;
  cultureIds?:string[];medium?:string;placement?:string;
@@ -48,6 +50,7 @@ export type GeneratedPattern={
  surfaceMath?:ReturnType<typeof evaluateSurfaceLayout>;
  machineProfileId?:string;
  physicalSizeMm?:{width:number;height:number};
+ sourceEvidence?:ReturnType<typeof generateUkrainianBand>["metadata"];
  octave?:ReturnType<typeof grammarComplexity>;
 };
 
@@ -151,6 +154,18 @@ function colorize(svg:string,paletteId:string){
 function culturalSignals(cultureIds:string[],objectTypes?:string[]){const signals=deriveSignals(worldPatternGraph(),{cultureIds,objectTypes,minSupport:.25});return{features:signals.filter(s=>s.kind!=="semantic").slice(0,24).map(s=>[s.value,s.support] as [string,number])};}
 
 export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]{
+ if(input.compositionStyle==="ukrainian-counted-band"){
+  if(input.mode&&input.mode!=="band"&&input.mode!=="cuff"&&input.mode!=="collar")throw new Error("Ukrainian counted grammar supports bands, cuffs and collars");
+  if(input.medium&&input.medium!=="print"&&input.medium!=="embroidery")throw new Error("Unsupported counted-band medium");
+  const count=Math.max(1,Math.min(12,input.variations??3));
+  return Array.from({length:count},(_,i)=>{
+   const band=generateUkrainianBand({seed:`${input.seed}:${i}`,kind:input.bandKind??UKRAINIAN_BAND_KINDS[i%3]!,widthMm:input.physicalWidthMm??250,heightMm:input.physicalHeightMm??60,repeats:input.bandRepeats,palette:input.bandPalette});
+   const finalCritique=critiqueFinalSvg(band.svg,mediumForMode(input.mode??"band",input.medium),input.visualCorpus??[]);
+   return {id:`uk-band-${input.seed}-${i}`,lineageId:`uk-band:${band.metadata.sourceIds.join(",")}`,score:finalCritique.score,novelty:0,
+    objectives:{meaning:0,novelty:0,culturalIntegrity:0,manufacturability:0,visualIdentity:finalCritique.score,physicalConfidence:0,genericResistance:0},
+    svg:band.svg,stitchObjects:band.objects,sourceEvidence:band.metadata,finalCritique,physicalSizeMm:{width:band.widthMm,height:band.heightMm}};
+  });
+ }
  const concepts=(input.concepts.length?input.concepts:["ancestry","freedom","protection"]).slice(0,8);
  const mode=input.mode??"band",niche=nicheForMode(mode),variations=Math.max(4,Math.min(input.variations??12,32));
  const searchKeep=Math.min(32,Math.max(variations+4,variations*2));

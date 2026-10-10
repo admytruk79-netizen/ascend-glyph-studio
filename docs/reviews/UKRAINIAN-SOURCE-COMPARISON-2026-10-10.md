@@ -34,3 +34,12 @@ The examined generated field has isolated small symbols, long straight connectio
 ## Deployment failure and repair
 
 The tri-culture workflow failed at npm ci because the repository has no npm lockfile. Its install step now uses npm install --no-audit --no-fund, consistent with the other passing workflows. The repaired run 38021510323 succeeded and uploaded tri-culture-svg, artifact 11658053162. Cloudflare's build for the install-fix commit also succeeded. The subsequent unmodified-SVG export commit requires its own workflow result.
+
+
+## Implemented correction
+
+The explicit `ukrainian-counted-band` mode now runs through `generatePatterns`, backed by a versioned Neon record and human-reviewed construction rules. Its three families use counted-cell fills, nested geometric centres, a continuous repeat, and paired subordinate borders. The Studio opens this mode by default. The worker accepts the same controls and saves sourceEvidence with each candidate.
+
+SVG and fill-plan exports share their objects. The design grid is not a machine digitisation or a stitch-per-cell chart. This is rule-based composition with one reviewed source, not a newly trained neural model or use of every Ukraine-labelled record. Existing general and tri-culture research generation remains separately available.
+
+The `ukrainian-source-bands` workflow artifact includes three generated SVGs, corresponding fill IR, and a provenance report. Tests check mirrored cells, repeat boundaries, bounded coordinates, reproducibility and exact agreement between SVG polygons and the generated IR.

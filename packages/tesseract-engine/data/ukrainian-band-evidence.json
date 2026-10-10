@@ -1,0 +1,134 @@
+{
+  "version": "ukrainian-band-evidence/1",
+  "source": {
+    "id": "commons-23697961",
+    "title": "Гуцульська вишивка",
+    "source_url": "https://commons.wikimedia.org/wiki/File:%D0%93%D1%83%D1%86%D1%83%D0%BB%D1%8C%D1%81%D1%8C%D0%BA%D0%B0_%D0%B2%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0.jpg",
+    "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/%D0%93%D1%83%D1%86%D1%83%D0%BB%D1%8C%D1%81%D1%8C%D0%BA%D0%B0_%D0%B2%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0.jpg/1280px-%D0%93%D1%83%D1%86%D1%83%D0%BB%D1%8C%D1%81%D1%8C%D0%BA%D0%B0_%D0%B2%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "analyzer_version": "structural-features/0.1+deconstruct/0.2",
+    "split": "train",
+    "features": {
+      "mirrorX": 0.851,
+      "mirrorY": 0.865,
+      "periodX": 0.045,
+      "periodY": 0.044,
+      "contrast": 0.216,
+      "radiality": 0.371,
+      "voidRatio": 0.2,
+      "edgeDensity": 0.296,
+      "orientation": [
+        0.218,
+        0.082,
+        0.062,
+        0.124,
+        0.143,
+        0.07,
+        0.07,
+        0.232
+      ],
+      "repetitionX": 0.64,
+      "repetitionY": 0.521,
+      "rotation180": 0.825,
+      "axisStrength": 0.2,
+      "dominantAxis": "horizontal",
+      "scaleHierarchy": [
+        1,
+        1.061,
+        1.288
+      ],
+      "densityVariation": 0.793
+    },
+    "deconstruction": {
+      "crop": {
+        "h": 429,
+        "w": 289,
+        "x": 21,
+        "y": 43,
+        "coverage": 0.686
+      },
+      "kind": "frieze",
+      "bands": [
+        {
+          "end": 256,
+          "start": 235,
+          "breaks": {
+            "kinds": {
+              "void": 0,
+              "variation": 0,
+              "interruption": 5
+            },
+            "ratio": 0.625,
+            "segments": 8,
+            "positions": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ]
+          },
+          "frieze": {
+            "group": "p1",
+            "scores": {
+              "glide": 0.235,
+              "rotation": -0.033,
+              "vertical": -0.042,
+              "horizontal": 0.43,
+              "translation": 0.553
+            }
+          },
+          "period": 33.26,
+          "grammar": {
+            "figures": [],
+            "notation": "A | B | C | D | E | FFF",
+            "sequence": "ABCDEFFF"
+          },
+          "periodRel": 0.115,
+          "orientation": "horizontal",
+          "periodicity": 0.553,
+          "thicknessRel": 0.049
+        }
+      ],
+      "scale": {
+        "band": 0.049,
+        "field": 1,
+        "motif": 0.039,
+        "stitch": 0.039
+      },
+      "repeat": {
+        "a": [
+          5,
+          0
+        ],
+        "kind": "1d",
+        "strength": 0.647
+      },
+      "version": "deconstruct/0.2"
+    },
+    "cultural_access": "open",
+    "rights": "Public domain"
+  },
+  "review": {
+    "imageViewed": true,
+    "reviewedAt": "2026-10-10",
+    "imageSize": [
+      960,
+      1390
+    ],
+    "regionAttribution": "Source title: Hutsul embroidery; not independently verified",
+    "grammar": [
+      "counted-cell grid",
+      "nested diamond enclosures",
+      "stepped cross centres",
+      "alternating positive/negative cells",
+      "narrow subordinate borders"
+    ],
+    "ignoredAutomaticBand": "The detected strip covers only one small band on a multi-example plate.",
+    "geometryUse": "new rule-based motifs; no source tracing"
+  },
+  "targets": {
+    "symmetry": 0.858,
+    "voidRatio": 0.2,
+    "scaleLevels": 3
+  }
+}
