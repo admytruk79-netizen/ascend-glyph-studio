@@ -12,8 +12,15 @@ jobs:
         with:
           node-version: '22'
       - run: npm ci
+      - run: npm run typecheck --workspace=@ascend/tesseract-engine
+      - run: npm run test --workspace=@ascend/tesseract-engine
       - run: npm run build --workspace=@ascend/tesseract-engine
       - run: node packages/tesseract-engine/dist/src/tri-culture-cli.js
+      - run: |
+          test -s artifacts/tri-culture/report.json
+          test -s artifacts/tri-culture/compound-stitch-ir.json
+          test -s artifacts/tri-culture/compound-shared-geometry.svg
+          test -s artifacts/tri-culture/compound-textile-colour-chart.json
       - uses: actions/upload-artifact@v4
         with:
           name: tri-culture-svg
