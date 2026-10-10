@@ -160,7 +160,9 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  const searchKeep=Math.min(32,Math.max(variations+4,variations*2));
  const width=input.width??960,height=input.height??260,medium=mediumForMode(mode,input.medium),zone=projectionZone(mode,width,height);
  const physicalSize=physicalSizeForMode(mode,input),productionZone=physicalZone(mode,physicalSize.width,physicalSize.height);
- const machine=machineTemplate(input.machineProfileId);if(machine)assertUsableMachineTemplate(machine);
+ const machine=machineTemplate(input.machineProfileId);
+ if(input.machineProfileId&&!machine)throw new Error(`unknown-machine-profile:${input.machineProfileId}`);
+ if(machine)assertUsableMachineTemplate(machine);
  const constructionEnvelope=deriveZoneConstructionEnvelope([productionZone],medium,undefined,input.constructionIntent??{},machine);
  const octaveArea=constructionEnvelope.zoneBudgets.reduce((n,z)=>n+z.usableAreaMm2*constructionEnvelope.targetOccupancy,0);
  const requestedComplexity=Math.max(0,Math.min(1,input.complexity??.65));
@@ -219,7 +221,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const baseStitchObjects=compileProductionObjectsToStitchIr(productionObjects);
   const compositionPlan=buildMasterCompositionPlan({mode,medium,complexity,sashGrammar,structuralFeedback:input.structuralFeedback});
   const stitchObjects=optimizeStitchTravel(applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height)).objects;
-  const manufacturingJob=planEmbroideryJob(stitchObjects,{widthMm:physicalSize.width,heightMm:physicalSize.height});
+  const manufacturingJob=planEmbroideryJob(stitchObjects,{widthMm:physicalSize.width,heightMm:physicalSize.height,machine});
   let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
   if(productionZone.wrapAllowed&&(productionZone.surface==="cylinder"||productionZone.surface==="tapered-cylinder")){
    const byId=new Map(productionObjects.map(o=>[o.id,o]));

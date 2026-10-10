@@ -31,7 +31,11 @@ export function runPilotProduction(input:PilotRunInput):PilotRunResult{
  const errors=batch.configurationIssues.filter(x=>x.severity==="error").map(x=>x.reason);
  if(!batch.candidates.length)return {batch,artifacts:[],errors:[...errors,"no-candidates"]};
  const winner=batch.candidates[0]!;
- const manifest=compileProductionManifest({garment,pattern,genomeId:winner.genomeId,process:"machine-embroidery",machine:input.machine});
+ if(input.machine&&batch.machine&&input.machine.id!==batch.machine.id)return {batch,artifacts:[],errors:[...errors,"machine-profile-mismatch"]};
+ const manifest=compileProductionManifest({garment,pattern,genomeId:winner.genomeId,process:"machine-embroidery",machine:input.machine??batch.machine});
+ for(const zone of winner.zones)for(const error of zone.manufacturingJob?.validation.errors??[])
+  manifest.blockers.push(`zone-job:${zone.zoneId}:${error}`);
+ if(manifest.blockers.length)manifest.productionApproved=false;
  const transfers=seamTransfers(pattern);
  const artifacts:PilotArtifact[]=pattern.pieces.map(piece=>({fileName:manifest.pieces.find(x=>x.pieceId===piece.id)!.vectorFileName,mime:"image/svg+xml",content:productionPieceSvg(piece,planPieceProjection(piece),transfers)}));
  if(batch.specimenSheet)artifacts.push({fileName:"lineage-specimens.svg",mime:"image/svg+xml",content:batch.specimenSheet.svg});

@@ -2,6 +2,7 @@ import type {StitchIrObject,StitchIrPoint} from "./production-stitch-ir";
 import {routingMetrics} from "./stitch-travel-optimizer";
 import {compileLoomPlan,type LoomPlan} from "./loom-program";
 import {liftPlanToShaftDraft,type ShaftDraft} from "./historical-shaft-draft";
+import type {MachineTemplate} from "./machine-template";
 
 /** Neutral manufacturing operation plan: CAM-style operations and postprocessor
  * separation (FreeCAD), embroidery object routing (Ink/Stitch), historical
@@ -39,9 +40,22 @@ function geometryErrors(objects:readonly StitchIrObject[],w:number,h:number){
  }
  return errors;
 }
-export function planEmbroideryJob(objects:readonly StitchIrObject[],opts:{widthMm:number;heightMm:number;trimJumpMm?:number}):ManufacturingJobPlan{
+export function planEmbroideryJob(objects:readonly StitchIrObject[],opts:{widthMm:number;heightMm:number;trimJumpMm?:number;machine?:MachineTemplate}):ManufacturingJobPlan{
  const {widthMm,heightMm}=opts,trimJumpMm=opts.trimJumpMm??7;
  const errors=geometryErrors(objects,widthMm,heightMm);
+ // A reference template can reject an impossible job; it cannot approve production.
+ // The complete job envelope must fit one hoop. No implicit segmentation or registration.
+ const machine=opts.machine;
+ if(machine){
+  const x=machine.fieldX?.value,y=machine.fieldY?.value;
+  if(!(Number.isFinite(x)&&Number.isFinite(y)&&x>0&&y>0)
+   ||machine.fieldX?.unit!=="mm"||machine.fieldY?.unit!=="mm")errors.push("machine-field-unverified");
+  else if(!((widthMm<=x&&heightMm<=y)||(widthMm<=y&&heightMm<=x)))errors.push("machine-field-exceeded:segmentation-required");
+  if(!Number.isInteger(machine.maxColors)||machine.maxColors<1)errors.push("machine-color-capacity-unverified");
+  else if(new Set(objects.map(o=>o.color)).size>machine.maxColors)errors.push("machine-color-capacity-exceeded");
+  const supported=new Set(["DST","DSB","DSZ","EXP","PES","JEF","VP3","XXX"]);
+  if(!machine.acceptedFormats?.length||machine.acceptedFormats.some(format=>!supported.has(format)))errors.push("machine-format-unverified");
+ }
  const operations:ManufacturingOperation[]=[];
  let previous:StitchIrObject|undefined;
  for(const o of objects){

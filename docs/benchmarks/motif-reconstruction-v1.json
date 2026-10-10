@@ -1,0 +1,133 @@
+{
+  "schema": "ascend.motif-benchmark.v1",
+  "state": "REFERENCE",
+  "dataset": "authored-synthetic-vector-fixture-v1",
+  "trainingPerformed": false,
+  "seed": "fixture-v1",
+  "graphSha256": "49cf395572701b9110af58f2aaff397e84961ab6e936e6a58888bbfb7d354e8f",
+  "reconstructionSha256": "b402e761dfaf17ad3e6648926e1964e49ea59831e720006f5572409f10acc8c8",
+  "deterministic": true,
+  "referenceReconstruction": {
+    "vectorPointRmseMm": 0,
+    "structure": {
+      "junctionCount": 3,
+      "brokenJunctions": 0,
+      "repeatCount": 1,
+      "brokenRepeats": 0,
+      "nestedRelations": 1,
+      "negativeSpaceViolations": 0
+    }
+  },
+  "negativeControl": {
+    "junctionCount": 3,
+    "brokenJunctions": 1,
+    "repeatCount": 1,
+    "brokenRepeats": 1,
+    "nestedRelations": 1,
+    "negativeSpaceViolations": 1
+  },
+  "visualRasterSimilarity": null,
+  "comparisonBaselines": {
+    "tracing": null,
+    "primitiveTiling": null,
+    "svgFirst": null
+  },
+  "referencePieceIntegration": {
+    "size": "pilot-m",
+    "pieces": [
+      {
+        "pieceId": "front-left",
+        "sourceState": "reference",
+        "productionObjects": 6,
+        "irObjects": 24,
+        "jobErrors": [
+          "motif-canonical-layout-unvalidated"
+        ]
+      },
+      {
+        "pieceId": "front-right",
+        "sourceState": "reference",
+        "productionObjects": 6,
+        "irObjects": 24,
+        "jobErrors": [
+          "motif-canonical-layout-unvalidated"
+        ]
+      },
+      {
+        "pieceId": "back",
+        "sourceState": "reference",
+        "productionObjects": 6,
+        "irObjects": 24,
+        "jobErrors": [
+          "motif-canonical-layout-unvalidated"
+        ]
+      },
+      {
+        "pieceId": "yoke",
+        "sourceState": "reference",
+        "productionObjects": 6,
+        "irObjects": 24,
+        "jobErrors": [
+          "motif-canonical-layout-unvalidated"
+        ]
+      },
+      {
+        "pieceId": "sleeve-left",
+        "sourceState": "reference",
+        "productionObjects": 6,
+        "irObjects": 24,
+        "jobErrors": [
+          "motif-canonical-layout-unvalidated"
+        ]
+      },
+      {
+        "pieceId": "sleeve-right",
+        "sourceState": "reference",
+        "productionObjects": 6,
+        "irObjects": 24,
+        "jobErrors": [
+          "motif-canonical-layout-unvalidated"
+        ]
+      },
+      {
+        "pieceId": "cuff-left",
+        "sourceState": "reference",
+        "productionObjects": 6,
+        "irObjects": 24,
+        "jobErrors": [
+          "motif-canonical-layout-unvalidated"
+        ]
+      },
+      {
+        "pieceId": "cuff-right",
+        "sourceState": "reference",
+        "productionObjects": 6,
+        "irObjects": 24,
+        "jobErrors": [
+          "motif-canonical-layout-unvalidated"
+        ]
+      },
+      {
+        "pieceId": "collar",
+        "sourceState": "reference",
+        "productionObjects": 6,
+        "irObjects": 24,
+        "jobErrors": [
+          "motif-canonical-layout-unvalidated"
+        ]
+      }
+    ],
+    "seamRegistrationVerified": false,
+    "machineFeasibilityVerified": false
+  },
+  "incomplete": [
+    "Unannotated image decomposition",
+    "Historical-source fixtures and source-disjoint evaluation",
+    "Raster and comparative baselines",
+    "Symmetry and general clearance scoring",
+    "Canonical port remapping and collision validation",
+    "Full-shirt zone/no-go placement and seam continuity",
+    "Machine-specific stitch generation and measured stitch count",
+    "Model training and physical production validation"
+  ]
+}

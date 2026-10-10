@@ -1,0 +1,33 @@
+name: Motif reconstruction reference benchmark
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'packages/tesseract-engine/**'
+      - 'scripts/benchmark-motif-reconstruction.ts'
+      - '.github/workflows/motif-reconstruction.yml'
+permissions:
+  contents: read
+jobs:
+  reference-benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - name: Verify integrated worker and retain logs
+        shell: bash
+        run: |
+          mkdir -p artifacts/motif-reconstruction
+          npm run verify:tesseract-worker 2>&1 | tee artifacts/motif-reconstruction/verification.log
+      - name: Reconstruct and benchmark reference fixtures
+        shell: bash
+        run: npm run benchmark:motif 2>&1 | tee artifacts/motif-reconstruction/benchmark.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: motif-reconstruction-reference
+          path: artifacts/motif-reconstruction/

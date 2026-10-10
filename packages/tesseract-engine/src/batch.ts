@@ -31,9 +31,10 @@ import {evaluateSurfaceLayout,type SurfaceFootprint} from "./garment-surface-mat
 import {productionObjectsFromTopology,assertProductionRelations,placeProductionObjects,type ProductionGlyphObject} from "./production-object";
 import {machineTemplate,assertUsableMachineTemplate,type MachineTemplate} from "./machine-template";
 import {compileProductionObjectsToStitchIr,type StitchIrObject} from "./production-stitch-ir";
+import {planEmbroideryJob,type ManufacturingJobPlan} from "./manufacturing-job-plan";
 
 export type BatchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];constructionIntent?:ConstructionIntent;antiStyle?:WeightedRef[];garment?:GarmentConfiguration;compatibilityRules?:CompatibilityRule[];visualCorpus?:ImageObservation[];medium?:MediumId;learnedConstraints?:LearnedConstraintSnapshot;physicalHistory?:PhysicalValidation[];machineProfileId?:string;population?:number;generations?:number;keep?:number};
-export type ZoneProjection={zoneId:string;kind:GarmentZone["kind"];surface:GarmentZone["surface"];wrap:boolean;behavior:ZoneBehavior;svg:SvgProjection;productionObjects?:ProductionGlyphObject[];stitchObjects?:StitchIrObject[];surfaceMath?:ReturnType<typeof evaluateSurfaceLayout>};
+export type ZoneProjection={zoneId:string;kind:GarmentZone["kind"];surface:GarmentZone["surface"];wrap:boolean;behavior:ZoneBehavior;svg:SvgProjection;productionObjects?:ProductionGlyphObject[];stitchObjects?:StitchIrObject[];manufacturingJob?:ManufacturingJobPlan;surfaceMath?:ReturnType<typeof evaluateSurfaceLayout>};
 export type BatchCandidate={rank:number;score:number;novelty:number;lineageId:string;objectives:ObjectiveVector;trace:string[];genomeId:string;productionObjects?:ProductionGlyphObject[];projection:SvgProjection;zones:ZoneProjection[];continuity:ContinuityEvent[];registration:ContinuitySegment[];trajectories:GarmentTrajectory[];garmentProjection?:GarmentSvg;evolution:EvolutionPlan;visualAssessment?:VisualAssessment;productionAdaptation?:ProductionAdaptation;manufacturability?:ManufacturabilityReport};
 export type BatchResult={seed:string;candidateCount:number;garmentId?:string;machine?:MachineTemplate;configurationIssues:ConfigurationIssue[];constructionEnvelope?:ConstructionEnvelope;candidates:BatchCandidate[];specimenSheet?:SpecimenSheet};
 
@@ -44,6 +45,7 @@ export function runTesseractBatch(input:BatchInput):BatchResult{
  if(issues.some(x=>x.severity==="error"))return {seed:input.seed,candidateCount:0,garmentId:input.garment?.id,configurationIssues:issues,candidates:[]};
  const intent:IntentVector={...input.intent,materialId:input.garment?.material.substrateId??input.intent.materialId};
  const machine=machineTemplate(input.machineProfileId);
+ if(input.machineProfileId&&!machine)throw new Error(`unknown-machine-profile:${input.machineProfileId}`);
  if(machine)assertUsableMachineTemplate(machine);
  const constructionEnvelope=input.medium?deriveConstructionEnvelope(input.garment,input.medium,undefined,input.constructionIntent,machine):undefined;
  const niches=nichesForGarment(input.garment);
@@ -79,7 +81,11 @@ export function runTesseractBatch(input:BatchInput):BatchResult{
    const canvas=zoneCanvas(z),zoneTopology=zoneTopologies[z.id]!,zoneGenome=genomeFromTopology(`${input.seed}:${i}:${z.id}`,zoneTopology);
    let zoneProductionObjects=constructionEnvelope?productionObjectsFromTopology(zoneTopology,constructionEnvelope,{zoneId:z.id,seamPolicy:constructionEnvelope.seamPolicy,wrapAllowed:z.wrapAllowed}):undefined;
    if(zoneProductionObjects)assertProductionRelations(zoneTopology,zoneProductionObjects);
-   const layout=solveRelationalLayout(zoneTopology,canvas.width,canvas.height,zoneGenome.seed,z,{minGapMm:constructionEnvelope?.minGapMm,seamPolicy:constructionEnvelope?.seamPolicy});
+   // Display minimums (160 x 80) must not enlarge physical millimetre coordinates.
+   const physicalPlacement=input.medium==="embroidery"&&!!zoneProductionObjects;
+   const physicalWidth=physicalPlacement?(z.circumferenceMm??z.widthMm??canvas.width):canvas.width;
+   const physicalHeight=physicalPlacement?(z.heightMm??canvas.height):canvas.height;
+   const layout=solveRelationalLayout(zoneTopology,physicalWidth,physicalHeight,zoneGenome.seed,z,{minGapMm:constructionEnvelope?.minGapMm,seamPolicy:constructionEnvelope?.seamPolicy});
    if(zoneProductionObjects)zoneProductionObjects=placeProductionObjects(zoneProductionObjects,layout.points);
    const svg=projectSemanticGeometry(zoneGenome,canvas.width,canvas.height,z,{minGapMm:constructionEnvelope?.minGapMm,seamPolicy:constructionEnvelope?.seamPolicy});
    let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
@@ -92,7 +98,8 @@ export function runTesseractBatch(input:BatchInput):BatchResult{
     surfaceMath=evaluateSurfaceLayout(z,items);
    }
    const stitchObjects=zoneProductionObjects?compileProductionObjectsToStitchIr(zoneProductionObjects):undefined;
-   return {zoneId:z.id,kind:z.kind,surface:z.surface,wrap:z.wrapAllowed,behavior:behaviorForZone(z.kind),svg,productionObjects:zoneProductionObjects,stitchObjects,surfaceMath};
+   const manufacturingJob=input.medium==="embroidery"&&stitchObjects?planEmbroideryJob(stitchObjects,{widthMm:physicalWidth,heightMm:physicalHeight,machine}):undefined;
+   return {zoneId:z.id,kind:z.kind,surface:z.surface,wrap:z.wrapAllowed,behavior:behaviorForZone(z.kind),svg,productionObjects:zoneProductionObjects,stitchObjects,manufacturingJob,surfaceMath};
   });
   const continuity=input.garment?connectGarmentZones(input.garment,zoneTopologies):[];
   const registration=input.garment?planContinuityRegistration(input.garment,continuity):[];
