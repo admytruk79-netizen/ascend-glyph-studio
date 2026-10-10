@@ -2,7 +2,6 @@
 import {writeFileSync,mkdirSync} from "node:fs";
 import {join} from "node:path";
 import {generatePatterns} from "./pattern-generator";
-import {composeCompoundTextileSvg} from "./compound-ornament";
 import {compoundMotifStitchIr,validateCompoundStitchIr} from "./compound-stitch-ir";
 import {compoundIrSvg,compoundColourChart} from "./compound-textile-compiler";
 import {ASCEND_ELEMENTS,FUSION_ROLES,ascendFusionInput,resolveCultureEvidence,type ElementId} from "./ascend-fusion";
@@ -35,14 +34,14 @@ for(const element of Object.keys(ASCEND_ELEMENTS) as ElementId[]){
   const outputs=patterns.map((p,i)=>{
    const file=join(dir,`${element}-${medium}-${i+1}.svg`);
    if(!p.svg.startsWith("<svg")||!p.svg.includes("</svg>"))throw new Error("Invalid SVG from engine");
-   writeFileSync(file,composeCompoundTextileSvg(p.svg,seed+"-"+element+"-"+medium+"-"+i));
+   writeFileSync(file,p.svg);
    return {file,id:p.id,score:p.score,novelty:p.novelty,critique:p.finalCritique,
     productionObjects:p.productionObjects?.length??0,physicalSizeMm:p.physicalSizeMm};
   });
   results.push({element,philosophy:ASCEND_ELEMENTS[element],medium,outputs});
  }
 }
-const report={seed,compoundValidation,engine:"generatePatterns",roles:FUSION_ROLES,evidence,results,
+const report={seed,compoundValidation,engine:"generatePatterns",outputGeometry:"unmodified-generator-svg",compoundSamples:"Separate hand-authored geometry examples; not learned engine output",roles:FUSION_ROLES,evidence,results,
  warnings:["The evidence report shows which cultural identifiers actually exist; unresolved traditions are not represented by verified corpus conditioning.","Print SVG is not a weaving machine file; embroidery SVG requires stitch-plan and machine validation before manufacturing.","ASCEND symbolism is original interpretation, not a traditional cultural attribution."]};
 writeFileSync(join(dir,"report.json"),JSON.stringify(report,null,2));
 console.log(JSON.stringify({seed,evidence,groups:results.map(r=>({element:r.element,medium:r.medium,count:r.outputs.length}))},null,2));
