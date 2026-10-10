@@ -18,6 +18,15 @@ if(!compoundValidation.valid)throw new Error("Compound textile validation failed
 writeFileSync(join(dir,"compound-stitch-ir.json"),JSON.stringify({units:"mm",widthMm:300,heightMm:300,validation:compoundValidation,objects:compoundPlan},null,2));
 writeFileSync(join(dir,"compound-shared-geometry.svg"),compoundIrSvg(compoundPlan,300,300));
 writeFileSync(join(dir,"compound-textile-colour-chart.json"),JSON.stringify(compoundColourChart(compoundPlan,300,300),null,2));
+const kinds={earth:"stepped-medallion",water:"branching-garden",fire:"interlaced-rosette",air:"interlaced-rosette",spirit:"branching-garden"} as const;
+for(const element of Object.keys(ASCEND_ELEMENTS) as ElementId[]){
+ const motif=compoundMotifStitchIr({id:"ascend-"+element,kind:kinds[element],xMm:150,yMm:150,radiusMm:element==="earth"?90:element==="water"?78:element==="fire"?88:element==="air"?72:84});
+ const check=validateCompoundStitchIr(motif,300,300);
+ if(!check.valid)throw new Error(element+" compound geometry invalid: "+check.errors.join("; "));
+ writeFileSync(join(dir,element+"-compound.svg"),compoundIrSvg(motif,300,300));
+ writeFileSync(join(dir,element+"-compound-ir.json"),JSON.stringify({element,validation:check,objects:motif},null,2));
+ writeFileSync(join(dir,element+"-colour-chart.json"),JSON.stringify(compoundColourChart(motif,300,300),null,2));
+}
 for(const element of Object.keys(ASCEND_ELEMENTS) as ElementId[]){
  for(const medium of ["embroidery","print"] as const){
   const input=ascendFusionInput(seed,medium,element);
