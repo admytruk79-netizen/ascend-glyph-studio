@@ -21,6 +21,11 @@ jobs:
           test -s artifacts/tri-culture/compound-stitch-ir.json
           test -s artifacts/tri-culture/compound-shared-geometry.svg
           test -s artifacts/tri-culture/compound-textile-colour-chart.json
+          for element in earth water fire air spirit; do
+            test -s "artifacts/tri-culture/${element}-compound.svg"
+            test -s "artifacts/tri-culture/${element}-compound-ir.json"
+            test -s "artifacts/tri-culture/${element}-colour-chart.json"
+          done
       - uses: actions/upload-artifact@v4
         with:
           name: tri-culture-svg
