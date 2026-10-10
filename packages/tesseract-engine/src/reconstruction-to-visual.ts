@@ -1,0 +1,6 @@
+import type {HierarchicalReconstruction} from "./hierarchical-reconstruction";
+import {reconstructionConditioning} from "./hierarchical-reconstruction";
+import type {VisualGenerationRequest} from "./visual-generator";
+export type ReconstructedVisualRequest=VisualGenerationRequest&{structuralConditioning:ReturnType<typeof reconstructionConditioning>};
+export function applyReconstruction(request:VisualGenerationRequest,reconstruction:HierarchicalReconstruction):ReconstructedVisualRequest{return {...request,structuralConditioning:reconstructionConditioning(reconstruction)};}
+export function ancientCompositionPrompt(r:HierarchicalReconstruction){const c=reconstructionConditioning(r),macro=c.hierarchy.macro.map(x=>x.kind).join(", "),meso=c.hierarchy.meso.map(x=>x.kind).join(", "),micro=c.hierarchy.micro.map(x=>x.kind).join(", ");return ["construct ornament from underlying geometry rather than surface imitation","macro framework: "+(macro||"axis and field"),"compound motifs: "+(meso||"medallions and branching units"),"micro articulation: "+(micro||"material-scale detail"),"symmetry: "+c.symmetry,"operations: "+c.operations.join(", "),"negative space ratio: "+c.negativeSpace.toFixed(2),"preserve ASCEND source glyph geometry; transform placement, scale, orientation and relationships only","create a new composition; do not reproduce a source object"].join("; ");}
