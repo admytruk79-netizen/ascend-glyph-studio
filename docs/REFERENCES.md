@@ -6,15 +6,15 @@ These sites are studied as **product and domain references**. Their content is n
 
 - **Site:** https://vytvory.ua/
 - **What it is:** a customer-facing constructor for embroidered shirts.
-  - 886+ authentic ornaments from 20 local styles in 8 regions of Ukraine.
+  - A regional ornament library; its present size was not independently verified on 9 October 2026.
   - The customer picks ornaments, fabric and size, and the shirt is made to order.
-  - Every choice must belong to one regional tradition, so each shirt is authentic but unique.
+  - The public project description presents regional libraries and custom compositions; enforcement of a single-region selection rule was not verified.
 - **Why it matters:** it's the closest existing product to the ASCEND Glyph Studio customer flow (choose product → choose elements → preview → order).
 
 **How we use it**
 - **Product benchmark:** study the ordering flow, how ornaments are chosen, the fabric and size steps, preview quality and order fulfilment.
 - **Coherence rule:** its "everything stays within one regional style" rule maps to an ASCEND rule. A design stays within one grammar or palette family, and regional character ("Carpathian structure", "Poltava structure") comes from structure learned from our own analysed museum corpus.
-- **Regional taxonomy:** the public fact that there are about 20 local styles in 8 regions can inform how the Ukrainian part of the structure library is grouped. It's filled only with our own corpus data.
+- **Regional taxonomy:** regional attribution can inform how the Ukrainian part of the structure library is grouped; the previously cited style and region counts remain unverified. It's filled only with our own corpus data.
 - **Possible partner:** it already produces custom embroidered shirts to order, so it's a candidate for production knowledge or manufacturing partnership.
 
 **How we don't use it**
@@ -63,3 +63,12 @@ The owner decided that **CC BY-SA** images (mainly Wikimedia Commons) are accept
 - Source, author and licence stay in each design's lineage.
 
 Non-commercial (NC) and no-derivatives (ND) licences still go to review. Set by `COMMONS_ACCEPT_SHAREALIKE=1` in the corpus workflow.
+
+
+## Vytvory approach adopted for ASCEND (2026-10-09)
+
+The owner explicitly requested Vytvory as an approach reference. Its public [homepage](https://vytvory.ua/) and [project description](https://vytvory.ua/uk/about) support a curated-library → coherent-composition → product-configuration approach. The linked interactive constructor exceeded the browsing tool response limit, so its complete behaviour was not tested.
+
+For ASCEND, develop a small author-approved vocabulary from the original drawings, with explicit motif/separator/border roles, compatible scale classes, repeat cells and colourways. Use historical evidence for attributed arrangement rules. Customer controls should select product and placement, author family, coherent layout, colours and bounded repeat/scale variations. Save the exact geometry and specification for review; visual acceptance must remain separate from manufacturing approval.
+
+Start with Seed and Current: the coloured pencil sheet’s nested concave stars above a continuous flowing branch separator. Preserve concavity, extended vertical axis, small warm centre and distinct halo; assess the full repeat and seam at physical cuff and panel scales. Horizon and Orbit (illustration 06) and Root and Peak (illustration 05) follow as separate families. This is the owner’s original style library, not a pooled catalogue of interchangeable historical motifs. It addresses the current generated bands’ scattered, schematic glyph character without merely raising automated scores.
