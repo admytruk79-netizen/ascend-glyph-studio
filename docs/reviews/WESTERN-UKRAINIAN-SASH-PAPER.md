@@ -25,3 +25,11 @@ Our 35/65/87-row grids, strip heights, palette hex values, repeat limits and mil
 The reference is about woven sashes. The app uses its composition hierarchy to create new counted-grid ornament layouts that may later be adapted for embroidery. SVG and fill IR are design geometry; neither is a loom draft. A woven version needs warp/weft structure, float control, yarn and sett. An embroidered version needs digitisation and a physical sew-out.
 
 The CLI exports nine designs: three motif families in one-, three- and five-band arrangements. Tests verify reflected grid rows, subordinate flank scale, coordinate bounds, provenance and agreement between SVG and fill IR. No production-readiness or traditional-authenticity score is assigned.
+
+## Dense-field revision
+
+Following visual feedback that the generated bands were empty, the renderer now fills the chosen artwork extent rather than letterboxing a square-cell grid. Cell width and height are recorded independently; changing repeat count can stretch the cells, so these remain design layouts rather than a measured counted-thread draft.
+
+Boundary-centred miniature diamonds and oblique-cross interiors occupy the interstitial field between principal figures. Subsidiary panels and separator rows are patterned throughout, with no transparent gutters. These are new constructions informed by the relationships described on pp. 1154–1158, not traced historical figures.
+
+The Studio reports ornament-cell coverage separately from ink coverage: a plain black background no longer makes the ornament-density figure look high. Regression checks cover all three families, all supported band counts and low/high repeat settings, verifying full bounds and more than half the cells carrying ornament colour rather than the dark ground.

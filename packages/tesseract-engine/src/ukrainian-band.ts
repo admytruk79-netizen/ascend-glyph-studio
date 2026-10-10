@@ -26,24 +26,26 @@ export function generateUkrainianBand(o:UkrainianBandOptions){
  if(!Number.isInteger(repeats)||repeats<3||repeats>24)throw new Error("Repeat count must be 3–24");
  const colours=o.palette==="red-black"?["#a52c32","#252322","#a52c32","#252322","#f6f0df"]:["#a52c32","#252322","#ddb946","#52664a","#f6f0df"];
  const unit=25,cols=repeats*unit;
- const cell=Math.min(o.widthMm/cols,o.heightMm/rows),x0=(o.widthMm-cols*cell)/2,y0=(o.heightMm-rows*cell)/2;
+ const cellX=o.widthMm/cols,cellY=o.heightMm/rows,cell=Math.min(cellX,cellY),x0=0,y0=0;
  const phase=hash(o.seed)%2;
  const grid:number[][]=Array.from({length:rows},()=>Array(cols).fill(-1));
  for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){
   const u=x%unit,dx=Math.abs(u-12),tile=Math.floor(x/unit);
   const panel=panels.find(p=>y>=p.start&&y<p.start+p.height);
   const edgeRow=Math.min(y,rows-1-y);
-  let ink=-1;
+  let ink=1;
   // Paired, subordinate framing rows. Endpoints share the same periodic unit.
   if(edgeRow===0)ink=1;
   else if(edgeRow===2)ink=dx%4<2?0:1;
   else if(edgeRow===4)ink=(dx+phase)%4<2?3:2;
+  else if(edgeRow===1||edgeRow===3)ink=4;
+  else if(edgeRow===5)ink=dx%2?0:4;
   else if(panel){
    const dy=Math.abs(y-(panel.start+(panel.height-1)/2)),d=dx+dy;
    ink=1;
    if(!panel.primary){
     const miniX=Math.abs(Math.min(u,24-u)-6),radius=(panel.height-1)/2,miniD=miniX+dy;
-    ink=miniD===radius?4:miniD===radius-1?0:miniD<radius-1?((miniX<=1||dy<=1)?((tile+phase)%2?2:0):3):1;
+    ink=miniD===radius?4:miniD===radius-1?0:miniD<radius-1?((miniX<=1||dy<=1)?((tile+phase)%2?2:0):3):((miniX+dy)%3===0?0:1);
    }else{
    if(o.kind==="stepped-cross"){
     if(d===11||d===12)ink=4;
@@ -59,21 +61,37 @@ export function generateUkrainianBand(o:UkrainianBandOptions){
     ink=edge?4:d<9?((dx===dy||dx<=1||dy<=1)?0:((tile+phase)%2?3:2)):1;
     if(d===12)ink=0;
    }
+   // Interstitial diamonds and oblique crosses join the main figures into a field.
+   // The boundary-centred construction is mirrored and periodic across tile seams.
+   if(d>12){
+    const gapX=Math.min(u,24-u),gapD=gapX+dy;
+    ink=gapD===9||gapD===10?4:gapD===7||gapD===8?0:
+      gapD<7?((gapX===dy||gapX<=1||dy<=1)?2:3):
+      ((dx+dy)%3===0?0:1);
+   }else if(ink===1&&d<9){
+    // Secondary nested cells occupy the spaces around the principal cross.
+    ink=(dx+dy)%4===0?4:(dx===dy?2:1);
+   }
    }
   }
-  else if(panels.some(p=>y===p.start-2||y===p.start+p.height+1))ink=1;
+  else {
+   // Fine separator rows are patterned rather than transparent gutters.
+   const separator=panels.some(p=>y===p.start-2||y===p.start+p.height+1);
+   ink=separator?(dx%2?0:4):((dx+edgeRow)%4<2?2:1);
+  }
   grid[y]![x]=ink;
  }
- const objects:StitchIrObject[]=[];let inkCells=0;
+ const objects:StitchIrObject[]=[];let inkCells=0,ornamentCells=0;
  for(let row=0;row<rows;row++)for(let col=0;col<cols;){
   const value=grid[row]![col]!;if(value<0){col++;continue;}
   let end=col+1;while(end<cols&&grid[row]![end]===value)end++;
   if(value!==4)inkCells+=end-col;
-  const x=x0+col*cell,y=y0+row*cell,w=(end-col)*cell;
-  objects.push({kind:"fill",id:`ukrainian:${row}:${col}`,color:colours[value]!,polygon:[{x,y},{x:x+w,y},{x:x+w,y:y+cell},{x,y:y+cell},{x,y}],angle:row%2?0:90,rowSpacing:.43});
+  if(value!==1)ornamentCells+=end-col;
+  const x=x0+col*cellX,y=y0+row*cellY,w=(end-col)*cellX;
+  objects.push({kind:"fill",id:`ukrainian:${row}:${col}`,color:colours[value]!,polygon:[{x,y},{x:x+w,y},{x:x+w,y:y+cellY},{x,y:y+cellY},{x,y}],angle:row%2?0:90,rowSpacing:.43});
   col=end;
  }
- const metadata={version:"ukrainian-band/1",sourceIds:[evidence.source.id],kind:o.kind,seed:o.seed,repeats,bandCount,bands:panels,paperSources:bandCount>1?[{doi:"10.15407/nz2022.05.1147",pages:[1154,1155,1156,1157,1158],use:"composition-hierarchy",dimensions:"implementation-choice"}]:[],cellMm:cell,rows,cols,inkCoverage:inkCells*cell*cell/(o.widthMm*o.heightMm),status:"design-prototype",geometry:"shared-fill-ir",conditioning:"reviewed-Neon-source-grammar",notMachineValidated:true};
+ const metadata={version:"ukrainian-band/2",sourceIds:[evidence.source.id],kind:o.kind,seed:o.seed,repeats,bandCount,bands:panels,paperSources:[{doi:"10.15407/nz2022.05.1147",pages:[1154,1155,1156,1157,1158],use:"composition-hierarchy-and-interstitial-motifs",dimensions:"implementation-choice"}],cellMm:cell,cellSizeMm:{x:cellX,y:cellY},rows,cols,inkCoverage:inkCells/(rows*cols),ornamentCoverage:ornamentCells/(rows*cols),layout:"full-extent-connected-field",status:"design-prototype",geometry:"shared-fill-ir",conditioning:"reviewed-Neon-source-grammar",notMachineValidated:true};
  const svg=compoundIrSvg(objects,o.widthMm,o.heightMm).replace(/<rect[^>]+\/>/,"").replace("><polygon",`><title>Ukrainian source-informed ${o.kind} band</title><desc>New counted-cell design using reviewed Ukrainian embroidery structure. Design prototype.</desc><metadata>${JSON.stringify(metadata)}</metadata><polygon`);
  return {svg,objects,metadata,grid,palette:colours,widthMm:o.widthMm,heightMm:o.heightMm};
 }
