@@ -21,16 +21,19 @@ export function generateUkrainianBotanical(o:BotanicalOptions){
  if(o.palette!==undefined&&!['red-cream','garden-dark'].includes(o.palette))throw Error('Unknown botanical palette');
  const dark=o.palette==='garden-dark',ground=dark?'#202822':'#f6f0df';
  const colours=dark?['#d06b5c','#d9a54c','#879d70','#f4e8c8','#202822']:['#9e2436','#c34c53','#9e2436','#f6f0df','#f6f0df'];
+ const flowerJobs:{x:number;y:number;r:number;draw:()=>void}[]=[],leafJobs:(()=>void)[]=[];
  const objects:StitchIrObject[]=[],variant=hash(o.seed)%6;
  const transform=(p:StitchIrPoint)=>({x:p.x*widthMm/100,y:p.y*heightMm/140});
  function fill(id:string,points:StitchIrPoint[],colour:number){const poly=points.map(transform);poly.push({...poly[0]!});objects.push({id,kind:'fill',color:colours[colour]!,polygon:poly,angle:45,rowSpacing:.43});}
  function line(id:string,points:StitchIrPoint[],colour=0,width=.45){objects.push({id,kind:'satin',color:colours[colour]!,width:width*widthMm/100,path:points.map(transform),spacing:.4});}
  function curve(id:string,a:StitchIrPoint,b:StitchIrPoint,c:StitchIrPoint,d:StitchIrPoint,colour=0,width=.45){const points=[];for(let i=0;i<=32;i++){const t=i/32,u=1-t;points.push({x:u*u*u*a.x+3*u*u*t*b.x+3*u*t*t*c.x+t*t*t*d.x,y:u*u*u*a.y+3*u*u*t*b.y+3*u*t*t*c.y+t*t*t*d.y});}line(id,points,colour,width);return points;}
  function ellipse(id:string,x:number,y:number,rx:number,ry:number,angle:number,colour:number){fill(id,Array.from({length:32},(_,i)=>{const t=i*Math.PI/16,a=rx*Math.cos(t),b=ry*Math.sin(t);return{x:x+a*Math.cos(angle)-b*Math.sin(angle),y:y+a*Math.sin(angle)+b*Math.cos(angle)};}),colour);}
- function leaf(id:string,x:number,y:number,angle:number,size:number){
+ function leaf(id:string,x:number,y:number,angle:number,size:number){leafJobs.push(()=>{if(flowerJobs.some(f=>Math.hypot(x-f.x,y-f.y)<f.r*1.08+size+.6))return;drawLeaf(id,x,y,angle,size);});}
+ function drawLeaf(id:string,x:number,y:number,angle:number,size:number){
   const points=Array.from({length:32},(_,i)=>{const t=i*Math.PI/16,a=size*Math.cos(t),b=size*.38*Math.sin(t)*(1-.25*Math.abs(Math.cos(t)));return{x:x+a*Math.cos(angle)-b*Math.sin(angle),y:y+a*Math.sin(angle)+b*Math.cos(angle)};});fill(id,points,2);line(id+':vein',[{x:x-size*.75*Math.cos(angle),y:y-size*.75*Math.sin(angle)},{x:x+size*.75*Math.cos(angle),y:y+size*.75*Math.sin(angle)}],dark?3:3,.16);
  }
- function flower(id:string,x:number,y:number,r:number,petals:number){
+ function flower(id:string,x:number,y:number,r:number,petals:number){flowerJobs.push({x,y,r,draw:()=>drawFlower(id,x,y,r,petals)});}
+ function drawFlower(id:string,x:number,y:number,r:number,petals:number){
   // Radial petal veins and two offset whorls articulate each blossom.
 
   for(let ring=0;ring<2;ring++)for(let k=0;k<petals;k++){
@@ -105,8 +108,10 @@ export function generateUkrainianBotanical(o:BotanicalOptions){
    line('bird:leg:'+side,[{x,y:y+3},{x,y:y+7},{x:x-side*2,y:y+7}],0,.3);
   }
  }
+ for(const draw of leafJobs)draw();
+ for(const flower of flowerJobs)flower.draw();
  const references=BOTANICAL_REFERENCES.filter(r=>o.kind==='paired-bird-garden'||r.id!=='kro-517');
- const metadata={version:'ukrainian-botanical/1',kind:o.kind,seed:o.seed,branchTiers:tiers,structuralVariant:variant,sourceIds:references.map(r=>r.id),references,bandCount:1,inkCoverage:undefined,status:'design-prototype',geometry:'shared-fill-and-satin-ir',conditioning:'human-reviewed-public-source-structure',notMachineValidated:true,independentlyDrawn:true};
+ const metadata={version:'ukrainian-botanical/2',collisionPolicy:'flower-head-clearance-and-flower-foreground',kind:o.kind,seed:o.seed,branchTiers:tiers,structuralVariant:variant,sourceIds:references.map(r=>r.id),references,bandCount:1,inkCoverage:undefined,status:'design-prototype',geometry:'shared-fill-and-satin-ir',conditioning:'human-reviewed-public-source-structure',notMachineValidated:true,independentlyDrawn:true};
  const svg=compoundIrSvg(objects,widthMm,heightMm).replace('#f6f0df',ground).replace('><rect',`><title>ASCEND ${o.kind}</title><desc>Independently drawn botanical composition; source structure reviewed from public Krovets title images. Not a historical reproduction.</desc><metadata>${JSON.stringify(metadata)}</metadata><rect`);
  return{svg,objects,metadata,widthMm,heightMm,palette:[ground,...colours]};
 }

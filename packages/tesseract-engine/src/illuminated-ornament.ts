@@ -1,6 +1,7 @@
 import type {StitchIrObject,StitchIrPoint as Point} from './production-stitch-ir';
 /** Original illumination-like ornament. Finite branching geometry, not traced motifs. */
 export function illuminatedOrnament(width:number,height:number,dark:boolean,tiers:number,seed:string){
+ const flowers:{x:number;y:number;r:number;draw:()=>void}[]=[],leaves:(()=>void)[]=[];
  const objects:StitchIrObject[]=[],ink=dark?'#d2a455':'#862939',gold=dark?'#d2a455':'#bc8b44',leaf=dark?'#7e9678':'#6a7c60',light=dark?'#eee0b6':'#f6f0df',petal=dark?'#b95862':'#b24b53';
  let hash=0;for(const c of seed)hash=(Math.imul(hash,31)+c.charCodeAt(0))>>>0;
  const pt=(p:Point)=>({x:p.x*width/100,y:p.y*height/140});
@@ -8,7 +9,11 @@ export function illuminatedOrnament(width:number,height:number,dark:boolean,tier
  function fill(id:string,polygon:Point[],color:string){objects.push({kind:'fill',id:'illum:'+id,color,polygon:[...polygon.map(pt),pt(polygon[0]!)],angle:45,rowSpacing:.43});}
  const polar=(x:number,y:number,r:number,a:number):Point=>({x:x+r*Math.cos(a),y:y+r*Math.sin(a)});
  function curve(id:string,a:Point,b:Point,c:Point,d:Point,color=ink,w=.3){const out=[];for(let i=0;i<=40;i++){const t=i/40,u=1-t;out.push({x:u*u*u*a.x+3*u*u*t*b.x+3*u*t*t*c.x+t*t*t*d.x,y:u*u*u*a.y+3*u*u*t*b.y+3*u*t*t*c.y+t*t*t*d.y});}line(id,out,color,w);return out;}
- function leafShape(id:string,x:number,y:number,angle:number,size:number){
+ function leafShape(id:string,x:number,y:number,angle:number,size:number){leaves.push(()=>{
+  if(flowers.some(f=>Math.hypot(x-f.x,y-f.y)<f.r*1.035+size+.6))return;
+  drawLeaf(id,x,y,angle,size);
+ });}
+ function drawLeaf(id:string,x:number,y:number,angle:number,size:number){
   const p:Point[]=[];
   for(let i=0;i<=40;i++){const t=i/40,a=t*Math.PI*2,long=size*Math.cos(a),short=size*.43*Math.sin(a)*(1+.14*Math.cos(a*10));p.push({x:x+long*Math.cos(angle)-short*Math.sin(angle),y:y+long*Math.sin(angle)+short*Math.cos(angle)});}
   fill(id,p,leaf);line(id+':outline',p,ink,.17);
@@ -18,7 +23,8 @@ export function illuminatedOrnament(width:number,height:number,dark:boolean,tier
    line(id+':vein:'+j+':'+side,[{x:cx,y:cy},{x:cx+size*.2*Math.cos(angle)+side*size*.25*Math.cos(angle+Math.PI/2),y:cy+size*.2*Math.sin(angle)+side*size*.25*Math.sin(angle+Math.PI/2)}],light,.09);
   }
  }
- function rosette(id:string,x:number,y:number,r:number,petals:number){
+ function rosette(id:string,x:number,y:number,r:number,petals:number){flowers.push({x,y,r,draw:()=>drawRosette(id,x,y,r,petals)});}
+ function drawRosette(id:string,x:number,y:number,r:number,petals:number){
   // A scalloped outer calyx encloses three scales of individually outlined petals.
   const rim=Array.from({length:petals*8},(_,i)=>{const a=i*Math.PI*2/(petals*8),rr=r*(1+.035*Math.cos(a*petals));return polar(x,y,rr,a);});fill(id+':calyx',rim,ink);
   for(let ring=0;ring<3;ring++){
@@ -71,5 +77,7 @@ export function illuminatedOrnament(width:number,height:number,dark:boolean,tier
  // A scalloped decorated vase, not a solid trapezoid.
  const vase:Point[]=[{x:43,y:119},{x:57,y:119},{x:55,y:123},{x:57,y:126},{x:53,y:131},{x:47,y:131},{x:43,y:126},{x:45,y:123}];fill('vase',vase,ink);line('vase:rim',[{x:43,y:120},{x:57,y:120}],gold,.6);rosette('vase:medallion',50,126,2.4,8);
  for(const side of [-1,1])curve('vase:handle:'+side,{x:50+side*6,y:121},{x:50+side*11,y:120},{x:50+side*11,y:126},{x:50+side*5,y:127},ink,.55);
+ for(const draw of leaves)draw();
+ for(const flower of flowers)flower.draw();
  return objects;
 }

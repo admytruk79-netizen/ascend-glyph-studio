@@ -44,4 +44,15 @@ describe('Penrose substitution and contemporary symbiosis',()=>{
   expect(d.objects.map(o=>o.id)).not.toEqual(lower.objects.map(o=>o.id));
  });
 
+ it('keeps foliage clear of flower heads across branch tiers and palettes',()=>{
+  for(const tiers of [3,4,5] as const)for(const palette of ['red-cream','garden-dark'] as const){
+   const d=generateUkrainianSymbiosis({seed:'clearance',kind:'illuminated-garden',tiers,palette});
+   const norm=(p:{x:number;y:number})=>({x:p.x/d.widthMm*100,y:p.y/d.heightMm*140});
+   const heads=d.objects.filter(o=>o.kind==='fill'&&o.id.endsWith(':calyx')).map(o=>{if(o.kind!=='fill')throw Error();const p=o.polygon.map(norm),xs=p.map(p=>p.x),ys=p.map(p=>p.y);return {x:(Math.min(...xs)+Math.max(...xs))/2,y:(Math.min(...ys)+Math.max(...ys))/2,r:Math.max(Math.max(...xs)-Math.min(...xs),Math.max(...ys)-Math.min(...ys))/2};});
+   const leaves=d.objects.filter(o=>o.kind==='fill'&&o.id.includes('leaf'));
+   expect(leaves.length).toBeGreaterThan(0);
+   for(const leaf of leaves){if(leaf.kind!=='fill')throw Error();for(const p of leaf.polygon.map(norm))for(const head of heads)expect(Math.hypot(p.x-head.x,p.y-head.y)).toBeGreaterThan(head.r);}
+  }
+ });
+
 });

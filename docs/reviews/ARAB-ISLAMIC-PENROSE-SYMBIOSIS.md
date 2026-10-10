@@ -29,3 +29,7 @@ SVGs and geometry plans are design prototypes for print or subsequent embroidery
 The illuminated garden and horned-guardian families replace the simpler botanical geometry with three petal whorls, scalloped calyces, fine petal veins, serrated foliage with spine and lateral veins, forked branches, terminal scrolls, subordinate flowers and a decorated vessel. Two border ribbons alternate explicit overpasses using ordered bridge geometry. The animals gain internal rosettes and contrasted horn ridges. These are contemporary design decisions developed from the separately documented relationships above; no historical illuminated manuscript or additional source object is claimed. The advanced families default to refinement level five (890 half triangles). The classic families remain selectable.
 
 Validation: 80 engine tests pass; engine typecheck and web build pass. Browser checks exercise the new default, guardian selection, palette, branch tiers, refinement, variation, mobile bounds and geometric-band navigation.
+
+## Counted machine exports and source decomposition
+
+The subsequent implementation fixes flower/leaf clearance and supplies visible-surface digitisation, real DST counts, independently checked PES conversions and fourteen manufacturer-referenced model profiles. See [source/model decomposition](SOURCE-AND-PATTERN-DECOMPOSITION.md) and [machine specifications and export limits](MACHINE-COMPATIBILITY-2026-10-10.md). These are sew-out prototypes, not a validated material recipe.

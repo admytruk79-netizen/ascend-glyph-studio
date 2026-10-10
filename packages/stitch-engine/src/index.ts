@@ -11,3 +11,7 @@ export * from "./calibration.js";
 export * from "./production-math.js";
 
 export * from "./production-ir.js";
+
+export * from "./visible-mask.js";
+export * from "./visible-artwork.js";
+export * from "./machine-profiles.js";

@@ -19,6 +19,14 @@ jobs:
       - run: node packages/tesseract-engine/dist/src/ukrainian-band-cli.js
       - run: node packages/tesseract-engine/dist/src/ukrainian-botanical-cli.js
       - run: node packages/tesseract-engine/dist/src/ukrainian-symbiosis-cli.js
+      - run: npm run typecheck --workspace=@ascend/stitch-engine
+      - run: npm test --workspace=@ascend/stitch-engine
+      - run: npx tsx scripts/export-symbiosis-stitches.ts
+      - run: npx tsx scripts/analyze-symbiosis-patterns.ts
+      - run: |
+          python -m venv /tmp/ascend-machine-verifier
+          /tmp/ascend-machine-verifier/bin/pip install pyembroidery==1.5.1
+          /tmp/ascend-machine-verifier/bin/python scripts/verify-machine-exports.py
       - run: |
           test -s artifacts/tri-culture/report.json
           test -s artifacts/tri-culture/compound-stitch-ir.json
@@ -47,3 +55,13 @@ jobs:
         with:
           name: ukrainian-symbiosis
           path: artifacts/ukrainian-symbiosis
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: symbiosis-machine-stitches
+          path: artifacts/symbiosis-stitches
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: symbiosis-layer-analysis
+          path: artifacts/symbiosis-analysis
