@@ -68,7 +68,7 @@ const server=http.createServer(async(req,res)=>{
 });
 server.listen(Number(process.env.PORT||10000),"0.0.0.0",()=>process.stdout.write(JSON.stringify({status:"listening",port:Number(process.env.PORT||10000)})+"\n"));
 
-type Intent={compositionStyle?:"ukrainian-counted-band";bandKind?:"stepped-cross"|"diamond-rosette"|"linked-diamonds";bandRepeats?:number;bandPalette?:"hutsul"|"red-black";concepts?:{id:string;weight:number}[];materialId?:string;recipeId?:string;zoneId?:string;mode?:PatternMode;paletteId?:string;complexity?:number;machineProfileId?:string;physicalWidthMm?:number;physicalHeightMm?:number;constructionIntent?:{targetOccupancy?:number;seamPolicy?:"avoid"|"continuous"|"resolve";maxColors?:number;hierarchyDepth?:number}};
+type Intent={compositionStyle?:"ukrainian-counted-band";bandKind?:"stepped-cross"|"diamond-rosette"|"linked-diamonds";bandRepeats?:number;bandCount?:1|3|5;bandPalette?:"hutsul"|"red-black";concepts?:{id:string;weight:number}[];materialId?:string;recipeId?:string;zoneId?:string;mode?:PatternMode;paletteId?:string;complexity?:number;machineProfileId?:string;physicalWidthMm?:number;physicalHeightMm?:number;constructionIntent?:{targetOccupancy?:number;seamPolicy?:"avoid"|"continuous"|"resolve";maxColors?:number;hierarchyDepth?:number}};
 
 async function claim(){
  const c=await pool.connect();
@@ -259,7 +259,7 @@ async function execute(run:any){
  for(let feedbackPass=0;feedbackPass<3;feedbackPass++){
   const passComplexity=Math.max(.52,baseComplexity-feedbackPass*.07);
   const passSeed=feedbackPass===0?run.seed:run.seed+":feedback:"+feedbackPass;
-  const patterns=generatePatterns({compositionStyle:intent.compositionStyle,bandKind:intent.bandKind,bandRepeats:intent.bandRepeats,bandPalette:intent.bandPalette,seed:passSeed,concepts,paletteId:intent.paletteId,mode,complexity:passComplexity,variations:batchSize,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus,learnedGuidance,structuralFeedback,machineProfileId:intent.machineProfileId,physicalWidthMm:intent.physicalWidthMm,physicalHeightMm:intent.physicalHeightMm,constructionIntent:intent.constructionIntent});
+  const patterns=generatePatterns({compositionStyle:intent.compositionStyle,bandKind:intent.bandKind,bandRepeats:intent.bandRepeats,bandCount:intent.bandCount,bandPalette:intent.bandPalette,seed:passSeed,concepts,paletteId:intent.paletteId,mode,complexity:passComplexity,variations:batchSize,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus,learnedGuidance,structuralFeedback,machineProfileId:intent.machineProfileId,physicalWidthMm:intent.physicalWidthMm,physicalHeightMm:intent.physicalHeightMm,constructionIntent:intent.constructionIntent});
   process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-pass",feedbackPass,patterns:patterns.length,complexity:passComplexity})+"\n");
   let passed=0;
   for(const p of patterns){

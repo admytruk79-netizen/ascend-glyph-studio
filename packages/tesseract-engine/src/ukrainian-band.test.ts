@@ -22,4 +22,16 @@ describe("reviewed Ukrainian counted band",()=>{
   for(const patch of [{widthMm:NaN},{heightMm:0},{repeats:2},{repeats:3.5}])expect(()=>generateUkrainianBand({seed:"x",kind:"stepped-cross",widthMm:250,heightMm:60,...patch})).toThrow();
   expect(()=>generatePatterns({seed:"x",concepts:[],compositionStyle:"ukrainian-counted-band",mode:"field"})).toThrow();
  });
+ it("builds three and five symmetric bands with subordinate paired flanks",()=>{
+  for(const bands of [3,5] as const){
+   const b=generateUkrainianBand({seed:"paper",kind:"linked-diamonds",bands,widthMm:250,heightMm:60});
+   expect(b.metadata.bandCount).toBe(bands);
+   expect(b.metadata.paperSources[0]!.doi).toBe("10.15407/nz2022.05.1147");
+   expect(b.metadata.bands.filter(p=>p.primary)).toHaveLength(1);
+   for(let y=0;y<b.grid.length;y++)expect(b.grid[y]).toEqual(b.grid[b.grid.length-1-y]);
+   const primary=b.metadata.bands.find(p=>p.primary)!;
+   expect(b.metadata.bands.filter(p=>!p.primary).every(p=>p.height<primary.height)).toBe(true);
+   for(const o of b.objects)if(o.kind==="fill")for(const p of o.polygon){expect(p.x).toBeGreaterThanOrEqual(0);expect(p.x).toBeLessThanOrEqual(250.00001);expect(p.y).toBeGreaterThanOrEqual(0);expect(p.y).toBeLessThanOrEqual(60.00001);}
+  }
+ });
 });

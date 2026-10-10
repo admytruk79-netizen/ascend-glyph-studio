@@ -3,6 +3,9 @@ import type {LearnedRelationPrior} from "./learned-relation-prior";
 export type SashEvidenceGrammar={
  id:string;
  source:{authors:string[];title:string;year:number;doi:string};
+ /** Numeric weights below are implementation heuristics, not paper measurements. */
+ parameterStatus?:"implementation-heuristics";
+ evidencePages?:number[];
  partitions:number[];
  centralShare:number;
  flankShare:number;
@@ -24,6 +27,8 @@ export const WESTERN_UKRAINIAN_SASH_GRAMMAR:SashEvidenceGrammar={
   year:2022,
   doi:"10.15407/nz2022.05.1147"
  },
+ parameterStatus:"implementation-heuristics",
+ evidencePages:[1153,1154,1155,1156,1157,1158],
  partitions:[3,5,7],
  centralShare:.48,
  flankShare:.26,

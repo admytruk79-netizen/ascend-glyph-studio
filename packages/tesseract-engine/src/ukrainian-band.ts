@@ -5,7 +5,7 @@ import {compoundIrSvg} from "./compound-textile-compiler";
 export const UKRAINIAN_BAND_SOURCE=evidence;
 export type UkrainianBandKind="stepped-cross"|"diamond-rosette"|"linked-diamonds";
 export const UKRAINIAN_BAND_KINDS:UkrainianBandKind[]=["stepped-cross","diamond-rosette","linked-diamonds"];
-export type UkrainianBandOptions={seed:string;kind:UkrainianBandKind;widthMm:number;heightMm:number;repeats?:number;palette?:"hutsul"|"red-black"};
+export type UkrainianBandOptions={seed:string;kind:UkrainianBandKind;widthMm:number;heightMm:number;repeats?:number;bands?:1|3|5;palette?:"hutsul"|"red-black"};
 const hash=(s:string)=>{let n=2166136261;for(const c of s)n=Math.imul(n^c.charCodeAt(0),16777619);return n>>>0;};
 /** New counted-cell constructions from reviewed source grammar, not traced source motifs.
  * The same fill objects drive preview/export and the design IR. No machine-file claim.
@@ -14,22 +14,37 @@ export function generateUkrainianBand(o:UkrainianBandOptions){
  if(!UKRAINIAN_BAND_KINDS.includes(o.kind))throw new Error("Unknown Ukrainian band family");
  if(!Number.isFinite(o.widthMm)||!Number.isFinite(o.heightMm)||o.widthMm<40||o.widthMm>500||o.heightMm<20||o.heightMm>300)throw new Error("Invalid band dimensions");
  if(o.palette!==undefined&&!['hutsul','red-black'].includes(o.palette))throw new Error("Unknown band palette");
- const repeats=o.repeats??Math.max(3,Math.min(12,Math.round(o.widthMm/(o.heightMm*.72))));
- if(!Number.isInteger(repeats)||repeats<3||repeats>12)throw new Error("Repeat count must be 3–12");
+ const bandCount=o.bands??1;
+ if(![1,3,5].includes(bandCount))throw new Error("Band count must be 1, 3 or 5");
+ // Cell proportions are our construction choices. The paper supports the hierarchy,
+ // not these exact widths. Secondary motifs share the main unit without cropping.
+ const panels=bandCount===1?[{start:6,height:23,primary:true}]:bandCount===3?
+  [{start:6,height:11,primary:false},{start:21,height:23,primary:true},{start:48,height:11,primary:false}]:
+  [{start:6,height:7,primary:false},{start:17,height:11,primary:false},{start:32,height:23,primary:true},{start:59,height:11,primary:false},{start:74,height:7,primary:false}];
+ const rows=bandCount===1?35:bandCount===3?65:87;
+ const repeats=o.repeats??Math.max(3,Math.min(24,Math.round(o.widthMm/o.heightMm*rows/25)));
+ if(!Number.isInteger(repeats)||repeats<3||repeats>24)throw new Error("Repeat count must be 3–24");
  const colours=o.palette==="red-black"?["#a52c32","#252322","#a52c32","#252322","#f6f0df"]:["#a52c32","#252322","#ddb946","#52664a","#f6f0df"];
- const rows=35,unit=25,cols=repeats*unit;
+ const unit=25,cols=repeats*unit;
  const cell=Math.min(o.widthMm/cols,o.heightMm/rows),x0=(o.widthMm-cols*cell)/2,y0=(o.heightMm-rows*cell)/2;
  const phase=hash(o.seed)%2;
  const grid:number[][]=Array.from({length:rows},()=>Array(cols).fill(-1));
  for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){
-  const u=x%unit,dx=Math.abs(u-12),dy=Math.abs(y-17),d=dx+dy,tile=Math.floor(x/unit);
+  const u=x%unit,dx=Math.abs(u-12),tile=Math.floor(x/unit);
+  const panel=panels.find(p=>y>=p.start&&y<p.start+p.height);
+  const edgeRow=Math.min(y,rows-1-y);
   let ink=-1;
   // Paired, subordinate framing rows. Endpoints share the same periodic unit.
-  if(y===0||y===34)ink=1;
-  else if(y===2||y===32)ink=dx%4<2?0:1;
-  else if(y===4||y===30)ink=(dx+phase)%4<2?3:2;
-  else if(y>=6&&y<=28){
+  if(edgeRow===0)ink=1;
+  else if(edgeRow===2)ink=dx%4<2?0:1;
+  else if(edgeRow===4)ink=(dx+phase)%4<2?3:2;
+  else if(panel){
+   const dy=Math.abs(y-(panel.start+(panel.height-1)/2)),d=dx+dy;
    ink=1;
+   if(!panel.primary){
+    const miniX=Math.abs(Math.min(u,24-u)-6),radius=(panel.height-1)/2,miniD=miniX+dy;
+    ink=miniD===radius?4:miniD===radius-1?0:miniD<radius-1?((miniX<=1||dy<=1)?((tile+phase)%2?2:0):3):1;
+   }else{
    if(o.kind==="stepped-cross"){
     if(d===11||d===12)ink=4;
     else if(d===9||d===10)ink=(tile+phase)%2?3:2;
@@ -44,7 +59,9 @@ export function generateUkrainianBand(o:UkrainianBandOptions){
     ink=edge?4:d<9?((dx===dy||dx<=1||dy<=1)?0:((tile+phase)%2?3:2)):1;
     if(d===12)ink=0;
    }
+   }
   }
+  else if(panels.some(p=>y===p.start-2||y===p.start+p.height+1))ink=1;
   grid[y]![x]=ink;
  }
  const objects:StitchIrObject[]=[];let inkCells=0;
@@ -56,7 +73,7 @@ export function generateUkrainianBand(o:UkrainianBandOptions){
   objects.push({kind:"fill",id:`ukrainian:${row}:${col}`,color:colours[value]!,polygon:[{x,y},{x:x+w,y},{x:x+w,y:y+cell},{x,y:y+cell},{x,y}],angle:row%2?0:90,rowSpacing:.43});
   col=end;
  }
- const metadata={version:"ukrainian-band/1",sourceIds:[evidence.source.id],kind:o.kind,seed:o.seed,repeats,cellMm:cell,rows,cols,inkCoverage:inkCells*cell*cell/(o.widthMm*o.heightMm),status:"design-prototype",geometry:"shared-fill-ir",conditioning:"reviewed-Neon-source-grammar",notMachineValidated:true};
+ const metadata={version:"ukrainian-band/1",sourceIds:[evidence.source.id],kind:o.kind,seed:o.seed,repeats,bandCount,bands:panels,paperSources:bandCount>1?[{doi:"10.15407/nz2022.05.1147",pages:[1154,1155,1156,1157,1158],use:"composition-hierarchy",dimensions:"implementation-choice"}]:[],cellMm:cell,rows,cols,inkCoverage:inkCells*cell*cell/(o.widthMm*o.heightMm),status:"design-prototype",geometry:"shared-fill-ir",conditioning:"reviewed-Neon-source-grammar",notMachineValidated:true};
  const svg=compoundIrSvg(objects,o.widthMm,o.heightMm).replace(/<rect[^>]+\/>/,"").replace("><polygon",`><title>Ukrainian source-informed ${o.kind} band</title><desc>New counted-cell design using reviewed Ukrainian embroidery structure. Design prototype.</desc><metadata>${JSON.stringify(metadata)}</metadata><polygon`);
  return {svg,objects,metadata,grid,palette:colours,widthMm:o.widthMm,heightMm:o.heightMm};
 }
