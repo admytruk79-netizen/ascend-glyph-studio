@@ -4,6 +4,7 @@ import {join} from "node:path";
 import {generatePatterns} from "./pattern-generator";
 import {composeCompoundTextileSvg} from "./compound-ornament";
 import {compoundMotifStitchIr,validateCompoundStitchIr} from "./compound-stitch-ir";
+import {compoundIrSvg,compoundColourChart} from "./compound-textile-compiler";
 import {ASCEND_ELEMENTS,FUSION_ROLES,ascendFusionInput,resolveCultureEvidence,type ElementId} from "./ascend-fusion";
 const dir=process.env.TESSERACT_OUTPUT_DIR??"artifacts/tri-culture";
 mkdirSync(dir,{recursive:true});
@@ -15,6 +16,8 @@ const compoundPlan=compoundMotifStitchIr({id:"ascend-focal",kind:"branching-gard
 const compoundValidation=validateCompoundStitchIr(compoundPlan,300,300);
 if(!compoundValidation.valid)throw new Error("Compound textile validation failed: "+compoundValidation.errors.join("; "));
 writeFileSync(join(dir,"compound-stitch-ir.json"),JSON.stringify({units:"mm",widthMm:300,heightMm:300,validation:compoundValidation,objects:compoundPlan},null,2));
+writeFileSync(join(dir,"compound-shared-geometry.svg"),compoundIrSvg(compoundPlan,300,300));
+writeFileSync(join(dir,"compound-textile-colour-chart.json"),JSON.stringify(compoundColourChart(compoundPlan,300,300),null,2));
 for(const element of Object.keys(ASCEND_ELEMENTS) as ElementId[]){
  for(const medium of ["embroidery","print"] as const){
   const input=ascendFusionInput(seed,medium,element);
