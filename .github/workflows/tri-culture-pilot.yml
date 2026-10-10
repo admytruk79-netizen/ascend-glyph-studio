@@ -1,0 +1,20 @@
+name: Tri culture Tesseract pilot
+on:
+  workflow_dispatch:
+  push:
+    branches: [tesseract-staging]
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npm run build --workspace=@ascend/tesseract-engine
+      - run: node packages/tesseract-engine/dist/src/tri-culture-cli.js
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tri-culture-svg
+          path: artifacts/tri-culture
