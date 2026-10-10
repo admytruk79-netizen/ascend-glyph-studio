@@ -2,6 +2,7 @@
 import {writeFileSync,mkdirSync} from "node:fs";
 import {join} from "node:path";
 import {generatePatterns} from "./pattern-generator";
+import {composeCompoundTextileSvg} from "./compound-ornament";
 import {ASCEND_ELEMENTS,FUSION_ROLES,ascendFusionInput,resolveCultureEvidence,type ElementId} from "./ascend-fusion";
 const dir=process.env.TESSERACT_OUTPUT_DIR??"artifacts/tri-culture";
 mkdirSync(dir,{recursive:true});
@@ -17,7 +18,7 @@ for(const element of Object.keys(ASCEND_ELEMENTS) as ElementId[]){
   const outputs=patterns.map((p,i)=>{
    const file=join(dir,`${element}-${medium}-${i+1}.svg`);
    if(!p.svg.startsWith("<svg")||!p.svg.includes("</svg>"))throw new Error("Invalid SVG from engine");
-   writeFileSync(file,p.svg);
+   writeFileSync(file,composeCompoundTextileSvg(p.svg,seed+"-"+element+"-"+medium+"-"+i));
    return {file,id:p.id,score:p.score,novelty:p.novelty,critique:p.finalCritique,
     productionObjects:p.productionObjects?.length??0,physicalSizeMm:p.physicalSizeMm};
   });
