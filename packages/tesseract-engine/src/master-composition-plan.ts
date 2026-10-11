@@ -15,11 +15,14 @@ export function buildMasterCompositionPlan(input:{
  complexity:number;
  sashGrammar?:SashEvidenceGrammar;
  structuralFeedback?:StructuralFeedback;
+ targetOccupancy?:number;
 }):MasterCompositionPlan{
  const {mode,medium,sashGrammar:g,structuralFeedback:fb}=input;
  const sash=!!g&&(mode==="band"||mode==="sleeve"||mode==="cuff"||mode==="collar");
  if(sash){
-  const centerShare=Math.max(.44,Math.min(.68,g.centralShare+(fb?.centralHierarchyBoost??0)*.14));
+  const requested=input.targetOccupancy;
+  const baseShare=requested===undefined?g.centralShare:Math.max(.20,Math.min(.75,requested));
+  const centerShare=Math.max(.20,Math.min(.75,baseShare+(fb?.centralHierarchyBoost??0)*.14));
   const centerY=(1-centerShare)/2,railGap=.028,edge=.018;
   const framing=[
     {id:"rail-top",x1:edge,y1:Math.max(.01,centerY-railGap),x2:1-edge,y2:Math.max(.01,centerY-railGap),opacity:.78},
