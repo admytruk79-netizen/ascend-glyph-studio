@@ -72,8 +72,24 @@ export function evaluateSurfaceLayout(zone:GarmentZone,items:SurfaceFootprint[])
  const area=zoneSurfaceArea(zone),assessments=items.map(x=>assessSurfaceFootprint(zone,x)),pairwise:PairwiseJuxtaposition[]=[];
  for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++)pairwise.push(juxtaposition(zone,items[i]!,items[j]!));
  const used=assessments.reduce((s,x)=>s+x.areaMm2,0);
+ let minU=Infinity,maxU=-Infinity,minV=Infinity,maxV=-Infinity;
+ for(const item of items){
+  const e=halfExtents(item);
+  minU=Math.min(minU,item.u-e.x);maxU=Math.max(maxU,item.u+e.x);
+  minV=Math.min(minV,item.v-e.y);maxV=Math.max(maxV,item.v+e.y);
+ }
+ const layoutWidthMm=items.length?Math.max(0,maxU-minU):0;
+ const layoutHeightMm=items.length?Math.max(0,maxV-minV):0;
+ const layoutAreaMm2=layoutWidthMm*layoutHeightMm;
  return {
-  surfaceAreaMm2:area,usedAreaMm2:used,nominalOccupancy:area>0?used/area:0,
+  surfaceAreaMm2:area,
+  usedAreaMm2:used,
+  nominalOccupancy:area>0?used/area:0,
+  markOccupancy:area>0?used/area:0,
+  layoutAreaMm2,
+  layoutWidthMm,
+  layoutHeightMm,
+  layoutOccupancy:area>0?layoutAreaMm2/area:0,
   seamCrossings:assessments.filter(x=>x.seamCrossing).map(x=>x.id),
   invalidPairs:pairwise.filter(x=>!x.valid),pairwise
  };
