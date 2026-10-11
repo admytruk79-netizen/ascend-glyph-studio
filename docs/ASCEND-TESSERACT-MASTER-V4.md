@@ -319,3 +319,35 @@ The open algorithmic references are:
 - no source code from proprietary embroidery engines is copied.
 
 Wilcom, Ink/Stitch, Brother, CLO and Marvelous Designer remain **behavioral/architectural references** for production objects, stitch-family-specific parameters, garment placement and machine constraints. Their proprietary implementations are not copied.
+
+
+---
+
+## 7. Verified staging benchmark — 11 October 2026
+
+The integrated production-object / octave / machine-constrained staging build was benchmarked on commit `22d8da42a6ce7fb17596f5b345d5517a9043d39b` using the verified 3.7 reference seed and intent.
+
+Run: `4805e849-f558-4caa-805f-6423d2aefa0a`
+
+Results:
+- 12 / 12 candidates survived the raster critic;
+- average raster quality: 0.867;
+- average clutter: 0.064;
+- zero raster tangles;
+- zero excessive repetition failures;
+- zero weak-focal-hierarchy failures;
+- zero flat-composition failures.
+
+The top candidate compiled through the real production IR using the Tajima TMBP2-SC reference machine profile and the linen 180 GSM reference recipe:
+- compiled stitches: 1,117;
+- planning estimate: 820 stitches;
+- estimated machine time: 3.93 minutes;
+- machine/hoop fit: pass;
+- stitch length: pass;
+- density: pass;
+- minimum gap: pass;
+- stitch/time budgets: pass.
+
+The only fail-closed blocker is `recipe-validated`: the linen recipe has not yet been promoted by a physical sew-out. Therefore the build is **digitally production-valid but not physically production-approved**.
+
+The staging benchmark workflow now also exports the winning candidate as a machine-specific production pack containing DST, stitch preview SVG, run sheet, and machine/material manifest.
