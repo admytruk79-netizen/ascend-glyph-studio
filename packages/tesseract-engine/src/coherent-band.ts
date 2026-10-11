@@ -59,7 +59,10 @@ export function renderCoherentBand(topology:Topology,options:BandOptions={}):Ban
   return `<g data-motif="${escapeXml(motif.form)}" data-source="${escapeXml(motif.id)}" data-position="${i}" transform="translate(${x} ${yy}) scale(${s}) rotate(${angle} 50 50)">${paths}</g>`;
  }).join("");
  const margin=number(height*.10),guideY=number(y);
- const spine=`<path data-role="continuous-spine" d="M ${margin} ${guideY} H ${number(width-margin)}" stroke-opacity=".25"/>`;
+ const gapLeft=number((Math.floor(n/2))*pitch),gapRight=number((Math.floor(n/2)+1)*pitch);
+ const spine=grammar==="passage"
+  ?`<path data-role="interrupted-spine" d="M ${margin} ${guideY} H ${gapLeft} M ${gapRight} ${guideY} H ${number(width-margin)}" stroke-opacity=".25"/>`
+  :`<path data-role="continuous-spine" d="M ${margin} ${guideY} H ${number(width-margin)}" stroke-opacity=".25"/>`;
  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${number(width)} ${number(height)}" data-renderer="coherent-band-v1" data-grammar="${grammar}" data-seed="${seed}"><g fill="none" stroke="currentColor" stroke-width="${number(strokes)}" stroke-linecap="round" stroke-linejoin="round">${spine}${rows}</g></svg>`;
  return {svg,grammar,motifCount:indices.filter(i=>i>=0).length,warnings};
 }
