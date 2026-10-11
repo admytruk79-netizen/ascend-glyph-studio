@@ -27,6 +27,21 @@ export function zoneSurfaceArea(zone:GarmentZone):number{
  return Math.PI*(r0+r1)*slant;
 }
 
+function zoneSurfaceAreaBetween(zone:GarmentZone,v0:number,v1:number):number{
+ const H=Math.max(0,zone.heightMm??0);
+ if(!(H>0))return 0;
+ const a=Math.max(0,Math.min(H,Math.min(v0,v1))),b=Math.max(0,Math.min(H,Math.max(v0,v1)));
+ if(!(b>a))return 0;
+ if(zone.surface==="flat"){
+  const w=zone.widthMm??zone.circumferenceMm??0;
+  return Math.max(0,w)*(b-a);
+ }
+ const c0=circumferenceAt(zone,a),c1=circumferenceAt(zone,b);
+ const r0=c0/(2*Math.PI),r1=c1/(2*Math.PI);
+ const slant=Math.hypot(b-a,r1-r0);
+ return Math.PI*(r0+r1)*slant;
+}
+
 function periodicDelta(a:number,b:number,C:number):number{
  const d=Math.abs(a-b)%C;
  return Math.min(d,C-d);
@@ -85,7 +100,12 @@ export function evaluateSurfaceLayout(zone:GarmentZone,items:SurfaceFootprint[],
  }
  const layoutWidthMm=items.length?Math.max(0,maxU-minU):0;
  const layoutHeightMm=items.length?Math.max(0,maxV-minV):0;
- const layoutAreaMm2=layoutWidthMm*layoutHeightMm;
+ let layoutAreaMm2=layoutWidthMm*layoutHeightMm;
+ if(items.length&&zone.surface!=="flat"){
+  const midV=(minV+maxV)/2,C=circumferenceAt(zone,midV);
+  const circumferentialFraction=Math.max(0,Math.min(1,layoutWidthMm/Math.max(1,C)));
+  layoutAreaMm2=zoneSurfaceAreaBetween(zone,minV,maxV)*circumferentialFraction;
+ }
  return {
   surfaceAreaMm2:area,
   usedAreaMm2:used,
