@@ -255,7 +255,12 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   }
  })).sort((a,b)=>b.score-a.score);
  if(!rendered.length)throw new Error(`pattern-no-manufacturable-candidates mode=${mode} searched=${renderCandidates.length} failures=${candidateFailures.slice(0,12).join("|")}`);
- const survivors=rendered.filter(x=>x.finalCritique.survive);
- const pool=survivors.length>=Math.min(4,variations)?survivors:rendered;
+ // Compact variants are recovery fallbacks, not peers. A compact 3-node
+ // construction must never outrank a valid full octave merely because its
+ // simplified final-critic score is numerically higher.
+ const fullRendered=rendered.filter(x=>!x.id.endsWith("-compact"));
+ const eligible=fullRendered.length>=variations?fullRendered:rendered;
+ const survivors=eligible.filter(x=>x.finalCritique.survive);
+ const pool=survivors.length>=Math.min(4,variations)?survivors:eligible;
  return selectVisuallyDiverse(pool,variations,.11);
 }
