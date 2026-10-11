@@ -84,6 +84,18 @@ export function motifFamilyForConcept(concept:string):MotifFamily{
    ?? families[hash(c)%families.length]!;
 }
 
+function relationForTransform(t:MotifTransform,base:string,index:number):string{
+ if(t==="nest")return "nest";
+ if(t==="mirror")return "mirror";
+ if(t==="rotate")return "orbit";
+ if(t==="alternate")return index%2?"oppose":"repeat";
+ if(t==="interrupt")return index===0?base:"terminate";
+ if(t==="enclose")return "enclose";
+ if(t==="branch")return "branch";
+ if(t==="repeat")return "repeat";
+ return base;
+}
+
 function chooseTransform(f:MotifFamily,seed:string,index:number,g?:SashEvidenceGrammar):MotifTransform{
  const options=[...f.transforms];
  if(g){
@@ -121,6 +133,7 @@ export function applyMotifGrammar(
   const desired=complexity>.72?family.primitives.length:Math.min(2,family.primitives.length);
   const remaining=Math.max(1,maxNodes-nodes.length-(topology.nodes.length-index-1));
   const count=Math.max(1,Math.min(desired,remaining));
+  const transform=chooseTransform(family,seed,index,options.sashGrammar);
   const ids:string[]=[];
   for(let j=0;j<count;j++){
     const form=family.primitives[j]!;
@@ -132,15 +145,17 @@ export function applyMotifGrammar(
       form,
       scale:Math.max(.5,source.scale*(family.scaleProfile[j]??.6))
     });
-    if(j>0)edges.push({
-      from:ids[j-1]!,to:id,
-      relation:family.relations[j-1]??"flow",
-      weight:Math.max(.4,.86-j*.12)
-    });
+    if(j>0){
+      const baseRelation=family.relations[j-1]??"flow";
+      edges.push({
+        from:ids[j-1]!,to:id,
+        relation:relationForTransform(transform,baseRelation,j-1),
+        weight:Math.max(.4,.86-j*.12)
+      });
+    }
   }
   rootByOriginal.set(source.id,ids[0]!);
   terminalByOriginal.set(source.id,ids.at(-1)!);
-  const transform=chooseTransform(family,seed,index,options.sashGrammar);
   instances.push({id:`motif:${source.id}`,familyId:family.id,conceptId:source.conceptId,nodeIds:ids,transform,scale:source.scale});
  }
 
