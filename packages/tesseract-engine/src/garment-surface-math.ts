@@ -68,9 +68,14 @@ export function juxtaposition(zone:GarmentZone,a:SurfaceFootprint,b:SurfaceFootp
  return {a:a.id,b:b.id,centerDistanceMm:d,requiredClearanceMm:req,valid,overlapRisk};
 }
 
-export function evaluateSurfaceLayout(zone:GarmentZone,items:SurfaceFootprint[]){
+export function evaluateSurfaceLayout(zone:GarmentZone,items:SurfaceFootprint[],options?:{allowedOverlapPairs?:Iterable<string>}){
  const area=zoneSurfaceArea(zone),assessments=items.map(x=>assessSurfaceFootprint(zone,x)),pairwise:PairwiseJuxtaposition[]=[];
- for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++)pairwise.push(juxtaposition(zone,items[i]!,items[j]!));
+ const allowed=new Set(options?.allowedOverlapPairs??[]);
+ const pairKey=(a:string,b:string)=>a<b?`${a}|${b}`:`${b}|${a}`;
+ for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++){
+  const q=juxtaposition(zone,items[i]!,items[j]!);
+  pairwise.push(allowed.has(pairKey(q.a,q.b))?{...q,valid:true,overlapRisk:0}:q);
+ }
  const used=assessments.reduce((s,x)=>s+x.areaMm2,0);
  let minU=Infinity,maxU=-Infinity,minV=Infinity,maxV=-Infinity;
  for(const item of items){
