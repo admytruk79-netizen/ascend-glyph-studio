@@ -51,3 +51,11 @@ jobs:
         run: npx tsx scripts/assert-staging-production-metadata.mts "${{ steps.create.outputs.run_id }}"
       - name: Enforce 3.7 visual baseline
         run: npx tsx scripts/assert-tesseract-regression.mts "${{ steps.create.outputs.run_id }}"
+      - name: Export top production pack
+        run: npx tsx scripts/export-staging-production-pack.mts "${{ steps.create.outputs.run_id }}" 0 out/staging-production-pack
+      - name: Upload top production pack
+        uses: actions/upload-artifact@v4
+        with:
+          name: tesseract-staging-production-pack
+          path: out/staging-production-pack
+          if-no-files-found: error
