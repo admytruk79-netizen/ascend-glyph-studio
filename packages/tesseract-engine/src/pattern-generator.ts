@@ -1,4 +1,5 @@
 import {searchDesignSpace} from "./search";
+import {renderCoherentBand,type BandGrammar} from "./coherent-band";
 import {genomeFromTopology} from "./genome";
 import {projectSemanticGeometry} from "./semantic-projector";
 import {ASCEND_PALETTES,ASCEND_COLORS} from "./color-system";
@@ -40,6 +41,7 @@ export type PatternGeneratorInput={
  constructionIntent?:ConstructionIntent;
  physicalWidthMm?:number;
  physicalHeightMm?:number;
+ conceptBandGrammar?:BandGrammar;
 };
 export type GeneratedPattern={
  id:string;lineageId:string;score:number;novelty:number;svg:string;
@@ -229,7 +231,10 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const g=genomeFromTopology(`pattern:${input.seed}:${i}`,adapted.topology);
   const relationStride=medium==="embroidery"?((input.structuralFeedback?.crossingReduction??0)>.5?0:3):1;
   const projected=projectSemanticGeometry(g,width,height,zone,{relationStride,minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy});
-  const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`,sashGrammar,structuralFeedback:input.structuralFeedback});
+  const conceptFoundation=(mode==="band"&&input.conceptBandGrammar)
+   ?renderCoherentBand(adapted.topology,{width,height,seed:i+input.seed.length,grammar:input.conceptBandGrammar}).svg
+   :projected.svg;
+  const master=compileMasterComposition({svg:conceptFoundation,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`,sashGrammar,structuralFeedback:input.structuralFeedback});
   const conceptSvg=colorize(master,input.paletteId??"underdog-heritage");
   const svg=stitchIrToSvg(stitchObjects,physicalSize.width,physicalSize.height);
   const finalCritique=critiqueFinalSvg(conceptSvg,medium,input.visualCorpus??[]);
