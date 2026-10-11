@@ -2,6 +2,8 @@ import {primitiveForForm} from "./ascend-primitives";
 import type {PrimitiveGeometry} from "./ascend-primitives";
 import type {ProductionGlyphObject} from "./production-object";
 import type {MasterCompositionPlan} from "./master-composition-plan";
+import type {GarmentZone} from "./garment";
+import {circumferenceAt} from "./garment-surface-math";
 
 export type StitchIrPoint={x:number;y:number};
 export type StitchIrObject=
@@ -111,20 +113,31 @@ export function applyMasterCompositionToStitchIr(
  widthMm:number,
  heightMm:number,
  color="#111111",
- options:{applyPrimaryTransform?:boolean}={}
+ options:{applyPrimaryTransform?:boolean;surfaceZone?:GarmentZone;seamPolicy?:"avoid"|"continuous"|"resolve";seamGapMm?:number}={}
 ):StitchIrObject[]{
  const p=plan.primary,applyPrimary=options.applyPrimaryTransform??true;
+ const surfaceZone=options.surfaceZone;
  const mapPoint=(q:StitchIrPoint):StitchIrPoint=>applyPrimary?({
   x:p.offsetX*widthMm+q.x*p.scaleX,
   y:p.offsetY*heightMm+q.y*p.scaleY
  }):q;
+ const mapAuxPoint=(x01:number,y01:number):StitchIrPoint=>{
+  const y=y01*heightMm;
+  const C=surfaceZone?.wrapAllowed?circumferenceAt(surfaceZone,y):widthMm;
+  let x=x01*C;
+  if(surfaceZone?.wrapAllowed&&options.seamPolicy==="avoid"){
+   const gap=Math.max(options.seamGapMm??0,0);
+   x=Math.max(gap,Math.min(C-gap,x));
+  }
+  return {x,y};
+ };
  const primary=objects.map(o=>{
   if(o.kind==="fill")return {...o,polygon:o.polygon.map(mapPoint)};
   return {...o,path:o.path.map(mapPoint)};
  });
  const auxiliary:StitchIrObject[]=plan.auxiliaryLines.map(x=>({
   kind:"run" as const,id:`composition:${x.id}`,color,
-  path:[{x:x.x1*widthMm,y:x.y1*heightMm},{x:x.x2*widthMm,y:x.y2*heightMm}],
+  path:[mapAuxPoint(x.x1,x.y1),mapAuxPoint(x.x2,x.y2)],
   length:2.5
  }));
  return [...primary,...auxiliary];
