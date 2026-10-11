@@ -14,6 +14,16 @@ on:
       - "scripts/assert-tesseract-regression.mts"
       - "scripts/assert-staging-production-metadata.mts"
       - ".github/workflows/tesseract-staging-benchmark.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "packages/tesseract-engine/**"
+      - "packages/stitch-engine/**"
+      - "scripts/run-tesseract-worker.ts"
+      - "scripts/create-staging-benchmark-run.mts"
+      - "scripts/assert-tesseract-regression.mts"
+      - "scripts/assert-staging-production-metadata.mts"
+      - ".github/workflows/tesseract-staging-benchmark.yml"
 permissions:
   contents: read
 concurrency:
