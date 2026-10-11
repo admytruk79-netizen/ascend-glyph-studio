@@ -50,20 +50,46 @@ export function assessSurfaceFootprint(zone:GarmentZone,f:SurfaceFootprint){
  };
 }
 
+function halfExtents(f:SurfaceFootprint){
+ const a=((f.rotationDeg??0)*Math.PI)/180,c=Math.abs(Math.cos(a)),s=Math.abs(Math.sin(a));
+ return {x:c*f.widthMm/2+s*f.heightMm/2,y:s*f.widthMm/2+c*f.heightMm/2};
+}
 export function juxtaposition(zone:GarmentZone,a:SurfaceFootprint,b:SurfaceFootprint):PairwiseJuxtaposition{
- const d=wrappedCenterDistance(zone,a,b);
- const ra=.5*Math.hypot(a.widthMm,a.heightMm)+(a.clearanceMm??0);
- const rb=.5*Math.hypot(b.widthMm,b.heightMm)+(b.clearanceMm??0);
- const req=ra+rb;
- return {a:a.id,b:b.id,centerDistanceMm:d,requiredClearanceMm:req,valid:d>=req,overlapRisk:req>0?Math.max(0,Math.min(1,(req-d)/req)):0};
+ const C=circumferenceAt(zone,(a.v+b.v)/2);
+ const dx=periodicDelta(a.u,b.u,C),dy=Math.abs(a.v-b.v);
+ const ea=halfExtents(a),eb=halfExtents(b),gap=Math.max(a.clearanceMm??0,b.clearanceMm??0);
+ const reqX=ea.x+eb.x+gap,reqY=ea.y+eb.y+gap;
+ // Two rectangles are clear if separated on either axis. This avoids treating a
+ // long thin rail as a giant circular obstacle while remaining conservative for rotation.
+ const valid=dx>=reqX||dy>=reqY;
+ const overlapX=Math.max(0,reqX-dx)/(reqX||1),overlapY=Math.max(0,reqY-dy)/(reqY||1);
+ const overlapRisk=valid?0:Math.max(0,Math.min(1,Math.min(overlapX,overlapY)));
+ const d=Math.hypot(dx,dy),req=Math.hypot(reqX,reqY);
+ return {a:a.id,b:b.id,centerDistanceMm:d,requiredClearanceMm:req,valid,overlapRisk};
 }
 
 export function evaluateSurfaceLayout(zone:GarmentZone,items:SurfaceFootprint[]){
  const area=zoneSurfaceArea(zone),assessments=items.map(x=>assessSurfaceFootprint(zone,x)),pairwise:PairwiseJuxtaposition[]=[];
  for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++)pairwise.push(juxtaposition(zone,items[i]!,items[j]!));
  const used=assessments.reduce((s,x)=>s+x.areaMm2,0);
+ let minU=Infinity,maxU=-Infinity,minV=Infinity,maxV=-Infinity;
+ for(const item of items){
+  const e=halfExtents(item);
+  minU=Math.min(minU,item.u-e.x);maxU=Math.max(maxU,item.u+e.x);
+  minV=Math.min(minV,item.v-e.y);maxV=Math.max(maxV,item.v+e.y);
+ }
+ const layoutWidthMm=items.length?Math.max(0,maxU-minU):0;
+ const layoutHeightMm=items.length?Math.max(0,maxV-minV):0;
+ const layoutAreaMm2=layoutWidthMm*layoutHeightMm;
  return {
-  surfaceAreaMm2:area,usedAreaMm2:used,nominalOccupancy:area>0?used/area:0,
+  surfaceAreaMm2:area,
+  usedAreaMm2:used,
+  nominalOccupancy:area>0?used/area:0,
+  markOccupancy:area>0?used/area:0,
+  layoutAreaMm2,
+  layoutWidthMm,
+  layoutHeightMm,
+  layoutOccupancy:area>0?layoutAreaMm2/area:0,
   seamCrossings:assessments.filter(x=>x.seamCrossing).map(x=>x.id),
   invalidPairs:pairwise.filter(x=>!x.valid),pairwise
  };
