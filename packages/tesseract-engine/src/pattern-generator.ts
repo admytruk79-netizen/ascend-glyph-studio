@@ -21,7 +21,7 @@ import {productionObjectsFromTopology,assertProductionRelations,placeProductionO
 import {compileProductionObjectsToStitchIr,applyMasterCompositionToStitchIr,stitchIrFootprints,type StitchIrObject} from "./production-stitch-ir";
 import {solveRelationalLayout} from "./relational-layout";
 import {refineOrnamentalLayout} from "./ornament-optimizer";
-import {evaluateSurfaceLayout,type SurfaceFootprint} from "./garment-surface-math";
+import {evaluateSurfaceLayout,circumferenceAt,type SurfaceFootprint} from "./garment-surface-math";
 import {buildMasterCompositionPlan} from "./master-composition-plan";
 import {stitchIrToSvg} from "./canonical-preview";
 import {optimizeStitchTravel} from "./stitch-travel-optimizer";
@@ -213,17 +213,39 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const adapted=adaptForProduction(enriched,medium,niche);
   let productionObjects=productionObjectsFromTopology(adapted.topology,constructionEnvelope,{zoneId:productionZone.id,seamPolicy:constructionEnvelope.seamPolicy,wrapAllowed:productionZone.wrapAllowed});
   assertProductionRelations(adapted.topology,productionObjects);
-  const footprintById=Object.fromEntries(productionObjects.map(o=>[o.id,{widthMm:o.physical.widthMm,heightMm:o.physical.heightMm,clearanceMm:o.physical.clearanceMm}]));
-  const initialLayout=solveRelationalLayout(adapted.topology,physicalSize.width,physicalSize.height,`${input.seed}:physical:${i}:${compact}`,productionZone,{
-   minGapMm:constructionEnvelope.minGapMm,
-   seamPolicy:constructionEnvelope.seamPolicy,
-   footprintById
-  });
-  const physicalLayout=refineOrnamentalLayout(adapted.topology,initialLayout,physicalSize.width,physicalSize.height,`${input.seed}:ornament:${i}:${compact}`,productionZone,{minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy,symmetry:mode==="emblem"?"mirror-y":"none",physicalFootprints:Object.fromEntries(productionObjects.map(o=>[o.id,{widthMm:o.physical.widthMm,heightMm:o.physical.heightMm,originalScale:initialLayout.points[o.id]?.scale??1}]))});
-  productionObjects=placeProductionObjects(productionObjects,physicalLayout.points,initialLayout.points);
-  const baseStitchObjects=compileProductionObjectsToStitchIr(productionObjects);
   const compositionPlan=buildMasterCompositionPlan({mode,medium,complexity,sashGrammar,structuralFeedback:input.structuralFeedback,targetOccupancy:constructionEnvelope.targetOccupancy});
+  const sashMode=mode==="band"||mode==="sleeve"||mode==="cuff"||mode==="collar";
+  const footprintById=Object.fromEntries(productionObjects.map(o=>[o.id,{widthMm:o.physical.widthMm,heightMm:o.physical.heightMm,clearanceMm:o.physical.clearanceMm}]));
+  let baseStitchObjects:StitchIrObject[];
+  if(sashMode){
+   // Solve directly in the final framed band. On tapered sleeves this means X
+   // is constrained against the circumference at the SAME final Y where the
+   // object will be stitched, so no later transform can move it across a seam.
+   const bandY=compositionPlan.primary.offsetY*physicalSize.height;
+   const bandHeight=Math.max(20,compositionPlan.primary.scaleY*physicalSize.height);
+   const layoutZone:GarmentZone=productionZone.surface==="tapered-cylinder"
+    ?{...productionZone,heightMm:bandHeight,circumferenceMm:circumferenceAt(productionZone,bandY),circumferenceEndMm:circumferenceAt(productionZone,bandY+bandHeight)}
+    :{...productionZone,heightMm:bandHeight};
+   const localLayout=solveRelationalLayout(adapted.topology,physicalSize.width,bandHeight,`${input.seed}:physical:${i}:${compact}`,layoutZone,{
+    minGapMm:constructionEnvelope.minGapMm,
+    seamPolicy:constructionEnvelope.seamPolicy,
+    footprintById
+   });
+   const finalPoints=Object.fromEntries(Object.entries(localLayout.points).map(([id,p])=>[id,{...p,y:p.y+bandY}]));
+   productionObjects=placeProductionObjects(productionObjects,finalPoints);
+   baseStitchObjects=compileProductionObjectsToStitchIr(productionObjects);
+  }else{
+   const initialLayout=solveRelationalLayout(adapted.topology,physicalSize.width,physicalSize.height,`${input.seed}:physical:${i}:${compact}`,productionZone,{
+    minGapMm:constructionEnvelope.minGapMm,
+    seamPolicy:constructionEnvelope.seamPolicy,
+    footprintById
+   });
+   const physicalLayout=refineOrnamentalLayout(adapted.topology,initialLayout,physicalSize.width,physicalSize.height,`${input.seed}:ornament:${i}:${compact}`,productionZone,{minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy,symmetry:mode==="emblem"?"mirror-y":"none",physicalFootprints:Object.fromEntries(productionObjects.map(o=>[o.id,{widthMm:o.physical.widthMm,heightMm:o.physical.heightMm,originalScale:initialLayout.points[o.id]?.scale??1}]))});
+   productionObjects=placeProductionObjects(productionObjects,physicalLayout.points,initialLayout.points);
+   baseStitchObjects=compileProductionObjectsToStitchIr(productionObjects);
+  }
   const stitchObjects=optimizeStitchTravel(applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height,"#111111",{
+   applyPrimaryTransform:!sashMode,
    surfaceZone:productionZone,
    seamPolicy:constructionEnvelope.seamPolicy,
    seamGapMm:constructionEnvelope.minGapMm
