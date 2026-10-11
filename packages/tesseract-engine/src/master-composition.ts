@@ -4,7 +4,7 @@ import type {StructuralFeedback} from "./structural-feedback";
 import {buildMasterCompositionPlan} from "./master-composition-plan";
 
 export type MasterCompositionMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
-export type MasterCompositionInput={svg:string;mode:MasterCompositionMode;complexity:number;medium:MediumId;width:number;height:number;seed:string;sashGrammar?:SashEvidenceGrammar;structuralFeedback?:StructuralFeedback};
+export type MasterCompositionInput={svg:string;mode:MasterCompositionMode;complexity:number;medium:MediumId;width:number;height:number;seed:string;sashGrammar?:SashEvidenceGrammar;structuralFeedback?:StructuralFeedback;targetOccupancy?:number};
 
 const hash=(s:string)=>{let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
 const unit=(n:number,min:number,max:number)=>min+(n/0xffffffff)*(max-min);
