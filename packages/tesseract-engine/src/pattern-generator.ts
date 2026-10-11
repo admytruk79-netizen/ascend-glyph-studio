@@ -233,7 +233,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   });
   const octave=grammarComplexity(enriched);
   const adapted=adaptForProduction(enriched,medium,niche);
-  const compositionPlan=buildMasterCompositionPlan({mode,medium,complexity,sashGrammar,structuralFeedback:input.structuralFeedback});
+  const compositionPlan=buildMasterCompositionPlan({mode,medium,complexity,sashGrammar,structuralFeedback:input.structuralFeedback,targetOccupancy:constructionEnvelope.targetOccupancy});
   const bandY=compositionPlan.primary.offsetY*physicalSize.height;
   const bandHeight=Math.max(20,compositionPlan.primary.scaleY*physicalSize.height);
   const layoutZone:GarmentZone=productionZone.surface==="tapered-cylinder"
@@ -241,11 +241,21 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
    :{...productionZone,heightMm:bandHeight};
   let productionObjects=productionObjectsFromTopology(adapted.topology,constructionEnvelope,{zoneId:productionZone.id,seamPolicy:constructionEnvelope.seamPolicy,wrapAllowed:productionZone.wrapAllowed});
   assertProductionRelations(adapted.topology,productionObjects);
-  const localLayout=solveRelationalLayout(adapted.topology,physicalSize.width,bandHeight,`${input.seed}:physical:${i}`,layoutZone,{minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy});
+  const footprintById=Object.fromEntries(productionObjects.map(o=>[o.id,{widthMm:o.physical.widthMm,heightMm:o.physical.heightMm,clearanceMm:o.physical.clearanceMm}]));
+  const localLayout=solveRelationalLayout(adapted.topology,physicalSize.width,bandHeight,`${input.seed}:physical:${i}`,layoutZone,{
+   minGapMm:constructionEnvelope.minGapMm,
+   seamPolicy:constructionEnvelope.seamPolicy,
+   footprintById
+  });
   const finalPoints=Object.fromEntries(Object.entries(localLayout.points).map(([id,p])=>[id,{...p,y:p.y+bandY}]));
   productionObjects=placeProductionObjects(productionObjects,finalPoints);
   const baseStitchObjects=compileProductionObjectsToStitchIr(productionObjects);
-  const stitchObjects=applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height,"#111111",{applyPrimaryTransform:false});
+  const stitchObjects=applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height,"#111111",{
+   applyPrimaryTransform:false,
+   surfaceZone:productionZone,
+   seamPolicy:constructionEnvelope.seamPolicy,
+   seamGapMm:constructionEnvelope.minGapMm
+  });
   let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
   if(productionZone.wrapAllowed&&(productionZone.surface==="cylinder"||productionZone.surface==="tapered-cylinder")){
    const items:SurfaceFootprint[]=stitchIrFootprints(stitchObjects,constructionEnvelope.minGapMm);
@@ -254,7 +264,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const g=genomeFromTopology(`pattern:${input.seed}:${i}`,adapted.topology);
   const relationStride=medium==="embroidery"?((input.structuralFeedback?.crossingReduction??0)>.5?0:3):1;
   const projected=projectSemanticGeometry(g,width,height,zone,{relationStride,minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy});
-  const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`,sashGrammar,structuralFeedback:input.structuralFeedback});
+  const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`,sashGrammar,structuralFeedback:input.structuralFeedback,targetOccupancy:constructionEnvelope.targetOccupancy});
   const svg=colorize(master,input.paletteId??"underdog-heritage");
   const finalCritique=critiqueFinalSvg(svg,medium,trustedVisualCorpus);
   const combinedScore=candidate.score+finalCritique.score*.45;
