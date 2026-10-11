@@ -18,7 +18,7 @@ import {deriveZoneConstructionEnvelope,type ConstructionIntent} from "./construc
 import {machineTemplate,assertUsableMachineTemplate} from "./machine-template";
 import {expandRecursiveGrammar,grammarComplexity} from "./recursive-grammar";
 import {productionObjectsFromTopology,assertProductionRelations,placeProductionObjects,type ProductionGlyphObject} from "./production-object";
-import {compileProductionObjectsToStitchIr,applyMasterCompositionToStitchIr,type StitchIrObject} from "./production-stitch-ir";
+import {compileProductionObjectsToStitchIr,applyMasterCompositionToStitchIr,stitchIrFootprints,type StitchIrObject} from "./production-stitch-ir";
 import {solveRelationalLayout} from "./relational-layout";
 import {refineOrnamentalLayout} from "./ornament-optimizer";
 import {evaluateSurfaceLayout,type SurfaceFootprint} from "./garment-surface-math";
@@ -213,23 +213,32 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const adapted=adaptForProduction(enriched,medium,niche);
   let productionObjects=productionObjectsFromTopology(adapted.topology,constructionEnvelope,{zoneId:productionZone.id,seamPolicy:constructionEnvelope.seamPolicy,wrapAllowed:productionZone.wrapAllowed});
   assertProductionRelations(adapted.topology,productionObjects);
-  const initialLayout=solveRelationalLayout(adapted.topology,physicalSize.width,physicalSize.height,`${input.seed}:physical:${i}:${compact}`,productionZone,{minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy});
+  const footprintById=Object.fromEntries(productionObjects.map(o=>[o.id,{widthMm:o.physical.widthMm,heightMm:o.physical.heightMm,clearanceMm:o.physical.clearanceMm}]));
+  const initialLayout=solveRelationalLayout(adapted.topology,physicalSize.width,physicalSize.height,`${input.seed}:physical:${i}:${compact}`,productionZone,{
+   minGapMm:constructionEnvelope.minGapMm,
+   seamPolicy:constructionEnvelope.seamPolicy,
+   footprintById
+  });
   const physicalLayout=refineOrnamentalLayout(adapted.topology,initialLayout,physicalSize.width,physicalSize.height,`${input.seed}:ornament:${i}:${compact}`,productionZone,{minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy,symmetry:mode==="emblem"?"mirror-y":"none",physicalFootprints:Object.fromEntries(productionObjects.map(o=>[o.id,{widthMm:o.physical.widthMm,heightMm:o.physical.heightMm,originalScale:initialLayout.points[o.id]?.scale??1}]))});
   productionObjects=placeProductionObjects(productionObjects,physicalLayout.points,initialLayout.points);
   const baseStitchObjects=compileProductionObjectsToStitchIr(productionObjects);
-  const compositionPlan=buildMasterCompositionPlan({mode,medium,complexity,sashGrammar,structuralFeedback:input.structuralFeedback});
-  const stitchObjects=optimizeStitchTravel(applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height)).objects;
+  const compositionPlan=buildMasterCompositionPlan({mode,medium,complexity,sashGrammar,structuralFeedback:input.structuralFeedback,targetOccupancy:constructionEnvelope.targetOccupancy});
+  const stitchObjects=optimizeStitchTravel(applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height,"#111111",{
+   applyPrimaryTransform:true,
+   surfaceZone:productionZone,
+   seamPolicy:constructionEnvelope.seamPolicy,
+   seamGapMm:constructionEnvelope.minGapMm
+  })).objects;
   const manufacturingJob=planEmbroideryJob(stitchObjects,{widthMm:physicalSize.width,heightMm:physicalSize.height});
   let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
   if(productionZone.wrapAllowed&&(productionZone.surface==="cylinder"||productionZone.surface==="tapered-cylinder")){
-   const byId=new Map(productionObjects.map(o=>[o.id,o]));
-   const items:SurfaceFootprint[]=adapted.topology.nodes.map(n=>{const p=physicalLayout.points[n.id]!,o=byId.get(n.id)!;return{id:n.id,u:p.x,v:p.y,widthMm:o.physical.widthMm,heightMm:o.physical.heightMm,rotationDeg:p.angleDeg,clearanceMm:o.physical.clearanceMm};});
+   const items:SurfaceFootprint[]=stitchIrFootprints(stitchObjects,constructionEnvelope.minGapMm);
    surfaceMath=evaluateSurfaceLayout(productionZone,items);
   }
   const g=genomeFromTopology(`pattern:${input.seed}:${i}`,adapted.topology);
   const relationStride=medium==="embroidery"?((input.structuralFeedback?.crossingReduction??0)>.5?0:3):1;
   const projected=projectSemanticGeometry(g,width,height,zone,{relationStride,minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy});
-  const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`,sashGrammar,structuralFeedback:input.structuralFeedback});
+  const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`,sashGrammar,structuralFeedback:input.structuralFeedback,targetOccupancy:constructionEnvelope.targetOccupancy});
   const conceptSvg=colorize(master,input.paletteId??"underdog-heritage");
   const svg=stitchIrToSvg(stitchObjects,physicalSize.width,physicalSize.height);
   const finalCritique=critiqueFinalSvg(conceptSvg,medium,input.visualCorpus??[]);
