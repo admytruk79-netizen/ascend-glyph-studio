@@ -264,7 +264,7 @@ async function execute(run:any){
   let passed=0;
   for(const p of patterns){
    let raster:RasterCritique|null=null;
-   try{raster=await critiqueRaster(p.svg)}catch(e){process.stdout.write(JSON.stringify({runId:run.id,stage:"raster-critic-error",pattern:p.id,message:String((e as Error).message).slice(0,120)})+"\n")}
+   try{raster=await critiqueRaster(p.conceptSvg??p.svg)}catch(e){process.stdout.write(JSON.stringify({runId:run.id,stage:"raster-critic-error",pattern:p.id,message:String((e as Error).message).slice(0,120)})+"\n")}
    const base=p.score+(raster?raster.quality*60-(raster.survive?0:80):0);
    judged.push({p,raster,score:base+preferenceAdjustment(preferenceModel,p,raster,base),feedbackPass});
    if(raster?.survive)passed++;
@@ -324,7 +324,7 @@ async function persist(run:any,judged:{p:any;raster:RasterCritique|null;score:nu
      };
     }
    }
-   const state={sourceEvidence:p.sourceEvidence,patternId:p.id,lineageId:p.lineageId,svg:p.svg,objectives:p.objectives,finalCritique:p.finalCritique,raster,feedbackPass,mode,concepts,corpusSignals,visualCorpusCount,corpusObjectCount,productionObjects:p.productionObjects,stitchObjects:p.stitchObjects,surfaceMath:p.surfaceMath,machineProfileId:p.machineProfileId,physicalSizeMm:p.physicalSizeMm,octave:p.octave,productionCompile};
+   const state={sourceEvidence:p.sourceEvidence,patternId:p.id,lineageId:p.lineageId,svg:p.svg,conceptSvg:p.conceptSvg,objectives:p.objectives,finalCritique:p.finalCritique,raster,feedbackPass,mode,concepts,corpusSignals,visualCorpusCount,corpusObjectCount,productionObjects:p.productionObjects,stitchObjects:p.stitchObjects,manufacturingJob:p.manufacturingJob,surfaceMath:p.surfaceMath,machineProfileId:p.machineProfileId,physicalSizeMm:p.physicalSizeMm,octave:p.octave,productionCompile};
    const complexity={target:intent.complexity??.72,novelty:p.novelty};
    const disposition=raster&&!raster.survive?"rejected-raster":"candidate";
    await c.query(`insert into synthesis_candidate(id,run_id,ordinal,state,complexity,score,disposition)
