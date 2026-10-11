@@ -1,5 +1,5 @@
 name: Tesseract staging benchmark
-# rerun after footprint/seam/occupancy integration 2026-10-10
+# rerun current integrated head 2026-10-11
 # benchmark contract: every production-path change must re-run this gate
 # triggered for integrated production-object benchmark 2026-10-08
 on:
