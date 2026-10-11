@@ -26,6 +26,7 @@ import {buildMasterCompositionPlan} from "./master-composition-plan";
 import {stitchIrToSvg} from "./canonical-preview";
 import {optimizeStitchTravel} from "./stitch-travel-optimizer";
 import {planEmbroideryJob,type ManufacturingJobPlan} from "./manufacturing-job-plan";
+import {applyMotifGrammar,type MotifProgram} from "./motif-grammar";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
@@ -53,6 +54,7 @@ export type GeneratedPattern={
  machineProfileId?:string;
  physicalSizeMm?:{width:number;height:number};
  octave?:ReturnType<typeof grammarComplexity>;
+ motifProgram?:MotifProgram;
 };
 
 const nicheForMode=(mode:PatternMode):DesignNicheId|undefined=>({
@@ -202,11 +204,18 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  const candidateFailures:string[]=[];
  const rendered=renderCandidates.flatMap((candidate,i)=>[false,true].flatMap(compact=>{
   try {
+  const motifMaxNodes=Math.min(12,constructionEnvelope.maxNodes);
+  const motifApplied=applyMotifGrammar(candidate.topology,`${input.seed}:motif:${i}`,{
+   maxNodes:motifMaxNodes,
+   sashGrammar,
+   complexity
+  });
+  const motifTopology=motifApplied.topology;
   const enriched=compact?{
-   nodes:candidate.topology.nodes.map(n=>({...n,scale:Math.min(1,n.scale)})),
-   edges:candidate.topology.edges.map(e=>({...e}))
-  }:expandRecursiveGrammar(candidate.topology,`${input.seed}:live:${i}`,{
-   depth:constructionEnvelope.maxRecursiveDepth,maxNodes:Math.min(12,constructionEnvelope.maxNodes),maxBranching:constructionEnvelope.maxBranching,mutationRate:.2,
+   nodes:motifTopology.nodes.map(n=>({...n,scale:Math.min(1,n.scale)})),
+   edges:motifTopology.edges.map(e=>({...e}))
+  }:expandRecursiveGrammar(motifTopology,`${input.seed}:live:${i}`,{
+   depth:constructionEnvelope.maxRecursiveDepth,maxNodes:motifMaxNodes,maxBranching:constructionEnvelope.maxBranching,mutationRate:.2,
    octave:{enabled:true,minFeatureMm:constructionEnvelope.minFeatureMm,usableAreaMm2:octaveArea,maxEstimatedStitches:constructionEnvelope.machine?.maxStitches}
   });
   const octave=grammarComplexity(enriched);
@@ -234,7 +243,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const svg=stitchIrToSvg(stitchObjects,physicalSize.width,physicalSize.height);
   const finalCritique=critiqueFinalSvg(conceptSvg,medium,input.visualCorpus??[]);
   const combinedScore=candidate.score+finalCritique.score*.45-(compact?.15:0);
-  return [{id:`pat-${input.seed}-${i+1}${compact?"-compact":""}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,conceptSvg,finalCritique,productionObjects,stitchObjects,manufacturingJob,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave}];
+  return [{id:`pat-${input.seed}-${i+1}${compact?"-compact":""}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,conceptSvg,finalCritique,productionObjects,stitchObjects,manufacturingJob,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave,motifProgram:motifApplied.program}];
   } catch (error) {
    if(error instanceof Error && /^(ornament-|scaled satin width out of machine-safe range)/.test(error.message)){
     candidateFailures.push(`${i}:${compact?"compact":"full"}:${error.message}`);
