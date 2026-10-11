@@ -1,3 +1,4 @@
+import type {MachineTemplate} from "./machine-template";
 import type {StitchIrObject,StitchIrPoint} from "./production-stitch-ir";
 import {routingMetrics} from "./stitch-travel-optimizer";
 import {compileLoomPlan,type LoomPlan} from "./loom-program";
@@ -39,9 +40,18 @@ function geometryErrors(objects:readonly StitchIrObject[],w:number,h:number){
  }
  return errors;
 }
-export function planEmbroideryJob(objects:readonly StitchIrObject[],opts:{widthMm:number;heightMm:number;trimJumpMm?:number}):ManufacturingJobPlan{
+export function planEmbroideryJob(objects:readonly StitchIrObject[],opts:{widthMm:number;heightMm:number;trimJumpMm?:number;machine?:MachineTemplate}):ManufacturingJobPlan{
  const {widthMm,heightMm}=opts,trimJumpMm=opts.trimJumpMm??7;
  const errors=geometryErrors(objects,widthMm,heightMm);
+ const machine=opts.machine;
+ if(machine){
+  const x=machine.fieldX.value,y=machine.fieldY.value;
+  if(!(Number.isFinite(x)&&Number.isFinite(y)&&x>0&&y>0))errors.push("machine-field-unverified");
+  else if(!((widthMm<=x&&heightMm<=y)||(widthMm<=y&&heightMm<=x)))errors.push("machine-field-exceeded:segmentation-required");
+  if(!Number.isInteger(machine.maxColors)||machine.maxColors<1)errors.push("machine-color-capacity-unverified");
+  else if(new Set(objects.map(o=>o.color)).size>machine.maxColors)errors.push("machine-color-capacity-exceeded");
+  if(!machine.acceptedFormats.length)errors.push("machine-format-unverified");
+ }
  const operations:ManufacturingOperation[]=[];
  let previous:StitchIrObject|undefined;
  for(const o of objects){
