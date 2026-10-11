@@ -211,14 +211,15 @@ async function execute(run:any){
  installCorpusCanon(approvedCanon);
  process.stdout.write(JSON.stringify({runId:run.id,stage:"canon-loaded",approved:approvedCanon.length})+"\n");
  const batchSize=run.batch_size??12;
+ const candidatePoolSize=Math.min(32,Math.max(batchSize,batchSize*2));
  const judged:{p:any;raster:RasterCritique|null;score:number;feedbackPass:number}[]=[];
  const baseComplexity=Number(intent.complexity??.72);
  let structuralFeedback:StructuralFeedback|undefined;
  for(let feedbackPass=0;feedbackPass<3;feedbackPass++){
   const passComplexity=Math.max(.52,baseComplexity-feedbackPass*.07);
   const passSeed=feedbackPass===0?run.seed:run.seed+":feedback:"+feedbackPass;
-  const patterns=generatePatterns({seed:passSeed,concepts,paletteId:intent.paletteId,mode,complexity:passComplexity,variations:batchSize,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus,learnedGuidance,structuralFeedback,machineProfileId:intent.machineProfileId,physicalWidthMm:intent.physicalWidthMm,physicalHeightMm:intent.physicalHeightMm,constructionIntent:intent.constructionIntent});
-  process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-pass",feedbackPass,patterns:patterns.length,complexity:passComplexity})+"\n");
+  const patterns=generatePatterns({seed:passSeed,concepts,paletteId:intent.paletteId,mode,complexity:passComplexity,variations:candidatePoolSize,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus,learnedGuidance,structuralFeedback,machineProfileId:intent.machineProfileId,physicalWidthMm:intent.physicalWidthMm,physicalHeightMm:intent.physicalHeightMm,constructionIntent:intent.constructionIntent});
+  process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-pass",feedbackPass,patterns:patterns.length,targetBatch:batchSize,candidatePoolSize,complexity:passComplexity})+"\n");
   let passed=0;
   for(const p of patterns){
    let raster:RasterCritique|null=null;
