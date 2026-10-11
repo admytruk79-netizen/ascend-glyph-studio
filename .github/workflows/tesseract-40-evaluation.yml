@@ -1,0 +1,93 @@
+name: Tesseract 40-design evaluation
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/evaluate-tesseract-40.mts'
+      - 'scripts/stitch-ir-preview.ts'
+      - 'packages/tesseract-engine/**'
+      - '.github/workflows/tesseract-40-evaluation.yml'
+concurrency:
+  group: tesseract-evaluation-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - name: Prepare diagnostics
+        run: mkdir -p tesseract-evaluation/diagnostics
+      - name: Install dependencies
+        id: install
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          npm install --no-audit --no-fund 2>&1 | tee tesseract-evaluation/diagnostics/install.log
+      - name: Typecheck
+        id: typecheck
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          npm run typecheck --workspace=@ascend/tesseract-engine 2>&1 | tee tesseract-evaluation/diagnostics/typecheck.log
+      - name: Unit tests
+        id: tests
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          npm test --workspace=@ascend/tesseract-engine 2>&1 | tee tesseract-evaluation/diagnostics/tests.log
+      - name: Compile
+        id: build
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          npm run build --workspace=@ascend/tesseract-engine 2>&1 | tee tesseract-evaluation/diagnostics/build.log
+      - name: Generate evaluation designs
+        id: evaluation
+        continue-on-error: true
+        shell: bash
+        env:
+          TESSERACT_EVALUATION_OUTPUT: tesseract-evaluation
+        run: |
+          set -o pipefail
+          npx --no-install tsx scripts/evaluate-tesseract-40.mts 2>&1 | tee tesseract-evaluation/diagnostics/generation.log
+      - name: Save diagnostics and pattern previews
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tesseract-evaluation-40
+          path: tesseract-evaluation/
+          if-no-files-found: error
+      - name: Enforce validation result
+        if: always()
+        env:
+          INSTALL: ${{ steps.install.outcome }}
+          TYPECHECK: ${{ steps.typecheck.outcome }}
+          TESTS: ${{ steps.tests.outcome }}
+          BUILD: ${{ steps.build.outcome }}
+          EVALUATION: ${{ steps.evaluation.outcome }}
+        run: |
+          echo "install=$INSTALL typecheck=$TYPECHECK tests=$TESTS build=$BUILD generation=$EVALUATION"
+          {
+            echo "## Tesseract validation"
+            echo "| Stage | Outcome |"
+            echo "| --- | --- |"
+            echo "| Dependencies | $INSTALL |"
+            echo "| TypeScript | $TYPECHECK |"
+            echo "| Unit tests | $TESTS |"
+            echo "| Build | $BUILD |"
+            echo "| 40-design evaluation | $EVALUATION |"
+            echo ""
+            echo 'Download the `tesseract-evaluation-40` artifact for individual diagnostics and previews.'
+          } >> "$GITHUB_STEP_SUMMARY"
+          test "$INSTALL" = success && test "$TYPECHECK" = success && test "$TESTS" = success && test "$BUILD" = success && test "$EVALUATION" = success
