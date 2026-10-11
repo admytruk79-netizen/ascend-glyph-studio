@@ -1,3 +1,6 @@
+import {generateUkrainianSymbiosis,SYMBIOSIS_KINDS,type SymbiosisKind} from "./ukrainian-symbiosis";
+import {generateUkrainianBotanical,BOTANICAL_KINDS,type BotanicalKind} from "./ukrainian-botanical";
+import {generateUkrainianBand,UKRAINIAN_BAND_KINDS,type UkrainianBandKind} from "./ukrainian-band";
 import {searchDesignSpace} from "./search";
 import {genomeFromTopology} from "./genome";
 import {projectSemanticGeometry} from "./semantic-projector";
@@ -20,21 +23,20 @@ import {expandRecursiveGrammar,grammarComplexity} from "./recursive-grammar";
 import {productionObjectsFromTopology,assertProductionRelations,placeProductionObjects,type ProductionGlyphObject} from "./production-object";
 import {compileProductionObjectsToStitchIr,applyMasterCompositionToStitchIr,stitchIrFootprints,type StitchIrObject} from "./production-stitch-ir";
 import {solveRelationalLayout} from "./relational-layout";
-import {refineOrnamentalLayout} from "./ornament-optimizer";
-import {evaluateSurfaceLayout,type SurfaceFootprint} from "./garment-surface-math";
+import {evaluateSurfaceLayout,circumferenceAt,type SurfaceFootprint} from "./garment-surface-math";
 import {buildMasterCompositionPlan} from "./master-composition-plan";
-import {stitchIrToSvg} from "./canonical-preview";
-import {optimizeStitchTravel} from "./stitch-travel-optimizer";
-import {planEmbroideryJob,type ManufacturingJobPlan} from "./manufacturing-job-plan";
+import {applyAssemblyConstraintCollapse} from "./constraint-collapse";
+import type {LearnedAssemblyPrior} from "./learned-assembly-prior";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
+ compositionStyle?:"ukrainian-counted-band"|"ukrainian-botanical"|"ukrainian-symbiosis";symbiosisKind?:SymbiosisKind;penroseDepth?:3|4|5;botanicalKind?:BotanicalKind;botanicalTiers?:3|4|5;botanicalPalette?:"red-cream"|"garden-dark";bandKind?:UkrainianBandKind;bandRepeats?:number;bandCount?:1|3|5;bandPalette?:"hutsul"|"red-black";
  seed:string;concepts:string[];paletteId?:string;mode?:PatternMode;
  width?:number;height?:number;variations?:number;complexity?:number;
  cultureIds?:string[];medium?:string;placement?:string;
  corpusSignals?:{id:string;weight:number;sourceIds?:string[]}[];
  population?:number;generations?:number;visualCorpus?:ImageObservation[];
- learnedGuidance?:{density:number;tags:{id:string;weight:number}[];palette:{hex:string;weight:number}[];model:string;relationPrior?:LearnedRelationPrior};
+ learnedGuidance?:{density:number;tags:{id:string;weight:number}[];palette:{hex:string;weight:number}[];model:string;relationPrior?:LearnedRelationPrior;assemblyPrior?:LearnedAssemblyPrior};
  structuralFeedback?:StructuralFeedback;
  machineProfileId?:string;
  constructionIntent?:ConstructionIntent;
@@ -45,13 +47,13 @@ export type GeneratedPattern={
  id:string;lineageId:string;score:number;novelty:number;svg:string;
  objectives:ReturnType<typeof searchDesignSpace>[number]["objectives"];
  finalCritique:FinalSvgCritique;
- conceptSvg?:string;
  productionObjects?:ProductionGlyphObject[];
  stitchObjects?:StitchIrObject[];
  manufacturingJob?:ManufacturingJobPlan;
  surfaceMath?:ReturnType<typeof evaluateSurfaceLayout>;
  machineProfileId?:string;
  physicalSizeMm?:{width:number;height:number};
+ sourceEvidence?:ReturnType<typeof generateUkrainianBand>["metadata"]|ReturnType<typeof generateUkrainianBotanical>["metadata"]|ReturnType<typeof generateUkrainianSymbiosis>["metadata"];
  octave?:ReturnType<typeof grammarComplexity>;
 };
 
@@ -155,6 +157,29 @@ function colorize(svg:string,paletteId:string){
 function culturalSignals(cultureIds:string[],objectTypes?:string[]){const signals=deriveSignals(worldPatternGraph(),{cultureIds,objectTypes,minSupport:.25});return{features:signals.filter(s=>s.kind!=="semantic").slice(0,24).map(s=>[s.value,s.support] as [string,number])};}
 
 export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]{
+ if(input.compositionStyle==="ukrainian-botanical"||input.compositionStyle==="ukrainian-symbiosis"){
+  if(input.mode&&!["field","emblem"].includes(input.mode))throw new Error("Botanical compositions support fields and emblems");
+  if(input.medium&&!["print","embroidery"].includes(input.medium))throw new Error("Unsupported botanical medium");
+  return Array.from({length:Math.max(1,Math.min(12,input.variations??3))},(_,i)=>{
+   const design=input.compositionStyle==="ukrainian-symbiosis"?generateUkrainianSymbiosis({seed:`${input.seed}:${i}`,kind:input.symbiosisKind??SYMBIOSIS_KINDS[i%SYMBIOSIS_KINDS.length]!,depth:input.penroseDepth,tiers:input.botanicalTiers,palette:input.botanicalPalette,widthMm:input.physicalWidthMm,heightMm:input.physicalHeightMm}):generateUkrainianBotanical({seed:`${input.seed}:${i}`,kind:input.botanicalKind??BOTANICAL_KINDS[i%BOTANICAL_KINDS.length]!,tiers:input.botanicalTiers,palette:input.botanicalPalette,widthMm:input.physicalWidthMm,heightMm:input.physicalHeightMm});
+   const finalCritique=critiqueFinalSvg(design.svg,mediumForMode(input.mode??"field",input.medium),input.visualCorpus??[]);
+   return {id:`uk-botanical-${input.seed}-${i}`,lineageId:`uk-botanical:${design.metadata.sourceIds.join(",")}`,score:finalCritique.score,novelty:0,
+    objectives:{meaning:0,novelty:0,culturalIntegrity:0,manufacturability:0,visualIdentity:finalCritique.score,physicalConfidence:0,genericResistance:0},
+    svg:design.svg,stitchObjects:design.objects,sourceEvidence:design.metadata,finalCritique,physicalSizeMm:{width:design.widthMm,height:design.heightMm}};
+  });
+ }
+ if(input.compositionStyle==="ukrainian-counted-band"){
+  if(input.mode&&input.mode!=="band"&&input.mode!=="cuff"&&input.mode!=="collar")throw new Error("Ukrainian counted grammar supports bands, cuffs and collars");
+  if(input.medium&&input.medium!=="print"&&input.medium!=="embroidery")throw new Error("Unsupported counted-band medium");
+  const count=Math.max(1,Math.min(12,input.variations??3));
+  return Array.from({length:count},(_,i)=>{
+   const band=generateUkrainianBand({seed:`${input.seed}:${i}`,kind:input.bandKind??UKRAINIAN_BAND_KINDS[i%UKRAINIAN_BAND_KINDS.length]!,widthMm:input.physicalWidthMm??250,heightMm:input.physicalHeightMm??60,repeats:input.bandRepeats,bands:input.bandCount,palette:input.bandPalette});
+   const finalCritique=critiqueFinalSvg(band.svg,mediumForMode(input.mode??"band",input.medium),input.visualCorpus??[]);
+   return {id:`uk-band-${input.seed}-${i}`,lineageId:`uk-band:${band.metadata.sourceIds.join(",")}`,score:finalCritique.score,novelty:0,
+    objectives:{meaning:0,novelty:0,culturalIntegrity:0,manufacturability:0,visualIdentity:finalCritique.score,physicalConfidence:0,genericResistance:0},
+    svg:band.svg,stitchObjects:band.objects,sourceEvidence:band.metadata,finalCritique,physicalSizeMm:{width:band.widthMm,height:band.heightMm}};
+  });
+ }
  const concepts=(input.concepts.length?input.concepts:["ancestry","freedom","protection"]).slice(0,8);
  const mode=input.mode??"band",niche=nicheForMode(mode),variations=Math.max(4,Math.min(input.variations??12,32));
  const searchKeep=Math.min(32,Math.max(variations+4,variations*2));
@@ -174,6 +199,8 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  const culturalConcepts=cultural.features.map(([id,w])=>({id:`structure:${id}`,weight:Math.min(1,.3+w/4)}));
  const corpusConcepts=(input.corpusSignals??[]).slice(0,96).map(s=>({id:`corpus:${s.id}`,weight:Math.max(.15,Math.min(1,s.weight))}));
  const learnedConcepts=(input.learnedGuidance?.tags??[]).map(x=>({id:`learned-structure:${x.id}`,weight:Math.max(.15,Math.min(1,x.weight))}));
+ // Only verified observations and source drawings may positively guide generation or final critique.
+ const trustedVisualCorpus=(input.visualCorpus??[]).filter(o=>o.trainingUse!=="negative-example"&&(o.verifiedReal||o.class==="source-drawing"));
  const candidates=searchDesignSpace({
   seed:input.seed,
   intent:{
@@ -193,42 +220,43 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
     ...(input.placement?[{id:`placement:${input.placement}`,weight:.95}]:[])
    ]
   },
-  principles:[],niches:niche?[niche]:undefined,medium,visualCorpus:input.visualCorpus,relationPrior,structuralFeedback:input.structuralFeedback,
+  principles:[],niches:niche?[niche]:undefined,medium,visualCorpus:trustedVisualCorpus,relationPrior,assemblyPrior:input.learnedGuidance?.assemblyPrior,structuralFeedback:input.structuralFeedback,
   population:input.population??Math.round(32+complexity*64),generations:input.generations??Math.round(3+complexity*5),keep:searchKeep
  });
  const minDrawableNodes=(mode==="band"||mode==="sleeve"||mode==="cuff"||mode==="collar")?3:2;
  const drawableCandidates=candidates.filter(c=>c.topology.nodes.length>=minDrawableNodes);
  const renderCandidates=drawableCandidates.length?drawableCandidates:candidates;
- const candidateFailures:string[]=[];
- const rendered=renderCandidates.flatMap((candidate,i)=>[false,true].flatMap(compact=>{
-  try {
-  const enriched=compact?{
-   nodes:candidate.topology.nodes.map(n=>({...n,scale:Math.min(1,n.scale)})),
-   edges:candidate.topology.edges.map(e=>({...e}))
-  }:expandRecursiveGrammar(candidate.topology,`${input.seed}:live:${i}`,{
+ const rendered=renderCandidates.map((candidate,i)=>{
+  const scaffolded=applyAssemblyConstraintCollapse(candidate.topology,`${input.seed}:assembly:${i}`,input.learnedGuidance?.assemblyPrior);
+  const enriched=expandRecursiveGrammar(scaffolded,`${input.seed}:live:${i}`,{
    depth:constructionEnvelope.maxRecursiveDepth,maxNodes:Math.min(12,constructionEnvelope.maxNodes),maxBranching:constructionEnvelope.maxBranching,mutationRate:.2,
    octave:{enabled:true,minFeatureMm:constructionEnvelope.minFeatureMm,usableAreaMm2:octaveArea,maxEstimatedStitches:constructionEnvelope.machine?.maxStitches}
   });
   const octave=grammarComplexity(enriched);
   const adapted=adaptForProduction(enriched,medium,niche);
+  const compositionPlan=buildMasterCompositionPlan({mode,medium,complexity,sashGrammar,structuralFeedback:input.structuralFeedback,targetOccupancy:constructionEnvelope.targetOccupancy});
+  const bandY=compositionPlan.primary.offsetY*physicalSize.height;
+  const bandHeight=Math.max(20,compositionPlan.primary.scaleY*physicalSize.height);
+  const layoutZone:GarmentZone=productionZone.surface==="tapered-cylinder"
+   ?{...productionZone,heightMm:bandHeight,circumferenceMm:circumferenceAt(productionZone,bandY),circumferenceEndMm:circumferenceAt(productionZone,bandY+bandHeight)}
+   :{...productionZone,heightMm:bandHeight};
   let productionObjects=productionObjectsFromTopology(adapted.topology,constructionEnvelope,{zoneId:productionZone.id,seamPolicy:constructionEnvelope.seamPolicy,wrapAllowed:productionZone.wrapAllowed});
   assertProductionRelations(adapted.topology,productionObjects);
   const footprintById=Object.fromEntries(productionObjects.map(o=>[o.id,{widthMm:o.physical.widthMm,heightMm:o.physical.heightMm,clearanceMm:o.physical.clearanceMm}]));
-  const initialLayout=solveRelationalLayout(adapted.topology,physicalSize.width,physicalSize.height,`${input.seed}:physical:${i}:${compact}`,productionZone,{
+  const localLayout=solveRelationalLayout(adapted.topology,physicalSize.width,bandHeight,`${input.seed}:physical:${i}`,layoutZone,{
    minGapMm:constructionEnvelope.minGapMm,
    seamPolicy:constructionEnvelope.seamPolicy,
    footprintById
   });
-  const physicalLayout=refineOrnamentalLayout(adapted.topology,initialLayout,physicalSize.width,physicalSize.height,`${input.seed}:ornament:${i}:${compact}`,productionZone,{minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy,symmetry:mode==="emblem"?"mirror-y":"none",physicalFootprints:Object.fromEntries(productionObjects.map(o=>[o.id,{widthMm:o.physical.widthMm,heightMm:o.physical.heightMm,originalScale:initialLayout.points[o.id]?.scale??1}]))});
-  productionObjects=placeProductionObjects(productionObjects,physicalLayout.points,initialLayout.points);
+  const finalPoints=Object.fromEntries(Object.entries(localLayout.points).map(([id,p])=>[id,{...p,y:p.y+bandY}]));
+  productionObjects=placeProductionObjects(productionObjects,finalPoints);
   const baseStitchObjects=compileProductionObjectsToStitchIr(productionObjects);
-  const compositionPlan=buildMasterCompositionPlan({mode,medium,complexity,sashGrammar,structuralFeedback:input.structuralFeedback,targetOccupancy:constructionEnvelope.targetOccupancy});
-  const stitchObjects=optimizeStitchTravel(applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height,"#111111",{
-   applyPrimaryTransform:true,
+  const stitchObjects=applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height,"#111111",{
+   applyPrimaryTransform:false,
    surfaceZone:productionZone,
    seamPolicy:constructionEnvelope.seamPolicy,
    seamGapMm:constructionEnvelope.minGapMm
-  })).objects;
+  });
   const manufacturingJob=planEmbroideryJob(stitchObjects,{widthMm:physicalSize.width,heightMm:physicalSize.height});
   let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
   if(productionZone.wrapAllowed&&(productionZone.surface==="cylinder"||productionZone.surface==="tapered-cylinder")){
@@ -239,20 +267,11 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const relationStride=medium==="embroidery"?((input.structuralFeedback?.crossingReduction??0)>.5?0:3):1;
   const projected=projectSemanticGeometry(g,width,height,zone,{relationStride,minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy});
   const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`,sashGrammar,structuralFeedback:input.structuralFeedback,targetOccupancy:constructionEnvelope.targetOccupancy});
-  const conceptSvg=colorize(master,input.paletteId??"underdog-heritage");
-  const svg=stitchIrToSvg(stitchObjects,physicalSize.width,physicalSize.height);
-  const finalCritique=critiqueFinalSvg(conceptSvg,medium,input.visualCorpus??[]);
-  const combinedScore=candidate.score+finalCritique.score*.45-(compact?.15:0);
-  return [{id:`pat-${input.seed}-${i+1}${compact?"-compact":""}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,conceptSvg,finalCritique,productionObjects,stitchObjects,manufacturingJob,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave}];
-  } catch (error) {
-   if(error instanceof Error && /^(ornament-|scaled satin width out of machine-safe range)/.test(error.message)){
-    candidateFailures.push(`${i}:${compact?"compact":"full"}:${error.message}`);
-    return [];
-   }
-   throw error;
-  }
- })).sort((a,b)=>b.score-a.score);
- if(!rendered.length)throw new Error(`pattern-no-manufacturable-candidates mode=${mode} searched=${renderCandidates.length} failures=${candidateFailures.slice(0,12).join("|")}`);
+  const svg=colorize(master,input.paletteId??"underdog-heritage");
+  const finalCritique=critiqueFinalSvg(svg,medium,trustedVisualCorpus);
+  const combinedScore=candidate.score+finalCritique.score*.45;
+  return {id:`pat-${input.seed}-${i+1}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,finalCritique,productionObjects,stitchObjects,manufacturingJob,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave};
+ }).sort((a,b)=>b.score-a.score);
  const survivors=rendered.filter(x=>x.finalCritique.survive);
  const pool=survivors.length>=Math.min(4,variations)?survivors:rendered;
  return selectVisuallyDiverse(pool,variations,.11);
