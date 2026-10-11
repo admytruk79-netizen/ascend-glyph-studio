@@ -232,7 +232,10 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
   if(productionZone.wrapAllowed&&(productionZone.surface==="cylinder"||productionZone.surface==="tapered-cylinder")){
    const items:SurfaceFootprint[]=stitchIrFootprints(stitchObjects,constructionEnvelope.minGapMm);
-   surfaceMath=evaluateSurfaceLayout(productionZone,items);
+   const allowedOverlapPairs=adapted.topology.edges
+    .filter(e=>e.relation==="nest"||e.relation==="enclose")
+    .map(e=>e.from<e.to?`${e.from}|${e.to}`:`${e.to}|${e.from}`);
+   surfaceMath=evaluateSurfaceLayout(productionZone,items,{allowedOverlapPairs});
   }
   const g=genomeFromTopology(`pattern:${input.seed}:${i}`,adapted.topology);
   const relationStride=medium==="embroidery"?((input.structuralFeedback?.crossingReduction??0)>.5?0:3):1;
