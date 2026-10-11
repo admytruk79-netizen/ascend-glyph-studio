@@ -25,6 +25,9 @@ import {compileProductionObjectsToStitchIr,applyMasterCompositionToStitchIr,stit
 import {solveRelationalLayout} from "./relational-layout";
 import {evaluateSurfaceLayout,circumferenceAt,type SurfaceFootprint} from "./garment-surface-math";
 import {buildMasterCompositionPlan} from "./master-composition-plan";
+import {stitchIrToSvg} from "./canonical-preview";
+import {optimizeStitchTravel} from "./stitch-travel-optimizer";
+import {planEmbroideryJob,type ManufacturingJobPlan} from "./manufacturing-job-plan";
 import {applyAssemblyConstraintCollapse} from "./constraint-collapse";
 import type {LearnedAssemblyPrior} from "./learned-assembly-prior";
 
@@ -47,8 +50,10 @@ export type GeneratedPattern={
  id:string;lineageId:string;score:number;novelty:number;svg:string;
  objectives:ReturnType<typeof searchDesignSpace>[number]["objectives"];
  finalCritique:FinalSvgCritique;
+ conceptSvg?:string;
  productionObjects?:ProductionGlyphObject[];
  stitchObjects?:StitchIrObject[];
+ manufacturingJob?:ManufacturingJobPlan;
  surfaceMath?:ReturnType<typeof evaluateSurfaceLayout>;
  machineProfileId?:string;
  physicalSizeMm?:{width:number;height:number};
@@ -250,12 +255,13 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const finalPoints=Object.fromEntries(Object.entries(localLayout.points).map(([id,p])=>[id,{...p,y:p.y+bandY}]));
   productionObjects=placeProductionObjects(productionObjects,finalPoints);
   const baseStitchObjects=compileProductionObjectsToStitchIr(productionObjects);
-  const stitchObjects=applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height,"#111111",{
+  const stitchObjects=optimizeStitchTravel(applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height,"#111111",{
    applyPrimaryTransform:false,
    surfaceZone:productionZone,
    seamPolicy:constructionEnvelope.seamPolicy,
    seamGapMm:constructionEnvelope.minGapMm
-  });
+  })).objects;
+  const manufacturingJob=planEmbroideryJob(stitchObjects,{widthMm:physicalSize.width,heightMm:physicalSize.height,machine});
   let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
   if(productionZone.wrapAllowed&&(productionZone.surface==="cylinder"||productionZone.surface==="tapered-cylinder")){
    const items:SurfaceFootprint[]=stitchIrFootprints(stitchObjects,constructionEnvelope.minGapMm);
@@ -265,10 +271,11 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const relationStride=medium==="embroidery"?((input.structuralFeedback?.crossingReduction??0)>.5?0:3):1;
   const projected=projectSemanticGeometry(g,width,height,zone,{relationStride,minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy});
   const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`,sashGrammar,structuralFeedback:input.structuralFeedback,targetOccupancy:constructionEnvelope.targetOccupancy});
-  const svg=colorize(master,input.paletteId??"underdog-heritage");
-  const finalCritique=critiqueFinalSvg(svg,medium,trustedVisualCorpus);
+  const conceptSvg=colorize(master,input.paletteId??"underdog-heritage");
+  const svg=stitchIrToSvg(stitchObjects,physicalSize.width,physicalSize.height);
+  const finalCritique=critiqueFinalSvg(conceptSvg,medium,trustedVisualCorpus);
   const combinedScore=candidate.score+finalCritique.score*.45;
-  return {id:`pat-${input.seed}-${i+1}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,finalCritique,productionObjects,stitchObjects,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave};
+  return {id:`pat-${input.seed}-${i+1}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,conceptSvg,finalCritique,productionObjects,stitchObjects,manufacturingJob,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave};
  }).sort((a,b)=>b.score-a.score);
  const survivors=rendered.filter(x=>x.finalCritique.survive);
  const pool=survivors.length>=Math.min(4,variations)?survivors:rendered;
