@@ -75,24 +75,27 @@ async function main(){
  await mkdir(out,{recursive:true});
  const search=await json(base+"/v1.1/search?"+new URLSearchParams({q:query,hasImages:"true"}));
  const rows:any[]=[];const hashes=new Set<string>();
+ const rejectionCounts:Record<string,number>={};
+ const reject=(reason:string)=>{rejectionCounts[reason]=(rejectionCounts[reason]??0)+1;};
  for(const id of ((search.objectIDs??[]) as number[]).slice(0,maxCandidates)){
   if(rows.length>=limit)break;
   try{
    const obj=await json(base+"/v1/objects/"+id);
-   if(obj.isPublicDomain!==true||!obj.primaryImage||!obj.objectDate)continue;
+   if(obj.isPublicDomain!==true||!obj.primaryImage||!obj.objectDate){reject("ineligible-metadata");continue;}
    // Cultural access cannot be inferred from CC0. Unreviewed images are research-only.
    const res=await fetch(obj.primaryImageSmall||obj.primaryImage,{signal:AbortSignal.timeout(20000)});
-   if(!res.ok)continue;
+   if(!res.ok){reject("image-http-"+res.status);continue;}
    const bytes=Buffer.from(await res.arrayBuffer());
-   if(bytes.length>20_000_000)continue;
+   if(bytes.length>20_000_000){reject("image-too-large");continue;}
    const hash=createHash("sha256").update(bytes).digest("hex");
-   if(hashes.has(hash))continue;
+   if(hashes.has(hash)){reject("duplicate-image");continue;}
    const vector=await features(bytes);hashes.add(hash);
    rows.push({id,objectURL:obj.objectURL,imageURL:obj.primaryImage,title:obj.title,period:obj.objectDate,culture:obj.culture,medium:obj.medium,institution:"Metropolitan Museum of Art",rights:"CC0 per object isPublicDomain",culturalAccess:"unreviewed",commercialDerivation:false,sha256:hash,features:vector});
-  }catch(error){console.error("skip",id,String(error));}
+  }catch(error){reject("fetch-or-analysis-error");console.error("skip",id,String(error));}
   await sleep(180);
  }
- if(rows.length<3)throw Error("Insufficient eligible images for baseline: "+rows.length+" from "+maxCandidates+" candidates");
+ await writeFile(out+"/ingestion-report.json",JSON.stringify({query,maxCandidates,accepted:rows.length,rejectionCounts},null,2));
+ if(rows.length<3)throw Error("Insufficient eligible images for baseline: "+rows.length+" from "+maxCandidates+" candidates; see ingestion-report.json");
  const k=Math.min(6,Math.max(2,Math.floor(Math.sqrt(rows.length/2))));
  const trained=fitKmeans(rows.map(r=>r.features),k);
  const model={schema:"ascend.historical-image-baseline.v2",method:"grayscale-histogram-gradient-symmetry-periodicity-occupancy-kmeans",source:"Met Open Access",query,examples:rows.length,k,centers:trained.centers,limitations:["research-only; cultural access unreviewed","not generative","no canonical ASCEND geometry learned","not a production-approved model"]};
