@@ -1,0 +1,48 @@
+name: Historical image baseline training
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: Maximum accepted public-domain images
+        required: false
+        default: '40'
+      query:
+        description: Museum search term
+        required: false
+        default: embroidery
+  push:
+    branches:
+      - automation/machine-feasibility-runtime-20261011
+    paths:
+      - scripts/train-historical-image-baseline.ts
+      - .github/workflows/historical-image-baseline.yml
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    env:
+      MET_LIMIT: ${{ inputs.limit || '40' }}
+      MET_QUERY: ${{ inputs.query || 'embroidery' }}
+      MET_OUTPUT: data/historical-baseline
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Fetch public-domain museum imagery and fit baseline
+        run: npx tsx scripts/train-historical-image-baseline.ts
+      - name: Check model and provenance manifest
+        run: |
+          node -e "const fs=require('fs');const m=JSON.parse(fs.readFileSync('data/historical-baseline/model.json'));const a=JSON.parse(fs.readFileSync('data/historical-baseline/manifest.json'));if(m.examples<3||a.length!==m.examples||a.some(x=>x.commercialDerivation!==false||!x.sha256))process.exit(1);console.log('verified examples',m.examples)"
+      - name: Upload research-only model and provenance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: historical-image-baseline
+          path: data/historical-baseline/
+          if-no-files-found: warn
+          retention-days: 30
