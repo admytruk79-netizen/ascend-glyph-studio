@@ -6,8 +6,7 @@ on:
   push:
     branches: [claude/tesseract-glyph-training-t298iv]
     paths:
-      - "scripts/motifs/**"
-      - "packages/motif-learner/src/extract.ts"
+      - "scripts/motifs/collect-met-counted.mts"
       - ".github/workflows/motif-met-collect.yml"
   workflow_dispatch:
     inputs:
