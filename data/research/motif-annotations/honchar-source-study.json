@@ -1,0 +1,125 @@
+{
+  "schema": "ascend.honchar-source-study.v1",
+  "method": "manual PDF text and rendered-page review",
+  "records": [
+    {
+      "id": "honchar-KN-444",
+      "source": "https://baza.honchar.org.ua/upload/2021/12/Honchar_museum_katalog_vishivok_KN_444.pdf",
+      "sha256": "58e5998c49bcb9e8516f303458bf5976d589ecd92598f7af8fad7d51658e5803",
+      "regionalAttribution": {
+        "status": "documented",
+        "region": "Гуцульщина",
+        "evidence": {
+          "source": "Honchar KN-444 PDF",
+          "locator": "page 3",
+          "quotation": "Етнографічний регіон: Гуцульщина"
+        }
+      },
+      "visuallyExaminedChartPages": [
+        14
+      ],
+      "observations": [
+        "Vertical stitch runs form stepped diamond outlines and coloured interiors.",
+        "Crossed separators divide bands of different heights.",
+        "Front and reverse charts are distinct; chart marks are not machine needle commands."
+      ],
+      "rights": {
+        "status": "restricted",
+        "locator": "page 2",
+        "quotation": "використання матеріалів з комерційною метою заборонено"
+      },
+      "eligibleForCommercialReconstruction": false,
+      "eligibleForMotifGraph": false,
+      "credits": {
+        "chart": "Олена Андрущенко",
+        "cut": "Олена Андрущенко",
+        "drawing": "Ганна Кошманенко",
+        "institution": "Музей Івана Гончара",
+        "design": "WARTA",
+        "locator": "PDF page 2"
+      },
+      "fabricCalibration": {
+        "warpThreads": 32,
+        "weftThreads": 25,
+        "measuredWidthMm": 20,
+        "measuredHeightMm": 20,
+        "locator": "PDF page 6; page 5 states centimetre units",
+        "review": "density diagram visually checked; original fabric not measured by us"
+      }
+    },
+    {
+      "id": "honchar-KN-23050",
+      "source": "https://baza.honchar.org.ua/upload/2021/12/Honchar_museum_katalog_vishivok_KN_23050.pdf",
+      "sha256": "d43db3d73151d2f9c11f92641bb3f5ef92982cc1629ba503ec62722eea222b79",
+      "regionalAttribution": {
+        "status": "documented",
+        "region": "Поділля",
+        "evidence": {
+          "source": "Honchar KN-23050 PDF",
+          "locator": "page 3",
+          "quotation": "Етнографічний регіон: Поділля"
+        }
+      },
+      "visuallyExaminedChartPages": [
+        12
+      ],
+      "observations": [
+        "Large interlocking diamonds contain smaller alternating angular units.",
+        "Lock markers have their own legend; they are not filled motif cells."
+      ],
+      "rights": {
+        "status": "restricted",
+        "locator": "page 2",
+        "quotation": "використання матеріалів з комерційною метою заборонено"
+      },
+      "eligibleForCommercialReconstruction": false,
+      "eligibleForMotifGraph": false,
+      "credits": {
+        "chart": "Оксана Шуляр",
+        "cut": "Олена Андрущенко",
+        "drawing": "Ганна Кошманенко",
+        "institution": "Музей Івана Гончара",
+        "design": "WARTA",
+        "locator": "PDF page 2"
+      }
+    },
+    {
+      "id": "honchar-KN-331",
+      "source": "https://baza.honchar.org.ua/upload/2021/12/Honchar_museum_katalog_vishivok_KN_331.pdf",
+      "sha256": "b5515f8f5a9fb36712fee7a2e108e7771ccea195989957a775708284bf32c2a3",
+      "regionalAttribution": {
+        "status": "documented",
+        "region": "Полтавщина",
+        "evidence": {
+          "source": "Honchar KN-331 PDF",
+          "locator": "page 3",
+          "quotation": "Етнографічний регіон: Полтавщина"
+        }
+      },
+      "visuallyExaminedChartPages": [
+        12
+      ],
+      "observations": [
+        "Four quadrant lobes surround a small central unit.",
+        "Narrow edge chains frame the repeated broad band.",
+        "Ten numbered bands use different techniques; the towel is not a single repeated motif."
+      ],
+      "rights": {
+        "status": "restricted",
+        "locator": "page 2",
+        "quotation": "використання матеріалів з комерційною метою заборонено"
+      },
+      "eligibleForCommercialReconstruction": false,
+      "eligibleForMotifGraph": false,
+      "credits": {
+        "chart": "Уляна Опанович",
+        "drawing": "Наталя Голубнича",
+        "institution": "Музей Івана Гончара",
+        "design": "WARTA",
+        "locator": "PDF page 2"
+      }
+    }
+  ],
+  "imagesOrChartsRedistributed": false,
+  "modelTrainingPerformed": false
+}
