@@ -41,7 +41,8 @@ export function profileMotifConstruction(graph:MotifGraph){
  const edges=unitDegrees.reduce((n,u)=>n+u.degree,0)/2;
  return {schema:'ascend.motif-construction-profile.v1' as const,state:'REFERENCE' as const,method:'declared-unit-network-v1' as const,
   sourceEvidence:graph.provenance.map(p=>({id:p.id,source:p.source,originalSha256:p.originalSha256,
-   creator:p.creator,community:p.community,culturalContext:p.culturalContext,access:p.access,confidence:p.confidence,permissionEvidence:p.permission.evidence})),
+   creator:p.creator,community:p.community,culturalContext:p.culturalContext,access:p.access,confidence:p.confidence,permissionEvidence:p.permission.evidence,
+   regionalAttribution:structuredClone(p.regionalAttribution??{status:'unassigned' as const})})),
   regionCount:graph.nodes.filter(n=>n.kind==='region').length,elementCount:elements.length,
   closedContourCount:elements.flatMap(n=>n.geometry!.paths).filter(path=>path[0].x===path.at(-1)!.x&&path[0].y===path.at(-1)!.y).length,
   nestedRelationCount:structure.nestedRelations,maximumAssemblyNestingDepth:elements.reduce((n,e)=>Math.max(n,nestingDepth(e.id)),0),declaredContactCount:structure.junctionCount,

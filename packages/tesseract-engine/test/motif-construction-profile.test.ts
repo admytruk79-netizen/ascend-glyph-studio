@@ -8,6 +8,24 @@ import {profileMotifConstruction} from '../src/motif-construction-profile';
 const fixture=(file:string)=>JSON.parse(readFileSync('../../data/research/motif-annotations/'+file,'utf8')) as ObservedMotifAnnotations;
 const graph=(file:string)=>graphFromObservedAnnotations(fixture(file),1280);
 describe('declared motif construction profiles',()=>{
+ it('leaves regional identity unassigned despite a Ukrainian collection title',()=>{
+  const g=graph('neon-plate27-bouquet-v1.json');
+  expect(profileMotifConstruction(g).sourceEvidence[0].regionalAttribution).toEqual({status:'unassigned'});
+ });
+ it('preserves documentary regional evidence without sharing mutable provenance',()=>{
+  const g=connectedMotifFixture();
+  const attribution={status:'documented' as const,region:'Authored test region',evidence:{source:'fixture://regional-control',locator:'caption 1',quotation:'Authored test region'}};
+  g.provenance[0].regionalAttribution=attribution;
+  const profile=profileMotifConstruction(g);
+  expect(profile.sourceEvidence[0].regionalAttribution).toEqual(attribution);
+  attribution.evidence.quotation='changed';
+  expect(profile.sourceEvidence[0].regionalAttribution).not.toEqual(attribution);
+ });
+ it('rejects a regional claim without a documentary quotation',()=>{
+  const g=connectedMotifFixture();
+  g.provenance[0].regionalAttribution={status:'documented',region:'Poltava',evidence:{source:'fixture://control',locator:'caption',quotation:' '}};
+  expect(()=>profileMotifConstruction(g)).toThrow('regional-attribution-evidence');
+ });
  it('keeps the branch skeleton stable when plate 37 gains eight petal interiors',()=>{
   const before=profileMotifConstruction(graph('neon-plate37-connected-floral-v1.json'));
   const after=profileMotifConstruction(graph('neon-plate37-connected-floral-v2.json'));

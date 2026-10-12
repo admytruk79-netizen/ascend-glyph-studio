@@ -8,6 +8,10 @@ export type MotifProvenance = {
  permission:{status:'verified'|'unknown'|'restricted'; evidence:string; purposes:('analysis'|'reconstruction')[]};
  access:CulturalAccess; confidence:number;
  transformations:{operation:string; evidence:string}[];
+ /** Documentary attribution supplied by a reviewer, never inferred from appearance,
+  * catalogue filters, retrieval tags, or a broad national collection title. */
+ regionalAttribution?:{status:'unassigned'}|{status:'documented';region:string;
+  evidence:{source:string;locator:string;quotation:string}};
 };
 export type MotifTransform = {xMm:number;yMm:number;rotationDeg:number;scaleX:number;scaleY:number;reflectX:boolean};
 export type MotifNode = {
@@ -42,6 +46,12 @@ export function assertMotifGraph(g:MotifGraph):void {
   if(p.permission.status!=='verified'||!p.permission.evidence||!['analysis','reconstruction'].every(k=>p.permission.purposes.includes(k as 'analysis'|'reconstruction')))fail('permission');
   if(p.access!=='structural-public'&&p.access!=='documented-public')fail('cultural-access');
   if(p.transformations.some(t=>!t.operation||!t.evidence))fail('transformation-evidence');
+  const regional=p.regionalAttribution;
+  if(regional){
+   if(regional.status!=='unassigned'&&regional.status!=='documented')fail('regional-attribution');
+   if(regional.status==='documented'&&(!regional.region?.trim()||!regional.evidence
+    ||![regional.evidence.source,regional.evidence.locator,regional.evidence.quotation].every(v=>typeof v==='string'&&v.trim().length>0)))fail('regional-attribution-evidence');
+  }
  }
  const nodes=new Map(g.nodes.map(n=>[n.id,n]));
  if(nodes.size!==g.nodes.length||g.nodes.filter(n=>n.kind==='composition').length!==1)fail('hierarchy-root');
