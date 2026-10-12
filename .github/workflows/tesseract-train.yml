@@ -4,7 +4,7 @@ name: Tesseract training on museum imagery
 # memory and never stored. Results: artifact tesseract-model-* and Neon (learned_model, research_image_tag).
 on:
   push:
-    branches: [claude/tesseract-corpus-harvest]
+    branches: [claude/tesseract-corpus-harvest, feature/coherent-band-foundation]
     paths:
       - ".github/workflows/tesseract-train.yml"
   workflow_dispatch:
