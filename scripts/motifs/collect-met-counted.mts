@@ -65,11 +65,19 @@ async function readImage(url: string): Promise<{ grid: Grid; confidence: number;
   return best;
 }
 
+// The Met retired /v1/search on 2026-10-01; /v1.1/search is paginated (same reading as scripts/corpus/sources.ts).
+const idsOf = (res: any): number[] => ((res?.objectIDs ?? res?.results ?? res?.data ?? res?.objects ?? []) as any[]).map((x) => (typeof x === "number" ? x : Number(x?.objectID ?? x?.id))).filter((n) => Number.isFinite(n));
 const ids = new Set<number>();
 for (const q of QUERIES) {
-  const s = await json(`${API}/search?hasImages=true&q=${encodeURIComponent(q)}`);
-  (s?.objectIDs ?? []).slice(0, MAX_PER_QUERY).forEach((id: number) => ids.add(id));
-  await sleep(150);
+  let taken = 0;
+  for (let offset = 0; taken < MAX_PER_QUERY; offset += 100) {
+    const res = await json(`${API.replace("/v1", "/v1.1")}/search?hasImages=true&q=${encodeURIComponent(q)}&offset=${offset}&limit=100`);
+    const page = idsOf(res);
+    page.slice(0, MAX_PER_QUERY - taken).forEach((id) => ids.add(id));
+    taken += page.length;
+    await sleep(150);
+    if (page.length < 100) break;
+  }
 }
 console.log(`search: ${ids.size} object ids`);
 
