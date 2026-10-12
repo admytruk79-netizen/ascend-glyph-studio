@@ -49,7 +49,7 @@ jobs:
           fi
       - name: Check model and provenance manifest
         run: |
-          node -e "const fs=require('fs');const m=JSON.parse(fs.readFileSync('data/historical-baseline/model.json'));const a=JSON.parse(fs.readFileSync('data/historical-baseline/manifest.json'));if(m.examples<3||a.length!==m.examples||a.some(x=>x.commercialDerivation!==false||!x.sha256))process.exit(1);console.log('verified examples',m.examples)"
+          node -e "const fs=require('fs');const m=JSON.parse(fs.readFileSync('data/historical-baseline/model.json'));const a=JSON.parse(fs.readFileSync('data/historical-baseline/manifest.json'));const d=JSON.parse(fs.readFileSync('data/historical-baseline/ingestion-report.json'));const valid=x=>Array.isArray(x)&&x.length===33&&x.every(Number.isFinite);if(m.examples<3||a.length!==m.examples||d.accepted!==m.examples||!Array.isArray(m.centers)||m.centers.length!==m.k||!m.centers.every(valid)||a.some(x=>x.commercialDerivation!==false||!x.sha256||!valid(x.features)))process.exit(1);console.log('VERIFIED historical baseline',JSON.stringify({examples:m.examples,clusters:m.k,dimensions:33,sources:[...new Set(a.map(x=>x.institution))]}))"
       - name: Upload research-only model and provenance
         if: always()
         uses: actions/upload-artifact@v4
