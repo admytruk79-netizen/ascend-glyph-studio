@@ -51,7 +51,25 @@ async function features(image:Buffer){
   if(y>0)vertical+=Math.abs(v-data[(y-1)*64+x]!);
   if(x>0&&y>0)diag+=Math.abs(v-data[(y-1)*64+x-1]!);
  }
- return [...hist.map(n=>n/4096),horizontal/(4032*255),vertical/(4032*255),diag/(3969*255)];
+ // Structural signals: symmetry, periodicity and coarse spatial occupancy.
+ // These are image-level proxies, not semantic motif recognition.
+ let leftRight=0,topBottom=0;
+ const cells=Array(16).fill(0) as number[];
+ for(let y=0;y<64;y++)for(let x=0;x<64;x++){
+  const v=data[y*64+x]!;
+  leftRight+=Math.abs(v-data[y*64+(63-x)]!);
+  topBottom+=Math.abs(v-data[(63-y)*64+x]!);
+  cells[Math.floor(y/16)*4+Math.floor(x/16)]!+=(255-v)/(256*255);
+ }
+ const periodicity:number[]=[];
+ for(const lag of [4,8,16,32]){
+  let difference=0,count=0;
+  for(let y=0;y<64;y++)for(let x=0;x<64-lag;x++){
+   difference+=Math.abs(data[y*64+x]!-data[y*64+x+lag]!);count++;
+  }
+  periodicity.push(1-difference/(count*255));
+ }
+ return [...hist.map(n=>n/4096),horizontal/(4032*255),vertical/(4032*255),diag/(3969*255),1-leftRight/(4096*255),1-topBottom/(4096*255),...periodicity,...cells];
 }
 async function main(){
  await mkdir(out,{recursive:true});
@@ -77,7 +95,7 @@ async function main(){
  if(rows.length<3)throw Error("Insufficient eligible images for baseline: "+rows.length+" from "+maxCandidates+" candidates");
  const k=Math.min(6,Math.max(2,Math.floor(Math.sqrt(rows.length/2))));
  const trained=fitKmeans(rows.map(r=>r.features),k);
- const model={schema:"ascend.historical-image-baseline.v1",method:"grayscale-histogram-gradient-kmeans",source:"Met Open Access",query,examples:rows.length,k,centers:trained.centers,limitations:["research-only; cultural access unreviewed","not generative","no canonical ASCEND geometry learned","not a production-approved model"]};
+ const model={schema:"ascend.historical-image-baseline.v2",method:"grayscale-histogram-gradient-symmetry-periodicity-occupancy-kmeans",source:"Met Open Access",query,examples:rows.length,k,centers:trained.centers,limitations:["research-only; cultural access unreviewed","not generative","no canonical ASCEND geometry learned","not a production-approved model"]};
  await writeFile(out+"/model.json",JSON.stringify(model,null,2));
  await writeFile(out+"/manifest.json",JSON.stringify(rows.map((r,i)=>({...r,cluster:trained.labels[i]})),null,2));
  console.log("TRAINED BASELINE",JSON.stringify({examples:rows.length,clusters:k,output:out}));
