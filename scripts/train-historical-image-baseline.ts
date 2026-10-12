@@ -90,10 +90,18 @@ async function main(){
    if(!(result.data?.length))break;
   }
  }catch(error){sourceErrors.artic=String(error);console.error("Art Institute search unavailable",error);}
+ // Alternate institutions rather than exhausting thousands of failing Met records first.
+ const metCandidates=candidates.filter(c=>c.source==="met");
+ const articCandidates=candidates.filter(c=>c.source==="artic");
+ const interleaved:typeof candidates=[];
+ for(let i=0;i<Math.max(metCandidates.length,articCandidates.length);i++){
+  if(articCandidates[i])interleaved.push(articCandidates[i]!);
+  if(metCandidates[i])interleaved.push(metCandidates[i]!);
+ }
  const rows:any[]=[];const hashes=new Set<string>();
  const rejectionCounts:Record<string,number>={};
  const reject=(reason:string)=>{rejectionCounts[reason]=(rejectionCounts[reason]??0)+1;};
- for(const candidate of candidates){
+ for(const candidate of interleaved.slice(0,maxCandidates)){
   if(rows.length>=limit)break;
   const {id,source}=candidate;
   try{
