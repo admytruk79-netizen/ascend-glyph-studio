@@ -1,0 +1,38 @@
+{
+  "schema": "ascend.motif-detail-benchmark.v1",
+  "source": "https://www.metmuseum.org/art/collection/search/445264",
+  "originalSha256": "0cdd6dbcb9ae571d3aaa4870e4cbca455570852ef6f4397504ee813f22684009",
+  "sourceDimensions": {
+    "width": 701,
+    "height": 1945
+  },
+  "roi": {
+    "left": 177,
+    "top": 935,
+    "width": 147,
+    "height": 162
+  },
+  "segmentation": "red ground iff R-G>30 and R-B>15",
+  "foregroundPixels": 9267,
+  "componentCount": 3,
+  "loopCount": 65,
+  "holeCount": 62,
+  "cellContourReconstruction": {
+    "binaryMaskIoU": 1,
+    "binaryMaskRmse": 0
+  },
+  "coarseEnvelopeBaseline": {
+    "binaryMaskIoU": 0.6036334275333064,
+    "binaryMaskRmse": 0.4540256004035296
+  },
+  "twoPixelDisplacementControl": {
+    "binaryMaskIoU": 0.7973235065942591,
+    "binaryMaskRmse": 0.29624905141099295
+  },
+  "independentExpertAnnotationsAvailable": false,
+  "semanticAccuracy": null,
+  "physicalCalibration": null,
+  "productionApproved": false,
+  "modelTrainingPerformed": false,
+  "limitation": "Scores measure preservation of a colour-selected mask; they do not establish correct petal, stem or ornament segmentation. Small components may be JPEG or textile texture artefacts."
+}
