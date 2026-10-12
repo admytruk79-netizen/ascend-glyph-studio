@@ -1,0 +1,99 @@
+{
+  "schema": "ascend.motif-interlace-analysis.v1",
+  "state": "REFERENCE",
+  "candidates": [
+    {
+      "a": "element:visible-over",
+      "b": "element:interpolated-under",
+      "at": {
+        "x": 1283.2070093667176,
+        "y": 1280.6133558911788
+      },
+      "aPath": 0,
+      "aSegment": 0,
+      "bPath": 0,
+      "bSegment": 0
+    }
+  ],
+  "crossings": [
+    {
+      "a": "element:visible-over",
+      "b": "element:interpolated-under",
+      "at": {
+        "x": 1283.2070093667176,
+        "y": 1280.6133558911788
+      },
+      "aPath": 0,
+      "aSegment": 0,
+      "bPath": 0,
+      "bSegment": 0,
+      "id": "draft-crossing-1",
+      "over": "element:visible-over",
+      "under": "element:interpolated-under",
+      "evidence": "Manual review of lower central knotwork detail: descending light strand is uninterrupted, rising strand is interrupted; hidden continuation interpolated. Draft, not independent ground truth."
+    }
+  ],
+  "unresolved": [],
+  "ambiguous": [],
+  "junctionsAdded": 0,
+  "physicalCalibration": null,
+  "stitchCount": null,
+  "productionApproved": false,
+  "limitations": [
+    "Only crossings between different element polylines are analysed; self-crossings need separate annotations.",
+    "Endpoint, vertex and collinear contacts remain ambiguous; no over/under order is inferred.",
+    "Observed under-strand continuation through an image interruption is a manual hypothesis, not a visible contour.",
+    "Topology sidecar does not suppress clearance violations or establish a sew-out sequence."
+  ],
+  "source": {
+    "schema": "ascend.motif-provenance.v1",
+    "id": "met-388374-original",
+    "source": "https://www.metmuseum.org/art/collection/search/388374",
+    "creator": "Albrecht Dürer",
+    "community": null,
+    "culturalContext": "Embroidery Pattern with Round Medallion in its Center; printed embroidery pattern, not an Arabic or Ukrainian attribution.",
+    "retrievedAt": "2026-10-12T21:40:41.919119+00:00",
+    "originalSha256": "beda3a3b189590b95ef273c6f610dca17cd489dc721ad5e8022e95f2854fc93b",
+    "permission": {
+      "status": "verified",
+      "evidence": "Retained official Met API object 388374 isPublicDomain=true; Met Open Access CC0 policy https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+      "purposes": [
+        "analysis",
+        "reconstruction"
+      ]
+    },
+    "access": "documented-public",
+    "confidence": 0.7,
+    "transformations": [],
+    "regionalAttribution": {
+      "status": "unassigned"
+    }
+  },
+  "review": {
+    "status": "draft",
+    "method": "Manual review of one lower central knotwork crossing in source resized to 1408 pixels, crop (500,320,350,400), zoom ROI (60,230,130,110)",
+    "limitations": [
+      "Two short approximate strand centrelines only; not full design tracing or independent expert annotations.",
+      "Under-strand interruption is interpolated as a continuity hypothesis; its hidden pixels are not observed.",
+      "Image geometry is not physically calibrated; no stitch order or machine approval."
+    ]
+  },
+  "annotationSha256": "c910e7884acb02652585bebdf39f0b8a7b609c59698917378930bed0fc71bff9",
+  "geometryBasis": "image pixel positions represented in reference units; not physical mm",
+  "clearance": {
+    "basis": "observed-polyline-centrelines",
+    "minimumCenterlineGapMm": 0,
+    "junctionExclusionRadiusMm": 0.000001,
+    "clearanceViolations": [
+      {
+        "from": "element:visible-over",
+        "to": "element:interpolated-under",
+        "centerlineGapMm": 0
+      }
+    ],
+    "portsOffPath": [],
+    "outsideEnvelope": []
+  },
+  "trained": false,
+  "fullHistoricalDecomposition": false
+}
