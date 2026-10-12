@@ -4,3 +4,6 @@ dist/
 
 # order production folders hold customer details: never commit
 /orders/
+
+# generated training/generation output
+/out/
