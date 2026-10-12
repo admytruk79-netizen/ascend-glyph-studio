@@ -55,7 +55,7 @@ async function features(image:Buffer){
 }
 async function main(){
  await mkdir(out,{recursive:true});
- const search=await json(base+"/v1/search?"+new URLSearchParams({q:query,hasImages:"true"}));
+ const search=await json(base+"/v1.1/search?"+new URLSearchParams({q:query,hasImages:"true"}));
  const rows:any[]=[];const hashes=new Set<string>();
  for(const id of ((search.objectIDs??[]) as number[]).slice(0,maxCandidates)){
   if(rows.length>=limit)break;
