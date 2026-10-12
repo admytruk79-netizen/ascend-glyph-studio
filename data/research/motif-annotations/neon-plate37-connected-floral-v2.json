@@ -1,0 +1,1360 @@
+{
+  "schema": "ascend.observed-motif-annotations.v1",
+  "id": "neon-plate37-connected-floral-v2",
+  "image": {
+    "width": 1280,
+    "height": 465
+  },
+  "provenance": {
+    "schema": "ascend.motif-provenance.v1",
+    "id": "neon-commons-96737753",
+    "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9637._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg",
+    "creator": "Nikolai Samokysh",
+    "community": null,
+    "culturalContext": "Illustration from Мотиви українського орнаменту, 1902, plate 37, embroidery in silk and gold. Ukrainian ornament; regional community and botanical identities not established.",
+    "retrievedAt": "2026-10-12T00:00:00Z",
+    "originalSha256": "e4b85cfafc845616091a8e03276ea7dc83d7ec9eb0498da692d3bc804c5b32b0",
+    "permission": {
+      "status": "verified",
+      "evidence": "Reference-use review of retained Neon per-item Commons rights declaration: Public domain; catalogue publication date 1902 (pre-1931 publication, public domain in the US). This is a historical reference-use assessment, not a fresh Commons licence-page verification; live requests returned HTTP 403. No manufacturing approval.",
+      "purposes": [
+        "analysis",
+        "reconstruction"
+      ]
+    },
+    "access": "documented-public",
+    "confidence": 0.8,
+    "transformations": []
+  },
+  "review": {
+    "status": "draft",
+    "method": "Manual visual landmarks in Neon-selected, SHA-256 identified plate 37 photograph",
+    "limitations": [
+      "Approximate visual landmarks, not pixel-accurate tracing or expert review.",
+      "Interior shapes describe visible colour regions, not identified embroidery stitches.",
+      "No regional community, botanical identity, physical scale or stitch count established.",
+      "Petal interiors are approximate visible colour regions, not inferred botanical petal boundaries or thread fills."
+    ]
+  },
+  "elements": [
+    {
+      "id": "stem-left",
+      "hypothesis": "flower attachment stem",
+      "confidence": 0.55,
+      "paths": [
+        [
+          [
+            405,
+            292
+          ],
+          [
+            416,
+            310
+          ],
+          [
+            428,
+            326
+          ],
+          [
+            437,
+            333
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "manually observed contour/centreline; source plate 37 pixels",
+      "ports": {
+        "flower": [
+          437,
+          333
+        ],
+        "root": [
+          405,
+          292
+        ]
+      }
+    },
+    {
+      "id": "flower-left",
+      "hypothesis": "rounded lobed flower envelope",
+      "confidence": 0.55,
+      "paths": [
+        [
+          [
+            437,
+            333
+          ],
+          [
+            448,
+            317
+          ],
+          [
+            468,
+            307
+          ],
+          [
+            480,
+            314
+          ],
+          [
+            492,
+            307
+          ],
+          [
+            516,
+            316
+          ],
+          [
+            529,
+            335
+          ],
+          [
+            539,
+            345
+          ],
+          [
+            532,
+            371
+          ],
+          [
+            517,
+            385
+          ],
+          [
+            493,
+            400
+          ],
+          [
+            478,
+            391
+          ],
+          [
+            464,
+            401
+          ],
+          [
+            446,
+            390
+          ],
+          [
+            427,
+            368
+          ],
+          [
+            432,
+            345
+          ],
+          [
+            437,
+            333
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "manually observed contour/centreline; source plate 37 pixels",
+      "ports": {
+        "left": [
+          437,
+          333
+        ],
+        "right": [
+          532,
+          371
+        ]
+      }
+    },
+    {
+      "id": "flower-left-inset",
+      "hypothesis": "brown central inset",
+      "confidence": 0.55,
+      "paths": [
+        [
+          [
+            460,
+            344
+          ],
+          [
+            476,
+            340
+          ],
+          [
+            494,
+            341
+          ],
+          [
+            512,
+            352
+          ],
+          [
+            502,
+            367
+          ],
+          [
+            482,
+            373
+          ],
+          [
+            465,
+            367
+          ],
+          [
+            458,
+            356
+          ],
+          [
+            460,
+            344
+          ]
+        ]
+      ],
+      "parentElementId": "flower-left",
+      "evidence": "manually observed contour/centreline; source plate 37 pixels"
+    },
+    {
+      "id": "stem-band",
+      "hypothesis": "lower curved connecting stem",
+      "confidence": 0.55,
+      "paths": [
+        [
+          [
+            532,
+            371
+          ],
+          [
+            584,
+            385
+          ],
+          [
+            643,
+            393
+          ],
+          [
+            718,
+            397
+          ],
+          [
+            772,
+            391
+          ],
+          [
+            815,
+            382
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "manually observed contour/centreline; source plate 37 pixels",
+      "ports": {
+        "left": [
+          532,
+          371
+        ],
+        "right": [
+          815,
+          382
+        ],
+        "budBranch": [
+          772,
+          391
+        ]
+      }
+    },
+    {
+      "id": "flower-right",
+      "hypothesis": "rounded lobed flower envelope",
+      "confidence": 0.55,
+      "paths": [
+        [
+          [
+            815,
+            382
+          ],
+          [
+            818,
+            362
+          ],
+          [
+            833,
+            349
+          ],
+          [
+            849,
+            351
+          ],
+          [
+            867,
+            340
+          ],
+          [
+            879,
+            344
+          ],
+          [
+            887,
+            349
+          ],
+          [
+            902,
+            347
+          ],
+          [
+            911,
+            361
+          ],
+          [
+            910,
+            385
+          ],
+          [
+            903,
+            397
+          ],
+          [
+            893,
+            421
+          ],
+          [
+            876,
+            425
+          ],
+          [
+            865,
+            431
+          ],
+          [
+            848,
+            425
+          ],
+          [
+            832,
+            426
+          ],
+          [
+            820,
+            415
+          ],
+          [
+            815,
+            398
+          ],
+          [
+            815,
+            382
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "manually observed contour/centreline; source plate 37 pixels",
+      "ports": {
+        "stem": [
+          815,
+          382
+        ]
+      }
+    },
+    {
+      "id": "flower-right-inset",
+      "hypothesis": "brown central inset",
+      "confidence": 0.55,
+      "paths": [
+        [
+          [
+            839,
+            379
+          ],
+          [
+            853,
+            372
+          ],
+          [
+            879,
+            371
+          ],
+          [
+            892,
+            378
+          ],
+          [
+            889,
+            389
+          ],
+          [
+            871,
+            396
+          ],
+          [
+            853,
+            395
+          ],
+          [
+            840,
+            388
+          ],
+          [
+            839,
+            379
+          ]
+        ]
+      ],
+      "parentElementId": "flower-right",
+      "evidence": "manually observed contour/centreline; source plate 37 pixels"
+    },
+    {
+      "id": "stem-bud",
+      "hypothesis": "upright bud attachment stem",
+      "confidence": 0.55,
+      "paths": [
+        [
+          [
+            772,
+            391
+          ],
+          [
+            768,
+            357
+          ],
+          [
+            762,
+            312
+          ],
+          [
+            753,
+            274
+          ],
+          [
+            750,
+            261
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "manually observed contour/centreline; source plate 37 pixels",
+      "ports": {
+        "base": [
+          772,
+          391
+        ],
+        "tip": [
+          750,
+          261
+        ]
+      }
+    },
+    {
+      "id": "bud",
+      "hypothesis": "oval terminal bud-like unit",
+      "confidence": 0.55,
+      "paths": [
+        [
+          [
+            750,
+            261
+          ],
+          [
+            731,
+            259
+          ],
+          [
+            729,
+            244
+          ],
+          [
+            738,
+            233
+          ],
+          [
+            751,
+            229
+          ],
+          [
+            761,
+            237
+          ],
+          [
+            763,
+            248
+          ],
+          [
+            750,
+            261
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "manually observed contour/centreline; source plate 37 pixels",
+      "ports": {
+        "stem": [
+          750,
+          261
+        ]
+      }
+    },
+    {
+      "id": "flower-radial",
+      "hypothesis": "large multi-lobed radial flower envelope",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            270,
+            112
+          ],
+          [
+            276,
+            85
+          ],
+          [
+            281,
+            56
+          ],
+          [
+            315,
+            43
+          ],
+          [
+            352,
+            47
+          ],
+          [
+            369,
+            73
+          ],
+          [
+            386,
+            106
+          ],
+          [
+            415,
+            114
+          ],
+          [
+            435,
+            140
+          ],
+          [
+            435,
+            174
+          ],
+          [
+            458,
+            179
+          ],
+          [
+            474,
+            203
+          ],
+          [
+            474,
+            226
+          ],
+          [
+            459,
+            240
+          ],
+          [
+            429,
+            238
+          ],
+          [
+            423,
+            269
+          ],
+          [
+            405,
+            292
+          ],
+          [
+            382,
+            306
+          ],
+          [
+            377,
+            340
+          ],
+          [
+            344,
+            366
+          ],
+          [
+            305,
+            364
+          ],
+          [
+            279,
+            353
+          ],
+          [
+            273,
+            324
+          ],
+          [
+            244,
+            317
+          ],
+          [
+            229,
+            298
+          ],
+          [
+            232,
+            274
+          ],
+          [
+            244,
+            251
+          ],
+          [
+            225,
+            241
+          ],
+          [
+            218,
+            219
+          ],
+          [
+            225,
+            194
+          ],
+          [
+            242,
+            182
+          ],
+          [
+            225,
+            170
+          ],
+          [
+            218,
+            145
+          ],
+          [
+            219,
+            124
+          ],
+          [
+            243,
+            119
+          ],
+          [
+            270,
+            112
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "manually observed outline/centreline in plate 37; approximate source-pixel landmarks",
+      "ports": {
+        "lower": [
+          405,
+          292
+        ],
+        "upper": [
+          415,
+          114
+        ]
+      }
+    },
+    {
+      "id": "flower-radial-inset",
+      "hypothesis": "central region of radial flower",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            304,
+            207
+          ],
+          [
+            314,
+            197
+          ],
+          [
+            330,
+            199
+          ],
+          [
+            340,
+            213
+          ],
+          [
+            331,
+            228
+          ],
+          [
+            313,
+            229
+          ],
+          [
+            301,
+            218
+          ],
+          [
+            304,
+            207
+          ]
+        ]
+      ],
+      "parentElementId": "flower-radial",
+      "evidence": "manually observed outline/centreline in plate 37; approximate source-pixel landmarks"
+    },
+    {
+      "id": "stem-top",
+      "hypothesis": "upper curved flower connector",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            415,
+            114
+          ],
+          [
+            453,
+            114
+          ],
+          [
+            490,
+            106
+          ],
+          [
+            534,
+            99
+          ],
+          [
+            582,
+            95
+          ],
+          [
+            611,
+            98
+          ],
+          [
+            628,
+            106
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "manually observed outline/centreline in plate 37; approximate source-pixel landmarks",
+      "ports": {
+        "left": [
+          415,
+          114
+        ],
+        "right": [
+          628,
+          106
+        ]
+      }
+    },
+    {
+      "id": "flower-hanging",
+      "hypothesis": "hanging multi-lobed flower envelope",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            628,
+            106
+          ],
+          [
+            616,
+            101
+          ],
+          [
+            582,
+            105
+          ],
+          [
+            548,
+            118
+          ],
+          [
+            521,
+            133
+          ],
+          [
+            528,
+            153
+          ],
+          [
+            545,
+            169
+          ],
+          [
+            574,
+            178
+          ],
+          [
+            591,
+            175
+          ],
+          [
+            597,
+            157
+          ],
+          [
+            614,
+            151
+          ],
+          [
+            602,
+            177
+          ],
+          [
+            587,
+            204
+          ],
+          [
+            584,
+            225
+          ],
+          [
+            593,
+            237
+          ],
+          [
+            615,
+            244
+          ],
+          [
+            637,
+            246
+          ],
+          [
+            641,
+            237
+          ],
+          [
+            641,
+            215
+          ],
+          [
+            652,
+            203
+          ],
+          [
+            664,
+            191
+          ],
+          [
+            677,
+            207
+          ],
+          [
+            681,
+            238
+          ],
+          [
+            694,
+            258
+          ],
+          [
+            703,
+            257
+          ],
+          [
+            697,
+            235
+          ],
+          [
+            703,
+            211
+          ],
+          [
+            710,
+            179
+          ],
+          [
+            700,
+            163
+          ],
+          [
+            691,
+            151
+          ],
+          [
+            687,
+            132
+          ],
+          [
+            675,
+            112
+          ],
+          [
+            653,
+            99
+          ],
+          [
+            639,
+            102
+          ],
+          [
+            628,
+            106
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "manually observed outline/centreline in plate 37; approximate source-pixel landmarks",
+      "ports": {
+        "top": [
+          628,
+          106
+        ]
+      }
+    },
+    {
+      "id": "flower-hanging-inset",
+      "hypothesis": "round region at hanging flower head",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            647,
+            115
+          ],
+          [
+            662,
+            112
+          ],
+          [
+            675,
+            121
+          ],
+          [
+            677,
+            130
+          ],
+          [
+            669,
+            139
+          ],
+          [
+            656,
+            141
+          ],
+          [
+            645,
+            133
+          ],
+          [
+            642,
+            124
+          ],
+          [
+            647,
+            115
+          ]
+        ]
+      ],
+      "parentElementId": "flower-hanging",
+      "evidence": "manually observed outline/centreline in plate 37; approximate source-pixel landmarks"
+    },
+    {
+      "id": "flower-radial-petal-inset-upper",
+      "hypothesis": "visible brown petal-interior region (upper)",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            302,
+            88
+          ],
+          [
+            322,
+            80
+          ],
+          [
+            342,
+            92
+          ],
+          [
+            334,
+            126
+          ],
+          [
+            321,
+            161
+          ],
+          [
+            310,
+            133
+          ],
+          [
+            302,
+            88
+          ]
+        ]
+      ],
+      "parentElementId": "flower-radial",
+      "evidence": "manual draft source-pixel tracing of the brown interior visible in the large radial flower; no stitch fill or botanical identity inferred"
+    },
+    {
+      "id": "flower-radial-petal-inset-upper-right",
+      "hypothesis": "visible brown petal-interior region (upper-right)",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            349,
+            147
+          ],
+          [
+            375,
+            117
+          ],
+          [
+            398,
+            117
+          ],
+          [
+            411,
+            133
+          ],
+          [
+            400,
+            151
+          ],
+          [
+            369,
+            177
+          ],
+          [
+            349,
+            184
+          ],
+          [
+            349,
+            147
+          ]
+        ]
+      ],
+      "parentElementId": "flower-radial",
+      "evidence": "manual draft source-pixel tracing of the brown interior visible in the large radial flower; no stitch fill or botanical identity inferred"
+    },
+    {
+      "id": "flower-radial-petal-inset-right",
+      "hypothesis": "visible brown petal-interior region (right)",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            360,
+            199
+          ],
+          [
+            392,
+            185
+          ],
+          [
+            422,
+            187
+          ],
+          [
+            446,
+            200
+          ],
+          [
+            452,
+            213
+          ],
+          [
+            423,
+            216
+          ],
+          [
+            381,
+            214
+          ],
+          [
+            360,
+            207
+          ],
+          [
+            360,
+            199
+          ]
+        ]
+      ],
+      "parentElementId": "flower-radial",
+      "evidence": "manual draft source-pixel tracing of the brown interior visible in the large radial flower; no stitch fill or botanical identity inferred"
+    },
+    {
+      "id": "flower-radial-petal-inset-lower-right",
+      "hypothesis": "visible brown petal-interior region (lower-right)",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            351,
+            242
+          ],
+          [
+            378,
+            247
+          ],
+          [
+            395,
+            265
+          ],
+          [
+            388,
+            287
+          ],
+          [
+            363,
+            285
+          ],
+          [
+            345,
+            260
+          ],
+          [
+            351,
+            242
+          ]
+        ]
+      ],
+      "parentElementId": "flower-radial",
+      "evidence": "manual draft source-pixel tracing of the brown interior visible in the large radial flower; no stitch fill or botanical identity inferred"
+    },
+    {
+      "id": "flower-radial-petal-inset-lower",
+      "hypothesis": "visible brown petal-interior region (lower)",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            303,
+            256
+          ],
+          [
+            327,
+            278
+          ],
+          [
+            345,
+            308
+          ],
+          [
+            346,
+            336
+          ],
+          [
+            326,
+            338
+          ],
+          [
+            301,
+            327
+          ],
+          [
+            290,
+            311
+          ],
+          [
+            294,
+            289
+          ],
+          [
+            303,
+            256
+          ]
+        ]
+      ],
+      "parentElementId": "flower-radial",
+      "evidence": "manual draft source-pixel tracing of the brown interior visible in the large radial flower; no stitch fill or botanical identity inferred"
+    },
+    {
+      "id": "flower-radial-petal-inset-lower-left",
+      "hypothesis": "visible brown petal-interior region (lower-left)",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            274,
+            231
+          ],
+          [
+            288,
+            242
+          ],
+          [
+            287,
+            265
+          ],
+          [
+            270,
+            284
+          ],
+          [
+            252,
+            290
+          ],
+          [
+            241,
+            279
+          ],
+          [
+            249,
+            258
+          ],
+          [
+            274,
+            231
+          ]
+        ]
+      ],
+      "parentElementId": "flower-radial",
+      "evidence": "manual draft source-pixel tracing of the brown interior visible in the large radial flower; no stitch fill or botanical identity inferred"
+    },
+    {
+      "id": "flower-radial-petal-inset-left",
+      "hypothesis": "visible brown petal-interior region (left)",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            276,
+            203
+          ],
+          [
+            260,
+            190
+          ],
+          [
+            240,
+            199
+          ],
+          [
+            233,
+            215
+          ],
+          [
+            242,
+            230
+          ],
+          [
+            260,
+            222
+          ],
+          [
+            276,
+            203
+          ]
+        ]
+      ],
+      "parentElementId": "flower-radial",
+      "evidence": "manual draft source-pixel tracing of the brown interior visible in the large radial flower; no stitch fill or botanical identity inferred"
+    },
+    {
+      "id": "flower-radial-petal-inset-upper-left",
+      "hypothesis": "visible brown petal-interior region (upper-left)",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            267,
+            172
+          ],
+          [
+            245,
+            154
+          ],
+          [
+            233,
+            137
+          ],
+          [
+            249,
+            137
+          ],
+          [
+            281,
+            146
+          ],
+          [
+            300,
+            178
+          ],
+          [
+            286,
+            176
+          ],
+          [
+            267,
+            172
+          ]
+        ]
+      ],
+      "parentElementId": "flower-radial",
+      "evidence": "manual draft source-pixel tracing of the brown interior visible in the large radial flower; no stitch fill or botanical identity inferred"
+    }
+  ],
+  "connections": [
+    {
+      "from": "stem-left",
+      "fromPort": "flower",
+      "to": "flower-left",
+      "toPort": "left",
+      "tolerancePx": 0,
+      "evidence": "draft shared attachment landmark in the observed green stem/flower silhouette; not stitch connectivity"
+    },
+    {
+      "from": "flower-left",
+      "fromPort": "right",
+      "to": "stem-band",
+      "toPort": "left",
+      "tolerancePx": 0,
+      "evidence": "draft shared attachment landmark in the observed green stem/flower silhouette; not stitch connectivity"
+    },
+    {
+      "from": "stem-band",
+      "fromPort": "right",
+      "to": "flower-right",
+      "toPort": "stem",
+      "tolerancePx": 0,
+      "evidence": "draft shared attachment landmark in the observed green stem/flower silhouette; not stitch connectivity"
+    },
+    {
+      "from": "stem-band",
+      "fromPort": "budBranch",
+      "to": "stem-bud",
+      "toPort": "base",
+      "tolerancePx": 0,
+      "evidence": "draft shared attachment landmark in the observed green stem/flower silhouette; not stitch connectivity"
+    },
+    {
+      "from": "stem-bud",
+      "fromPort": "tip",
+      "to": "bud",
+      "toPort": "stem",
+      "tolerancePx": 0,
+      "evidence": "draft shared attachment landmark in the observed green stem/flower silhouette; not stitch connectivity"
+    },
+    {
+      "from": "flower-radial",
+      "fromPort": "lower",
+      "to": "stem-left",
+      "toPort": "root",
+      "tolerancePx": 0,
+      "evidence": "draft shared stem/flower attachment landmark in plate 37; not stitch connectivity"
+    },
+    {
+      "from": "flower-radial",
+      "fromPort": "upper",
+      "to": "stem-top",
+      "toPort": "left",
+      "tolerancePx": 0,
+      "evidence": "draft shared stem/flower attachment landmark in plate 37; not stitch connectivity"
+    },
+    {
+      "from": "stem-top",
+      "fromPort": "right",
+      "to": "flower-hanging",
+      "toPort": "top",
+      "tolerancePx": 0,
+      "evidence": "draft shared stem/flower attachment landmark in plate 37; not stitch connectivity"
+    }
+  ]
+}
