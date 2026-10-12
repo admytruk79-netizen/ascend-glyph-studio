@@ -28,7 +28,7 @@ jobs:
     env:
       MET_LIMIT: ${{ inputs.limit || '40' }}
       MET_QUERY: ${{ inputs.query || 'embroidery' }}
-      MET_MAX_CANDIDATES: '2000'
+      MET_MAX_CANDIDATES: '250'
       MET_OUTPUT: data/historical-baseline
     steps:
       - uses: actions/checkout@v4
@@ -39,6 +39,14 @@ jobs:
       - name: Fetch public-domain museum imagery and fit baseline
         run: npx tsx scripts/train-historical-image-baseline.ts
         timeout-minutes: 22
+      - name: Report ingestion diagnostics
+        if: always()
+        run: |
+          if test -f data/historical-baseline/ingestion-report.json; then
+            cat data/historical-baseline/ingestion-report.json
+          else
+            echo "No ingestion report was produced; failure occurred before ingestion finished."
+          fi
       - name: Check model and provenance manifest
         run: |
           node -e "const fs=require('fs');const m=JSON.parse(fs.readFileSync('data/historical-baseline/model.json'));const a=JSON.parse(fs.readFileSync('data/historical-baseline/manifest.json'));if(m.examples<3||a.length!==m.examples||a.some(x=>x.commercialDerivation!==false||!x.sha256))process.exit(1);console.log('verified examples',m.examples)"
