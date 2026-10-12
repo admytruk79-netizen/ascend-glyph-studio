@@ -73,14 +73,44 @@ async function features(image:Buffer){
 }
 async function main(){
  await mkdir(out,{recursive:true});
- const search=await json(base+"/v1.1/search?"+new URLSearchParams({q:query,hasImages:"true"}));
+ // Two independent open-access museum catalogs. A retired search endpoint
+ // must not prevent the entire training run from collecting real images.
+ const candidates:Array<{source:"met"|"artic";id:number}>=[];
+ const sourceErrors:Record<string,string>={};
+ try{
+  const search=await json(base+"/v1.1/search?"+new URLSearchParams({q:query,hasImages:"true"}));
+  for(const id of ((search.objectIDs??[]) as number[]).slice(0,maxCandidates))candidates.push({source:"met",id});
+ }catch(error){sourceErrors.met=String(error);console.error("Met search unavailable",error);}
+ try{
+  const pages=Math.min(5,Math.ceil(maxCandidates/100));
+  for(let page=1;page<=pages;page++){
+   const url="https://api.artic.edu/api/v1/artworks/search?"+new URLSearchParams({q:query,fields:"id",limit:"100",page:String(page)});
+   const result=await json(url);
+   for(const item of result.data??[])if(Number.isInteger(item.id))candidates.push({source:"artic",id:item.id});
+   if(!(result.data?.length))break;
+  }
+ }catch(error){sourceErrors.artic=String(error);console.error("Art Institute search unavailable",error);}
  const rows:any[]=[];const hashes=new Set<string>();
  const rejectionCounts:Record<string,number>={};
  const reject=(reason:string)=>{rejectionCounts[reason]=(rejectionCounts[reason]??0)+1;};
- for(const id of ((search.objectIDs??[]) as number[]).slice(0,maxCandidates)){
+ for(const candidate of candidates){
   if(rows.length>=limit)break;
+  const {id,source}=candidate;
   try{
-   const obj=await json(base+"/v1/objects/"+id);
+   const obj=source==="met"
+    ? await json(base+"/v1/objects/"+id)
+    : await (async()=>{
+       const response=await json("https://api.artic.edu/api/v1/artworks/"+id+"?"+new URLSearchParams({fields:"id,title,date_display,culture,medium_display,image_id,is_public_domain"}));
+       const a=response.data;
+       return {
+        isPublicDomain:a?.is_public_domain===true,
+        primaryImage:a?.image_id?"https://www.artic.edu/iiif/2/"+encodeURIComponent(a.image_id)+"/full/600,/0/default.jpg":"",
+        primaryImageSmall:a?.image_id?"https://www.artic.edu/iiif/2/"+encodeURIComponent(a.image_id)+"/full/600,/0/default.jpg":"",
+        objectDate:a?.date_display,
+        objectURL:"https://www.artic.edu/artworks/"+id,
+        title:a?.title,culture:a?.culture,medium:a?.medium_display
+       };
+      })();
    if(obj.isPublicDomain!==true||!obj.primaryImage||!obj.objectDate){reject("ineligible-metadata");continue;}
    // Cultural access cannot be inferred from CC0. Unreviewed images are research-only.
    const res=await fetch(obj.primaryImageSmall||obj.primaryImage,{signal:AbortSignal.timeout(20000)});
@@ -90,15 +120,15 @@ async function main(){
    const hash=createHash("sha256").update(bytes).digest("hex");
    if(hashes.has(hash)){reject("duplicate-image");continue;}
    const vector=await features(bytes);hashes.add(hash);
-   rows.push({id,objectURL:obj.objectURL,imageURL:obj.primaryImage,title:obj.title,period:obj.objectDate,culture:obj.culture,medium:obj.medium,institution:"Metropolitan Museum of Art",rights:"CC0 per object isPublicDomain",culturalAccess:"unreviewed",commercialDerivation:false,sha256:hash,features:vector});
+   rows.push({id,objectURL:obj.objectURL,imageURL:obj.primaryImage,title:obj.title,period:obj.objectDate,culture:obj.culture,medium:obj.medium,institution:source==="met"?"Metropolitan Museum of Art":"Art Institute of Chicago",rights:source==="met"?"Met Open Access public-domain flag":"Art Institute of Chicago public-domain flag",culturalAccess:"unreviewed",commercialDerivation:false,sha256:hash,features:vector});
   }catch(error){reject("fetch-or-analysis-error");console.error("skip",id,String(error));}
   await sleep(180);
  }
- await writeFile(out+"/ingestion-report.json",JSON.stringify({query,maxCandidates,accepted:rows.length,rejectionCounts},null,2));
+ await writeFile(out+"/ingestion-report.json",JSON.stringify({query,maxCandidates,accepted:rows.length,candidates:candidates.length,sourceErrors,rejectionCounts},null,2));
  if(rows.length<3)throw Error("Insufficient eligible images for baseline: "+rows.length+" from "+maxCandidates+" candidates; see ingestion-report.json");
  const k=Math.min(6,Math.max(2,Math.floor(Math.sqrt(rows.length/2))));
  const trained=fitKmeans(rows.map(r=>r.features),k);
- const model={schema:"ascend.historical-image-baseline.v2",method:"grayscale-histogram-gradient-symmetry-periodicity-occupancy-kmeans",source:"Met Open Access",query,examples:rows.length,k,centers:trained.centers,limitations:["research-only; cultural access unreviewed","not generative","no canonical ASCEND geometry learned","not a production-approved model"]};
+ const model={schema:"ascend.historical-image-baseline.v2",method:"grayscale-histogram-gradient-symmetry-periodicity-occupancy-kmeans",source:"Met Open Access and Art Institute of Chicago public-domain collections",query,examples:rows.length,k,centers:trained.centers,limitations:["research-only; cultural access unreviewed","not generative","no canonical ASCEND geometry learned","not a production-approved model"]};
  await writeFile(out+"/model.json",JSON.stringify(model,null,2));
  await writeFile(out+"/manifest.json",JSON.stringify(rows.map((r,i)=>({...r,cluster:trained.labels[i]})),null,2));
  console.log("TRAINED BASELINE",JSON.stringify({examples:rows.length,clusters:k,output:out}));
