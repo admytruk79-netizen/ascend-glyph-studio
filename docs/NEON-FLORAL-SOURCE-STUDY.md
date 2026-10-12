@@ -31,3 +31,5 @@ LIMIT 12;
 ```
 
 Next reconstruction work should use these source-linked structures, after per-source rights verification: segment the flower and stem units, retain colour/texture layers, annotate contacts and gaps, recover the border/bouquet grammar, and compare with an independently reviewed reference. Do not substitute the contaminated tradition labels or pooled pending corpus-canonical candidates for canonical ASCEND geometry.
+
+A subsequent reference-use review and partial plate-37 reconstruction are documented in `MOTIF-RECONSTRUCTION-INCREMENT-9.md`. It relies on the retained per-item public-domain declaration and 1902 publication for US reference use; it does not claim that the unavailable live Commons check succeeded. Plates 6 and 27 have not been admitted as reconstructed fixtures by that assessment.
