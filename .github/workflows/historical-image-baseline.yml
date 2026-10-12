@@ -16,6 +16,9 @@ on:
     paths:
       - scripts/train-historical-image-baseline.ts
       - .github/workflows/historical-image-baseline.yml
+concurrency:
+  group: historical-image-baseline-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   train:
     runs-on: ubuntu-latest
