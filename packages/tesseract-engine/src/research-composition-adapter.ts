@@ -39,5 +39,5 @@ export function researchRowToObservation(row:AnalyzedResearchRow):ImageObservati
 export function fitPriorFromAnalyzedRows(rows:AnalyzedResearchRow[],minimumEvidence=3):{prior:LearnedRelationPrior|undefined;accepted:number;rejected:number}{
  const observations=rows.map(researchRowToObservation).filter((x):x is ImageObservation=>x!==undefined);
  const prior=fitCompositionPrior(observations,minimumEvidence);
- return {prior,accepted:prior?.evidenceImages??0,rejected:rows.length-observations.length};
+ return {prior,accepted:new Set(observations.map(o=>o.sourceRef)).size,rejected:rows.length-observations.length};
 }
