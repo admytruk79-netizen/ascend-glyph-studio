@@ -14,6 +14,7 @@ import {critiqueFinalSvg,type FinalSvgCritique} from "./final-svg-critic";
 import {compileMasterComposition} from "./master-composition";
 import {selectVisuallyDiverse} from "./design-fingerprint";
 import type {LearnedRelationPrior} from "./learned-relation-prior";
+import {fitCompositionPrior} from "./composition-prior-fit";
 import {mergeSashEvidencePrior,sashGrammarFor} from "./sash-evidence-grammar";
 import type {StructuralFeedback} from "./structural-feedback";
 import {deriveZoneConstructionEnvelope,type ConstructionIntent} from "./construction-envelope";
@@ -174,7 +175,8 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  const placementTypes=input.placement?[input.placement,"garment","shirt","tunic","textile","textile-family","design-cloth","wrapper","sash","leather"]:undefined;
  const cultural=culturalSignals(cultureIds,placementTypes);
  const sashGrammar=sashGrammarFor(cultureIds);
- const relationPrior=mergeSashEvidencePrior(input.learnedGuidance?.relationPrior,sashGrammar);
+ const evidencePrior=input.learnedGuidance?.relationPrior??fitCompositionPrior(input.visualCorpus??[]);
+ const relationPrior=mergeSashEvidencePrior(evidencePrior,sashGrammar);
  const culturalConcepts=cultural.features.map(([id,w])=>({id:`structure:${id}`,weight:Math.min(1,.3+w/4)}));
  const corpusConcepts=(input.corpusSignals??[]).slice(0,96).map(s=>({id:`corpus:${s.id}`,weight:Math.max(.15,Math.min(1,s.weight))}));
  const learnedConcepts=(input.learnedGuidance?.tags??[]).map(x=>({id:`learned-structure:${x.id}`,weight:Math.max(.15,Math.min(1,x.weight))}));
