@@ -13,8 +13,8 @@
   "Ukraine textile"
  ],
  "counts": {
-  "no-ukrainian-attribution-in-catalogue": 83,
-  "not-public-domain": 50,
+  "no-ukrainian-attribution-in-catalogue": 86,
+  "not-public-domain": 52,
   "not-textile": 3
  },
  "objects": [
@@ -1013,6 +1013,48 @@
    "status": "no-ukrainian-attribution-in-catalogue"
   },
   {
+   "objectId": 228992,
+   "title": "The Bible, The Book of Common Prayer, The Book of Psalms with Royal Stuart arms",
+   "culture": "",
+   "country": "",
+   "region": "",
+   "date": "ca. 1624",
+   "medium": "Satin worked with silk and metal thread.",
+   "classification": "Textiles-Embroidered",
+   "objectUrl": "https://www.metmuseum.org/art/collection/search/228992",
+   "imageUrl": "https://images.metmuseum.org/CRDImages/es/original/DP151872.jpg",
+   "uaEvidence": null,
+   "status": "no-ukrainian-attribution-in-catalogue"
+  },
+  {
+   "objectId": 229005,
+   "title": "Panel with Biblical vignettes",
+   "culture": "",
+   "country": "",
+   "region": "",
+   "date": "1667",
+   "medium": "Canvas worked with wool, silk, and metal thread, glass beads, mica, silk satin; long-and-short, stem, split, chain, knots, cross, and couching stitches",
+   "classification": "Textiles-Embroidered",
+   "objectUrl": "https://www.metmuseum.org/art/collection/search/229005",
+   "imageUrl": "https://images.metmuseum.org/CRDImages/es/original/DP159850.jpg",
+   "uaEvidence": null,
+   "status": "no-ukrainian-attribution-in-catalogue"
+  },
+  {
+   "objectId": 229029,
+   "title": "Sampler",
+   "culture": "",
+   "country": "",
+   "region": "",
+   "date": "mid-17th century",
+   "medium": "Canvas worked with silk and metal thread; tent, cross, back, plaited braid, knots, laid work, and detached buttonhole stitches",
+   "classification": "Textiles-Embroidered",
+   "objectUrl": "https://www.metmuseum.org/art/collection/search/229029",
+   "imageUrl": "https://images.metmuseum.org/CRDImages/es/original/DP152993.jpg",
+   "uaEvidence": null,
+   "status": "no-ukrainian-attribution-in-catalogue"
+  },
+  {
    "objectId": 229030,
    "title": "Charles I",
    "culture": "",
@@ -1573,6 +1615,20 @@
    "status": "not-public-domain"
   },
   {
+   "objectId": 755224,
+   "title": "Roger Peckinpaugh, New York, American League from Baseball Players Felt Blanket series (B18)",
+   "culture": "",
+   "country": "",
+   "region": "",
+   "date": "1914",
+   "medium": "Printed felt",
+   "classification": "Prints",
+   "objectUrl": "https://www.metmuseum.org/art/collection/search/755224",
+   "imageUrl": "",
+   "uaEvidence": null,
+   "status": "not-public-domain"
+  },
+  {
    "objectId": 755261,
    "title": "Earl Hamilton, St. Louis, American League from Baseball Players Felt Blanket series (B18)",
    "culture": "",
@@ -1666,6 +1722,20 @@
    "medium": "Printed felt",
    "classification": "Prints",
    "objectUrl": "https://www.metmuseum.org/art/collection/search/755662",
+   "imageUrl": "",
+   "uaEvidence": null,
+   "status": "not-public-domain"
+  },
+  {
+   "objectId": 755665,
+   "title": "Casey Stengel, Brooklyn, National League from Baseball Players Felt Blanket series (B18)",
+   "culture": "",
+   "country": "",
+   "region": "",
+   "date": "1914",
+   "medium": "Printed felt",
+   "classification": "Prints",
+   "objectUrl": "https://www.metmuseum.org/art/collection/search/755665",
    "imageUrl": "",
    "uaEvidence": null,
    "status": "not-public-domain"
