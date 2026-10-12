@@ -5,6 +5,7 @@ on:
     paths:
       - 'packages/tesseract-engine/**'
       - 'scripts/benchmark-motif*.ts'
+      - 'scripts/benchmark-floral-variety.ts'
       - 'data/research/motif-annotations/**'
       - 'data/research/motif-references/**'
       - '.github/workflows/motif-reconstruction.yml'

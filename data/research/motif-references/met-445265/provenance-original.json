@@ -1,0 +1,21 @@
+{
+  "schema": "ascend.motif-provenance.v1",
+  "id": "met-445265-original",
+  "source": "https://www.metmuseum.org/art/collection/search/445265",
+  "creator": null,
+  "community": null,
+  "culturalContext": "Ottoman brocade, attributed to Bursa, Turkey, 16th century. Visual motif names are descriptive hypotheses, not botanical identification.",
+  "retrievedAt": "2026-10-12T00:00:00Z",
+  "originalSha256": "7cf10d3a774e68953e24e881babb7a70293571d923559aaf9b57f21801a2a3c8",
+  "permission": {
+    "status": "verified",
+    "evidence": "Retained Met object API 445265: isPublicDomain=true; Met Open Access CC0 policy https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+    "purposes": [
+      "analysis",
+      "reconstruction"
+    ]
+  },
+  "access": "documented-public",
+  "confidence": 0.8,
+  "transformations": []
+}
