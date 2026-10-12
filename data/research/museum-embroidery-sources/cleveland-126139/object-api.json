@@ -1,0 +1,1389 @@
+{
+  "id": 126139,
+  "accession_number": "1948.352",
+  "share_license_status": "CC0",
+  "tombstone": "Altar Cloth, c. 1350. Germany, Altenberg on the Lahn, Premonstratensian Convent, 14th century. Embroidery: linen; overall: 154.3 x 374.5 cm (60 3/4 x 147 7/16 in.). The Cleveland Museum of Art, Purchase from the J. H. Wade Fund, 1948.352",
+  "current_location": null,
+  "title": "Altar Cloth",
+  "creation_date": "c. 1350",
+  "creation_date_earliest": 1345,
+  "creation_date_latest": 1355,
+  "artists_tags": [],
+  "culture": [
+    "Germany, Altenberg on the Lahn, Premonstratensian Convent, 14th century"
+  ],
+  "technique": "embroidery: linen",
+  "support_materials": [],
+  "department": "Textiles",
+  "collection": "T - Ecclesiastical",
+  "type": "Embroidery",
+  "measurements": "Overall: 154.3 x 374.5 cm (60 3/4 x 147 7/16 in.)",
+  "dimensions": {
+    "overall": {
+      "height": 1.543,
+      "height_inch": 60,
+      "height_inch_fraction": 0.75,
+      "width": 3.745,
+      "width_inch": 147,
+      "width_inch_fraction": 0.4375
+    }
+  },
+  "state_of_the_work": null,
+  "edition_of_the_work": null,
+  "copyright": null,
+  "inscriptions": [
+    {
+      "inscription": "various motifs enclosed in quatrefoils with identifying inscriptions in Gothic letters.",
+      "inscription_translation": null,
+      "inscription_remark": null,
+      "sortorder": null
+    }
+  ],
+  "exhibitions": {
+    "current": [
+      {
+        "id": 289562,
+        "title": "Visions of the Divine: Textiles and Manuscripts from Medieval Germany (Manuscript and Textile Rotation) - Gallery 115",
+        "description": "<i>Visions of the Divine: Textiles and Manuscripts from Medieval Germany (Manuscript and Textile Rotation) - Gallery 115</i>. The Cleveland Museum of Art, Cleveland, OH (organizer) (December 14, 2016-December 4, 2017).",
+        "opening_date": "2016-12-14T05:00:00"
+      },
+      {
+        "id": 538151,
+        "title": "Liturgical Textiles from Late Medieval Germany",
+        "description": "<i>Liturgical Textiles from Late Medieval Germany</i>. The Cleveland Museum of Art, Cleveland, OH (organizer) (August 11, 2023-August 4, 2024).",
+        "opening_date": "2023-08-11T04:00:00"
+      }
+    ],
+    "legacy": []
+  },
+  "provenance": [
+    {
+      "description": "Nuns of Altenberg on the Lahn, Hesse, Germany",
+      "citations": [],
+      "footnotes": [],
+      "date": "c. 1350",
+      "sortorder": 1
+    },
+    {
+      "description": "Duke of Solms-Braunfels",
+      "citations": [],
+      "footnotes": [],
+      "date": "1806",
+      "sortorder": 2
+    },
+    {
+      "description": "Ikle Collection, Switzerland, sold to the Cleveland Museum of Art",
+      "citations": [],
+      "footnotes": [],
+      "date": null,
+      "sortorder": 3
+    },
+    {
+      "description": "The Cleveland Museum of Art, Cleveland, OH",
+      "citations": [],
+      "footnotes": [],
+      "date": "1948-",
+      "sortorder": 4
+    }
+  ],
+  "find_spot": null,
+  "related_works": [],
+  "former_accession_numbers": [],
+  "did_you_know": "When lit from behind, the previously hidden details emerge and the complex design becomes evident.",
+  "early_education_description": null,
+  "artlens_description": null,
+  "description": "This large, embroidered altar cloth is one of the rarest, most important medieval church furnishings in existence. It was stitched by nuns in the Premonstratensian Convent in Altenberg on the Lahn River, north of Frankfurt, Germany, and was used to cover the church’s high altar in the weeks<br>leading up to Easter. The cloth is an example of linen embroidery, a specialty of German nuns in the later Middle Ages.<br>The Altenberg monastery church once had valuable furnishings; the high altar retable (a decorated frame with sculptures and paintings on the top of an altar) has survived, the main parts of which are now in the Städel Museum in Frankfurt, Germany.",
+  "external_resources": {
+    "wikidata": [
+      "https://www.wikidata.org/wiki/Q79905410"
+    ],
+    "internet_archive": [
+      "https://archive.org/details/clevelandart-1948.352-altar-cloth"
+    ]
+  },
+  "citations": [
+    {
+      "citation": "Farcy, Louis de.<em> La Broderie, du XI siècle jusqu'à nos jours, d'après des specimens authentiques et les anciens inventaires.</em> 1er (et 2) supplément. 1er (et 2) supplément. Angers: Belhomme, 1900.",
+      "page_number": "p. 49",
+      "url": null
+    },
+    {
+      "citation": "Lehnert, Georg, W. Behncke, E. W. Braun, Moriz Dreger, Otto von Falke, J. Folnesics, Otto Kümmel, Erich Pernice, and Georg Swarzenski. <em>Illustrierte geschichte des Kunstgewerbes.</em> Berlin: M. Oldenbourg, 1907.",
+      "page_number": "vol. 1, p. 343",
+      "url": null
+    },
+    {
+      "citation": "Der Grosse Brockhaus. <em>Grosse Brockhaus</em>. Leipzig: Brockhaus, 1930.",
+      "page_number": "p. 450",
+      "url": null
+    },
+    {
+      "citation": "Kurth, B., \"Genres of European Embroidery in the Middle Ages,\" <em>Ciba Review</em> no. 5 (December 1945).",
+      "page_number": "p. 1810",
+      "url": null
+    },
+    {
+      "citation": "Shepherd, Dorothy G. \"A Romanesque Lenten Cloth from Germany.\" <em>The Bulletin of the Cleveland Museum of Art</em> 40, no. 1 (1953)",
+      "page_number": "pp. 75-5",
+      "url": "https://www.jstor.org/stable/25141848"
+    },
+    {
+      "citation": "The Cleveland Museum of Art. <em>The Cleveland Museum of Art Handbook.</em> Cleveland, OH: The Cleveland Museum of Art, 1958.",
+      "page_number": "Mentioned and Reproduced: cat. no. 144-145",
+      "url": "https://archive.org/details/CMAHandbook1958/page/n38"
+    },
+    {
+      "citation": "Cleveland Museum of Art, and William Mathewson Milliken. <em>The Cleveland Museum of Art. </em>New York: H.N. Abrams, 1958.",
+      "page_number": "p. 11",
+      "url": null
+    },
+    {
+      "citation": "<em>Embroidery</em>, XI (Spring 1960).",
+      "page_number": "pp. 8-10",
+      "url": null
+    },
+    {
+      "citation": "Wilckens, Leonie von, \"Hessische Leinenstickerein des 13. und 14. Jahrhunderts,\"<em> Anzeiger des Germanischen National-Museums</em> (1954-59).",
+      "page_number": "p. 15, fig. 8",
+      "url": "https://journals.ub.uni-heidelberg.de/index.php/azgnm/article/view/38138/31801"
+    },
+    {
+      "citation": "Bober, Harry. \"Medieval Art at Cleveland,\" <em>Apollo </em>(Dec. 1963).",
+      "page_number": null,
+      "url": null
+    },
+    {
+      "citation": "Wagner, Margarete. <em>Sakrale Weisstickereien des Mittelalters.</em> Esslingen: Burgbücherei W. Schneider, 1963.",
+      "page_number": "pp. 26-27, fig. 22-24",
+      "url": null
+    },
+    {
+      "citation": "Schuette, Marie, and Sigrid Müller-Christensen. <em>The Art of Embroidery</em>. London: Thames and Hudson, 1964.",
+      "page_number": "[[. 98-99, fig. 154-57",
+      "url": null
+    },
+    {
+      "citation": "The Cleveland Museum of Art. <em>Handbook of the Cleveland Museum of Art/1966</em>. Cleveland, OH: The Cleveland Museum of Art, 1966.",
+      "page_number": "Reproduced: p. 52",
+      "url": "https://archive.org/details/CMAHandbook1966/page/n76"
+    },
+    {
+      "citation": "The Cleveland Museum of Art. <em>Handbook of the Cleveland Museum of Art/1969</em>. Cleveland, OH: The Cleveland Museum of Art, 1969.",
+      "page_number": "Reproduced: p. 53",
+      "url": "https://archive.org/details/CMAHandbook1969/page/n77"
+    },
+    {
+      "citation": "Clabburn, Pamela, and Helene Von Rosenstiel. <em>The Needleworker's Dictionary</em>. New York: Morrow, 1976.",
+      "page_number": "p. 159",
+      "url": null
+    },
+    {
+      "citation": "The Cleveland Museum of Art. <em>Handbook of the Cleveland Museum of Art/1978</em>. Cleveland, OH: The Cleveland Museum of Art, 1978.",
+      "page_number": "Reproduced: p. 61",
+      "url": "https://archive.org/details/CMAHandbook1978/page/n81"
+    },
+    {
+      "citation": "Dean, Beryl. <em>Embroidery in Religion and Ceremonial. </em>London: Batsford, 1981.",
+      "page_number": "figs. 3-4",
+      "url": null
+    },
+    {
+      "citation": "Aldenkirchen, J., \"Früh-mittelalterliche Leinen-Stickereien,\" <em>Jahrbücher des Vereins Von Alterthumsfreunden im Rheinlande</em>, LXXIX (Bonn, Universitätsdruckerei, 1985).",
+      "page_number": "pp. 260-65",
+      "url": null
+    },
+    {
+      "citation": "Martin Nagy, Rebecca. <em>Textiles in Daily Life in the Middle Ages. </em>Cleveland, Ohio: Cleveland Museum of Art in cooperation with Indiana University Press, 1985.",
+      "page_number": "pp. 24-5",
+      "url": null
+    },
+    {
+      "citation": "Dawson, Barbara. <em>White Work: Embroidery</em>. London: Batsford, 1987.",
+      "page_number": "Contents Page",
+      "url": null
+    },
+    {
+      "citation": "Fliegel, Stephen N. <em>Resplendent Faith: Liturgical Treasuries of the Middle Ages. </em>Kent, Ohio: Kent State University Press, 2009.",
+      "page_number": "p. 71, fig. 60",
+      "url": null
+    },
+    {
+      "citation": "Cleveland Museum of Art, David Franklin, and C. Griffith Mann. <em>Treasures from the Cleveland Museum of Art. </em>Cleveland, OH: Cleveland Museum of Art, 2012.",
+      "page_number": "p. 120-1",
+      "url": null
+    },
+    {
+      "citation": "Seeberg, Stefanie. 2012. \"Women As Makers of Church Decoration: Illustrated Textiles at the Monasteries of Altenberg/Lahn, Rupertsberg, and Heiningen (13th - 14th C.)\". In Martin, Therese, ed. <em>Reassessing the Roles of Women As 'Makers' of Medieval Art and Architecture</em>. Visualising the Middle Ages, V. 7, 1-2. Leiden: Brill, 2012.",
+      "page_number": "vol. 1, chapter 10, p. 355-391",
+      "url": null
+    },
+    {
+      "citation": "Seeberg, Stefanie. Textile Bildwerke im Kirchenraum: Leinenstickereien im Kontext mittelalterlicher Raumausstattungen aus dem Prämonstratenserinnenkloster Altenberg/Lahn. 2014.",
+      "page_number": "p. 214-217",
+      "url": ""
+    },
+    {
+      "citation": "Sander, Jochen. Schaufenster des Himmels: der Altenberger Altar und seine Bildausstattung = Heaven on display : the Altenberg altar and its imagery. 2016.",
+      "page_number": "",
+      "url": ""
+    },
+    {
+      "citation": "Pregla, Barbara, Anja Preiss, and Evemarie Schaper. <em>Die Textilien im Domschatz zu Halberstadt: Bestandskatalog.</em> [Riggisberg, Switzerland]: Abegg-Stiftung, 2025.",
+      "page_number": "Mentioned: p. 85, n. 18; p. 186, n. 6, vol. 4",
+      "url": ""
+    }
+  ],
+  "url": "https://clevelandart.org/art/1948.352",
+  "images": {
+    "annotation": null,
+    "web": {
+      "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_web.jpg",
+      "width": "1263",
+      "height": "491",
+      "filesize": "538888",
+      "filename": "1948.352_web.jpg"
+    },
+    "print": {
+      "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_print.jpg",
+      "width": "3400",
+      "height": "1321",
+      "filesize": "4035767",
+      "filename": "1948.352_print.jpg"
+    },
+    "full": {
+      "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_full.tif",
+      "width": "7000",
+      "height": "2719",
+      "filesize": "57126984",
+      "filename": "1948.352_full.tif"
+    }
+  },
+  "alternate_images": [
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt0_web.jpg",
+        "width": "668",
+        "height": "893",
+        "filesize": "549002"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt0_print.jpg",
+        "width": "2542",
+        "height": "3400",
+        "filesize": "8068059"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt0_full.tif",
+        "width": "4096",
+        "height": "5478",
+        "filesize": "67346732"
+      },
+      "date_created": "2006-10-23T14:55:11",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt1_web.jpg",
+        "width": "684",
+        "height": "893",
+        "filesize": "566103"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt1_print.jpg",
+        "width": "2606",
+        "height": "3400",
+        "filesize": "8262958"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt1_full.tif",
+        "width": "4096",
+        "height": "5344",
+        "filesize": "65699140"
+      },
+      "date_created": "2006-10-23T15:02:04",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt2_web.jpg",
+        "width": "678",
+        "height": "893",
+        "filesize": "547182"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt2_print.jpg",
+        "width": "2583",
+        "height": "3400",
+        "filesize": "8181413"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt2_full.tif",
+        "width": "4096",
+        "height": "5391",
+        "filesize": "66276400"
+      },
+      "date_created": "2006-10-23T15:07:52",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt3_web.jpg",
+        "width": "675",
+        "height": "893",
+        "filesize": "545399"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt3_print.jpg",
+        "width": "2571",
+        "height": "3400",
+        "filesize": "8132661"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt3_full.tif",
+        "width": "4096",
+        "height": "5416",
+        "filesize": "66583444"
+      },
+      "date_created": "2006-10-23T15:09:17",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt4_web.jpg",
+        "width": "664",
+        "height": "893",
+        "filesize": "538387"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt4_print.jpg",
+        "width": "2527",
+        "height": "3400",
+        "filesize": "8143592"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt4_full.tif",
+        "width": "4096",
+        "height": "5512",
+        "filesize": "67763148"
+      },
+      "date_created": "2006-10-23T15:10:48",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt5_web.jpg",
+        "width": "666",
+        "height": "893",
+        "filesize": "558377"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt5_print.jpg",
+        "width": "2536",
+        "height": "3400",
+        "filesize": "8207328"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt5_full.tif",
+        "width": "4096",
+        "height": "5492",
+        "filesize": "67517420"
+      },
+      "date_created": "2006-10-23T15:12:08",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt6_web.jpg",
+        "width": "1263",
+        "height": "842",
+        "filesize": "971333"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt6_print.jpg",
+        "width": "3400",
+        "height": "2267",
+        "filesize": "7730721"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt6_full.tif",
+        "width": "6144",
+        "height": "4096",
+        "filesize": "75528728"
+      },
+      "date_created": "2006-10-23T15:13:45",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt7_web.jpg",
+        "width": "1263",
+        "height": "842",
+        "filesize": "1006280"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt7_print.jpg",
+        "width": "3400",
+        "height": "2267",
+        "filesize": "7534256"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt7_full.tif",
+        "width": "6144",
+        "height": "4096",
+        "filesize": "75530600"
+      },
+      "date_created": "2006-10-23T15:15:06",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt8_web.jpg",
+        "width": "595",
+        "height": "893",
+        "filesize": "492848"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt8_print.jpg",
+        "width": "2267",
+        "height": "3400",
+        "filesize": "7691440"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt8_full.tif",
+        "width": "4096",
+        "height": "6144",
+        "filesize": "75530304"
+      },
+      "date_created": "2006-10-23T15:17:03",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt9_web.jpg",
+        "width": "1263",
+        "height": "842",
+        "filesize": "1064124"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt9_print.jpg",
+        "width": "3400",
+        "height": "2267",
+        "filesize": "7620058"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt9_full.tif",
+        "width": "6144",
+        "height": "4096",
+        "filesize": "75530844"
+      },
+      "date_created": "2006-10-23T15:19:04",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt10_web.jpg",
+        "width": "595",
+        "height": "893",
+        "filesize": "511610"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt10_print.jpg",
+        "width": "2267",
+        "height": "3400",
+        "filesize": "7590183"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt10_full.tif",
+        "width": "4096",
+        "height": "6144",
+        "filesize": "75529712"
+      },
+      "date_created": "2006-10-23T15:20:18",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt11_web.jpg",
+        "width": "1263",
+        "height": "842",
+        "filesize": "1064533"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt11_print.jpg",
+        "width": "3400",
+        "height": "2267",
+        "filesize": "7173278"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt11_full.tif",
+        "width": "6144",
+        "height": "4096",
+        "filesize": "75529752"
+      },
+      "date_created": "2006-10-23T15:21:59",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt12_web.jpg",
+        "width": "1263",
+        "height": "842",
+        "filesize": "1007957"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt12_print.jpg",
+        "width": "3400",
+        "height": "2267",
+        "filesize": "7929812"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt12_full.tif",
+        "width": "6144",
+        "height": "4096",
+        "filesize": "75529544"
+      },
+      "date_created": "2006-10-23T15:23:15",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt13_web.jpg",
+        "width": "1263",
+        "height": "842",
+        "filesize": "1031131"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt13_print.jpg",
+        "width": "3400",
+        "height": "2267",
+        "filesize": "7828854"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt13_full.tif",
+        "width": "6144",
+        "height": "4096",
+        "filesize": "75530452"
+      },
+      "date_created": "2006-10-23T15:24:32",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt14_web.jpg",
+        "width": "1116",
+        "height": "893",
+        "filesize": "974049"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt14_print.jpg",
+        "width": "3400",
+        "height": "2720",
+        "filesize": "7386114"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt14_full.tif",
+        "width": "3600",
+        "height": "2880",
+        "filesize": "31141192"
+      },
+      "date_created": "2006-08-10T15:29:21",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt15_web.jpg",
+        "width": "1116",
+        "height": "893",
+        "filesize": "982274"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt15_print.jpg",
+        "width": "3400",
+        "height": "2721",
+        "filesize": "7542682"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt15_full.tif",
+        "width": "3599",
+        "height": "2880",
+        "filesize": "31132344"
+      },
+      "date_created": "2006-08-10T15:33:57",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt16_web.jpg",
+        "width": "1116",
+        "height": "893",
+        "filesize": "1000559"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt16_print.jpg",
+        "width": "3400",
+        "height": "2720",
+        "filesize": "7722358"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt16_full.tif",
+        "width": "3600",
+        "height": "2880",
+        "filesize": "31141656"
+      },
+      "date_created": "2006-08-10T15:39:13",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt17_web.jpg",
+        "width": "1117",
+        "height": "893",
+        "filesize": "966991"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt17_print.jpg",
+        "width": "1988",
+        "height": "1590",
+        "filesize": "3106184"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt17_full.tif",
+        "width": "1988",
+        "height": "1590",
+        "filesize": "9520000"
+      },
+      "date_created": "2006-08-10T15:42:14",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt18_web.jpg",
+        "width": "1116",
+        "height": "893",
+        "filesize": "976789"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt18_print.jpg",
+        "width": "3400",
+        "height": "2720",
+        "filesize": "7141052"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt18_full.tif",
+        "width": "3600",
+        "height": "2880",
+        "filesize": "31141088"
+      },
+      "date_created": "2006-08-10T15:51:57",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt19_web.jpg",
+        "width": "1117",
+        "height": "893",
+        "filesize": "991386"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt19_print.jpg",
+        "width": "3400",
+        "height": "2719",
+        "filesize": "7591829"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt19_full.tif",
+        "width": "3600",
+        "height": "2879",
+        "filesize": "31130132"
+      },
+      "date_created": "2006-08-10T15:58:44",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt20_web.jpg",
+        "width": "1116",
+        "height": "893",
+        "filesize": "962874"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt20_print.jpg",
+        "width": "3400",
+        "height": "2720",
+        "filesize": "6603605"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt20_full.tif",
+        "width": "3600",
+        "height": "2880",
+        "filesize": "31140924"
+      },
+      "date_created": "2006-08-10T16:08:25",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt21_web.jpg",
+        "width": "714",
+        "height": "893",
+        "filesize": "615785"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt21_print.jpg",
+        "width": "2720",
+        "height": "3400",
+        "filesize": "6766860"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt21_full.tif",
+        "width": "2880",
+        "height": "3600",
+        "filesize": "31139820"
+      },
+      "date_created": "2006-08-10T16:11:35",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt22_web.jpg",
+        "width": "714",
+        "height": "893",
+        "filesize": "626076"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt22_print.jpg",
+        "width": "2720",
+        "height": "3400",
+        "filesize": "7182285"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt22_full.tif",
+        "width": "2880",
+        "height": "3600",
+        "filesize": "31141084"
+      },
+      "date_created": "2006-08-10T16:31:20",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt23_web.jpg",
+        "width": "714",
+        "height": "893",
+        "filesize": "632897"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt23_print.jpg",
+        "width": "2720",
+        "height": "3400",
+        "filesize": "7040711"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt23_full.tif",
+        "width": "2880",
+        "height": "3600",
+        "filesize": "31141228"
+      },
+      "date_created": "2006-08-10T16:33:33",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt24_web.jpg",
+        "width": "1117",
+        "height": "893",
+        "filesize": "970708"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt24_print.jpg",
+        "width": "3400",
+        "height": "2719",
+        "filesize": "7242134"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt24_full.tif",
+        "width": "3600",
+        "height": "2879",
+        "filesize": "31130304"
+      },
+      "date_created": "2006-08-10T16:45:47",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt25_web.jpg",
+        "width": "1116",
+        "height": "893",
+        "filesize": "971412"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt25_print.jpg",
+        "width": "3400",
+        "height": "2721",
+        "filesize": "7310409"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt25_full.tif",
+        "width": "3599",
+        "height": "2880",
+        "filesize": "31132036"
+      },
+      "date_created": "2006-08-10T16:52:35",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt26_web.jpg",
+        "width": "1116",
+        "height": "893",
+        "filesize": "982464"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt26_print.jpg",
+        "width": "3400",
+        "height": "2720",
+        "filesize": "7629644"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt26_full.tif",
+        "width": "3600",
+        "height": "2880",
+        "filesize": "31140356"
+      },
+      "date_created": "2006-08-10T16:54:25",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt27_web.jpg",
+        "width": "1117",
+        "height": "893",
+        "filesize": "972981"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt27_print.jpg",
+        "width": "3400",
+        "height": "2719",
+        "filesize": "7397986"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt27_full.tif",
+        "width": "3600",
+        "height": "2879",
+        "filesize": "31129952"
+      },
+      "date_created": "2006-08-10T16:56:03",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt28_web.jpg",
+        "width": "714",
+        "height": "893",
+        "filesize": "605746"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt28_print.jpg",
+        "width": "2720",
+        "height": "3400",
+        "filesize": "6271224"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt28_full.tif",
+        "width": "2880",
+        "height": "3600",
+        "filesize": "31139308"
+      },
+      "date_created": "2006-08-10T17:00:12",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt29_web.jpg",
+        "width": "1116",
+        "height": "893",
+        "filesize": "964912"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt29_print.jpg",
+        "width": "3400",
+        "height": "2720",
+        "filesize": "6716787"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt29_full.tif",
+        "width": "3600",
+        "height": "2880",
+        "filesize": "31140960"
+      },
+      "date_created": "2006-08-10T17:10:21",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt30_web.jpg",
+        "width": "1116",
+        "height": "893",
+        "filesize": "975521"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt30_print.jpg",
+        "width": "3400",
+        "height": "2720",
+        "filesize": "7393388"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt30_full.tif",
+        "width": "3600",
+        "height": "2880",
+        "filesize": "31140476"
+      },
+      "date_created": "2006-08-10T17:19:08",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt31_web.jpg",
+        "width": "714",
+        "height": "893",
+        "filesize": "624458"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt31_print.jpg",
+        "width": "2720",
+        "height": "3400",
+        "filesize": "7573224"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt31_full.tif",
+        "width": "2880",
+        "height": "3600",
+        "filesize": "31140280"
+      },
+      "date_created": "2006-08-10T17:27:20",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt32_web.jpg",
+        "width": "714",
+        "height": "893",
+        "filesize": "647801"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt32_print.jpg",
+        "width": "2720",
+        "height": "3400",
+        "filesize": "7531512"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt32_full.tif",
+        "width": "2880",
+        "height": "3600",
+        "filesize": "31139536"
+      },
+      "date_created": "2006-08-10T18:03:32",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt33_web.jpg",
+        "width": "714",
+        "height": "893",
+        "filesize": "652995"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt33_print.jpg",
+        "width": "2720",
+        "height": "3400",
+        "filesize": "7486600"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt33_full.tif",
+        "width": "2880",
+        "height": "3600",
+        "filesize": "31141204"
+      },
+      "date_created": "2006-08-10T18:49:29",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt34_web.jpg",
+        "width": "715",
+        "height": "893",
+        "filesize": "614050"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt34_print.jpg",
+        "width": "2721",
+        "height": "3400",
+        "filesize": "6774792"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt34_full.tif",
+        "width": "2880",
+        "height": "3599",
+        "filesize": "31132448"
+      },
+      "date_created": "2006-08-10T18:52:32",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt35_web.jpg",
+        "width": "1116",
+        "height": "893",
+        "filesize": "1017652"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt35_print.jpg",
+        "width": "3400",
+        "height": "2720",
+        "filesize": "7181399"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt35_full.tif",
+        "width": "3600",
+        "height": "2880",
+        "filesize": "31141096"
+      },
+      "date_created": "2006-08-10T19:01:50",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt36_web.jpg",
+        "width": "1116",
+        "height": "893",
+        "filesize": "1018563"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt36_print.jpg",
+        "width": "3400",
+        "height": "2720",
+        "filesize": "7957146"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt36_full.tif",
+        "width": "3600",
+        "height": "2880",
+        "filesize": "31140964"
+      },
+      "date_created": "2006-08-10T19:04:04",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt37_web.jpg",
+        "width": "1116",
+        "height": "893",
+        "filesize": "993611"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt37_print.jpg",
+        "width": "3400",
+        "height": "2721",
+        "filesize": "7620534"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt37_full.tif",
+        "width": "3599",
+        "height": "2880",
+        "filesize": "31132488"
+      },
+      "date_created": "2006-08-10T19:06:17",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt38_web.jpg",
+        "width": "1116",
+        "height": "893",
+        "filesize": "904084"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt38_print.jpg",
+        "width": "3400",
+        "height": "2720",
+        "filesize": "5876166"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt38_full.tif",
+        "width": "3600",
+        "height": "2880",
+        "filesize": "31141392"
+      },
+      "date_created": "2006-08-10T19:08:13",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt39_web.jpg",
+        "width": "714",
+        "height": "893",
+        "filesize": "633714"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt39_print.jpg",
+        "width": "2720",
+        "height": "3400",
+        "filesize": "6800722"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt39_full.tif",
+        "width": "2880",
+        "height": "3600",
+        "filesize": "31139864"
+      },
+      "date_created": "2006-08-10T19:14:14",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt40_web.jpg",
+        "width": "714",
+        "height": "893",
+        "filesize": "648916"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt40_print.jpg",
+        "width": "2720",
+        "height": "3400",
+        "filesize": "7081955"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt40_full.tif",
+        "width": "2880",
+        "height": "3600",
+        "filesize": "31141452"
+      },
+      "date_created": "2006-08-10T19:19:19",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt41_web.jpg",
+        "width": "714",
+        "height": "893",
+        "filesize": "630701"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt41_print.jpg",
+        "width": "2720",
+        "height": "3400",
+        "filesize": "6762587"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt41_full.tif",
+        "width": "2880",
+        "height": "3600",
+        "filesize": "31141172"
+      },
+      "date_created": "2006-08-10T19:22:13",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt42_web.jpg",
+        "width": "1117",
+        "height": "893",
+        "filesize": "914019"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt42_print.jpg",
+        "width": "3400",
+        "height": "2719",
+        "filesize": "5324083"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt42_full.tif",
+        "width": "3600",
+        "height": "2879",
+        "filesize": "31129588"
+      },
+      "date_created": "2006-08-10T19:28:28",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt43_web.jpg",
+        "width": "714",
+        "height": "893",
+        "filesize": "648555"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt43_print.jpg",
+        "width": "2720",
+        "height": "3400",
+        "filesize": "6975727"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt43_full.tif",
+        "width": "2880",
+        "height": "3600",
+        "filesize": "31140192"
+      },
+      "date_created": "2006-08-10T19:39:41",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt44_web.jpg",
+        "width": "714",
+        "height": "893",
+        "filesize": "649412"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt44_print.jpg",
+        "width": "2720",
+        "height": "3400",
+        "filesize": "7094039"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt44_full.tif",
+        "width": "2880",
+        "height": "3600",
+        "filesize": "31141628"
+      },
+      "date_created": "2006-08-10T19:42:40",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt45_web.jpg",
+        "width": "1117",
+        "height": "893",
+        "filesize": "929616"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt45_print.jpg",
+        "width": "3400",
+        "height": "2719",
+        "filesize": "5463716"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt45_full.tif",
+        "width": "3600",
+        "height": "2879",
+        "filesize": "31130472"
+      },
+      "date_created": "2006-08-10T19:44:46",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt46_web.jpg",
+        "width": "714",
+        "height": "893",
+        "filesize": "652709"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt46_print.jpg",
+        "width": "2719",
+        "height": "3400",
+        "filesize": "7641414"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt46_full.tif",
+        "width": "2879",
+        "height": "3600",
+        "filesize": "31130824"
+      },
+      "date_created": "2006-08-10T19:46:27",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt47_web.jpg",
+        "width": "714",
+        "height": "893",
+        "filesize": "659715"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt47_print.jpg",
+        "width": "2720",
+        "height": "3400",
+        "filesize": "7682022"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt47_full.tif",
+        "width": "2880",
+        "height": "3600",
+        "filesize": "31142088"
+      },
+      "date_created": "2006-08-10T19:48:12",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt48_web.jpg",
+        "width": "714",
+        "height": "893",
+        "filesize": "632979"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt48_print.jpg",
+        "width": "2719",
+        "height": "3400",
+        "filesize": "6811464"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt48_full.tif",
+        "width": "2879",
+        "height": "3600",
+        "filesize": "31130920"
+      },
+      "date_created": "2006-08-10T19:49:44",
+      "annotation": ""
+    },
+    {
+      "web": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt49_web.jpg",
+        "width": "1263",
+        "height": "821",
+        "filesize": "1012840"
+      },
+      "print": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt49_print.jpg",
+        "width": "3400",
+        "height": "2209",
+        "filesize": "8990559"
+      },
+      "full": {
+        "url": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_alt49_full.tif",
+        "width": "8242",
+        "height": "5356",
+        "filesize": "132477028"
+      },
+      "date_created": "2006-08-08T16:55:19",
+      "annotation": ""
+    }
+  ],
+  "creditline": "Purchase from the J. H. Wade Fund",
+  "image_credit": null,
+  "sketchfab_id": null,
+  "sketchfab_url": null,
+  "gallery_donor_text": null,
+  "athena_id": 126139,
+  "creators": [],
+  "legal_status": "accessioned",
+  "accession_date": "1948-11-03T00:00:00",
+  "sortable_date": 1345,
+  "date_added_to_oa": null,
+  "date_text": "c. 1350",
+  "collapse_artists": false,
+  "on_loan": false,
+  "recently_acquired": false,
+  "record_type": "object",
+  "conservation_statement": null,
+  "has_conservation_images": false,
+  "cover_accession_number": null,
+  "is_nazi_era_provenance": false,
+  "impression": null,
+  "alternate_titles": [
+    "Lenten Cloth"
+  ],
+  "is_highlight": false,
+  "updated_at": "2026-06-10 17:59:12.696000"
+}

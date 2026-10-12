@@ -1,0 +1,164 @@
+{
+  "id": 156897,
+  "accession_number": "1993.10",
+  "share_license_status": "CC0",
+  "tombstone": "Embroidery from a Cloud Collar: Ocean, Rocks, and Peonies (云肩刺繡：海、石，牡丹), 1300s. China, Yuan dynasty (1271-1368) - early Ming dynasty (1368-1644). Silk and silver thread, silvered paper; needleloop embroidery; overall: 63.8 x 60 cm (25 1/8 x 23 5/8 in.); mounted: 69.8 x 67.3 cm (27 1/2 x 26 1/2 in.). The Cleveland Museum of Art, Purchase from the J. H. Wade Fund, 1993.10",
+  "current_location": null,
+  "title": "Embroidery from a Cloud Collar: Ocean, Rocks, and Peonies",
+  "title_in_original_language": "云肩刺繡：海、石，牡丹",
+  "creation_date": "1300s",
+  "creation_date_earliest": 1300,
+  "creation_date_latest": 1399,
+  "artists_tags": [],
+  "culture": [
+    "China, Yuan dynasty (1271-1368) - early Ming dynasty (1368-1644)"
+  ],
+  "technique": "silk and silver thread, silvered paper; needleloop embroidery",
+  "support_materials": [],
+  "department": "Textiles",
+  "collection": "Textiles",
+  "type": "Embroidery",
+  "measurements": "Overall: 63.8 x 60 cm (25 1/8 x 23 5/8 in.); Mounted: 69.8 x 67.3 cm (27 1/2 x 26 1/2 in.)",
+  "dimensions": {
+    "overall": {
+      "height": 0.638,
+      "height_inch": 25,
+      "height_inch_fraction": 0.125,
+      "width": 0.6,
+      "width_inch": 23,
+      "width_inch_fraction": 0.625
+    },
+    "mounted": {
+      "height": 0.698,
+      "height_inch": 27,
+      "height_inch_fraction": 0.5,
+      "width": 0.673,
+      "width_inch": 26,
+      "width_inch_fraction": 0.5
+    }
+  },
+  "state_of_the_work": null,
+  "edition_of_the_work": null,
+  "copyright": null,
+  "inscriptions": [],
+  "exhibitions": {
+    "current": [
+      {
+        "id": 211548,
+        "title": "When Silk Was Gold: Central Asian & Chinese Textiles from the Cleveland and Metropolitan Museums of Art",
+        "description": "<i>When Silk Was Gold: Central Asian & Chinese Textiles from the Cleveland and Metropolitan Museums of Art</i>. The Cleveland Museum of Art, Cleveland, OH (October 26, 1997-January 4, 1998); The Metropolitan Museum of Art (organizer) (March 2-May 17, 1998).",
+        "opening_date": "1997-10-19T00:00:00"
+      },
+      {
+        "id": 376407,
+        "title": "Layers of Meaning: China’s Flora and Fauna in Painting and on Porcelain",
+        "description": "<i>Layers of Meaning: China’s Flora and Fauna in Painting and on Porcelain</i>. The Cleveland Museum of Art, Cleveland, OH (organizer) (November 6, 2020-June 6, 2021).",
+        "opening_date": "2020-11-06T05:00:00"
+      }
+    ],
+    "legacy": [
+      {
+        "description": "<em>Gallery 239 textile rotation</em>. The Cleveland Museum of Art, Cleveland, OH (March 9, 2015-March 10, 2016).",
+        "opening_date": "2015-03-09T00:00:00"
+      }
+    ]
+  },
+  "provenance": [
+    {
+      "description": "(Lisbet Holmes Textiles, London, England, sold to the Cleveland Museum of Art)",
+      "citations": [],
+      "footnotes": null,
+      "date": "?–1993",
+      "sortorder": 1
+    },
+    {
+      "description": "The Cleveland Museum of Art, Cleveland, OH",
+      "citations": [],
+      "footnotes": null,
+      "date": "1993–",
+      "sortorder": 2
+    }
+  ],
+  "find_spot": null,
+  "related_works": [],
+  "former_accession_numbers": [],
+  "did_you_know": "Judging from the border on the lower portion, this fragment is most of one lobe of a cloud-collar medallion. Each of the three other original sections would have been embroidered with the same design.",
+  "early_education_description": null,
+  "artlens_description": null,
+  "description": "Against a deep blue satin ground, a peony tree emerges from an undulating sea. This embroidery was made using the needle looping technique, in which rows of detached loops are worked over silvered paper, attaching the ground only along the contours of the design. The design is filled with auspicious symbols, including the peony symbolizing wealth and honor, and the rock (<em>shoushi</em> 壽石) symbolizing longevity. There are small Buddhist symbols among the flowers, including the wheel of the law, a pair of conch shells representing the sounds of the Buddha’s teachings, and a swastika, an auspicious symbol signifying good fortune introduced into China from India with Buddhism.",
+  "external_resources": {
+    "wikidata": [
+      "https://www.wikidata.org/wiki/Q79946990"
+    ],
+    "internet_archive": [
+      "https://archive.org/details/clevelandart-1993.10-embroidery-from-a-cl"
+    ]
+  },
+  "citations": [
+    {
+      "citation": "\"1993 Annual Report.\" <em>The Bulletin of the Cleveland Museum of Art</em> 81, no. 6 (1994): 143–218.",
+      "page_number": "Reproduced: p. 214; Mentioned: p. 167",
+      "url": "https://www.jstor.org/stable/25161457"
+    },
+    {
+      "citation": "Watt, James C. Y., Anne E. Wardwell, and Morris Rossabi. <em>When silk was gold: Central Asian and Chinese textiles</em>. New York: Metropolitan Museum of Art in cooperation with the Cleveland Museum of Art: Distributed by H.N. Abrams, 1997.",
+      "page_number": "Reproduced: pp. 186–187, cat. no. 55",
+      "url": "https://libmma.contentdm.oclc.org/digital/collection/p15324coll10/id/62400"
+    },
+    {
+      "citation": "Chen, Juanjuan, Nengfu Huang, Wenying Li, and Hao Peng. <em>Chinese Silks</em>. Edited by Dieter Kuhn and Feng Zhao. New Haven, CT: Yale University Press, 2012.",
+      "page_number": "Reproduced: fig. 8.71, p. 424",
+      "url": ""
+    }
+  ],
+  "url": "https://clevelandart.org/art/1993.10",
+  "images": {
+    "annotation": null,
+    "web": {
+      "url": "https://openaccess-cdn.clevelandart.org/1993.10/1993.10_web.jpg",
+      "width": "842",
+      "height": "893",
+      "filesize": "621649",
+      "filename": "1993.10_web.jpg"
+    },
+    "print": {
+      "url": "https://openaccess-cdn.clevelandart.org/1993.10/1993.10_print.jpg",
+      "width": "1536",
+      "height": "1630",
+      "filesize": "2207857",
+      "filename": "1993.10_print.jpg"
+    },
+    "full": {
+      "url": "https://openaccess-cdn.clevelandart.org/1993.10/1993.10_full.tif",
+      "width": "1536",
+      "height": "1630",
+      "filesize": "7513828",
+      "filename": "1993.10_full.tif"
+    }
+  },
+  "alternate_images": [],
+  "creditline": "Purchase from the J. H. Wade Fund",
+  "image_credit": null,
+  "sketchfab_id": null,
+  "sketchfab_url": null,
+  "gallery_donor_text": null,
+  "athena_id": 156897,
+  "creators": [],
+  "legal_status": "accessioned",
+  "accession_date": "1993-02-17T00:00:00",
+  "sortable_date": 1300,
+  "date_added_to_oa": null,
+  "date_text": "1300s",
+  "collapse_artists": false,
+  "on_loan": false,
+  "recently_acquired": false,
+  "record_type": "object",
+  "conservation_statement": null,
+  "has_conservation_images": false,
+  "cover_accession_number": null,
+  "is_nazi_era_provenance": false,
+  "impression": null,
+  "alternate_titles": [],
+  "is_highlight": false,
+  "updated_at": "2026-05-29 11:27:01.418000"
+}

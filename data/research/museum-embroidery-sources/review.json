@@ -1,0 +1,630 @@
+{
+  "schema": "ascend.museum-embroidery-source-review.v1",
+  "reviewedAt": "2026-10-12T21:44:40.754416+00:00",
+  "objects": [
+    {
+      "id": "cleveland-157565",
+      "museum": "Cleveland Museum of Art",
+      "title": "Embroidery with Birds",
+      "source": "https://clevelandart.org/art/1994.96",
+      "apiSource": "https://openaccess-api.clevelandart.org/api/artworks/157565",
+      "accession": "1994.96",
+      "date": "700s-800s",
+      "culture": [
+        "China, Tang dynasty (618-906)"
+      ],
+      "technique": "embroidery, silk thread on silk ground",
+      "imagePath": "data/research/museum-embroidery-sources/cleveland-157565/source-web.jpg",
+      "imageSha256": "d172f257af72c83bf90d5daefec9df0f6298a328ddddedd70331a97e56c50489",
+      "imageUrl": "https://openaccess-cdn.clevelandart.org/1994.96/1994.96_web.jpg",
+      "higherResolutionImage": "https://openaccess-cdn.clevelandart.org/1994.96/1994.96_print.jpg",
+      "rights": {
+        "status": "verified-CC0",
+        "evidence": "Museum object API share_license_status=CC0; https://www.clevelandart.org/open-access"
+      },
+      "review": {
+        "status": "visual-source-review",
+        "observations": "Horizontal band of embroidered birds over an independently patterned textile ground; useful for bird spacing and separating embroidery from woven background.",
+        "annotationStatus": "not-decomposed",
+        "trainingPerformed": false
+      }
+    },
+    {
+      "id": "cleveland-126139",
+      "museum": "Cleveland Museum of Art",
+      "title": "Altar Cloth",
+      "source": "https://clevelandart.org/art/1948.352",
+      "apiSource": "https://openaccess-api.clevelandart.org/api/artworks/126139",
+      "accession": "1948.352",
+      "date": "c. 1350",
+      "culture": [
+        "Germany, Altenberg on the Lahn, Premonstratensian Convent, 14th century"
+      ],
+      "technique": "embroidery: linen",
+      "imagePath": "data/research/museum-embroidery-sources/cleveland-126139/source-web.jpg",
+      "imageSha256": "0ec33ff80a39bc058b96310097d1843aab310e8168f2fc1d2904b0424aeca7ff",
+      "imageUrl": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_web.jpg",
+      "higherResolutionImage": "https://openaccess-cdn.clevelandart.org/1948.352/1948.352_print.jpg",
+      "rights": {
+        "status": "verified-CC0",
+        "evidence": "Museum object API share_license_status=CC0; https://www.clevelandart.org/open-access"
+      },
+      "review": {
+        "status": "visual-source-review",
+        "observations": "White-on-white cloth with framed medallions, repeated geometric boundaries and internal figures; useful for low-contrast segmentation. Not proof of cutwork.",
+        "annotationStatus": "not-decomposed",
+        "trainingPerformed": false
+      }
+    },
+    {
+      "id": "cleveland-111325",
+      "museum": "Cleveland Museum of Art",
+      "title": "Embroidery sampler (chelliga/shelliga)",
+      "source": "https://clevelandart.org/art/1929.831",
+      "apiSource": "https://openaccess-api.clevelandart.org/api/artworks/111325",
+      "accession": "1929.831",
+      "date": "c. 1700s",
+      "culture": [
+        "Africa, North Africa, Morocco, Moroccan embroiderer"
+      ],
+      "technique": "Cotton, silk, dye",
+      "imagePath": "data/research/museum-embroidery-sources/cleveland-111325/source-web.jpg",
+      "imageSha256": "f75ff6f3ff2ef1142ec28cd7a69f27d74eecb0e169e1bd459cef8b845c753dc7",
+      "imageUrl": "https://openaccess-cdn.clevelandart.org/1929.831/1929.831_web.jpg",
+      "higherResolutionImage": "https://openaccess-cdn.clevelandart.org/1929.831/1929.831_print.jpg",
+      "rights": {
+        "status": "verified-CC0",
+        "evidence": "Museum object API share_license_status=CC0; https://www.clevelandart.org/open-access"
+      },
+      "review": {
+        "status": "visual-source-review",
+        "observations": "Patchwork-like sampler fields with dense angular repeats, narrow borders and vertical branching forms; useful for multi-field geometric grammar. Catalogue attribution is Morocco; no specific city or language inferred.",
+        "annotationStatus": "not-decomposed",
+        "trainingPerformed": false
+      }
+    },
+    {
+      "id": "cleveland-159635",
+      "museum": "Cleveland Museum of Art",
+      "title": "Rumal with Rama and Krishna scenes",
+      "source": "https://clevelandart.org/art/1996.349",
+      "apiSource": "https://openaccess-api.clevelandart.org/api/artworks/159635",
+      "accession": "1996.349",
+      "date": "1700s",
+      "culture": [
+        "Northern India, Pahari Kingdom of Chamba"
+      ],
+      "technique": "Silk and silver wire on cotton; embroidery",
+      "imagePath": "data/research/museum-embroidery-sources/cleveland-159635/source-web.jpg",
+      "imageSha256": "7ec2d2fa6d5c735f02b0fc695d52d4fed55c45b95454482a1360169d71425a81",
+      "imageUrl": "https://openaccess-cdn.clevelandart.org/1996.349/1996.349_web.jpg",
+      "higherResolutionImage": "https://openaccess-cdn.clevelandart.org/1996.349/1996.349_print.jpg",
+      "rights": {
+        "status": "verified-CC0",
+        "evidence": "Museum object API share_license_status=CC0; https://www.clevelandart.org/open-access"
+      },
+      "review": {
+        "status": "visual-source-review",
+        "observations": "Narrative embroidery with human and animal figures, trees, sparse flowers and perimeter motifs; source-specific Rama/Krishna context must remain attributed, not treated as generic Ukrainian imagery.",
+        "annotationStatus": "not-decomposed",
+        "trainingPerformed": false
+      }
+    },
+    {
+      "id": "cleveland-156897",
+      "museum": "Cleveland Museum of Art",
+      "title": "Embroidery from a Cloud Collar: Ocean, Rocks, and Peonies",
+      "source": "https://clevelandart.org/art/1993.10",
+      "apiSource": "https://openaccess-api.clevelandart.org/api/artworks/156897",
+      "accession": "1993.10",
+      "date": "1300s",
+      "culture": [
+        "China, Yuan dynasty (1271-1368) - early Ming dynasty (1368-1644)"
+      ],
+      "technique": "silk and silver thread, silvered paper; needleloop embroidery",
+      "imagePath": "data/research/museum-embroidery-sources/cleveland-156897/source-web.jpg",
+      "imageSha256": "c08e0745137929a8e9ae80070df43dfe1dca651443a35a9760940aa96bac3279",
+      "imageUrl": "https://openaccess-cdn.clevelandart.org/1993.10/1993.10_web.jpg",
+      "higherResolutionImage": "https://openaccess-cdn.clevelandart.org/1993.10/1993.10_print.jpg",
+      "rights": {
+        "status": "verified-CC0",
+        "evidence": "Museum object API share_license_status=CC0; https://www.clevelandart.org/open-access"
+      },
+      "review": {
+        "status": "visual-source-review",
+        "observations": "Cloud-collar shape with branching peony-like ornament and decorative lower landscape forms; useful for nested branching and silhouette-shaped placement. Peony identification is supported by the museum title.",
+        "annotationStatus": "not-decomposed",
+        "trainingPerformed": false
+      }
+    },
+    {
+      "id": "cleveland-117038",
+      "museum": "Cleveland Museum of Art",
+      "title": "Embroidered Blouse Front",
+      "source": "https://clevelandart.org/art/1937.582",
+      "apiSource": "https://openaccess-api.clevelandart.org/api/artworks/117038",
+      "accession": "1937.582",
+      "date": "19th century",
+      "culture": [
+        "Palestine, 19th century"
+      ],
+      "technique": "embroidery; silk on linen",
+      "imagePath": "data/research/museum-embroidery-sources/cleveland-117038/source-web.jpg",
+      "imageSha256": "e8cb4239b5373aba3326b2bcfd0d9a7c2e63ec7583591eee088bc5d4dbf3c0b0",
+      "imageUrl": "https://openaccess-cdn.clevelandart.org/1937.582/1937.582_web.jpg",
+      "higherResolutionImage": "https://openaccess-cdn.clevelandart.org/1937.582/1937.582_print.jpg",
+      "rights": {
+        "status": "verified-CC0",
+        "evidence": "Museum object API share_license_status=CC0; https://www.clevelandart.org/open-access"
+      },
+      "review": {
+        "status": "visual-source-review",
+        "observations": "Palestinian blouse front: neck opening, narrow vertical bands, framed central placket and large lower diamond/chevron structure; useful for garment-space constraints and differentiated repeat scales.",
+        "annotationStatus": "not-decomposed",
+        "trainingPerformed": false
+      }
+    },
+    {
+      "id": "va-O364308",
+      "museum": "Victoria and Albert Museum",
+      "source": "https://collections.vam.ac.uk/item/O364308/",
+      "title": "Jacket and apron",
+      "accession": "T.70-1951",
+      "description": "Child's jacket and apron with bands of embroidered cotton and lace",
+      "placesOfOrigin": [
+        {
+          "place": {
+            "text": "Ukraine",
+            "id": "x36758"
+          },
+          "association": {
+            "text": "",
+            "id": ""
+          },
+          "note": ""
+        }
+      ],
+      "dates": [
+        {
+          "date": {
+            "text": "1800s",
+            "earliest": "1800-01-01",
+            "latest": "1809-12-31"
+          },
+          "association": {
+            "text": "made",
+            "id": "x28654"
+          },
+          "note": ""
+        }
+      ],
+      "images": {
+        "_primary_thumbnail": "https://framemark.vam.ac.uk/collections/2019MD9521/full/!100,100/0/default.jpg",
+        "_iiif_image": "https://framemark.vam.ac.uk/collections/2019MD9521/",
+        "_alt_iiif_image": [],
+        "imageResolution": "high",
+        "_images_meta": [
+          {
+            "assetRef": "2019MD9521",
+            "copyright": "© Victoria and Albert Museum, London",
+            "sensitiveImage": false
+          },
+          {
+            "assetRef": "2019MD9517",
+            "copyright": "© Victoria and Albert Museum, London",
+            "sensitiveImage": false
+          },
+          {
+            "assetRef": "2019MD9508",
+            "copyright": "© Victoria and Albert Museum, London",
+            "sensitiveImage": false
+          },
+          {
+            "assetRef": "2019MB5192",
+            "copyright": "© Victoria and Albert Museum, London",
+            "sensitiveImage": false
+          },
+          {
+            "assetRef": "2019MB5191",
+            "copyright": "© Victoria and Albert Museum, London",
+            "sensitiveImage": false
+          },
+          {
+            "assetRef": "2011ER5865",
+            "copyright": "© Victoria and Albert Museum, London",
+            "sensitiveImage": false
+          }
+        ]
+      },
+      "rights": {
+        "status": "not-admitted-for-training",
+        "evidence": "Record image copyright is © Victoria and Albert Museum, London; no open training/reconstruction licence verified."
+      },
+      "review": {
+        "status": "catalogue-text-reviewed",
+        "trainingPerformed": false
+      }
+    },
+    {
+      "id": "va-O364307",
+      "museum": "Victoria and Albert Museum",
+      "source": "https://collections.vam.ac.uk/item/O364307/",
+      "title": "Shirt",
+      "accession": "T.7&A-1964",
+      "description": "Shirt and apron of embroidered white linen. The garments were intended for wearing at a wedding.\r\n\r\nThe shirt is straight cut with a high round neck, front opening neck to waist and wide sleeves gathered onto the neck and at the wrist. Machine-stitched. Decorative bands of embroidery in red and black. On the sleeves are two wide bands, and the uppermost consists of linked diamond shapes outlined with shield motifs surmounting a flower in a cross stitch ornamented diamond. The lower band consists of diamond shapes outlined in a similar fashion, a diamond shape filled with cross stitch. On the lower part of the sleeve are scattered alternating floral shapes similar to the main motif in each band. The embroidery is carried out either in black satin stitch outlined in red or red satin stitch outlined in black. The fillings are in red and black cross stitch. The neck is edged with a band filled with similar floral shapes in red and at the hem are two bands of cross stitch embroidery edging a band of bobbin lace. The neck band and cuffs are decorated with linked diamonds filled with satin stitch. There are two red cotton stitched loops at the neck for fastening.\n\nThe apron reaches from the waist where there is a buttoned waistband to the hem. The hem is trimmed with a band of bobbin lace, with diamond shaped motifs and has two bands of embroidery of the same pattern to those on the sleeves, and above them are four narrow tucks. Floral motifs like those on the sleeves are scattered across the front of the garment. The apron has been shortened by catching up a band of lace originally intended to demarcate the two bands of embroidery.",
+      "placesOfOrigin": [
+        {
+          "place": {
+            "text": "Ukraine",
+            "id": "x36758"
+          },
+          "association": {
+            "text": "made",
+            "id": "x28654"
+          },
+          "note": "Identified as from northern Ukraine, south of Belarus, following feedback from a Explore the Collections contact."
+        }
+      ],
+      "dates": [
+        {
+          "date": {
+            "text": "19th century",
+            "earliest": "1800-01-01",
+            "latest": "1899-12-31"
+          },
+          "association": {
+            "text": "made",
+            "id": "x28654"
+          },
+          "note": ""
+        }
+      ],
+      "images": {
+        "_primary_thumbnail": "https://framemark.vam.ac.uk/collections/2019MB5185/full/!100,100/0/default.jpg",
+        "_iiif_image": "https://framemark.vam.ac.uk/collections/2019MB5185/",
+        "_alt_iiif_image": [],
+        "imageResolution": "high",
+        "_images_meta": [
+          {
+            "assetRef": "2019MB5185",
+            "copyright": "© Victoria and Albert Museum, London",
+            "sensitiveImage": false
+          },
+          {
+            "assetRef": "2019MB5184",
+            "copyright": "© Victoria and Albert Museum, London",
+            "sensitiveImage": false
+          },
+          {
+            "assetRef": "2019MB5186",
+            "copyright": "© Victoria and Albert Museum, London",
+            "sensitiveImage": false
+          },
+          {
+            "assetRef": "2019MB5187",
+            "copyright": "© Victoria and Albert Museum, London",
+            "sensitiveImage": false
+          }
+        ]
+      },
+      "rights": {
+        "status": "not-admitted-for-training",
+        "evidence": "Record image copyright is © Victoria and Albert Museum, London; no open training/reconstruction licence verified."
+      },
+      "review": {
+        "status": "catalogue-text-reviewed",
+        "trainingPerformed": false
+      }
+    },
+    {
+      "id": "va-O364469",
+      "museum": "Victoria and Albert Museum",
+      "source": "https://collections.vam.ac.uk/item/O364469/",
+      "title": "Dress",
+      "accession": "T.250-1923",
+      "description": "This dress is from Bethlehem, Palestine, dating from 1890-1920. It is an example of Palestinian tatreez - elaborate hand-embroidery on clothing and accessories - a practice and craft which was characterised by remarkable complexity and regional diversity across Palestine in the late nineteenth and early twentieth centuries. The base material is woven cotton, indigo-dyed, with woven bands of yellow and deep red along the sleeves and sides of the garment. At the back lower panel of the dress, fabric woven with metallic threads has been included, a gesture typical of Bethlehem dresses of this style. The chest panel has been left unembroidered in the centre, with a variety of border stitches around the sides. The yoke is of a foreign silk fabric, used in this period as a nod to fashion and a mark of status.",
+      "placesOfOrigin": [
+        {
+          "place": {
+            "text": "Palestine",
+            "id": "x29066"
+          },
+          "association": {
+            "text": "made",
+            "id": "x28654"
+          },
+          "note": ""
+        },
+        {
+          "place": {
+            "text": "Bethlehem",
+            "id": "x30482"
+          },
+          "association": {
+            "text": "made",
+            "id": "x28654"
+          },
+          "note": ""
+        }
+      ],
+      "dates": [
+        {
+          "date": {
+            "text": "1890-1920",
+            "earliest": "1890-01-01",
+            "latest": "1920-12-31"
+          },
+          "association": {
+            "text": "made",
+            "id": "x28654"
+          },
+          "note": "I have revised this object date slightly, having seen a dress of a similar style (albeit from the Gaza, rather than Bethlehem area), that dates to before 1887. It is exceedingly difficult to date Palestinian dress with certainty beyond stylistic markers, but it's rarer to see dresses of this kind with minimal embroidery on the chest panel after 1920. "
+        }
+      ],
+      "images": {
+        "_primary_thumbnail": "https://framemark.vam.ac.uk/collections/2025PE5525/full/!100,100/0/default.jpg",
+        "_iiif_image": "https://framemark.vam.ac.uk/collections/2025PE5525/",
+        "_alt_iiif_image": [],
+        "imageResolution": "high",
+        "_images_meta": [
+          {
+            "assetRef": "2025PE5525",
+            "copyright": "© Victoria and Albert Museum, London",
+            "sensitiveImage": false
+          },
+          {
+            "assetRef": "2025PE5514",
+            "copyright": "© Victoria and Albert Museum, London",
+            "sensitiveImage": false
+          },
+          {
+            "assetRef": "2025PE5533",
+            "copyright": "© Victoria and Albert Museum, London",
+            "sensitiveImage": false
+          },
+          {
+            "assetRef": "2025PE5532",
+            "copyright": "© Victoria and Albert Museum, London",
+            "sensitiveImage": false
+          },
+          {
+            "assetRef": "2025PE5531",
+            "copyright": "© Victoria and Albert Museum, London",
+            "sensitiveImage": false
+          },
+          {
+            "assetRef": "2025PE5530",
+            "copyright": "© Victoria and Albert Museum, London",
+            "sensitiveImage": false
+          }
+        ]
+      },
+      "rights": {
+        "status": "not-admitted-for-training",
+        "evidence": "Record image copyright is © Victoria and Albert Museum, London; no open training/reconstruction licence verified."
+      },
+      "review": {
+        "status": "catalogue-text-reviewed",
+        "trainingPerformed": false
+      }
+    }
+  ],
+  "fetches": [
+    {
+      "id": "met-search",
+      "url": "https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=embroidery",
+      "error": "HTTP Error 410: Gone"
+    },
+    {
+      "id": "cleveland",
+      "url": "https://openaccess-api.clevelandart.org/api/artworks/?q=embroidery&has_image=1&limit=12",
+      "status": 200,
+      "bytes": 133656
+    },
+    {
+      "id": "aic",
+      "url": "https://api.artic.edu/api/v1/artworks/search?q=embroidery&limit=12&fields=id,title,date_display,artist_display,image_id,is_public_domain,medium_display,place_of_origin",
+      "status": 200,
+      "bytes": 5272
+    },
+    {
+      "id": "va",
+      "url": "https://api.vam.ac.uk/v2/objects/search?q=embroidery&page_size=12",
+      "status": 200,
+      "bytes": 27075
+    },
+    {
+      "id": "cooper",
+      "url": "https://collection.cooperhewitt.org/search/collection/?query=embroidery",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "id": "honchar",
+      "url": "https://honchar.org.ua/",
+      "status": 200,
+      "bytes": 127382
+    },
+    {
+      "id": "lviv",
+      "url": "https://www.museum.lviv.ua/",
+      "status": 200,
+      "bytes": 77558
+    },
+    {
+      "id": "namu",
+      "url": "https://namu.ua/",
+      "status": 200,
+      "bytes": 94970
+    },
+    {
+      "id": "fitzwilliam",
+      "url": "https://collection.beta.fitz.ms/search?query=embroidery",
+      "status": 200,
+      "bytes": 7710
+    },
+    {
+      "id": "ashmolean",
+      "url": "https://collections.ashmolean.org/",
+      "status": 200,
+      "bytes": 231292
+    },
+    {
+      "id": "rijks",
+      "url": "https://www.rijksmuseum.nl/en/collection/search?q=embroidery",
+      "status": 200,
+      "bytes": 70946
+    },
+    {
+      "id": "vanda-rights",
+      "url": "https://www.vam.ac.uk/info/va-images",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "id": "met-rights",
+      "url": "https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+      "status": 200,
+      "bytes": 167728
+    },
+    {
+      "id": "aic-rights",
+      "url": "https://www.artic.edu/open-access/open-access-images",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "id": "cleveland-rights",
+      "url": "https://www.clevelandart.org/open-access",
+      "status": 200,
+      "bytes": 675500
+    },
+    {
+      "id": "cooper-rights",
+      "url": "https://www.cooperhewitt.org/open-source-at-cooper-hewitt/",
+      "status": 200,
+      "bytes": 86645
+    },
+    {
+      "id": "honchar-clothes",
+      "url": "https://honchar.org.ua/collections/view/odag",
+      "status": 200,
+      "bytes": 85816
+    },
+    {
+      "id": "honchar-charts",
+      "url": "https://honchar.org.ua/to-learn",
+      "status": 200,
+      "bytes": 85961
+    },
+    {
+      "id": "folk-decorative",
+      "url": "https://www.mundm.kiev.ua/",
+      "status": 200,
+      "bytes": 0
+    },
+    {
+      "id": "hutsul",
+      "url": "https://hutsul.museum/",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "id": "ethnology",
+      "url": "https://ethnology.lviv.ua/",
+      "status": 200,
+      "bytes": 35298
+    },
+    {
+      "id": "va-ukraine",
+      "url": "https://api.vam.ac.uk/v2/objects/search?q=embroidery%20Ukraine&page_size=12",
+      "status": 200,
+      "bytes": 6449
+    },
+    {
+      "id": "va-palestine",
+      "url": "https://api.vam.ac.uk/v2/objects/search?q=embroidery%20Palestine&page_size=12",
+      "status": 200,
+      "bytes": 20661
+    },
+    {
+      "id": "cleveland-ukraine",
+      "url": "https://openaccess-api.clevelandart.org/api/artworks/?q=Ukraine&has_image=1&limit=20",
+      "status": 200,
+      "bytes": 5115
+    },
+    {
+      "id": "aic-ukraine",
+      "url": "https://api.artic.edu/api/v1/artworks/search?q=Ukrainian%20embroidery&limit=12&fields=id,title,date_display,artist_display,image_id,is_public_domain,medium_display,place_of_origin",
+      "status": 200,
+      "bytes": 5084
+    },
+    {
+      "id": "va-terms",
+      "url": "https://www.vam.ac.uk/info/terms-and-conditions",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "id": "cleveland-palestine",
+      "url": "https://openaccess-api.clevelandart.org/api/artworks/?q=Palestine&has_image=1&limit=20",
+      "status": 200,
+      "bytes": 132986
+    },
+    {
+      "id": "117038-image",
+      "url": "https://openaccess-cdn.clevelandart.org/1937.582/1937.582_web.jpg",
+      "status": 200,
+      "bytes": 535930
+    },
+    {
+      "id": "va-O364308",
+      "url": "https://api.vam.ac.uk/v2/museumobject/O364308",
+      "status": 200,
+      "bytes": 4316
+    },
+    {
+      "id": "va-O364307",
+      "url": "https://api.vam.ac.uk/v2/museumobject/O364307",
+      "status": 200,
+      "bytes": 5050
+    },
+    {
+      "id": "va-O364469",
+      "url": "https://api.vam.ac.uk/v2/museumobject/O364469",
+      "status": 200,
+      "bytes": 6010
+    },
+    {
+      "id": "ethnology-museum",
+      "url": "https://ethnology.lviv.ua/naukovi-pidrozdili/muzei-etnografiji-ta-khudozhnogo-promislu",
+      "status": 200,
+      "bytes": 92862
+    },
+    {
+      "id": "honchar-towels",
+      "url": "https://honchar.org.ua/collections/view/rusniki",
+      "status": 200,
+      "bytes": 85887
+    },
+    {
+      "id": "va-policy",
+      "url": "https://www.vam.ac.uk/info/terms-of-use",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "id": "aic-policy",
+      "url": "https://api.artic.edu/docs/#licenses",
+      "status": 200,
+      "bytes": 1028072
+    }
+  ],
+  "claims": {
+    "newClevelandImagesVisuallyReviewed": 6,
+    "VAMuseumObjectRecordsRead": 3,
+    "historicalDecompositionPerformed": false,
+    "modelTrainingPerformed": false,
+    "productionApproval": false
+  },
+  "limitations": [
+    "Search relevance is not attribution: V&A Ukraine query also returned British contemporary objects; those were excluded.",
+    "Cleveland Ukraine query returned a French lithograph, not Ukrainian embroidery; not admitted.",
+    "Image pixel dimensions are not fabric-grid calibration or stitch counts.",
+    "No worldwide collection total or comprehensive source coverage is claimed."
+  ]
+}
