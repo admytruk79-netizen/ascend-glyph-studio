@@ -4,12 +4,12 @@ import type {StitchIrPoint as Point} from './production-stitch-ir';
 type Segment=[Point,Point];
 const distance=(a:Point,b:Point)=>Math.hypot(a.x-b.x,a.y-b.y);
 const interpolate=(a:Point,b:Point,t:number):Point=>({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t});
-function pointSegmentDistance(p:Point,[a,b]:Segment){
+export function pointSegmentDistance(p:Point,[a,b]:Segment){
  const dx=b.x-a.x,dy=b.y-a.y,length2=dx*dx+dy*dy;
  const t=length2===0?0:Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/length2));
  return distance(p,interpolate(a,b,t));
 }
-function segmentDistance(a:Segment,b:Segment){
+export function segmentDistance(a:Segment,b:Segment){
  const r={x:a[1].x-a[0].x,y:a[1].y-a[0].y},s={x:b[1].x-b[0].x,y:b[1].y-b[0].y};
  const cross=(p:Point,q:Point)=>p.x*q.y-p.y*q.x;
  const determinant=cross(r,s),offset={x:b[0].x-a[0].x,y:b[0].y-a[0].y};

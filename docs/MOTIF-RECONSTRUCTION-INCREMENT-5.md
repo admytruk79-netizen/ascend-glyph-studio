@@ -1,0 +1,13 @@
+# Evidence for observed contacts and containment
+
+The observed-annotation adapter now accepts optional named pixel-coordinate ports and explicit contact records with evidence. Contacts are not inferred from proximity or a floral label. The adapter reuses the existing structure and centreline-clearance calculations to reject endpoints that are separated beyond the declared tolerance or off their own paths. Tolerances are bounded to 0–2 source pixels; this is an annotation convention, not a machine tolerance. Reverse duplicate contacts and missing evidence are rejected. Evidence is retained in provenance transformations.
+
+A spatial nest now requires conservative geometric support: a single simple closed parent outline, child vertices strictly inside it, and no child segment touching or crossing its boundary. This catches a segment crossing a concave parent's gap even when its endpoints are inside. Open, self-crossing and multiple-outline parents are unsupported. The current check does not support holes in a parent or boundary-touching nests. Spatial containment is not stitch connectivity.
+
+The historical Met fixture remains seven approximate draft contours with 55 landmarks and one supported inset. No historical contact or precise tracing has been added: the new contact tests use explicitly synthetic controls. The observed benchmark still reports zero coordinate reconstruction RMSE and null image tracing/semantic accuracy. Canonical ASCEND geometry and manufacturing approval gates remain unchanged.
+
+`data/research/motif-annotations/ukrainian-sash-source-review.json` records four caption-linked Ukrainian candidates from the attached paper: figures 1а (АП-4464), 1б (2017 expedition), 2 (5642), and 14а (АП-1143). It retains the original PDF hash, regional attribution, collection identifiers and proposed annotation targets. Lithuanian examples are explicitly distinguished. This is a source review, not reconstructed geometry. The supplied paper authorizes examination in this task; image redistribution/reconstruction rights have not been established, so the candidates are not admitted as permission-verified MotifGraph fixtures.
+
+Verification: full `npm run verify:tesseract-worker` passed, including engine typecheck/build, 138 Tesseract tests, production pilot, stitch-engine typecheck and 22 stitch tests. `tsx scripts/benchmark-motif-observed.ts` also passed. No model training, successful remote CI run or production approval is claimed for this increment.
+
+Remaining: accurate contours, stem/petal subdivision, independently reviewed annotations, source-image rectification and physical calibration. The new checks make these annotations testable but do not supply missing historical evidence.

@@ -1,0 +1,88 @@
+{
+  "schema": "ascend.historical-source-review.v1",
+  "source": "https://doi.org/10.15407/nz2022.05.1147",
+  "originalSha256": "e3617506ed8d100b4684dc243bb36154ea3d809cc368d63f04a8f18ce3bf44ba",
+  "status": "caption-reviewed; image reconstruction permission not established",
+  "permission": {
+    "status": "unknown",
+    "evidence": "User provided paper for analysis; paper carries 2022 author copyright. No image redistribution or reconstruction licence established."
+  },
+  "eligibleForMotifGraph": false,
+  "candidates": [
+    {
+      "figure": "1а",
+      "page": 1152,
+      "country": "Ukraine",
+      "region": "Western Podillia",
+      "locality": "Koshelivtsi, Chortkiv district, Ternopil oblast",
+      "date": "first half of 20th century",
+      "collection": "Klymentiy Sheptytsky Museum of Folk Architecture and Rural Life, Lviv",
+      "inventory": "АП-4464",
+      "captionMotif": "рожі",
+      "nextAnnotationTargets": [
+        "outer eight-petal geometry",
+        "inner contour",
+        "repeat pitch",
+        "side bands"
+      ]
+    },
+    {
+      "figure": "1б",
+      "page": 1152,
+      "country": "Ukraine",
+      "region": "Pokuttia",
+      "locality": "Verbivtsi, Horodenka district, Ivano-Frankivsk oblast",
+      "date": "second half of 20th century",
+      "collection": "Institute of Ethnology field expedition materials, 2017",
+      "inventory": null,
+      "captionMotif": "рожі",
+      "nextAnnotationTargets": [
+        "petal count",
+        "repeat pitch",
+        "edge bands"
+      ]
+    },
+    {
+      "figure": "2",
+      "page": 1152,
+      "country": "Ukraine",
+      "region": "Hutsul region",
+      "locality": "Holovy, Verkhovyna district, Ivano-Frankivsk oblast",
+      "date": "1920",
+      "collection": "Yosafat Kobrynsky National Museum of Hutsulshchyna and Pokuttia Folk Art, Kolomyia",
+      "inventory": "5642",
+      "captionMotif": "symmetric composition",
+      "nextAnnotationTargets": [
+        "nested contours",
+        "symmetry axis",
+        "separator units"
+      ]
+    },
+    {
+      "figure": "14а",
+      "country": "Ukraine",
+      "page": null,
+      "region": "Hutsul region",
+      "locality": "Krasnoillia, Verkhovyna district, Ivano-Frankivsk oblast",
+      "date": "early 20th century",
+      "collection": "Klymentiy Sheptytsky Museum of Folk Architecture and Rural Life, Lviv",
+      "inventory": "АП-1143",
+      "captionMotif": "doubled ornaments",
+      "nextAnnotationTargets": [
+        "adjacent half motifs combining to full motif",
+        "band boundaries"
+      ]
+    }
+  ],
+  "attributionExclusions": [
+    "Figure 1в and 1г: Lithuania, not Ukraine",
+    "Figure 3: Lithuanian diagonal compositions",
+    "Figure 4: Kaunas, Lithuania",
+    "Figure 14б: Lithuanian museum example; do not label Ukrainian"
+  ],
+  "limitations": [
+    "Targets are an annotation worklist, not extracted geometry.",
+    "Historical weaving units cannot be equated to machine embroidery stitch counts.",
+    "Colour shimmer and ground/ornament relationships must be preserved; binary threshold loses them."
+  ]
+}
