@@ -256,7 +256,9 @@ const commons: Adapter = {
             id: `commons-${p.pageid}`, institution: commons.institution, source: commons.source, query: q, tradition,
             title: stripHtml(m.ObjectName?.value) ?? str(p.title.replace(/^File:/, "").replace(/\.[a-z]+$/i, "")),
             creator: stripHtml(m.Artist?.value), date: stripHtml(m.DateTimeOriginal?.value),
-            culture: COUNTRY[tradition] ?? tradition, region: COUNTRY[tradition] ?? tradition,
+            // Category/search groups are retrieval hints, not object attribution.
+            // Commons fields requested above do not provide culture or region.
+            culture: undefined, region: undefined,
             objectURL: str(ii.descriptionurl) ?? `https://commons.wikimedia.org/wiki/${encodeURIComponent(p.title)}`,
             image: str(ii.thumburl) ?? str(ii.url), imageWidth: ii.width, imageHeight: ii.height,
             rights: licence ?? "No licence metadata", rightsStatus: commonsRights(licence),
