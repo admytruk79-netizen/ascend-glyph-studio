@@ -126,3 +126,14 @@ test("fractal: decorated self-similar motifs keep exact symmetry, are new, and a
     assert.ok(a.dimension > 0.5 && a.dimension < 2);
   }
 });
+
+test("reader: cloth tone and uneven lighting are ground; fuzzy, low-contrast images are rejected", () => {
+  for (const r of seed.slice(0, 4)) {
+    const g = parseChart(r.chart), out = extractGrid(renderPixels(g, 11, 14, 5, { ground: "#e3d3a8", gradient: 0.18 }));
+    assert.ok(out, r.id);
+    assert.ok(same(out.grid, crop(g)), `${r.id}\n${toChart(out.grid).join("\n")}`);
+  }
+  // a faded print: thread colours pulled towards the ground, heavy noise → no confident read
+  const faded = renderPixels(parseChart(seed[0]!.chart), 11, 70, 9, { ground: "#c9b48a" });
+  assert.equal(extractGrid(faded), null);
+});

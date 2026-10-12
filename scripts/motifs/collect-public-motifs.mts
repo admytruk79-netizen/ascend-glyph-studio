@@ -17,7 +17,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import sharp from "sharp";
 import { extractGrid } from "../../packages/motif-learner/src/extract.ts";
-import { blank, crop, density, toChart, toSvg, type Grid } from "../../packages/motif-learner/src/grid.ts";
+import { blank, crop, density, parseChart, toChart, toSvg, type Grid } from "../../packages/motif-learner/src/grid.ts";
 import { detectSymmetry } from "../../packages/motif-learner/src/symmetry.ts";
 import type { MotifRecord } from "../../packages/motif-learner/src/model.ts";
 
@@ -177,15 +177,17 @@ async function readImage(url: string) {
   const buf: Buffer | null = await get(url, false);
   if (!buf) throw new Error("image unavailable");
   const meta = await sharp(buf).metadata(), W = meta.width ?? 0, H = meta.height ?? 0;
-  let best: { motifs: Grid[]; confidence: number; pitch: [number, number]; crop: string } | null = null;
+  let best: { motifs: Grid[]; confidence: number; separation: number; quality: number; pitch: [number, number]; crop: string } | null = null;
   for (const frac of [1, 0.6, 0.35]) for (const work of [1000, 1800]) {
     const cw = Math.round(W * frac), ch = Math.round(H * frac);
     if (cw < 64 || ch < 64) continue;
     const { data, info } = await sharp(buf).extract({ left: (W - cw) >> 1, top: (H - ch) >> 1, width: cw, height: ch }).resize({ width: Math.min(work, cw), withoutEnlargement: true }).removeAlpha().raw().toBuffer({ resolveWithObject: true });
     const got = extractGrid({ width: info.width, height: info.height, data, channels: 3 }, { minConfidence: 0.35 });
     if (!got) continue;
-    const motifs = splitMotifs(got.grid);
-    if (motifs.length && (!best || got.confidence > best.confidence)) best = { motifs, confidence: got.confidence, pitch: got.pitch, crop: `centre ${Math.round(frac * 100)}% at ${info.width}px` };
+    // the largest motifs first, at most 12 per image (a plate rarely holds more; more usually means noise)
+    const motifs = splitMotifs(got.grid).sort((a, b) => b.w * b.h - a.w * a.h).slice(0, 12);
+    const quality = got.confidence * Math.min(1, got.separation / 2);
+    if (motifs.length && (!best || quality > best.quality)) best = { motifs, confidence: got.confidence, separation: got.separation, quality, pitch: got.pitch, crop: `centre ${Math.round(frac * 100)}% at ${info.width}px` };
   }
   return best;
 }
@@ -196,7 +198,7 @@ for (const [name, fn] of [["neon", fromNeon], ["commons", fromCommons], ["aic", 
 }
 console.log(`candidates: ${candidates.size}`);
 
-type Row = Candidate & { licence: Licence | null; status: string; flags: string[]; motifs?: number; confidence?: number };
+type Row = Candidate & { licence: Licence | null; status: string; flags: string[]; motifs?: number; confidence?: number; separation?: number; quality?: number };
 const rows: Row[] = [...candidates.values()].map((c) => {
   const flags: string[] = [];
   if (RUSSIA.test(`${c.title} ${c.evidence ?? ""}`)) flags.push("place-now-in-russia");
@@ -207,12 +209,12 @@ const todo = rows.filter((r) => {
   if (!r.licence) return !(r.status = "licence-not-public-use");
   if (!r.evidence) return !(r.status = "no-ukrainian-attribution-in-own-metadata");
   if (PEOPLE.test(r.title)) return !(r.status = "photo-of-people");
-  if (!ORNAMENT.test(`${r.title} ${r.evidence} ${r.note ?? ""}`) && r.source !== "ia") return !(r.status = "not-ornament-or-textile");
+  if (!ORNAMENT.test(`${r.title} ${r.evidence} ${r.note ?? ""}`)) return !(r.status = "not-ornament-or-textile");
   return true;
 });
 console.log(`to read: ${todo.length}`);
 
-const records: MotifRecord[] = [], tiles: string[] = [];
+const records: (MotifRecord & { quality: number })[] = [];
 let next = 0;
 async function worker() {
   while (next < todo.length && minutes() < MAX_MINUTES) {
@@ -220,15 +222,14 @@ async function worker() {
     try {
       const read = await readImage(r.imageUrl);
       if (!read) { r.status = "no-counted-grid-read"; continue; }
-      r.status = "grid-read"; r.motifs = read.motifs.length; r.confidence = +read.confidence.toFixed(3);
+      r.status = "grid-read"; r.motifs = read.motifs.length; r.confidence = +read.confidence.toFixed(3); r.separation = +read.separation.toFixed(2); r.quality = +read.quality.toFixed(3);
       read.motifs.forEach((g, k) => {
         const id = read.motifs.length > 1 ? `${r.id}-m${k + 1}` : r.id;
         records.push({
-          id, name: r.title.slice(0, 120), tradition: "Ukrainian", region: null, technique: "unverified-counted", sourceGroup: r.group, chart: toChart(g),
+          id, quality: +read.quality.toFixed(3), name: r.title.slice(0, 120), tradition: "Ukrainian", region: null, technique: "unverified-counted", sourceGroup: r.group, chart: toChart(g),
           provenance: { kind: r.source === "ia" ? "pattern-book" : "museum-object", licence: r.licence!, culturalAccess: "review", independentSource: true, url: r.pageUrl,
-            note: `${r.source}; ${r.licenceText.slice(0, 80)}; Ukrainian evidence (${r.evidence}); ${r.flags.length ? `FLAGS: ${r.flags.join(", ")}; ` : ""}grid read automatically (${read.crop}, pitch ${read.pitch.join("×")} px, confidence ${read.confidence.toFixed(2)}, symmetry ${detectSymmetry(g)}${read.motifs.length > 1 ? `, motif ${k + 1} of ${read.motifs.length}` : ""}). Check against the image, set technique and documented region, then set culturalAccess to open.` },
+            note: `${r.source}; ${r.licenceText.slice(0, 80)}; Ukrainian evidence (${r.evidence}); ${r.flags.length ? `FLAGS: ${r.flags.join(", ")}; ` : ""}grid read automatically (${read.crop}, pitch ${read.pitch.join("×")} px, confidence ${read.confidence.toFixed(2)}, colour separation ${read.separation.toFixed(2)}, symmetry ${detectSymmetry(g)}${read.motifs.length > 1 ? `, motif ${k + 1} of ${read.motifs.length}` : ""}). Check against the image, set technique and documented region, then set culturalAccess to open.` },
         });
-        if (tiles.length < 400) tiles.push(toSvg(g, 4, `${id} · ${r.title.slice(0, 36)}`));
       });
     } catch (e) { r.status = `image-error: ${String(e).slice(0, 80)}`; }
   }
@@ -240,9 +241,15 @@ mkdirSync(OUT, { recursive: true });
 const count = (k: (r: Row) => string) => rows.reduce<Record<string, number>>((m, r) => { const v = k(r); m[v] = (m[v] ?? 0) + 1; return m; }, {});
 const summary = { candidates: rows.length, bySource: count((r) => r.source), byStatus: count((r) => r.status.split(":")[0]!), byLicence: count((r) => r.licence ?? "not-public-use"), records: records.length, sourceGroupsWithRecords: new Set(records.map((r) => r.sourceGroup)).size, minutes: +minutes().toFixed(1) };
 writeFileSync(`${OUT}/candidates.json`, JSON.stringify({ schema: "ascend.public-motif-candidates.v1", summary, objects: rows.sort((a, b) => a.id.localeCompare(b.id)) }, null, 1) + "\n");
-writeFileSync(`${OUT}/public-motifs.unreviewed.json`, JSON.stringify({ schema: "ascend.motif-records.v1", records }, null, 1) + "\n");
+records.sort((a, b) => b.quality - a.quality || a.id.localeCompare(b.id));
+writeFileSync(`${OUT}/public-motifs.unreviewed.json`, JSON.stringify({ schema: "ascend.motif-records.v1", records }) + "\n");
+// review sheet: the 300 best reads, best first
+records.sort((a, b) => b.quality - a.quality || a.id.localeCompare(b.id));
 let y = 0; const body: string[] = [];
-for (const t of tiles) { const h = Number(/height="(\d+)"/.exec(t)?.[1] ?? 0); body.push(`<g transform="translate(0,${y})">${t}</g>`); y += h + 10; }
-const w = Math.max(240, ...tiles.map((t) => Number(/width="(\d+)"/.exec(t)?.[1] ?? 0)));
-writeFileSync(`${OUT}/review-sheet.svg`, `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${Math.max(20, y)}"><rect width="100%" height="100%" fill="#fff"/>${body.join("")}</svg>\n`);
+for (const rec of records.slice(0, 300)) {
+  const g = { w: rec.chart[0]!.length, h: rec.chart.length, cells: [] as number[] }, cell = Math.max(2, Math.min(6, Math.floor(240 / Math.max(g.w, g.h))));
+  const t = toSvg(parseChart(rec.chart), cell, `${rec.id} · q ${rec.quality} · ${(rec.name ?? "").slice(0, 40)}`);
+  body.push(`<g transform="translate(0,${y})">${t}</g>`); y += g.h * cell + 24;
+}
+writeFileSync(`${OUT}/review-sheet.svg`, `<svg xmlns="http://www.w3.org/2000/svg" width="720" height="${Math.max(20, y)}"><rect width="100%" height="100%" fill="#fff"/>${body.join("")}</svg>\n`);
 console.log(JSON.stringify(summary, null, 1));
