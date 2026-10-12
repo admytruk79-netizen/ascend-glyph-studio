@@ -152,6 +152,30 @@ jobs:
         env:
           CORPUS_IN: out/analysis-queue.ndjson
         run: npx -y tsx@4 scripts/analyze-research-corpus.ts
+      - name: Audit eligible image-composition training evidence
+        if: always()
+        env:
+          ANALYZED_IN: out/analyzed.ndjson
+          PRIOR_OUT: out/composition-prior.json
+          PRIOR_AUDIT_OUT: out/composition-prior-audit.json
+          PRIOR_MIN_EVIDENCE: "25"
+          PRIOR_ALLOW_NO_MODEL: "1"
+        run: |
+          if [ -f out/analyzed.ndjson ]; then
+            npx -y tsx@4 scripts/fit-research-composition.ts
+          else
+            printf '%s\n' '{"trained":false,"reason":"no-analyzed-corpus"}' > out/composition-prior-audit.json
+          fi
+      - name: Publish composition learning evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tesseract-composition-learning-${{ github.run_id }}
+          path: |
+            out/composition-prior.json
+            out/composition-prior-audit.json
+          if-no-files-found: warn
+          retention-days: 90
       - name: Merge into master corpus
         if: always()
         env:
