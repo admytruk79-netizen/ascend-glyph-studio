@@ -7,8 +7,10 @@ on:
       - 'scripts/benchmark-motif*.ts'
       - 'scripts/benchmark-floral-variety.ts'
       - 'scripts/benchmark-neon-floral.ts'
+      - 'scripts/train/**'
       - 'data/research/motif-annotations/**'
       - 'data/research/motif-references/**'
+      - 'data/research/training/**'
       - '.github/workflows/motif-reconstruction.yml'
 permissions:
   contents: read
@@ -33,6 +35,12 @@ jobs:
       - name: Benchmark retained historical reference
         shell: bash
         run: npm run benchmark:motif:historical 2>&1 | tee artifacts/motif-reconstruction/historical-benchmark.log
+      - name: Verify bounded training and fit a reference candidate
+        shell: bash
+        run: |
+          npm run test:training 2>&1 | tee artifacts/motif-reconstruction/training-tests.log
+          npm run train:motif:relations 2>&1 | tee artifacts/motif-reconstruction/training.log
+          npm run train:patterns:sequence 2>&1 | tee artifacts/motif-reconstruction/pattern-sequence.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:

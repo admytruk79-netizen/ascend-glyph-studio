@@ -1,0 +1,4932 @@
+{
+  "schema": "ascend.motif-relation-training-run.v1",
+  "trained": true,
+  "method": "class-balanced-multinomial-logistic-v1",
+  "status": "candidate",
+  "startedAt": "2026-10-12T18:41:14.611Z",
+  "finishedAt": "2026-10-12T18:41:16.346Z",
+  "runtime": "v22.23.3",
+  "scope": "relationships between manually supplied reference parts and ports; not raw-image segmentation or cultural style generation",
+  "dataset": {
+    "manifest": "data/research/training/motif-relation-manifest-v2.json",
+    "manifestSha256": "be156b47eec820eca9eb7d49dd1406d0a050d15a496097c2e20da5bf93d0164c",
+    "independentSourceObjects": 4,
+    "sourceGroups": 3,
+    "annotationElementCount": 45,
+    "directedPairCount": 650,
+    "classCounts": {
+      "none": 598,
+      "junction": 32,
+      "nest": 20
+    },
+    "sources": [
+      {
+        "id": "met-445264",
+        "sourceGroup": "met-bursa-445264",
+        "imageSha256": "3d8dfc1726ee344d769c20d78006cf6adeb638a588527905e824a7945f20d27d",
+        "annotationSha256": "4bcb12c15e1871055f1bd39539aeabc1c0b461e5a73c3c8a711178f4aa33e147",
+        "permission": {
+          "status": "approved",
+          "scope": "local-reference-model-experiment",
+          "basis": "CC0",
+          "evidence": "Met object API 445264 explicitly isPublicDomain=true; Met Open Access CC0 policy https://www.metmuseum.org/about-the-met/policies-and-documents/open-access CC0/public-domain image is admitted for local experimental statistical relationship training; source-specific attribution retained."
+        },
+        "review": {
+          "status": "draft",
+          "method": "manual visual inspection of the hash-identified museum photograph",
+          "limitations": [
+            "Sparse approximate outer landmarks, not pixel-accurate tracing.",
+            "Names are visual hypotheses, not historical iconographic identifications.",
+            "No expert review, rectification, repeat or physical calibration."
+          ]
+        }
+      },
+      {
+        "id": "met-239343",
+        "sourceGroup": "met-blackwork-239343",
+        "imageSha256": "b0ea1b05bc3ef138b2168b264f19a9f62067c45b21780040d1b51b59c7bc5fb6",
+        "annotationSha256": "cbaf60351aabab999e1f08a92fa181b15f5a659d86012280280c84ea2d43fa07",
+        "permission": {
+          "status": "approved",
+          "scope": "local-reference-model-experiment",
+          "basis": "CC0",
+          "evidence": "Retained Met object API 239343 isPublicDomain=true; image supplied by Met Open Access. CC0 policy https://www.metmuseum.org/about-the-met/policies-and-documents/open-access CC0/public-domain image is admitted for local experimental statistical relationship training; source-specific attribution retained."
+        },
+        "review": {
+          "status": "draft",
+          "method": "Manual source-image and overlay review of leaf, interior vein and one attached stem",
+          "limitations": [
+            "Only one leaf, approximate interior vein and partial attached stem are annotated.",
+            "Draft geometry, not exact tracing or independent expert review.",
+            "Micro-fill and other branches/flowers are not integrated.",
+            "Physical dimensions do not calibrate the unrectified photograph."
+          ]
+        }
+      },
+      {
+        "id": "commons-96737753",
+        "sourceGroup": "samokysh-ukrainian-ornament-1902",
+        "imageSha256": "e4b85cfafc845616091a8e03276ea7dc83d7ec9eb0498da692d3bc804c5b32b0",
+        "annotationSha256": "50b339e0559c1c756ac8b7361cd48d90625e681ec59263e69b8cc8671cf5dd01",
+        "permission": {
+          "status": "approved",
+          "scope": "local-reference-model-experiment",
+          "basis": "public-domain-us",
+          "evidence": "Reference-use review of retained Neon per-item Commons rights declaration: Public domain; catalogue publication date 1902 (pre-1931 publication, public domain in the US). This is a historical reference-use assessment, not a fresh Commons licence-page verification; live requests returned HTTP 403. No manufacturing approval. Local experimental statistical training assessment: retained per-item public-domain declaration and 1902 publication; US scope only, no newly verified worldwide licence, source image redistribution, regional attribution or manufacturing approval."
+        },
+        "review": {
+          "status": "draft",
+          "method": "Manual visual landmarks in Neon-selected, SHA-256 identified plate 37 photograph",
+          "limitations": [
+            "Approximate visual landmarks, not pixel-accurate tracing or expert review.",
+            "Interior shapes describe visible colour regions, not identified embroidery stitches.",
+            "No regional community, botanical identity, physical scale or stitch count established.",
+            "Petal interiors are approximate visible colour regions, not inferred botanical petal boundaries or thread fills."
+          ]
+        }
+      },
+      {
+        "id": "commons-96737731",
+        "sourceGroup": "samokysh-ukrainian-ornament-1902",
+        "imageSha256": "074104c967c8f7cf68fb92ea52e9dd560ddc0bc6c9f54198b47e67a245e48839",
+        "annotationSha256": "e92eaa0e4074feb100e6290c433cb0b16ba5d74f1b06969b493e2ff39539f363",
+        "permission": {
+          "status": "approved",
+          "scope": "local-reference-model-experiment",
+          "basis": "public-domain-us",
+          "evidence": "Reference-use review of retained Neon Commons item commons-96737731: Public domain; catalogue publication 1902 (pre-1931 publication, public domain in the US). No successful fresh Commons licence-page check or global commercial/manufacturing approval claimed. Local experimental statistical training assessment: retained per-item public-domain declaration and 1902 publication; US scope only, no newly verified worldwide licence, source image redistribution, regional attribution or manufacturing approval."
+        },
+        "review": {
+          "status": "draft",
+          "method": "Manual source-pixel outline/centreline landmarks in the right bouquet of Neon-selected plate 27",
+          "limitations": [
+            "Approximate landmarks; no pixel-accurate tracing or expert review.",
+            "Describes visible flower envelopes and nested regions, not botanical species, symbols or machine stitches.",
+            "Partial bouquet only; vase, other terminals and lower border are not reconstructed.",
+            "No physical calibration or historical grammar verification."
+          ]
+        }
+      }
+    ]
+  },
+  "optimizer": {
+    "epochs": 1500,
+    "learningRate": 0.08,
+    "l2": 0.01,
+    "initialLoss": 1.0986122886681104,
+    "finalRecordedLoss": 0.028073135601221957
+  },
+  "evaluation": {
+    "method": "leave-one-source-group-out",
+    "fittedTransformsUseTrainingOnly": true,
+    "aggregate": {
+      "pairCount": 650,
+      "accuracy": 0.9969230769230769,
+      "macroF1": 0.9835686368349684,
+      "classes": [
+        {
+          "label": "none",
+          "support": 598,
+          "predicted": 596,
+          "precision": 1,
+          "recall": 0.9966555183946488,
+          "f1": 0.998324958123953
+        },
+        {
+          "label": "junction",
+          "support": 32,
+          "predicted": 32,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        {
+          "label": "nest",
+          "support": 20,
+          "predicted": 22,
+          "precision": 0.9090909090909091,
+          "recall": 1,
+          "f1": 0.9523809523809523
+        }
+      ],
+      "confusionMatrix": {
+        "actualRows": [
+          "none",
+          "junction",
+          "nest"
+        ],
+        "predictedColumns": [
+          "none",
+          "junction",
+          "nest"
+        ],
+        "counts": [
+          [
+            596,
+            0,
+            2
+          ],
+          [
+            0,
+            32,
+            0
+          ],
+          [
+            0,
+            0,
+            20
+          ]
+        ]
+      }
+    },
+    "geometricBaseline": {
+      "pairCount": 650,
+      "accuracy": 0.9969230769230769,
+      "macroF1": 0.9835686368349684,
+      "classes": [
+        {
+          "label": "none",
+          "support": 598,
+          "predicted": 596,
+          "precision": 1,
+          "recall": 0.9966555183946488,
+          "f1": 0.998324958123953
+        },
+        {
+          "label": "junction",
+          "support": 32,
+          "predicted": 32,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        {
+          "label": "nest",
+          "support": 20,
+          "predicted": 22,
+          "precision": 0.9090909090909091,
+          "recall": 1,
+          "f1": 0.9523809523809523
+        }
+      ],
+      "confusionMatrix": {
+        "actualRows": [
+          "none",
+          "junction",
+          "nest"
+        ],
+        "predictedColumns": [
+          "none",
+          "junction",
+          "nest"
+        ],
+        "counts": [
+          [
+            596,
+            0,
+            2
+          ],
+          [
+            0,
+            32,
+            0
+          ],
+          [
+            0,
+            0,
+            20
+          ]
+        ]
+      }
+    },
+    "allNoneBaseline": {
+      "pairCount": 650,
+      "accuracy": 0.92,
+      "macroF1": 0.3194444444444445,
+      "classes": [
+        {
+          "label": "none",
+          "support": 598,
+          "predicted": 650,
+          "precision": 0.92,
+          "recall": 1,
+          "f1": 0.9583333333333334
+        },
+        {
+          "label": "junction",
+          "support": 32,
+          "predicted": 0,
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        },
+        {
+          "label": "nest",
+          "support": 20,
+          "predicted": 0,
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        }
+      ],
+      "confusionMatrix": {
+        "actualRows": [
+          "none",
+          "junction",
+          "nest"
+        ],
+        "predictedColumns": [
+          "none",
+          "junction",
+          "nest"
+        ],
+        "counts": [
+          [
+            598,
+            0,
+            0
+          ],
+          [
+            32,
+            0,
+            0
+          ],
+          [
+            20,
+            0,
+            0
+          ]
+        ]
+      }
+    },
+    "folds": [
+      {
+        "heldOutGroup": "met-blackwork-239343",
+        "trainingSourceIds": [
+          "met-445264",
+          "commons-96737753",
+          "commons-96737731"
+        ],
+        "heldOutSourceIds": [
+          "met-239343"
+        ],
+        "trainingGroupIds": [
+          "met-bursa-445264",
+          "samokysh-ukrainian-ornament-1902",
+          "samokysh-ukrainian-ornament-1902"
+        ],
+        "trainingPairCount": 644,
+        "trainingClassCounts": [
+          595,
+          30,
+          19
+        ],
+        "unsupportedLabels": [],
+        "evaluation": {
+          "pairCount": 6,
+          "accuracy": 1,
+          "macroF1": 1,
+          "classes": [
+            {
+              "label": "none",
+              "support": 3,
+              "predicted": 3,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            {
+              "label": "junction",
+              "support": 2,
+              "predicted": 2,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            {
+              "label": "nest",
+              "support": 1,
+              "predicted": 1,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            }
+          ],
+          "confusionMatrix": {
+            "actualRows": [
+              "none",
+              "junction",
+              "nest"
+            ],
+            "predictedColumns": [
+              "none",
+              "junction",
+              "nest"
+            ],
+            "counts": [
+              [
+                3,
+                0,
+                0
+              ],
+              [
+                0,
+                2,
+                0
+              ],
+              [
+                0,
+                0,
+                1
+              ]
+            ]
+          }
+        },
+        "geometricBaseline": {
+          "pairCount": 6,
+          "accuracy": 1,
+          "macroF1": 1,
+          "classes": [
+            {
+              "label": "none",
+              "support": 3,
+              "predicted": 3,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            {
+              "label": "junction",
+              "support": 2,
+              "predicted": 2,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            {
+              "label": "nest",
+              "support": 1,
+              "predicted": 1,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            }
+          ],
+          "confusionMatrix": {
+            "actualRows": [
+              "none",
+              "junction",
+              "nest"
+            ],
+            "predictedColumns": [
+              "none",
+              "junction",
+              "nest"
+            ],
+            "counts": [
+              [
+                3,
+                0,
+                0
+              ],
+              [
+                0,
+                2,
+                0
+              ],
+              [
+                0,
+                0,
+                1
+              ]
+            ]
+          }
+        },
+        "allNoneBaseline": {
+          "pairCount": 6,
+          "accuracy": 0.5,
+          "macroF1": 0.2222222222222222,
+          "classes": [
+            {
+              "label": "none",
+              "support": 3,
+              "predicted": 6,
+              "precision": 0.5,
+              "recall": 1,
+              "f1": 0.6666666666666666
+            },
+            {
+              "label": "junction",
+              "support": 2,
+              "predicted": 0,
+              "precision": 0,
+              "recall": 0,
+              "f1": 0
+            },
+            {
+              "label": "nest",
+              "support": 1,
+              "predicted": 0,
+              "precision": 0,
+              "recall": 0,
+              "f1": 0
+            }
+          ],
+          "confusionMatrix": {
+            "actualRows": [
+              "none",
+              "junction",
+              "nest"
+            ],
+            "predictedColumns": [
+              "none",
+              "junction",
+              "nest"
+            ],
+            "counts": [
+              [
+                3,
+                0,
+                0
+              ],
+              [
+                2,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                0
+              ]
+            ]
+          }
+        },
+        "predictions": [
+          {
+            "from": "element:serrated-leaf",
+            "to": "element:interior-vein",
+            "actual": "nest",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:interior-vein",
+            "to": "element:serrated-leaf",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:serrated-leaf",
+            "to": "element:attached-stem",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:attached-stem",
+            "to": "element:serrated-leaf",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:interior-vein",
+            "to": "element:attached-stem",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:attached-stem",
+            "to": "element:interior-vein",
+            "actual": "none",
+            "predicted": "none"
+          }
+        ]
+      },
+      {
+        "heldOutGroup": "met-bursa-445264",
+        "trainingSourceIds": [
+          "met-239343",
+          "commons-96737753",
+          "commons-96737731"
+        ],
+        "heldOutSourceIds": [
+          "met-445264"
+        ],
+        "trainingGroupIds": [
+          "met-blackwork-239343",
+          "samokysh-ukrainian-ornament-1902",
+          "samokysh-ukrainian-ornament-1902"
+        ],
+        "trainingPairCount": 608,
+        "trainingClassCounts": [
+          557,
+          32,
+          19
+        ],
+        "unsupportedLabels": [],
+        "evaluation": {
+          "pairCount": 42,
+          "accuracy": 1,
+          "macroF1": 1,
+          "classes": [
+            {
+              "label": "none",
+              "support": 41,
+              "predicted": 41,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            {
+              "label": "junction",
+              "support": 0,
+              "predicted": 0,
+              "precision": 0,
+              "recall": 0,
+              "f1": 0
+            },
+            {
+              "label": "nest",
+              "support": 1,
+              "predicted": 1,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            }
+          ],
+          "confusionMatrix": {
+            "actualRows": [
+              "none",
+              "junction",
+              "nest"
+            ],
+            "predictedColumns": [
+              "none",
+              "junction",
+              "nest"
+            ],
+            "counts": [
+              [
+                41,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1
+              ]
+            ]
+          }
+        },
+        "geometricBaseline": {
+          "pairCount": 42,
+          "accuracy": 1,
+          "macroF1": 1,
+          "classes": [
+            {
+              "label": "none",
+              "support": 41,
+              "predicted": 41,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            {
+              "label": "junction",
+              "support": 0,
+              "predicted": 0,
+              "precision": 0,
+              "recall": 0,
+              "f1": 0
+            },
+            {
+              "label": "nest",
+              "support": 1,
+              "predicted": 1,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            }
+          ],
+          "confusionMatrix": {
+            "actualRows": [
+              "none",
+              "junction",
+              "nest"
+            ],
+            "predictedColumns": [
+              "none",
+              "junction",
+              "nest"
+            ],
+            "counts": [
+              [
+                41,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1
+              ]
+            ]
+          }
+        },
+        "allNoneBaseline": {
+          "pairCount": 42,
+          "accuracy": 0.9761904761904762,
+          "macroF1": 0.4939759036144578,
+          "classes": [
+            {
+              "label": "none",
+              "support": 41,
+              "predicted": 42,
+              "precision": 0.9761904761904762,
+              "recall": 1,
+              "f1": 0.9879518072289156
+            },
+            {
+              "label": "junction",
+              "support": 0,
+              "predicted": 0,
+              "precision": 0,
+              "recall": 0,
+              "f1": 0
+            },
+            {
+              "label": "nest",
+              "support": 1,
+              "predicted": 0,
+              "precision": 0,
+              "recall": 0,
+              "f1": 0
+            }
+          ],
+          "confusionMatrix": {
+            "actualRows": [
+              "none",
+              "junction",
+              "nest"
+            ],
+            "predictedColumns": [
+              "none",
+              "junction",
+              "nest"
+            ],
+            "counts": [
+              [
+                41,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                0
+              ]
+            ]
+          }
+        },
+        "predictions": [
+          {
+            "from": "element:medallion-upper",
+            "to": "element:medallion-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:medallion-middle",
+            "to": "element:medallion-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:medallion-upper",
+            "to": "element:medallion-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:medallion-lower",
+            "to": "element:medallion-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:medallion-upper",
+            "to": "element:flower-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-upper-right",
+            "to": "element:medallion-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:medallion-upper",
+            "to": "element:flower-middle-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-middle-left",
+            "to": "element:medallion-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:medallion-upper",
+            "to": "element:flower-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-lower-right",
+            "to": "element:medallion-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:medallion-upper",
+            "to": "element:upper-inset",
+            "actual": "nest",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:upper-inset",
+            "to": "element:medallion-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:medallion-middle",
+            "to": "element:medallion-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:medallion-lower",
+            "to": "element:medallion-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:medallion-middle",
+            "to": "element:flower-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-upper-right",
+            "to": "element:medallion-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:medallion-middle",
+            "to": "element:flower-middle-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-middle-left",
+            "to": "element:medallion-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:medallion-middle",
+            "to": "element:flower-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-lower-right",
+            "to": "element:medallion-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:medallion-middle",
+            "to": "element:upper-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:upper-inset",
+            "to": "element:medallion-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:medallion-lower",
+            "to": "element:flower-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-upper-right",
+            "to": "element:medallion-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:medallion-lower",
+            "to": "element:flower-middle-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-middle-left",
+            "to": "element:medallion-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:medallion-lower",
+            "to": "element:flower-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-lower-right",
+            "to": "element:medallion-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:medallion-lower",
+            "to": "element:upper-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:upper-inset",
+            "to": "element:medallion-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-upper-right",
+            "to": "element:flower-middle-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-middle-left",
+            "to": "element:flower-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-upper-right",
+            "to": "element:flower-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-lower-right",
+            "to": "element:flower-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-upper-right",
+            "to": "element:upper-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:upper-inset",
+            "to": "element:flower-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-middle-left",
+            "to": "element:flower-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-lower-right",
+            "to": "element:flower-middle-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-middle-left",
+            "to": "element:upper-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:upper-inset",
+            "to": "element:flower-middle-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-lower-right",
+            "to": "element:upper-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:upper-inset",
+            "to": "element:flower-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          }
+        ]
+      },
+      {
+        "heldOutGroup": "samokysh-ukrainian-ornament-1902",
+        "trainingSourceIds": [
+          "met-445264",
+          "met-239343"
+        ],
+        "heldOutSourceIds": [
+          "commons-96737753",
+          "commons-96737731"
+        ],
+        "trainingGroupIds": [
+          "met-bursa-445264",
+          "met-blackwork-239343"
+        ],
+        "trainingPairCount": 48,
+        "trainingClassCounts": [
+          44,
+          2,
+          2
+        ],
+        "unsupportedLabels": [],
+        "evaluation": {
+          "pairCount": 602,
+          "accuracy": 0.9966777408637874,
+          "macroF1": 0.9818533675962057,
+          "classes": [
+            {
+              "label": "none",
+              "support": 554,
+              "predicted": 552,
+              "precision": 1,
+              "recall": 0.9963898916967509,
+              "f1": 0.9981916817359855
+            },
+            {
+              "label": "junction",
+              "support": 30,
+              "predicted": 30,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            {
+              "label": "nest",
+              "support": 18,
+              "predicted": 20,
+              "precision": 0.9,
+              "recall": 1,
+              "f1": 0.9473684210526316
+            }
+          ],
+          "confusionMatrix": {
+            "actualRows": [
+              "none",
+              "junction",
+              "nest"
+            ],
+            "predictedColumns": [
+              "none",
+              "junction",
+              "nest"
+            ],
+            "counts": [
+              [
+                552,
+                0,
+                2
+              ],
+              [
+                0,
+                30,
+                0
+              ],
+              [
+                0,
+                0,
+                18
+              ]
+            ]
+          }
+        },
+        "geometricBaseline": {
+          "pairCount": 602,
+          "accuracy": 0.9966777408637874,
+          "macroF1": 0.9818533675962057,
+          "classes": [
+            {
+              "label": "none",
+              "support": 554,
+              "predicted": 552,
+              "precision": 1,
+              "recall": 0.9963898916967509,
+              "f1": 0.9981916817359855
+            },
+            {
+              "label": "junction",
+              "support": 30,
+              "predicted": 30,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            {
+              "label": "nest",
+              "support": 18,
+              "predicted": 20,
+              "precision": 0.9,
+              "recall": 1,
+              "f1": 0.9473684210526316
+            }
+          ],
+          "confusionMatrix": {
+            "actualRows": [
+              "none",
+              "junction",
+              "nest"
+            ],
+            "predictedColumns": [
+              "none",
+              "junction",
+              "nest"
+            ],
+            "counts": [
+              [
+                552,
+                0,
+                2
+              ],
+              [
+                0,
+                30,
+                0
+              ],
+              [
+                0,
+                0,
+                18
+              ]
+            ]
+          }
+        },
+        "allNoneBaseline": {
+          "pairCount": 602,
+          "accuracy": 0.920265780730897,
+          "macroF1": 0.31949250288350634,
+          "classes": [
+            {
+              "label": "none",
+              "support": 554,
+              "predicted": 602,
+              "precision": 0.920265780730897,
+              "recall": 1,
+              "f1": 0.9584775086505191
+            },
+            {
+              "label": "junction",
+              "support": 30,
+              "predicted": 0,
+              "precision": 0,
+              "recall": 0,
+              "f1": 0
+            },
+            {
+              "label": "nest",
+              "support": 18,
+              "predicted": 0,
+              "precision": 0,
+              "recall": 0,
+              "f1": 0
+            }
+          ],
+          "confusionMatrix": {
+            "actualRows": [
+              "none",
+              "junction",
+              "nest"
+            ],
+            "predictedColumns": [
+              "none",
+              "junction",
+              "nest"
+            ],
+            "counts": [
+              [
+                554,
+                0,
+                0
+              ],
+              [
+                30,
+                0,
+                0
+              ],
+              [
+                18,
+                0,
+                0
+              ]
+            ]
+          }
+        },
+        "predictions": [
+          {
+            "from": "element:stem-left",
+            "to": "element:flower-left",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:flower-left",
+            "to": "element:stem-left",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:stem-left",
+            "to": "element:flower-left-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left-inset",
+            "to": "element:stem-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-left",
+            "to": "element:stem-band",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-band",
+            "to": "element:stem-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-left",
+            "to": "element:flower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right",
+            "to": "element:stem-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-left",
+            "to": "element:flower-right-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right-inset",
+            "to": "element:stem-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-left",
+            "to": "element:stem-bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-bud",
+            "to": "element:stem-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-left",
+            "to": "element:bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:bud",
+            "to": "element:stem-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-left",
+            "to": "element:flower-radial",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:flower-radial",
+            "to": "element:stem-left",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:stem-left",
+            "to": "element:flower-radial-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-inset",
+            "to": "element:stem-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-left",
+            "to": "element:stem-top",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-top",
+            "to": "element:stem-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-left",
+            "to": "element:flower-hanging",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging",
+            "to": "element:stem-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-left",
+            "to": "element:flower-hanging-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging-inset",
+            "to": "element:stem-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-left",
+            "to": "element:flower-radial-petal-inset-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper",
+            "to": "element:stem-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-left",
+            "to": "element:flower-radial-petal-inset-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-right",
+            "to": "element:stem-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-left",
+            "to": "element:flower-radial-petal-inset-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-right",
+            "to": "element:stem-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-left",
+            "to": "element:flower-radial-petal-inset-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-right",
+            "to": "element:stem-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-left",
+            "to": "element:flower-radial-petal-inset-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower",
+            "to": "element:stem-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-left",
+            "to": "element:flower-radial-petal-inset-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-left",
+            "to": "element:stem-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-left",
+            "to": "element:flower-radial-petal-inset-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-left",
+            "to": "element:stem-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-left",
+            "to": "element:flower-radial-petal-inset-upper-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-left",
+            "to": "element:stem-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left",
+            "to": "element:flower-left-inset",
+            "actual": "nest",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:flower-left-inset",
+            "to": "element:flower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left",
+            "to": "element:stem-band",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:stem-band",
+            "to": "element:flower-left",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:flower-left",
+            "to": "element:flower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right",
+            "to": "element:flower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left",
+            "to": "element:flower-right-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right-inset",
+            "to": "element:flower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left",
+            "to": "element:stem-bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-bud",
+            "to": "element:flower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left",
+            "to": "element:bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:bud",
+            "to": "element:flower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left",
+            "to": "element:flower-radial",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial",
+            "to": "element:flower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left",
+            "to": "element:flower-radial-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-inset",
+            "to": "element:flower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left",
+            "to": "element:stem-top",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-top",
+            "to": "element:flower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left",
+            "to": "element:flower-hanging",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging",
+            "to": "element:flower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left",
+            "to": "element:flower-hanging-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging-inset",
+            "to": "element:flower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left",
+            "to": "element:flower-radial-petal-inset-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper",
+            "to": "element:flower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left",
+            "to": "element:flower-radial-petal-inset-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-right",
+            "to": "element:flower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left",
+            "to": "element:flower-radial-petal-inset-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-right",
+            "to": "element:flower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left",
+            "to": "element:flower-radial-petal-inset-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-right",
+            "to": "element:flower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left",
+            "to": "element:flower-radial-petal-inset-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower",
+            "to": "element:flower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left",
+            "to": "element:flower-radial-petal-inset-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-left",
+            "to": "element:flower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left",
+            "to": "element:flower-radial-petal-inset-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-left",
+            "to": "element:flower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left",
+            "to": "element:flower-radial-petal-inset-upper-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-left",
+            "to": "element:flower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left-inset",
+            "to": "element:stem-band",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-band",
+            "to": "element:flower-left-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left-inset",
+            "to": "element:flower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right",
+            "to": "element:flower-left-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left-inset",
+            "to": "element:flower-right-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right-inset",
+            "to": "element:flower-left-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left-inset",
+            "to": "element:stem-bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-bud",
+            "to": "element:flower-left-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left-inset",
+            "to": "element:bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:bud",
+            "to": "element:flower-left-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left-inset",
+            "to": "element:flower-radial",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial",
+            "to": "element:flower-left-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left-inset",
+            "to": "element:flower-radial-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-inset",
+            "to": "element:flower-left-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left-inset",
+            "to": "element:stem-top",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-top",
+            "to": "element:flower-left-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left-inset",
+            "to": "element:flower-hanging",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging",
+            "to": "element:flower-left-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left-inset",
+            "to": "element:flower-hanging-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging-inset",
+            "to": "element:flower-left-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left-inset",
+            "to": "element:flower-radial-petal-inset-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper",
+            "to": "element:flower-left-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left-inset",
+            "to": "element:flower-radial-petal-inset-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-right",
+            "to": "element:flower-left-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left-inset",
+            "to": "element:flower-radial-petal-inset-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-right",
+            "to": "element:flower-left-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left-inset",
+            "to": "element:flower-radial-petal-inset-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-right",
+            "to": "element:flower-left-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left-inset",
+            "to": "element:flower-radial-petal-inset-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower",
+            "to": "element:flower-left-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left-inset",
+            "to": "element:flower-radial-petal-inset-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-left",
+            "to": "element:flower-left-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left-inset",
+            "to": "element:flower-radial-petal-inset-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-left",
+            "to": "element:flower-left-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-left-inset",
+            "to": "element:flower-radial-petal-inset-upper-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-left",
+            "to": "element:flower-left-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-band",
+            "to": "element:flower-right",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:flower-right",
+            "to": "element:stem-band",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:stem-band",
+            "to": "element:flower-right-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right-inset",
+            "to": "element:stem-band",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-band",
+            "to": "element:stem-bud",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:stem-bud",
+            "to": "element:stem-band",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:stem-band",
+            "to": "element:bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:bud",
+            "to": "element:stem-band",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-band",
+            "to": "element:flower-radial",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial",
+            "to": "element:stem-band",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-band",
+            "to": "element:flower-radial-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-inset",
+            "to": "element:stem-band",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-band",
+            "to": "element:stem-top",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-top",
+            "to": "element:stem-band",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-band",
+            "to": "element:flower-hanging",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging",
+            "to": "element:stem-band",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-band",
+            "to": "element:flower-hanging-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging-inset",
+            "to": "element:stem-band",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-band",
+            "to": "element:flower-radial-petal-inset-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper",
+            "to": "element:stem-band",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-band",
+            "to": "element:flower-radial-petal-inset-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-right",
+            "to": "element:stem-band",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-band",
+            "to": "element:flower-radial-petal-inset-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-right",
+            "to": "element:stem-band",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-band",
+            "to": "element:flower-radial-petal-inset-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-right",
+            "to": "element:stem-band",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-band",
+            "to": "element:flower-radial-petal-inset-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower",
+            "to": "element:stem-band",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-band",
+            "to": "element:flower-radial-petal-inset-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-left",
+            "to": "element:stem-band",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-band",
+            "to": "element:flower-radial-petal-inset-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-left",
+            "to": "element:stem-band",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-band",
+            "to": "element:flower-radial-petal-inset-upper-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-left",
+            "to": "element:stem-band",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right",
+            "to": "element:flower-right-inset",
+            "actual": "nest",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:flower-right-inset",
+            "to": "element:flower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right",
+            "to": "element:stem-bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-bud",
+            "to": "element:flower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right",
+            "to": "element:bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:bud",
+            "to": "element:flower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right",
+            "to": "element:flower-radial",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial",
+            "to": "element:flower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right",
+            "to": "element:flower-radial-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-inset",
+            "to": "element:flower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right",
+            "to": "element:stem-top",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-top",
+            "to": "element:flower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right",
+            "to": "element:flower-hanging",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging",
+            "to": "element:flower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right",
+            "to": "element:flower-hanging-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging-inset",
+            "to": "element:flower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right",
+            "to": "element:flower-radial-petal-inset-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper",
+            "to": "element:flower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right",
+            "to": "element:flower-radial-petal-inset-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-right",
+            "to": "element:flower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right",
+            "to": "element:flower-radial-petal-inset-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-right",
+            "to": "element:flower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right",
+            "to": "element:flower-radial-petal-inset-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-right",
+            "to": "element:flower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right",
+            "to": "element:flower-radial-petal-inset-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower",
+            "to": "element:flower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right",
+            "to": "element:flower-radial-petal-inset-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-left",
+            "to": "element:flower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right",
+            "to": "element:flower-radial-petal-inset-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-left",
+            "to": "element:flower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right",
+            "to": "element:flower-radial-petal-inset-upper-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-left",
+            "to": "element:flower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right-inset",
+            "to": "element:stem-bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-bud",
+            "to": "element:flower-right-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right-inset",
+            "to": "element:bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:bud",
+            "to": "element:flower-right-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right-inset",
+            "to": "element:flower-radial",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial",
+            "to": "element:flower-right-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right-inset",
+            "to": "element:flower-radial-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-inset",
+            "to": "element:flower-right-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right-inset",
+            "to": "element:stem-top",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-top",
+            "to": "element:flower-right-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right-inset",
+            "to": "element:flower-hanging",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging",
+            "to": "element:flower-right-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right-inset",
+            "to": "element:flower-hanging-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging-inset",
+            "to": "element:flower-right-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right-inset",
+            "to": "element:flower-radial-petal-inset-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper",
+            "to": "element:flower-right-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right-inset",
+            "to": "element:flower-radial-petal-inset-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-right",
+            "to": "element:flower-right-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right-inset",
+            "to": "element:flower-radial-petal-inset-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-right",
+            "to": "element:flower-right-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right-inset",
+            "to": "element:flower-radial-petal-inset-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-right",
+            "to": "element:flower-right-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right-inset",
+            "to": "element:flower-radial-petal-inset-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower",
+            "to": "element:flower-right-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right-inset",
+            "to": "element:flower-radial-petal-inset-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-left",
+            "to": "element:flower-right-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right-inset",
+            "to": "element:flower-radial-petal-inset-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-left",
+            "to": "element:flower-right-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-right-inset",
+            "to": "element:flower-radial-petal-inset-upper-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-left",
+            "to": "element:flower-right-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-bud",
+            "to": "element:bud",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:bud",
+            "to": "element:stem-bud",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:stem-bud",
+            "to": "element:flower-radial",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial",
+            "to": "element:stem-bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-bud",
+            "to": "element:flower-radial-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-inset",
+            "to": "element:stem-bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-bud",
+            "to": "element:stem-top",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-top",
+            "to": "element:stem-bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-bud",
+            "to": "element:flower-hanging",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging",
+            "to": "element:stem-bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-bud",
+            "to": "element:flower-hanging-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging-inset",
+            "to": "element:stem-bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-bud",
+            "to": "element:flower-radial-petal-inset-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper",
+            "to": "element:stem-bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-bud",
+            "to": "element:flower-radial-petal-inset-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-right",
+            "to": "element:stem-bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-bud",
+            "to": "element:flower-radial-petal-inset-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-right",
+            "to": "element:stem-bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-bud",
+            "to": "element:flower-radial-petal-inset-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-right",
+            "to": "element:stem-bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-bud",
+            "to": "element:flower-radial-petal-inset-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower",
+            "to": "element:stem-bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-bud",
+            "to": "element:flower-radial-petal-inset-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-left",
+            "to": "element:stem-bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-bud",
+            "to": "element:flower-radial-petal-inset-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-left",
+            "to": "element:stem-bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-bud",
+            "to": "element:flower-radial-petal-inset-upper-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-left",
+            "to": "element:stem-bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:bud",
+            "to": "element:flower-radial",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial",
+            "to": "element:bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:bud",
+            "to": "element:flower-radial-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-inset",
+            "to": "element:bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:bud",
+            "to": "element:stem-top",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-top",
+            "to": "element:bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:bud",
+            "to": "element:flower-hanging",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging",
+            "to": "element:bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:bud",
+            "to": "element:flower-hanging-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging-inset",
+            "to": "element:bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:bud",
+            "to": "element:flower-radial-petal-inset-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper",
+            "to": "element:bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:bud",
+            "to": "element:flower-radial-petal-inset-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-right",
+            "to": "element:bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:bud",
+            "to": "element:flower-radial-petal-inset-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-right",
+            "to": "element:bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:bud",
+            "to": "element:flower-radial-petal-inset-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-right",
+            "to": "element:bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:bud",
+            "to": "element:flower-radial-petal-inset-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower",
+            "to": "element:bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:bud",
+            "to": "element:flower-radial-petal-inset-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-left",
+            "to": "element:bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:bud",
+            "to": "element:flower-radial-petal-inset-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-left",
+            "to": "element:bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:bud",
+            "to": "element:flower-radial-petal-inset-upper-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-left",
+            "to": "element:bud",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial",
+            "to": "element:flower-radial-inset",
+            "actual": "nest",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:flower-radial-inset",
+            "to": "element:flower-radial",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial",
+            "to": "element:stem-top",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:stem-top",
+            "to": "element:flower-radial",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:flower-radial",
+            "to": "element:flower-hanging",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging",
+            "to": "element:flower-radial",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial",
+            "to": "element:flower-hanging-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging-inset",
+            "to": "element:flower-radial",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial",
+            "to": "element:flower-radial-petal-inset-upper",
+            "actual": "nest",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper",
+            "to": "element:flower-radial",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial",
+            "to": "element:flower-radial-petal-inset-upper-right",
+            "actual": "nest",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-right",
+            "to": "element:flower-radial",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial",
+            "to": "element:flower-radial-petal-inset-right",
+            "actual": "nest",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-right",
+            "to": "element:flower-radial",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial",
+            "to": "element:flower-radial-petal-inset-lower-right",
+            "actual": "nest",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-right",
+            "to": "element:flower-radial",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial",
+            "to": "element:flower-radial-petal-inset-lower",
+            "actual": "nest",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower",
+            "to": "element:flower-radial",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial",
+            "to": "element:flower-radial-petal-inset-lower-left",
+            "actual": "nest",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-left",
+            "to": "element:flower-radial",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial",
+            "to": "element:flower-radial-petal-inset-left",
+            "actual": "nest",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-left",
+            "to": "element:flower-radial",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial",
+            "to": "element:flower-radial-petal-inset-upper-left",
+            "actual": "nest",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-left",
+            "to": "element:flower-radial",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-inset",
+            "to": "element:stem-top",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-top",
+            "to": "element:flower-radial-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-inset",
+            "to": "element:flower-hanging",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging",
+            "to": "element:flower-radial-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-inset",
+            "to": "element:flower-hanging-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging-inset",
+            "to": "element:flower-radial-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-inset",
+            "to": "element:flower-radial-petal-inset-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper",
+            "to": "element:flower-radial-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-inset",
+            "to": "element:flower-radial-petal-inset-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-right",
+            "to": "element:flower-radial-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-inset",
+            "to": "element:flower-radial-petal-inset-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-right",
+            "to": "element:flower-radial-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-inset",
+            "to": "element:flower-radial-petal-inset-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-right",
+            "to": "element:flower-radial-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-inset",
+            "to": "element:flower-radial-petal-inset-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower",
+            "to": "element:flower-radial-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-inset",
+            "to": "element:flower-radial-petal-inset-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-left",
+            "to": "element:flower-radial-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-inset",
+            "to": "element:flower-radial-petal-inset-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-left",
+            "to": "element:flower-radial-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-inset",
+            "to": "element:flower-radial-petal-inset-upper-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-left",
+            "to": "element:flower-radial-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-top",
+            "to": "element:flower-hanging",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:flower-hanging",
+            "to": "element:stem-top",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:stem-top",
+            "to": "element:flower-hanging-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging-inset",
+            "to": "element:stem-top",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-top",
+            "to": "element:flower-radial-petal-inset-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper",
+            "to": "element:stem-top",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-top",
+            "to": "element:flower-radial-petal-inset-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-right",
+            "to": "element:stem-top",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-top",
+            "to": "element:flower-radial-petal-inset-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-right",
+            "to": "element:stem-top",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-top",
+            "to": "element:flower-radial-petal-inset-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-right",
+            "to": "element:stem-top",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-top",
+            "to": "element:flower-radial-petal-inset-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower",
+            "to": "element:stem-top",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-top",
+            "to": "element:flower-radial-petal-inset-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-left",
+            "to": "element:stem-top",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-top",
+            "to": "element:flower-radial-petal-inset-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-left",
+            "to": "element:stem-top",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-top",
+            "to": "element:flower-radial-petal-inset-upper-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-left",
+            "to": "element:stem-top",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging",
+            "to": "element:flower-hanging-inset",
+            "actual": "nest",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:flower-hanging-inset",
+            "to": "element:flower-hanging",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging",
+            "to": "element:flower-radial-petal-inset-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper",
+            "to": "element:flower-hanging",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging",
+            "to": "element:flower-radial-petal-inset-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-right",
+            "to": "element:flower-hanging",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging",
+            "to": "element:flower-radial-petal-inset-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-right",
+            "to": "element:flower-hanging",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging",
+            "to": "element:flower-radial-petal-inset-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-right",
+            "to": "element:flower-hanging",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging",
+            "to": "element:flower-radial-petal-inset-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower",
+            "to": "element:flower-hanging",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging",
+            "to": "element:flower-radial-petal-inset-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-left",
+            "to": "element:flower-hanging",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging",
+            "to": "element:flower-radial-petal-inset-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-left",
+            "to": "element:flower-hanging",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging",
+            "to": "element:flower-radial-petal-inset-upper-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-left",
+            "to": "element:flower-hanging",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging-inset",
+            "to": "element:flower-radial-petal-inset-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper",
+            "to": "element:flower-hanging-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging-inset",
+            "to": "element:flower-radial-petal-inset-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-right",
+            "to": "element:flower-hanging-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging-inset",
+            "to": "element:flower-radial-petal-inset-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-right",
+            "to": "element:flower-hanging-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging-inset",
+            "to": "element:flower-radial-petal-inset-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-right",
+            "to": "element:flower-hanging-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging-inset",
+            "to": "element:flower-radial-petal-inset-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower",
+            "to": "element:flower-hanging-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging-inset",
+            "to": "element:flower-radial-petal-inset-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-left",
+            "to": "element:flower-hanging-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging-inset",
+            "to": "element:flower-radial-petal-inset-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-left",
+            "to": "element:flower-hanging-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-hanging-inset",
+            "to": "element:flower-radial-petal-inset-upper-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-left",
+            "to": "element:flower-hanging-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper",
+            "to": "element:flower-radial-petal-inset-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-right",
+            "to": "element:flower-radial-petal-inset-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper",
+            "to": "element:flower-radial-petal-inset-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-right",
+            "to": "element:flower-radial-petal-inset-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper",
+            "to": "element:flower-radial-petal-inset-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-right",
+            "to": "element:flower-radial-petal-inset-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper",
+            "to": "element:flower-radial-petal-inset-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower",
+            "to": "element:flower-radial-petal-inset-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper",
+            "to": "element:flower-radial-petal-inset-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-left",
+            "to": "element:flower-radial-petal-inset-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper",
+            "to": "element:flower-radial-petal-inset-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-left",
+            "to": "element:flower-radial-petal-inset-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper",
+            "to": "element:flower-radial-petal-inset-upper-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-left",
+            "to": "element:flower-radial-petal-inset-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-right",
+            "to": "element:flower-radial-petal-inset-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-right",
+            "to": "element:flower-radial-petal-inset-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-right",
+            "to": "element:flower-radial-petal-inset-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-right",
+            "to": "element:flower-radial-petal-inset-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-right",
+            "to": "element:flower-radial-petal-inset-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower",
+            "to": "element:flower-radial-petal-inset-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-right",
+            "to": "element:flower-radial-petal-inset-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-left",
+            "to": "element:flower-radial-petal-inset-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-right",
+            "to": "element:flower-radial-petal-inset-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-left",
+            "to": "element:flower-radial-petal-inset-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-right",
+            "to": "element:flower-radial-petal-inset-upper-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-left",
+            "to": "element:flower-radial-petal-inset-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-right",
+            "to": "element:flower-radial-petal-inset-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-right",
+            "to": "element:flower-radial-petal-inset-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-right",
+            "to": "element:flower-radial-petal-inset-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower",
+            "to": "element:flower-radial-petal-inset-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-right",
+            "to": "element:flower-radial-petal-inset-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-left",
+            "to": "element:flower-radial-petal-inset-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-right",
+            "to": "element:flower-radial-petal-inset-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-left",
+            "to": "element:flower-radial-petal-inset-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-right",
+            "to": "element:flower-radial-petal-inset-upper-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-left",
+            "to": "element:flower-radial-petal-inset-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-right",
+            "to": "element:flower-radial-petal-inset-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower",
+            "to": "element:flower-radial-petal-inset-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-right",
+            "to": "element:flower-radial-petal-inset-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-left",
+            "to": "element:flower-radial-petal-inset-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-right",
+            "to": "element:flower-radial-petal-inset-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-left",
+            "to": "element:flower-radial-petal-inset-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-right",
+            "to": "element:flower-radial-petal-inset-upper-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-left",
+            "to": "element:flower-radial-petal-inset-lower-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower",
+            "to": "element:flower-radial-petal-inset-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-left",
+            "to": "element:flower-radial-petal-inset-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower",
+            "to": "element:flower-radial-petal-inset-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-left",
+            "to": "element:flower-radial-petal-inset-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower",
+            "to": "element:flower-radial-petal-inset-upper-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-left",
+            "to": "element:flower-radial-petal-inset-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-left",
+            "to": "element:flower-radial-petal-inset-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-left",
+            "to": "element:flower-radial-petal-inset-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-lower-left",
+            "to": "element:flower-radial-petal-inset-upper-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-left",
+            "to": "element:flower-radial-petal-inset-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-left",
+            "to": "element:flower-radial-petal-inset-upper-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-radial-petal-inset-upper-left",
+            "to": "element:flower-radial-petal-inset-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-main",
+            "to": "element:flower-layered",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:flower-layered",
+            "to": "element:stem-main",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:stem-main",
+            "to": "element:flower-layered-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-middle",
+            "to": "element:stem-main",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-main",
+            "to": "element:flower-layered-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-centre",
+            "to": "element:stem-main",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-main",
+            "to": "element:stem-upper-right",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:stem-upper-right",
+            "to": "element:stem-main",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:stem-main",
+            "to": "element:flower-blue-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper",
+            "to": "element:stem-main",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-main",
+            "to": "element:flower-blue-upper-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper-middle",
+            "to": "element:stem-main",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-main",
+            "to": "element:stem-lower-left",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:stem-lower-left",
+            "to": "element:stem-main",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:stem-main",
+            "to": "element:flower-blue-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower",
+            "to": "element:stem-main",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-main",
+            "to": "element:flower-blue-lower-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-middle",
+            "to": "element:stem-main",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-main",
+            "to": "element:flower-blue-lower-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-centre",
+            "to": "element:stem-main",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-main",
+            "to": "element:stem-centre",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:stem-centre",
+            "to": "element:stem-main",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:stem-main",
+            "to": "element:terminal-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre",
+            "to": "element:stem-main",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-main",
+            "to": "element:terminal-centre-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre-inset",
+            "to": "element:stem-main",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered",
+            "to": "element:flower-layered-middle",
+            "actual": "nest",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:flower-layered-middle",
+            "to": "element:flower-layered",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered",
+            "to": "element:flower-layered-centre",
+            "actual": "none",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:flower-layered-centre",
+            "to": "element:flower-layered",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered",
+            "to": "element:stem-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-upper-right",
+            "to": "element:flower-layered",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered",
+            "to": "element:flower-blue-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper",
+            "to": "element:flower-layered",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered",
+            "to": "element:flower-blue-upper-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper-middle",
+            "to": "element:flower-layered",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered",
+            "to": "element:stem-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-lower-left",
+            "to": "element:flower-layered",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered",
+            "to": "element:flower-blue-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower",
+            "to": "element:flower-layered",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered",
+            "to": "element:flower-blue-lower-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-middle",
+            "to": "element:flower-layered",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered",
+            "to": "element:flower-blue-lower-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-centre",
+            "to": "element:flower-layered",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered",
+            "to": "element:stem-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-centre",
+            "to": "element:flower-layered",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered",
+            "to": "element:terminal-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre",
+            "to": "element:flower-layered",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered",
+            "to": "element:terminal-centre-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre-inset",
+            "to": "element:flower-layered",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-middle",
+            "to": "element:flower-layered-centre",
+            "actual": "nest",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:flower-layered-centre",
+            "to": "element:flower-layered-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-middle",
+            "to": "element:stem-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-upper-right",
+            "to": "element:flower-layered-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-middle",
+            "to": "element:flower-blue-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper",
+            "to": "element:flower-layered-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-middle",
+            "to": "element:flower-blue-upper-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper-middle",
+            "to": "element:flower-layered-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-middle",
+            "to": "element:stem-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-lower-left",
+            "to": "element:flower-layered-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-middle",
+            "to": "element:flower-blue-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower",
+            "to": "element:flower-layered-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-middle",
+            "to": "element:flower-blue-lower-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-middle",
+            "to": "element:flower-layered-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-middle",
+            "to": "element:flower-blue-lower-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-centre",
+            "to": "element:flower-layered-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-middle",
+            "to": "element:stem-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-centre",
+            "to": "element:flower-layered-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-middle",
+            "to": "element:terminal-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre",
+            "to": "element:flower-layered-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-middle",
+            "to": "element:terminal-centre-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre-inset",
+            "to": "element:flower-layered-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-centre",
+            "to": "element:stem-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-upper-right",
+            "to": "element:flower-layered-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-centre",
+            "to": "element:flower-blue-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper",
+            "to": "element:flower-layered-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-centre",
+            "to": "element:flower-blue-upper-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper-middle",
+            "to": "element:flower-layered-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-centre",
+            "to": "element:stem-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-lower-left",
+            "to": "element:flower-layered-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-centre",
+            "to": "element:flower-blue-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower",
+            "to": "element:flower-layered-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-centre",
+            "to": "element:flower-blue-lower-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-middle",
+            "to": "element:flower-layered-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-centre",
+            "to": "element:flower-blue-lower-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-centre",
+            "to": "element:flower-layered-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-centre",
+            "to": "element:stem-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-centre",
+            "to": "element:flower-layered-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-centre",
+            "to": "element:terminal-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre",
+            "to": "element:flower-layered-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-layered-centre",
+            "to": "element:terminal-centre-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre-inset",
+            "to": "element:flower-layered-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-upper-right",
+            "to": "element:flower-blue-upper",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:flower-blue-upper",
+            "to": "element:stem-upper-right",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:stem-upper-right",
+            "to": "element:flower-blue-upper-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper-middle",
+            "to": "element:stem-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-upper-right",
+            "to": "element:stem-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-lower-left",
+            "to": "element:stem-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-upper-right",
+            "to": "element:flower-blue-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower",
+            "to": "element:stem-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-upper-right",
+            "to": "element:flower-blue-lower-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-middle",
+            "to": "element:stem-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-upper-right",
+            "to": "element:flower-blue-lower-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-centre",
+            "to": "element:stem-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-upper-right",
+            "to": "element:stem-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-centre",
+            "to": "element:stem-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-upper-right",
+            "to": "element:terminal-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre",
+            "to": "element:stem-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-upper-right",
+            "to": "element:terminal-centre-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre-inset",
+            "to": "element:stem-upper-right",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper",
+            "to": "element:flower-blue-upper-middle",
+            "actual": "nest",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:flower-blue-upper-middle",
+            "to": "element:flower-blue-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper",
+            "to": "element:stem-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-lower-left",
+            "to": "element:flower-blue-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper",
+            "to": "element:flower-blue-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower",
+            "to": "element:flower-blue-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper",
+            "to": "element:flower-blue-lower-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-middle",
+            "to": "element:flower-blue-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper",
+            "to": "element:flower-blue-lower-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-centre",
+            "to": "element:flower-blue-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper",
+            "to": "element:stem-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-centre",
+            "to": "element:flower-blue-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper",
+            "to": "element:terminal-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre",
+            "to": "element:flower-blue-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper",
+            "to": "element:terminal-centre-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre-inset",
+            "to": "element:flower-blue-upper",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper-middle",
+            "to": "element:stem-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-lower-left",
+            "to": "element:flower-blue-upper-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper-middle",
+            "to": "element:flower-blue-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower",
+            "to": "element:flower-blue-upper-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper-middle",
+            "to": "element:flower-blue-lower-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-middle",
+            "to": "element:flower-blue-upper-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper-middle",
+            "to": "element:flower-blue-lower-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-centre",
+            "to": "element:flower-blue-upper-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper-middle",
+            "to": "element:stem-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-centre",
+            "to": "element:flower-blue-upper-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper-middle",
+            "to": "element:terminal-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre",
+            "to": "element:flower-blue-upper-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-upper-middle",
+            "to": "element:terminal-centre-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre-inset",
+            "to": "element:flower-blue-upper-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-lower-left",
+            "to": "element:flower-blue-lower",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:flower-blue-lower",
+            "to": "element:stem-lower-left",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:stem-lower-left",
+            "to": "element:flower-blue-lower-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-middle",
+            "to": "element:stem-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-lower-left",
+            "to": "element:flower-blue-lower-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-centre",
+            "to": "element:stem-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-lower-left",
+            "to": "element:stem-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-centre",
+            "to": "element:stem-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-lower-left",
+            "to": "element:terminal-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre",
+            "to": "element:stem-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-lower-left",
+            "to": "element:terminal-centre-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre-inset",
+            "to": "element:stem-lower-left",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower",
+            "to": "element:flower-blue-lower-middle",
+            "actual": "nest",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:flower-blue-lower-middle",
+            "to": "element:flower-blue-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower",
+            "to": "element:flower-blue-lower-centre",
+            "actual": "none",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:flower-blue-lower-centre",
+            "to": "element:flower-blue-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower",
+            "to": "element:stem-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-centre",
+            "to": "element:flower-blue-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower",
+            "to": "element:terminal-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre",
+            "to": "element:flower-blue-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower",
+            "to": "element:terminal-centre-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre-inset",
+            "to": "element:flower-blue-lower",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-middle",
+            "to": "element:flower-blue-lower-centre",
+            "actual": "nest",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:flower-blue-lower-centre",
+            "to": "element:flower-blue-lower-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-middle",
+            "to": "element:stem-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-centre",
+            "to": "element:flower-blue-lower-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-middle",
+            "to": "element:terminal-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre",
+            "to": "element:flower-blue-lower-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-middle",
+            "to": "element:terminal-centre-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre-inset",
+            "to": "element:flower-blue-lower-middle",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-centre",
+            "to": "element:stem-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-centre",
+            "to": "element:flower-blue-lower-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-centre",
+            "to": "element:terminal-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre",
+            "to": "element:flower-blue-lower-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:flower-blue-lower-centre",
+            "to": "element:terminal-centre-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre-inset",
+            "to": "element:flower-blue-lower-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:stem-centre",
+            "to": "element:terminal-centre",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:terminal-centre",
+            "to": "element:stem-centre",
+            "actual": "junction",
+            "predicted": "junction"
+          },
+          {
+            "from": "element:stem-centre",
+            "to": "element:terminal-centre-inset",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre-inset",
+            "to": "element:stem-centre",
+            "actual": "none",
+            "predicted": "none"
+          },
+          {
+            "from": "element:terminal-centre",
+            "to": "element:terminal-centre-inset",
+            "actual": "nest",
+            "predicted": "nest"
+          },
+          {
+            "from": "element:terminal-centre-inset",
+            "to": "element:terminal-centre",
+            "actual": "none",
+            "predicted": "none"
+          }
+        ]
+      }
+    ]
+  },
+  "trainingSetMetrics": {
+    "pairCount": 650,
+    "accuracy": 0.9969230769230769,
+    "macroF1": 0.9835686368349684,
+    "classes": [
+      {
+        "label": "none",
+        "support": 598,
+        "predicted": 596,
+        "precision": 1,
+        "recall": 0.9966555183946488,
+        "f1": 0.998324958123953
+      },
+      {
+        "label": "junction",
+        "support": 32,
+        "predicted": 32,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      {
+        "label": "nest",
+        "support": 20,
+        "predicted": 22,
+        "precision": 0.9090909090909091,
+        "recall": 1,
+        "f1": 0.9523809523809523
+      }
+    ],
+    "confusionMatrix": {
+      "actualRows": [
+        "none",
+        "junction",
+        "nest"
+      ],
+      "predictedColumns": [
+        "none",
+        "junction",
+        "nest"
+      ],
+      "counts": [
+        [
+          596,
+          0,
+          2
+        ],
+        [
+          0,
+          32,
+          0
+        ],
+        [
+          0,
+          0,
+          20
+        ]
+      ]
+    }
+  },
+  "promotion": {
+    "approved": false,
+    "reason": "Tiny draft-labelled dataset; no demonstrated advantage over the geometric baseline or independent expert/physical validation. No automatic production or live model promotion."
+  },
+  "codeFingerprints": [
+    {
+      "path": "scripts/train/train-motif-relations.ts",
+      "sha256": "868f97a34f97432d8d9480d07a26e83bf424f5a31c486746147c8888c0cec5c3"
+    },
+    {
+      "path": "scripts/train/training-permission.ts",
+      "sha256": "404f0f83d1116a5f501083cb4be608cddc068c94c8bff719580b399eb73ae50a"
+    },
+    {
+      "path": "packages/tesseract-engine/src/motif-relation-learning.ts",
+      "sha256": "730a3c3d596893aaaf8fc5f2ad3d44c36c9d65ba4dbbfc6b8da39f6183d00830"
+    },
+    {
+      "path": "packages/tesseract-engine/src/motif-graph.ts",
+      "sha256": "c6b360a038601341e802eea3202ba7e5146bec86f3eae30a1fe140a08a0bbac0"
+    },
+    {
+      "path": "packages/tesseract-engine/src/motif-observed-annotations.ts",
+      "sha256": "453fe27b6d6761ba142cbb476861412a0e2c4577f218bd1b524e31900f603296"
+    },
+    {
+      "path": "packages/tesseract-engine/src/motif-containment.ts",
+      "sha256": "24636be2a864753415e5bf753961310117c1dffc7e8b9de78e3125139ad72100"
+    },
+    {
+      "path": "packages/tesseract-engine/src/motif-clearance.ts",
+      "sha256": "2dcfb64e87ef9556f756509c82c48517f909bfbc12fb9c95211c2d40c743bee2"
+    },
+    {
+      "path": "packages/tesseract-engine/src/motif-construction-profile.ts",
+      "sha256": "3b979cef09f3a591153dc90737c1094a69a6fe020dc4964397e0b38ba603068b"
+    }
+  ],
+  "neonWrites": false,
+  "canonicalGeometryChanged": false,
+  "neuralFoundationModelFineTuned": false,
+  "physicalCalibration": null,
+  "stitchCount": null,
+  "productionApproved": false,
+  "limitations": [
+    "Directed pairs share parts and are correlated; pair count is not an independent-source count.",
+    "Two Ukrainian plates from one book/artist are grouped together; unknown creators are separate object groups, not proof of unseen-artist generalisation.",
+    "Annotations are partial manual drafts, not independent expert ground truth.",
+    "none means no declared contact/nest in the draft, not verified absence of every historical relation.",
+    "Features use supplied contours/ports, not inferred semantic segmentation from images.",
+    "Exact containment/port geometry is an important baseline; training is not evidence of improvement over it.",
+    "Training does not predict culture, region, botanical identity, symbolic meaning or machine stitch routes."
+  ]
+}

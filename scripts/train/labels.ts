@@ -20,6 +20,15 @@ export const REGIONS: [RegExp, string][] = [
   [/lviv|львів|galic|галич/i, "Galicia"], [/dnipr|дніпр|zaporiz|запоріж|kherson|херсон|odes|одес/i, "South"],
 ];
 export function regionOf(r: { region?: string; title?: string; culture?: string }): string | undefined {
+  // Preserve documented ethnoregions before the older broad text fallback.
+  // Do not infer these distinctions from administrative oblasts alone.
+  const documented:[RegExp,string][]=[
+    [/волинське полісся|volyn polissia/i,'Volyn Polissia'],[/житомирське полісся|zhytomyr polissia/i,'Zhytomyr Polissia'],
+    [/чернігівське полісся|chernihiv polissia/i,'Chernihiv Polissia'],[/київське полісся|kyiv polissia/i,'Kyiv Polissia'],
+    [/новгород.сіверське полісся|novhorod.siversky polissia/i,'Novhorod-Siversky Polissia'],
+    [/східне поділля|eastern podillia/i,'Eastern Podillia'],[/західне поділля|western podillia/i,'Western Podillia'],
+    [/опілля|opillia/i,'Opillia']];
+  const region=documented.find(([re])=>re.test(r.region??''));if(region)return region[1];
   const t = `${r.region ?? ""} ${r.title ?? ""} ${r.culture ?? ""}`;
   return REGIONS.find(([re]) => re.test(t))?.[1];
 }

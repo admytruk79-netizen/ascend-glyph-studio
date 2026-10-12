@@ -23,7 +23,10 @@
     "benchmark:motif:regions": "tsx scripts/benchmark-motif-region-layout.ts",
     "benchmark:motif:construction": "tsx scripts/benchmark-motif-construction.ts",
     "benchmark:motif:blackwork": "tsx scripts/benchmark-motif-blackwork.ts",
-    "benchmark:motif:composition": "tsx scripts/benchmark-motif-composition.ts"
+    "benchmark:motif:composition": "tsx scripts/benchmark-motif-composition.ts",
+    "train:motif:relations": "tsx scripts/train/train-motif-relations.ts",
+    "test:training": "tsx --test scripts/train/*.test.ts",
+    "train:patterns:sequence": "tsx scripts/train/train-pattern-sequence.ts"
   },
   "devDependencies": {
     "tsx": "^4.19.2",
