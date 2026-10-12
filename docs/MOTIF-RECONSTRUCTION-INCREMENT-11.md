@@ -1,0 +1,26 @@
+# Construction profiles and a second Neon floral family
+
+This increment studies the construction of the retained references rather than treating every flower as the same primitive. Plate 37 has a flowing band with connected mixed-size floral units. Plate 6 shows upright sprays with strongly articulated interior patterns and small terminals; it was visually inspected but is not yet a reconstructed fixture. Plate 27 shows vase/bouquet compositions above an independent undulating border.
+
+The new draft fixture reconstructs part of plate 27's right bouquet: three flower envelopes, five flower interior regions, one elongated terminal and its inset, plus four stems. It has 14 observed elements, seven declared attachments and six spatial nests. The vase, other flower heads/leaves and lower border are not reconstructed. The reference image, unchanged Neon item `commons-96737731` and provenance are retained. Its own item-specific public-domain declaration and 1902 publication support the US reference-use assessment; no fresh Commons licence refresh or global manufacturing approval is claimed.
+
+Source contours and centrelines were visually inspected and refined after the existing gates rejected a stem entering a flower before its declared attachment and an interior region crossing its enclosing contour. The gates were not relaxed. Outlines remain approximate manual landmarks, not precise tracing or independent expert review. Region/community, botanical species and symbolic meanings remain unassigned.
+
+`profileMotifConstruction` adds descriptive structure extraction from an existing validated MotifGraph. Outermost assemblies below a region define units; inset assemblies collapse into their outer unit. It reports element/closed-path counts, nesting depth, contact counts, connected components, distinct unit adjacency edges, terminal units, multi-neighbour units and unit-network cycle rank. It preserves source evidence and confidence and never returns historicalGrammarVerified or productionApproved=true. Invalid contacts, protected-space conflicts, intersections and outside-envelope geometry are rejected through the existing measurements.
+
+A unit's degree counts its attached neighbouring assemblies; it is not the valence of one physical junction. Multiple contacts between a pair of units collapse to one adjacency edge. Cycle rank describes that simple unit network, not the number of contour holes, stitch loops or fabric voids. Assembly nesting depth describes the supplied hierarchy and depends on that hierarchy's granularity; compare like-for-like observed source graphs, not source graphs against authored layout wrapper hierarchies.
+
+The measured comparison establishes two useful draft construction observations:
+
+- Adding eight plate-37 petal interiors increases contour detail but leaves its nine-unit/eight-edge stem network unchanged. Both versions have maximum unit degree 3.
+- The partial plate-27 bouquet has eight units and seven edges, with four terminals, maximum unit degree 4 and assembly nesting depth 2. The plate-37 drafts have depth 1. Both selected networks are connected and acyclic.
+
+These describe the chosen partial annotations, not universal rules for Ukrainian motifs or verified complete historical grammar. The distinction supports later designs that change petal detail while preserving an explicitly constrained branch skeleton; no autonomous grammar generator or trained model is claimed.
+
+Run `npm run benchmark:motif:construction`. It validates both original-image hashes/dimensions, compares the two plate-37 variants, reconstructs plate 27 using the existing engine, emits its source overlay and a rectangular bouquet-panel reference, and saves construction profiles/report under `artifacts/motif-reconstruction/construction-study`. It is included in the historical benchmark workflow. The benchmark report is retained as `docs/benchmarks/motif-construction-profile-v1.json`.
+
+Tests cover stable structure under extra petal detail, expected partial-bouquet topology and nesting, deterministic/immutable profiles, source hash and attribution, broken/retraced branch rejection, and an independently authored three-unit triangle control with unit-cycle rank 1 but no individually closed contour paths. No canonical ASCEND geometry or manufacturing compiler is changed.
+
+Remaining: accurate independent reference annotations, full plates 6/27 decomposition, colour/petal/leaf layer separation, independently reviewed branch/border grammar, explicit canonical assembly and final physical garment/machine digitization. Physical calibration, image-tracing accuracy and production approval remain unavailable. No model training or Neon database/model writes were performed.
+
+Local verification passed: `npm run verify:tesseract-worker` (157 engine tests, engine typecheck/build, production pilot, stitch-engine typecheck and 22 stitch tests), plus `npm run benchmark:motif:historical` (eight benchmark runners). The final additive source-attribution fields were also typechecked/built and the construction benchmark rerun. The source overlay was rendered and visually inspected. Remote CI/deployment success has not been checked for this increment.

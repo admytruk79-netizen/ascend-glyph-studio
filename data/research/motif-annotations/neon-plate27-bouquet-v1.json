@@ -1,0 +1,1113 @@
+{
+  "schema": "ascend.observed-motif-annotations.v1",
+  "id": "neon-plate27-bouquet-v1",
+  "image": {
+    "width": 1280,
+    "height": 736
+  },
+  "provenance": {
+    "schema": "ascend.motif-provenance.v1",
+    "id": "neon-commons-96737731",
+    "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9627._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg",
+    "creator": "Nikolai Samokysh",
+    "community": null,
+    "culturalContext": "Illustration from Мотиви українського орнаменту, 1902, plate 27, embroidery in coloured silk, gold and silver. Ukrainian ornament; regional community, botanical identity and symbolic meaning not established.",
+    "retrievedAt": "2026-10-12T00:00:00Z",
+    "originalSha256": "074104c967c8f7cf68fb92ea52e9dd560ddc0bc6c9f54198b47e67a245e48839",
+    "permission": {
+      "status": "verified",
+      "evidence": "Reference-use review of retained Neon Commons item commons-96737731: Public domain; catalogue publication 1902 (pre-1931 publication, public domain in the US). No successful fresh Commons licence-page check or global commercial/manufacturing approval claimed.",
+      "purposes": [
+        "analysis",
+        "reconstruction"
+      ]
+    },
+    "access": "documented-public",
+    "confidence": 0.8,
+    "transformations": []
+  },
+  "review": {
+    "status": "draft",
+    "method": "Manual source-pixel outline/centreline landmarks in the right bouquet of Neon-selected plate 27",
+    "limitations": [
+      "Approximate landmarks; no pixel-accurate tracing or expert review.",
+      "Describes visible flower envelopes and nested regions, not botanical species, symbols or machine stitches.",
+      "Partial bouquet only; vase, other terminals and lower border are not reconstructed.",
+      "No physical calibration or historical grammar verification."
+    ]
+  },
+  "elements": [
+    {
+      "id": "stem-main",
+      "hypothesis": "main bouquet stem",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            952,
+            470
+          ],
+          [
+            928,
+            447
+          ],
+          [
+            908,
+            435
+          ],
+          [
+            890,
+            413
+          ],
+          [
+            887,
+            380
+          ],
+          [
+            890,
+            351
+          ],
+          [
+            890,
+            329
+          ],
+          [
+            882,
+            307
+          ],
+          [
+            865,
+            271
+          ],
+          [
+            837,
+            234
+          ],
+          [
+            823,
+            225
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "draft manual contour/centreline observations in source plate 27",
+      "ports": {
+        "root": [
+          952,
+          470
+        ],
+        "upperFlower": [
+          823,
+          225
+        ],
+        "upperBranch": [
+          882,
+          307
+        ],
+        "lowerBranch": [
+          890,
+          413
+        ]
+      }
+    },
+    {
+      "id": "flower-layered",
+      "hypothesis": "layered rounded upper-left flower",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            823,
+            225
+          ],
+          [
+            797,
+            252
+          ],
+          [
+            775,
+            250
+          ],
+          [
+            760,
+            237
+          ],
+          [
+            745,
+            226
+          ],
+          [
+            731,
+            217
+          ],
+          [
+            726,
+            196
+          ],
+          [
+            733,
+            181
+          ],
+          [
+            729,
+            165
+          ],
+          [
+            739,
+            148
+          ],
+          [
+            757,
+            137
+          ],
+          [
+            761,
+            117
+          ],
+          [
+            775,
+            109
+          ],
+          [
+            790,
+            115
+          ],
+          [
+            806,
+            103
+          ],
+          [
+            823,
+            105
+          ],
+          [
+            840,
+            112
+          ],
+          [
+            851,
+            125
+          ],
+          [
+            867,
+            131
+          ],
+          [
+            883,
+            151
+          ],
+          [
+            887,
+            173
+          ],
+          [
+            881,
+            189
+          ],
+          [
+            887,
+            206
+          ],
+          [
+            879,
+            223
+          ],
+          [
+            863,
+            229
+          ],
+          [
+            846,
+            224
+          ],
+          [
+            835,
+            228
+          ],
+          [
+            823,
+            225
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "draft manual contour/centreline observations in source plate 27",
+      "ports": {
+        "stem": [
+          823,
+          225
+        ]
+      }
+    },
+    {
+      "id": "flower-layered-middle",
+      "hypothesis": "middle petal-region envelope",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            814,
+            211
+          ],
+          [
+            790,
+            210
+          ],
+          [
+            775,
+            197
+          ],
+          [
+            770,
+            180
+          ],
+          [
+            776,
+            160
+          ],
+          [
+            790,
+            144
+          ],
+          [
+            810,
+            138
+          ],
+          [
+            830,
+            144
+          ],
+          [
+            846,
+            158
+          ],
+          [
+            849,
+            179
+          ],
+          [
+            839,
+            199
+          ],
+          [
+            819,
+            211
+          ],
+          [
+            814,
+            211
+          ]
+        ]
+      ],
+      "parentElementId": "flower-layered",
+      "evidence": "draft manual contour/centreline observations in source plate 27"
+    },
+    {
+      "id": "flower-layered-centre",
+      "hypothesis": "small central region",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            797,
+            155
+          ],
+          [
+            816,
+            151
+          ],
+          [
+            830,
+            160
+          ],
+          [
+            833,
+            174
+          ],
+          [
+            827,
+            184
+          ],
+          [
+            809,
+            188
+          ],
+          [
+            795,
+            181
+          ],
+          [
+            791,
+            168
+          ],
+          [
+            797,
+            155
+          ]
+        ]
+      ],
+      "parentElementId": "flower-layered-middle",
+      "evidence": "draft manual contour/centreline observations in source plate 27"
+    },
+    {
+      "id": "stem-upper-right",
+      "hypothesis": "upper-right flower branch",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            882,
+            307
+          ],
+          [
+            900,
+            286
+          ],
+          [
+            934,
+            269
+          ],
+          [
+            965,
+            250
+          ],
+          [
+            984,
+            246
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "draft manual contour/centreline observations in source plate 27",
+      "ports": {
+        "base": [
+          882,
+          307
+        ],
+        "tip": [
+          984,
+          246
+        ]
+      }
+    },
+    {
+      "id": "flower-blue-upper",
+      "hypothesis": "folded upper flower envelope",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            1006,
+            238
+          ],
+          [
+            984,
+            246
+          ],
+          [
+            960,
+            238
+          ],
+          [
+            942,
+            225
+          ],
+          [
+            929,
+            210
+          ],
+          [
+            923,
+            185
+          ],
+          [
+            915,
+            169
+          ],
+          [
+            920,
+            149
+          ],
+          [
+            914,
+            129
+          ],
+          [
+            923,
+            113
+          ],
+          [
+            935,
+            105
+          ],
+          [
+            945,
+            86
+          ],
+          [
+            961,
+            81
+          ],
+          [
+            976,
+            92
+          ],
+          [
+            991,
+            89
+          ],
+          [
+            1000,
+            105
+          ],
+          [
+            1023,
+            103
+          ],
+          [
+            1034,
+            115
+          ],
+          [
+            1049,
+            120
+          ],
+          [
+            1060,
+            138
+          ],
+          [
+            1060,
+            156
+          ],
+          [
+            1051,
+            173
+          ],
+          [
+            1055,
+            193
+          ],
+          [
+            1043,
+            208
+          ],
+          [
+            1030,
+            222
+          ],
+          [
+            1017,
+            232
+          ],
+          [
+            1006,
+            238
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "draft manual contour/centreline observations in source plate 27",
+      "ports": {
+        "stem": [
+          984,
+          246
+        ]
+      }
+    },
+    {
+      "id": "flower-blue-upper-middle",
+      "hypothesis": "folded interior region",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            1000,
+            211
+          ],
+          [
+            981,
+            212
+          ],
+          [
+            961,
+            199
+          ],
+          [
+            948,
+            181
+          ],
+          [
+            947,
+            163
+          ],
+          [
+            956,
+            147
+          ],
+          [
+            975,
+            135
+          ],
+          [
+            995,
+            143
+          ],
+          [
+            1013,
+            155
+          ],
+          [
+            1020,
+            177
+          ],
+          [
+            1012,
+            198
+          ],
+          [
+            1000,
+            211
+          ]
+        ]
+      ],
+      "parentElementId": "flower-blue-upper",
+      "evidence": "draft manual contour/centreline observations in source plate 27"
+    },
+    {
+      "id": "stem-lower-left",
+      "hypothesis": "lower-left flower branch",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            890,
+            413
+          ],
+          [
+            861,
+            410
+          ],
+          [
+            839,
+            411
+          ],
+          [
+            816,
+            416
+          ],
+          [
+            798,
+            419
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "draft manual contour/centreline observations in source plate 27",
+      "ports": {
+        "base": [
+          890,
+          413
+        ],
+        "tip": [
+          798,
+          419
+        ]
+      }
+    },
+    {
+      "id": "flower-blue-lower",
+      "hypothesis": "lower-left folded flower envelope",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            798,
+            419
+          ],
+          [
+            814,
+            423
+          ],
+          [
+            826,
+            440
+          ],
+          [
+            828,
+            458
+          ],
+          [
+            817,
+            474
+          ],
+          [
+            826,
+            489
+          ],
+          [
+            816,
+            509
+          ],
+          [
+            804,
+            519
+          ],
+          [
+            787,
+            521
+          ],
+          [
+            775,
+            535
+          ],
+          [
+            756,
+            534
+          ],
+          [
+            743,
+            527
+          ],
+          [
+            725,
+            532
+          ],
+          [
+            712,
+            522
+          ],
+          [
+            701,
+            511
+          ],
+          [
+            694,
+            494
+          ],
+          [
+            682,
+            480
+          ],
+          [
+            682,
+            460
+          ],
+          [
+            689,
+            443
+          ],
+          [
+            685,
+            425
+          ],
+          [
+            695,
+            409
+          ],
+          [
+            702,
+            392
+          ],
+          [
+            720,
+            384
+          ],
+          [
+            732,
+            372
+          ],
+          [
+            748,
+            369
+          ],
+          [
+            760,
+            374
+          ],
+          [
+            773,
+            366
+          ],
+          [
+            790,
+            372
+          ],
+          [
+            801,
+            386
+          ],
+          [
+            798,
+            403
+          ],
+          [
+            798,
+            419
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "draft manual contour/centreline observations in source plate 27",
+      "ports": {
+        "stem": [
+          798,
+          419
+        ]
+      }
+    },
+    {
+      "id": "flower-blue-lower-middle",
+      "hypothesis": "inner petal-region envelope",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            777,
+            488
+          ],
+          [
+            756,
+            505
+          ],
+          [
+            735,
+            495
+          ],
+          [
+            722,
+            478
+          ],
+          [
+            716,
+            461
+          ],
+          [
+            722,
+            442
+          ],
+          [
+            734,
+            425
+          ],
+          [
+            743,
+            408
+          ],
+          [
+            759,
+            406
+          ],
+          [
+            774,
+            417
+          ],
+          [
+            792,
+            436
+          ],
+          [
+            795,
+            455
+          ],
+          [
+            791,
+            475
+          ],
+          [
+            777,
+            488
+          ]
+        ]
+      ],
+      "parentElementId": "flower-blue-lower",
+      "evidence": "draft manual contour/centreline observations in source plate 27"
+    },
+    {
+      "id": "flower-blue-lower-centre",
+      "hypothesis": "small central region",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            773,
+            454
+          ],
+          [
+            758,
+            461
+          ],
+          [
+            745,
+            448
+          ],
+          [
+            745,
+            433
+          ],
+          [
+            757,
+            426
+          ],
+          [
+            779,
+            429
+          ],
+          [
+            788,
+            437
+          ],
+          [
+            783,
+            449
+          ],
+          [
+            773,
+            454
+          ]
+        ]
+      ],
+      "parentElementId": "flower-blue-lower-middle",
+      "evidence": "draft manual contour/centreline observations in source plate 27"
+    },
+    {
+      "id": "stem-centre",
+      "hypothesis": "central terminal branch",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            952,
+            470
+          ],
+          [
+            958,
+            448
+          ],
+          [
+            963,
+            428
+          ],
+          [
+            970,
+            415
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "draft manual contour/centreline observations in source plate 27",
+      "ports": {
+        "base": [
+          952,
+          470
+        ],
+        "tip": [
+          970,
+          415
+        ]
+      }
+    },
+    {
+      "id": "terminal-centre",
+      "hypothesis": "elongated central terminal envelope",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            970,
+            415
+          ],
+          [
+            956,
+            402
+          ],
+          [
+            947,
+            380
+          ],
+          [
+            945,
+            356
+          ],
+          [
+            946,
+            333
+          ],
+          [
+            948,
+            311
+          ],
+          [
+            958,
+            291
+          ],
+          [
+            975,
+            280
+          ],
+          [
+            991,
+            285
+          ],
+          [
+            1007,
+            294
+          ],
+          [
+            1020,
+            302
+          ],
+          [
+            1038,
+            305
+          ],
+          [
+            1048,
+            321
+          ],
+          [
+            1048,
+            343
+          ],
+          [
+            1041,
+            368
+          ],
+          [
+            1021,
+            388
+          ],
+          [
+            1002,
+            405
+          ],
+          [
+            983,
+            415
+          ],
+          [
+            970,
+            415
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "draft manual contour/centreline observations in source plate 27",
+      "ports": {
+        "stem": [
+          970,
+          415
+        ]
+      }
+    },
+    {
+      "id": "terminal-centre-inset",
+      "hypothesis": "central terminal interior region",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            975,
+            303
+          ],
+          [
+            987,
+            294
+          ],
+          [
+            1004,
+            305
+          ],
+          [
+            1029,
+            317
+          ],
+          [
+            1027,
+            335
+          ],
+          [
+            1004,
+            351
+          ],
+          [
+            984,
+            367
+          ],
+          [
+            976,
+            349
+          ],
+          [
+            975,
+            326
+          ],
+          [
+            975,
+            303
+          ]
+        ]
+      ],
+      "parentElementId": "terminal-centre",
+      "evidence": "draft manual contour/centreline observations in source plate 27"
+    }
+  ],
+  "connections": [
+    {
+      "from": "stem-main",
+      "fromPort": "upperFlower",
+      "to": "flower-layered",
+      "toPort": "stem",
+      "tolerancePx": 0,
+      "evidence": "shared draft attachment landmark in the observed bouquet; reference connectivity, not stitch connectivity"
+    },
+    {
+      "from": "stem-main",
+      "fromPort": "upperBranch",
+      "to": "stem-upper-right",
+      "toPort": "base",
+      "tolerancePx": 0,
+      "evidence": "shared draft attachment landmark in the observed bouquet; reference connectivity, not stitch connectivity"
+    },
+    {
+      "from": "stem-upper-right",
+      "fromPort": "tip",
+      "to": "flower-blue-upper",
+      "toPort": "stem",
+      "tolerancePx": 0,
+      "evidence": "shared draft attachment landmark in the observed bouquet; reference connectivity, not stitch connectivity"
+    },
+    {
+      "from": "stem-main",
+      "fromPort": "lowerBranch",
+      "to": "stem-lower-left",
+      "toPort": "base",
+      "tolerancePx": 0,
+      "evidence": "shared draft attachment landmark in the observed bouquet; reference connectivity, not stitch connectivity"
+    },
+    {
+      "from": "stem-lower-left",
+      "fromPort": "tip",
+      "to": "flower-blue-lower",
+      "toPort": "stem",
+      "tolerancePx": 0,
+      "evidence": "shared draft attachment landmark in the observed bouquet; reference connectivity, not stitch connectivity"
+    },
+    {
+      "from": "stem-main",
+      "fromPort": "root",
+      "to": "stem-centre",
+      "toPort": "base",
+      "tolerancePx": 0,
+      "evidence": "shared draft attachment landmark in the observed bouquet; reference connectivity, not stitch connectivity"
+    },
+    {
+      "from": "stem-centre",
+      "fromPort": "tip",
+      "to": "terminal-centre",
+      "toPort": "stem",
+      "tolerancePx": 0,
+      "evidence": "shared draft attachment landmark in the observed bouquet; reference connectivity, not stitch connectivity"
+    }
+  ]
+}

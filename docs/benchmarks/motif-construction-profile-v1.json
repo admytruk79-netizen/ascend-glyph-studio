@@ -1,0 +1,348 @@
+{
+  "schema": "ascend.motif-construction-benchmark.v1",
+  "profiles": [
+    {
+      "annotationId": "neon-plate37-connected-floral-v1",
+      "profile": {
+        "schema": "ascend.motif-construction-profile.v1",
+        "state": "REFERENCE",
+        "method": "declared-unit-network-v1",
+        "sourceEvidence": [
+          {
+            "id": "neon-commons-96737753",
+            "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9637._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg",
+            "originalSha256": "e4b85cfafc845616091a8e03276ea7dc83d7ec9eb0498da692d3bc804c5b32b0",
+            "creator": "Nikolai Samokysh",
+            "community": null,
+            "culturalContext": "Illustration from Мотиви українського орнаменту, 1902, plate 37, embroidery in silk and gold. Ukrainian ornament; regional community and botanical identities not established.",
+            "access": "documented-public",
+            "confidence": 0.8,
+            "permissionEvidence": "Reference-use review of retained Neon per-item Commons rights declaration: Public domain; catalogue publication date 1902 (pre-1931 publication, public domain in the US). This is a historical reference-use assessment, not a fresh Commons licence-page verification; live requests returned HTTP 403. No manufacturing approval."
+          }
+        ],
+        "regionCount": 1,
+        "elementCount": 13,
+        "closedContourCount": 9,
+        "nestedRelationCount": 4,
+        "maximumAssemblyNestingDepth": 1,
+        "declaredContactCount": 8,
+        "internalUnitContactCount": 0,
+        "unitCount": 9,
+        "unitEdgeCount": 8,
+        "connectedUnitComponents": 1,
+        "unitContactCycleRank": 0,
+        "terminalUnitCount": 3,
+        "multiNeighbourUnitCount": 1,
+        "maxUnitDegree": 3,
+        "declaredRepeatGroupCount": 0,
+        "unitDegrees": [
+          {
+            "id": "assembly:bud",
+            "neighbours": [
+              "assembly:stem-bud"
+            ],
+            "degree": 1
+          },
+          {
+            "id": "assembly:flower-hanging",
+            "neighbours": [
+              "assembly:stem-top"
+            ],
+            "degree": 1
+          },
+          {
+            "id": "assembly:flower-left",
+            "neighbours": [
+              "assembly:stem-band",
+              "assembly:stem-left"
+            ],
+            "degree": 2
+          },
+          {
+            "id": "assembly:flower-radial",
+            "neighbours": [
+              "assembly:stem-left",
+              "assembly:stem-top"
+            ],
+            "degree": 2
+          },
+          {
+            "id": "assembly:flower-right",
+            "neighbours": [
+              "assembly:stem-band"
+            ],
+            "degree": 1
+          },
+          {
+            "id": "assembly:stem-band",
+            "neighbours": [
+              "assembly:flower-left",
+              "assembly:flower-right",
+              "assembly:stem-bud"
+            ],
+            "degree": 3
+          },
+          {
+            "id": "assembly:stem-bud",
+            "neighbours": [
+              "assembly:bud",
+              "assembly:stem-band"
+            ],
+            "degree": 2
+          },
+          {
+            "id": "assembly:stem-left",
+            "neighbours": [
+              "assembly:flower-left",
+              "assembly:flower-radial"
+            ],
+            "degree": 2
+          },
+          {
+            "id": "assembly:stem-top",
+            "neighbours": [
+              "assembly:flower-hanging",
+              "assembly:flower-radial"
+            ],
+            "degree": 2
+          }
+        ],
+        "minimumElementConfidence": 0.5,
+        "historicalGrammarVerified": false,
+        "productionApproved": false
+      }
+    },
+    {
+      "annotationId": "neon-plate37-connected-floral-v2",
+      "profile": {
+        "schema": "ascend.motif-construction-profile.v1",
+        "state": "REFERENCE",
+        "method": "declared-unit-network-v1",
+        "sourceEvidence": [
+          {
+            "id": "neon-commons-96737753",
+            "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9637._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg",
+            "originalSha256": "e4b85cfafc845616091a8e03276ea7dc83d7ec9eb0498da692d3bc804c5b32b0",
+            "creator": "Nikolai Samokysh",
+            "community": null,
+            "culturalContext": "Illustration from Мотиви українського орнаменту, 1902, plate 37, embroidery in silk and gold. Ukrainian ornament; regional community and botanical identities not established.",
+            "access": "documented-public",
+            "confidence": 0.8,
+            "permissionEvidence": "Reference-use review of retained Neon per-item Commons rights declaration: Public domain; catalogue publication date 1902 (pre-1931 publication, public domain in the US). This is a historical reference-use assessment, not a fresh Commons licence-page verification; live requests returned HTTP 403. No manufacturing approval."
+          }
+        ],
+        "regionCount": 1,
+        "elementCount": 21,
+        "closedContourCount": 17,
+        "nestedRelationCount": 12,
+        "maximumAssemblyNestingDepth": 1,
+        "declaredContactCount": 8,
+        "internalUnitContactCount": 0,
+        "unitCount": 9,
+        "unitEdgeCount": 8,
+        "connectedUnitComponents": 1,
+        "unitContactCycleRank": 0,
+        "terminalUnitCount": 3,
+        "multiNeighbourUnitCount": 1,
+        "maxUnitDegree": 3,
+        "declaredRepeatGroupCount": 0,
+        "unitDegrees": [
+          {
+            "id": "assembly:bud",
+            "neighbours": [
+              "assembly:stem-bud"
+            ],
+            "degree": 1
+          },
+          {
+            "id": "assembly:flower-hanging",
+            "neighbours": [
+              "assembly:stem-top"
+            ],
+            "degree": 1
+          },
+          {
+            "id": "assembly:flower-left",
+            "neighbours": [
+              "assembly:stem-band",
+              "assembly:stem-left"
+            ],
+            "degree": 2
+          },
+          {
+            "id": "assembly:flower-radial",
+            "neighbours": [
+              "assembly:stem-left",
+              "assembly:stem-top"
+            ],
+            "degree": 2
+          },
+          {
+            "id": "assembly:flower-right",
+            "neighbours": [
+              "assembly:stem-band"
+            ],
+            "degree": 1
+          },
+          {
+            "id": "assembly:stem-band",
+            "neighbours": [
+              "assembly:flower-left",
+              "assembly:flower-right",
+              "assembly:stem-bud"
+            ],
+            "degree": 3
+          },
+          {
+            "id": "assembly:stem-bud",
+            "neighbours": [
+              "assembly:bud",
+              "assembly:stem-band"
+            ],
+            "degree": 2
+          },
+          {
+            "id": "assembly:stem-left",
+            "neighbours": [
+              "assembly:flower-left",
+              "assembly:flower-radial"
+            ],
+            "degree": 2
+          },
+          {
+            "id": "assembly:stem-top",
+            "neighbours": [
+              "assembly:flower-hanging",
+              "assembly:flower-radial"
+            ],
+            "degree": 2
+          }
+        ],
+        "minimumElementConfidence": 0.5,
+        "historicalGrammarVerified": false,
+        "productionApproved": false
+      }
+    },
+    {
+      "annotationId": "neon-plate27-bouquet-v1",
+      "profile": {
+        "schema": "ascend.motif-construction-profile.v1",
+        "state": "REFERENCE",
+        "method": "declared-unit-network-v1",
+        "sourceEvidence": [
+          {
+            "id": "neon-commons-96737731",
+            "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9627._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg",
+            "originalSha256": "074104c967c8f7cf68fb92ea52e9dd560ddc0bc6c9f54198b47e67a245e48839",
+            "creator": "Nikolai Samokysh",
+            "community": null,
+            "culturalContext": "Illustration from Мотиви українського орнаменту, 1902, plate 27, embroidery in coloured silk, gold and silver. Ukrainian ornament; regional community, botanical identity and symbolic meaning not established.",
+            "access": "documented-public",
+            "confidence": 0.8,
+            "permissionEvidence": "Reference-use review of retained Neon Commons item commons-96737731: Public domain; catalogue publication 1902 (pre-1931 publication, public domain in the US). No successful fresh Commons licence-page check or global commercial/manufacturing approval claimed."
+          }
+        ],
+        "regionCount": 1,
+        "elementCount": 14,
+        "closedContourCount": 10,
+        "nestedRelationCount": 6,
+        "maximumAssemblyNestingDepth": 2,
+        "declaredContactCount": 7,
+        "internalUnitContactCount": 0,
+        "unitCount": 8,
+        "unitEdgeCount": 7,
+        "connectedUnitComponents": 1,
+        "unitContactCycleRank": 0,
+        "terminalUnitCount": 4,
+        "multiNeighbourUnitCount": 1,
+        "maxUnitDegree": 4,
+        "declaredRepeatGroupCount": 0,
+        "unitDegrees": [
+          {
+            "id": "assembly:flower-blue-lower",
+            "neighbours": [
+              "assembly:stem-lower-left"
+            ],
+            "degree": 1
+          },
+          {
+            "id": "assembly:flower-blue-upper",
+            "neighbours": [
+              "assembly:stem-upper-right"
+            ],
+            "degree": 1
+          },
+          {
+            "id": "assembly:flower-layered",
+            "neighbours": [
+              "assembly:stem-main"
+            ],
+            "degree": 1
+          },
+          {
+            "id": "assembly:stem-centre",
+            "neighbours": [
+              "assembly:stem-main",
+              "assembly:terminal-centre"
+            ],
+            "degree": 2
+          },
+          {
+            "id": "assembly:stem-lower-left",
+            "neighbours": [
+              "assembly:flower-blue-lower",
+              "assembly:stem-main"
+            ],
+            "degree": 2
+          },
+          {
+            "id": "assembly:stem-main",
+            "neighbours": [
+              "assembly:flower-layered",
+              "assembly:stem-centre",
+              "assembly:stem-lower-left",
+              "assembly:stem-upper-right"
+            ],
+            "degree": 4
+          },
+          {
+            "id": "assembly:stem-upper-right",
+            "neighbours": [
+              "assembly:flower-blue-upper",
+              "assembly:stem-main"
+            ],
+            "degree": 2
+          },
+          {
+            "id": "assembly:terminal-centre",
+            "neighbours": [
+              "assembly:stem-centre"
+            ],
+            "degree": 1
+          }
+        ],
+        "minimumElementConfidence": 0.5,
+        "historicalGrammarVerified": false,
+        "productionApproved": false
+      }
+    }
+  ],
+  "comparisons": {
+    "plate37DetailPreservesUnitSkeleton": true,
+    "plate37AddedElements": 8,
+    "plate37MaximumUnitDegree": 3,
+    "plate27MaximumUnitDegree": 4,
+    "plate37MaximumAssemblyNestingDepth": 1,
+    "plate27MaximumAssemblyNestingDepth": 2
+  },
+  "independentExpertAnnotationsAvailable": false,
+  "imageTracingAccuracy": null,
+  "modelTrainingPerformed": false,
+  "productionApproved": false,
+  "limitations": [
+    "Statistics describe declared draft annotation networks, not verified historical grammar.",
+    "Unit degree counts neighbouring motif assemblies, not the valence of an individual geometric junction.",
+    "Network cycle rank is not a count of fabric holes or stitch loops.",
+    "Plate 27 reconstruction is partial; the vase and lower border are not reconstructed."
+  ]
+}
