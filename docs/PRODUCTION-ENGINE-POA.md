@@ -136,3 +136,11 @@ Each template must record:
 Reference values may guide prototypes but cannot become production truth without manufacturer or sew-out validation.
 
 The generator uses the selected template before creating geometry. If a machine cannot execute a requested construction directly, the constructor must choose a legal alternative such as flat-before-assembly, registered segmentation, reduced color plan, or a different machine profile. It must not create an impossible design and leave the factory to discover the problem.
+
+## Machine-feasibility integration candidate (2026-10-12)
+
+The implementation branch adds a **single-field feasibility rejection gate** to the existing production-object -> stitch-IR -> manufacturing-job path. The pattern generator supplies the selected machine template only for embroidery. The job planner rejects a work area that exceeds the template's X/Y embroidery field, excessive unique colors relative to needles and declared capacity, invalid machine measurements, missing file formats, and invalid registration tolerance. It does **not** automatically rotate the design, segment it into hoops, or validate finished-sleeve access.
+
+The `validation.valid` field means only that the checked digital constraints passed. `validation.productionApproved` is always `false`, including for reference profiles and unselected machines. Reference data must not be presented as manufacturer approval. The PR requires CI verification and review before integration.
+
+**Still open:** verified manufacturer inventory, calibrated material and digitizing recipes, registered multi-hoop seam/wrap plan, deterministic complete-shirt and sleeve benchmarks against 3.7 golden baseline, machine-specific DST export, physical sew-out, and promotion gates. A machine's published field dimensions alone do not establish actual hoop clearance, orientation, garment access or registration capability.
