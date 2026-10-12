@@ -1,9 +1,14 @@
 import {readFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
 import {describe,it,expect} from 'vitest';
 import {graphFromObservedAnnotations,type ObservedMotifAnnotations} from '../src/motif-observed-annotations';
 import {reconstructMotif,measureMotifStructure} from '../src/motif-reconstruction';
 const fixture=()=>JSON.parse(readFileSync('../../data/research/motif-annotations/met-445264-coarse-v1.json','utf8')) as ObservedMotifAnnotations;
 describe('observed historical annotations',()=>{
+ it('binds the annotation provenance to the retained original source photograph',()=>{
+  const bytes=readFileSync('../../data/research/motif-references/met-445264/source.jpg');
+  expect(createHash('sha256').update(bytes).digest('hex')).toBe(fixture().provenance.originalSha256);
+ });
  it('preserves every annotated landmark in reference coordinates and the inset hierarchy',()=>{
   const a=fixture(),g=graphFromObservedAnnotations(a,225),ir=reconstructMotif(g);
   expect(ir.map(o=>o.kind==='fill'?o.polygon:o.path)).toEqual(a.elements.flatMap(e=>e.paths.map(p=>p.map(([x,y])=>({x,y})))));

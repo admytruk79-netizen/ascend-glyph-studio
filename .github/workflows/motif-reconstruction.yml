@@ -4,7 +4,9 @@ on:
   pull_request:
     paths:
       - 'packages/tesseract-engine/**'
-      - 'scripts/benchmark-motif-reconstruction.ts'
+      - 'scripts/benchmark-motif*.ts'
+      - 'data/research/motif-annotations/**'
+      - 'data/research/motif-references/**'
       - '.github/workflows/motif-reconstruction.yml'
 permissions:
   contents: read
@@ -26,6 +28,9 @@ jobs:
       - name: Reconstruct and benchmark reference fixtures
         shell: bash
         run: npm run benchmark:motif 2>&1 | tee artifacts/motif-reconstruction/benchmark.log
+      - name: Benchmark retained historical reference
+        shell: bash
+        run: npm run benchmark:motif:historical 2>&1 | tee artifacts/motif-reconstruction/historical-benchmark.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -1,0 +1,30 @@
+{
+  "schema": "ascend.motif-partition-benchmark.v1",
+  "annotationId": "met-445264-coarse-v1",
+  "reviewStatus": "draft",
+  "sourceElements": 7,
+  "editableParts": 48,
+  "referenceSegments": 48,
+  "exactAnnotatedSegmentsPreserved": true,
+  "structure": {
+    "junctionCount": 48,
+    "brokenJunctions": 0,
+    "repeatCount": 0,
+    "brokenRepeats": 0,
+    "nestedRelations": 6,
+    "negativeSpaceViolations": 0
+  },
+  "negativeControl": {
+    "junctionCount": 48,
+    "brokenJunctions": 2,
+    "repeatCount": 0,
+    "brokenRepeats": 0,
+    "nestedRelations": 6,
+    "negativeSpaceViolations": 0
+  },
+  "independentExpertAnnotationsAvailable": false,
+  "semanticAccuracy": null,
+  "imageTracingAccuracy": null,
+  "productionApproved": false,
+  "modelTrainingPerformed": false
+}
