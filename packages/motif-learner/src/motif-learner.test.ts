@@ -101,3 +101,28 @@ test("a generated motif stitches through the stitch engine; only the missing sew
   assert.deepEqual(gate.checks.filter((k) => !k.pass).map((k) => k.id), ["recipe-validated"]);
   assert.equal(gate.release, false);
 });
+
+test("fractal: box-counting dimension reads a line as ~1 and a filled square as ~2", async () => {
+  const { boxCountingDimension } = await import("./fractal.ts");
+  assert.ok(Math.abs(boxCountingDimension(parseChart(["R".repeat(32)].concat(Array(31).fill(".".repeat(32))))) - 1) < 0.05);
+  assert.ok(Math.abs(boxCountingDimension(parseChart(Array(32).fill("R".repeat(32)))) - 2) < 0.05);
+});
+
+test("fractal: every stitched layout cell becomes an element copy taking the layout's thread", async () => {
+  const { compose } = await import("./fractal.ts");
+  const g = compose(parseChart(["R.", ".K"]), parseChart([".R.", "RYR", ".R."]), 1);
+  assert.deepEqual(toChart(g), [".R.....", "RYR....", ".R.....", ".......", ".....K.", "....KYK", ".....K."]);
+});
+
+test("fractal: decorated self-similar motifs keep exact symmetry, are new, and are deterministic", async () => {
+  const { generateFractal } = await import("./fractal.ts");
+  for (const group of ["d4", "mirror-v"] as const) {
+    const a = generateFractal(ua, { seed: 202, group }), b = generateFractal(ua, { seed: 202, group });
+    assert.deepEqual(toChart(a.grid), toChart(b.grid));
+    const read = detectSymmetry(a.grid, 1);
+    assert.ok(group === "d4" ? read === "d4" : ["mirror-v", "d2", "d4"].includes(read), `${group} → ${read}`);
+    assert.ok(a.nearest.iou < 0.5);
+    assert.ok(a.decoration);
+    assert.ok(a.dimension > 0.5 && a.dimension < 2);
+  }
+});

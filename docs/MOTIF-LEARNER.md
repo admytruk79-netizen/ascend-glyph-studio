@@ -38,6 +38,20 @@ It sits beside the existing engines and does not replace them. It works on the c
 9. **Straight to production geometry.** One path per same-thread row run, in the Danish method ("/" legs out, "\" legs back). Paths go into `stitch-engine` planning, the gate and DST output.
 10. **Image → grid.** Stitch pitch comes from the autocorrelation of edge energy, using the fundamental rather than a multiple. Colour comes from cell medians, k-means and the nearest thread. It returns nothing when no clear pitch exists (fail closed).
 
+## Fractal motifs with decoration (`src/fractal.ts`)
+
+Many Ukrainian motifs repeat themselves at two or three scales: an eight-pointed star is built from rhombs, a rhomb is filled with small rhombs, a band repeats the motif along a sleeve. That is fractal-*like* over a few levels, not an infinite fractal. Nothing documents that embroiderers worked with fractals as an idea, so the engine measures this rather than assuming it.
+
+- **Self-similar composition.** A generated layout motif (open, branching) is filled with a generated element motif (compact, d4). Each stitched layout cell becomes one element, set one thread apart, and the element's main thread takes the layout cell's thread. Both levels come from the same learned construction model.
+- **Decoration.** The decorative vocabulary is learned: the small separate islands (≤ 6 stitches) in the training motifs, with their frequencies (on the seed set: single dots and three-stitch rays). One decoration is placed beyond each branch end of the layout. A closed layout uses its outermost point in each of the 8 directions instead. The decoration layer is then repeated over the symmetry group, so symmetry stays exact.
+- **Measured fractality.** Box-counting dimension is computed for every training motif (seed set: 0.77 ram's horns to 1.36 rose and sown rhomb). Each fractal candidate reports its own dimension against that range. A sample run gave 0.92–1.24, inside the range, with ≤ 10% shape overlap with any training motif.
+
+```bash
+npm --workspace @ascend/motif-learner run generate -- --fractal --count 6 --seed 101   # → out/motif-learner/fractal-sheet.svg
+```
+
+Sample: `docs/images/motif-learner-fractal-sample.svg`. Fractal motifs are large: 37–63 cells across, which is 74–126 mm at 2 mm pitch. They suit chest, yoke and towel-end fields, not cuffs.
+
 ## Results now (honest scope)
 
 On the 10 bundled seed charts (`data/motifs/ua-seed-motifs.v1.json`):
@@ -45,7 +59,7 @@ On the 10 bundled seed charts (`data/motifs/ua-seed-motifs.v1.json`):
 - **Held out:** the learned model beats the independent-cell baseline on 10/10 motifs, by a mean of +0.99 nats per window (range +0.55 nested rhombs to +1.40 oak leaf).
 - **Generation** (seed 11): 13 tried, 12 accepted, 1 rejected by a gate. The accepted candidates' largest shape overlap with any training motif was 22–46%; the near-copy limit is 80%. Sample: `docs/images/motif-learner-sample.svg`.
 - **Stitch engine:** a generated motif at 2 mm pitch passes every check (stitch length, gaps, hoop, budgets). The only failure is `recipe-validated`, because no sew-out exists yet (prototype).
-- **Tests:** 10 tests, all passing (`npm --workspace @ascend/motif-learner test`).
+- **Tests:** 13 tests, all passing (`npm --workspace @ascend/motif-learner test`).
 
 **Limits.** The seed charts were drawn in this repository as generic counted versions of widely documented forms: star, sown-field rhomb, sun, rose, ram's horns, fir, tulip, kalyna, oak. They are **not** traced from museum objects and count as **0 independent historical sources**. The evaluation report says so. This shows the method works. It does not show the model has learned Ukrainian embroidery. That needs real, permission-reviewed charts (the audit suggests 30–50 independent objects for a narrow pilot), ideally grouped by documented region.
 

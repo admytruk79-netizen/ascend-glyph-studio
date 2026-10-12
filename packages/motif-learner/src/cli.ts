@@ -1,6 +1,6 @@
 /**
  *   tsx src/cli.ts train [records.json …]           fit + held-out evaluation → out/motif-learner/{model,evaluation}.json
- *   tsx src/cli.ts generate [--tradition Ukrainian] [--region R] [--count 12] [--seed 1] [--group d4] [--size 15]
+ *   tsx src/cli.ts generate [--fractal] [--tradition Ukrainian] [--region R] [--count 12] [--seed 1] [--group d4] [--size 15]
  *                                                    → out/motif-learner/{candidates.json,sheet.svg}
  *   tsx src/cli.ts extract <image> --id ID --tradition T --group G
  *                                                    → a record to review; its licence stays "unreviewed" (excluded) until a person sets it
@@ -12,6 +12,7 @@ import { composeBand } from "./band.ts";
 import { leaveOneGroupOut } from "./evaluate.ts";
 import { extractGrid } from "./extract.ts";
 import { generate } from "./generate.ts";
+import { generateFractal } from "./fractal.ts";
 import { toChart, toSvg } from "./grid.ts";
 import { fit, select, type Model, type MotifRecord } from "./model.ts";
 
@@ -44,6 +45,17 @@ if (cmd === "train") {
   const model = JSON.parse(readFileSync(join(outDir, "model.json"), "utf8")) as Model;
   const sub = select(model, flag("tradition", "Ukrainian")!, flag("region") ?? null);
   const size = flag("size"), group = flag("group");
+  if (rest.includes("--fractal")) {
+    const n = +flag("count", "6")!, seed0 = +flag("seed", "1")!, cell = 5, cols = 3;
+    const cands = Array.from({ length: n }, (_, i) => generateFractal(sub, { seed: seed0 + i * 101, group: (group as never) ?? (i % 2 ? "d4" : "mirror-v") }));
+    const tile = Math.max(...cands.map((c) => Math.max(c.grid.w, c.grid.h))) * cell + 10;
+    const body = cands.map((c, i) => `<g transform="translate(${(i % cols) * tile},${Math.floor(i / cols) * (tile + 16)})">${toSvg(c.grid, cell, `${c.group} dim ${c.dimension.toFixed(2)} ≈${(c.nearest.iou * 100).toFixed(0)}%`)}</g>`);
+    mkdirSync(outDir, { recursive: true });
+    writeFileSync(join(outDir, "fractal-sheet.svg"), `<svg xmlns="http://www.w3.org/2000/svg" width="${cols * tile}" height="${Math.ceil(n / cols) * (tile + 16)}"><rect width="100%" height="100%" fill="#fff"/>${body.join("")}</svg>`);
+    writeFileSync(join(outDir, "fractal-candidates.json"), JSON.stringify(cands.map((c) => ({ ...c, grid: undefined, chart: toChart(c.grid) })), null, 1));
+    console.log(JSON.stringify(cands.map((c) => ({ seed: c.seed, group: c.group, size: `${c.grid.w}x${c.grid.h}`, dimension: +c.dimension.toFixed(2), trainingDimension: c.trainingDimension, nearestIoU: +c.nearest.iou.toFixed(2), decoration: c.decoration }))));
+    process.exit(0);
+  }
   const { accepted, rejected } = generate(sub, model.dataset, { count: +flag("count", "12")!, seed: +flag("seed", "1")!, ...(size ? { size: +size } : {}), ...(group ? { group: group as never } : {}) });
   const cell = 7, cols = 4, tile = 24 * cell, tiles = accepted.map((c, i) => `<g transform="translate(${(i % cols) * tile + (tile - c.grid.w * cell) / 2},${Math.floor(i / cols) * (tile + 16)})">${toSvg(c.grid, cell, `${c.group} ${c.logLikelihood.toFixed(2)} ≈${(c.nearest.iou * 100).toFixed(0)}%`)}</g>`);
   const band = accepted.length >= 2 ? composeBand([accepted[0]!.grid, accepted[1]!.grid], "A A A | B | A A A") : null;
