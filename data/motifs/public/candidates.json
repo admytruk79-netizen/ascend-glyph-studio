@@ -1,9 +1,9 @@
 {
  "schema": "ascend.public-motif-candidates.v1",
  "summary": {
-  "candidates": 10584,
+  "candidates": 10587,
   "bySource": {
-   "commons": 8069,
+   "commons": 8072,
    "ia": 1849,
    "aic": 505,
    "met": 2,
@@ -14,23 +14,23 @@
   },
   "byStatus": {
    "no-ukrainian-attribution-in-own-metadata": 5392,
-   "not-ornament-or-textile": 3291,
-   "no-counted-grid-read": 675,
-   "grid-read": 955,
+   "not-ornament-or-textile": 3275,
+   "no-counted-grid-read": 635,
+   "grid-read": 935,
    "photo-of-people": 197,
    "licence-not-public-use": 62,
-   "image-error": 12
+   "image-error": 91
   },
   "byLicence": {
-   "CC-BY-SA": 4400,
-   "public-domain": 4067,
-   "CC-BY": 684,
+   "CC-BY-SA": 4397,
+   "public-domain": 4071,
+   "CC-BY": 686,
    "CC0": 1371,
    "not-public-use": 62
   },
   "records": 3435,
-  "sourceGroupsWithRecords": 620,
-  "minutes": 18.5
+  "sourceGroupsWithRecords": 607,
+  "minutes": 29.3
  },
  "objects": [
   {
@@ -7406,12 +7406,8 @@
    "group": "commons:чому жінки жадають політичних прав (1918)",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "CC0",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.462,
-   "separation": 3.39,
-   "quality": 0.462
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-100780436",
@@ -10262,24 +10258,6 @@
    "flags": []
   },
   {
-   "id": "commons-110059619",
-   "source": "commons",
-   "title": "Вишиванка Шухевича 8.png",
-   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%B0%D0%BD%D0%BA%D0%B0_%D0%A8%D1%83%D1%85%D0%B5%D0%B2%D0%B8%D1%87%D0%B0_8.png",
-   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cc/%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%B0%D0%BD%D0%BA%D0%B0_%D0%A8%D1%83%D1%85%D0%B5%D0%B2%D0%B8%D1%87%D0%B0_8.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-   "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
-   "evidence": "title: Вишиванка Шухевича 8.png",
-   "group": "commons:вишиванка шухевича",
-   "note": "found via search \"вишиванка\"",
-   "licence": "CC-BY-SA",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.455,
-   "separation": 1.52,
-   "quality": 0.347
-  },
-  {
    "id": "commons-110118263",
    "source": "commons",
    "title": "Gon Mironosits 13 19",
@@ -11783,7 +11761,7 @@
    "group": "commons:орнамент з книг видавництва слово",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -11827,10 +11805,10 @@
    "licence": "CC-BY-SA",
    "status": "grid-read",
    "flags": [],
-   "motifs": 4,
-   "confidence": 0.418,
-   "separation": 1.35,
-   "quality": 0.283
+   "motifs": 3,
+   "confidence": 0.352,
+   "separation": 1.77,
+   "quality": 0.311
   },
   {
    "id": "commons-113249066",
@@ -12058,22 +12036,18 @@
    "flags": []
   },
   {
-   "id": "commons-113303826",
+   "id": "commons-113303821",
    "source": "commons",
-   "title": "Киев, 2019 год, 35.jpg",
-   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%9A%D0%B8%D0%B5%D0%B2,_2019_%D0%B3%D0%BE%D0%B4,_35.jpg",
-   "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/%D0%9A%D0%B8%D0%B5%D0%B2%2C_2019_%D0%B3%D0%BE%D0%B4%2C_35.jpg/1920px-%D0%9A%D0%B8%D0%B5%D0%B2%2C_2019_%D0%B3%D0%BE%D0%B4%2C_35.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+   "title": "Киев, 2019 год, 32.jpg",
+   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%9A%D0%B8%D0%B5%D0%B2,_2019_%D0%B3%D0%BE%D0%B4,_32.jpg",
+   "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5c/%D0%9A%D0%B8%D0%B5%D0%B2%2C_2019_%D0%B3%D0%BE%D0%B4%2C_32.jpg/1920px-%D0%9A%D0%B8%D0%B5%D0%B2%2C_2019_%D0%B3%D0%BE%D0%B4%2C_32.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
    "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
-   "evidence": "categories: Self-published work|Building ornaments in Ukraine|June 2019 in Kyiv|Air conditioners in Ukraine|Buildings in Ukraine photographed in 2019|Architectural sculptur",
+   "evidence": "categories: Self-published work|Building ornaments in Ukraine|Buildings with flags in Ukraine|June 2019 in Kyiv|Buildings in Ukraine photographed in 2019|Reliefs of garland",
    "group": "commons:киев, 2019 год,",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "CC-BY-SA",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 4,
-   "confidence": 0.449,
-   "separation": 1.36,
-   "quality": 0.306
+   "status": "no-counted-grid-read",
+   "flags": []
   },
   {
    "id": "commons-113303831",
@@ -12652,12 +12626,8 @@
    "group": "commons:гребінка євген. вибрані твори (київ, 1935) - с",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.36,
-   "separation": 13.5,
-   "quality": 0.36
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-114689971",
@@ -12688,6 +12658,20 @@
    "flags": []
   },
   {
+   "id": "commons-114689978",
+   "source": "commons",
+   "title": "Гребінка Євген. Українські твори (Київ, 1906) - с.43-1.jpg",
+   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%93%D1%80%D0%B5%D0%B1%D1%96%D0%BD%D0%BA%D0%B0_%D0%84%D0%B2%D0%B3%D0%B5%D0%BD._%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D1%96_%D1%82%D0%B2%D0%BE%D1%80%D0%B8_(%D0%9A%D0%B8%D1%97%D0%B2,_1906)_-_%D1%81.43-1.jpg",
+   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c8/%D0%93%D1%80%D0%B5%D0%B1%D1%96%D0%BD%D0%BA%D0%B0_%D0%84%D0%B2%D0%B3%D0%B5%D0%BD._%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D1%96_%D1%82%D0%B2%D0%BE%D1%80%D0%B8_%28%D0%9A%D0%B8%D1%97%D0%B2%2C_1906%29_-_%D1%81.43-1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+   "licenceText": "Public domain Public domain pd",
+   "evidence": "title: Гребінка Євген. Українські твори (Київ, 1906) - с.43-1.jpg",
+   "group": "commons:гребінка євген. українські твори (київ, 1906) - с.43",
+   "note": "found via search \"Ukrainian ornament\"",
+   "licence": "public-domain",
+   "status": "no-counted-grid-read",
+   "flags": []
+  },
+  {
    "id": "commons-114689979",
    "source": "commons",
    "title": "Гребінка Євген. Українські твори (Київ, 1906) - с.43-2.jpg",
@@ -12698,7 +12682,7 @@
    "group": "commons:гребінка євген. українські твори (київ, 1906) - с.43",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -12821,7 +12805,7 @@
    "group": "commons:день независимости украины 2010 в донецке",
    "note": "found via Category:Ukrainian pysanka",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -12836,6 +12820,20 @@
    "note": "found via search \"вишиванка\"",
    "licence": "CC-BY-SA",
    "status": "no-counted-grid-read",
+   "flags": []
+  },
+  {
+   "id": "commons-115053538",
+   "source": "commons",
+   "title": "Марко Вовчок. Кармелюк (Полтава, 1917) - с.46.jpg",
+   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%B0%D1%80%D0%BA%D0%BE_%D0%92%D0%BE%D0%B2%D1%87%D0%BE%D0%BA._%D0%9A%D0%B0%D1%80%D0%BC%D0%B5%D0%BB%D1%8E%D0%BA_(%D0%9F%D0%BE%D0%BB%D1%82%D0%B0%D0%B2%D0%B0,_1917)_-_%D1%81.46.jpg",
+   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/1/10/%D0%9C%D0%B0%D1%80%D0%BA%D0%BE_%D0%92%D0%BE%D0%B2%D1%87%D0%BE%D0%BA._%D0%9A%D0%B0%D1%80%D0%BC%D0%B5%D0%BB%D1%8E%D0%BA_%28%D0%9F%D0%BE%D0%BB%D1%82%D0%B0%D0%B2%D0%B0%2C_1917%29_-_%D1%81.46.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+   "licenceText": "Public domain Public domain pd",
+   "evidence": "title: Марко Вовчок. Кармелюк (Полтава, 1917) - с.46.jpg",
+   "group": "commons:марко вовчок. кармелюк (полтава, 1917) - с",
+   "note": "found via search \"Ukrainian ornament\"",
+   "licence": "public-domain",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -14826,12 +14824,8 @@
    "group": "commons:ostereier",
    "note": "found via Category:Ukrainian pysanka",
    "licence": "CC-BY",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 4,
-   "confidence": 0.919,
-   "separation": 1.27,
-   "quality": 0.584
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-11792204",
@@ -14844,7 +14838,7 @@
    "group": "commons:ostereier",
    "note": "found via Category:Ukrainian pysanka",
    "licence": "CC-BY",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -14858,12 +14852,8 @@
    "group": "commons:ostereier",
    "note": "found via Category:Ukrainian pysanka",
    "licence": "CC-BY",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.401,
-   "separation": 1.45,
-   "quality": 0.291
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-117934873",
@@ -15667,7 +15657,7 @@
    "group": "commons:ukrainian krapanka",
    "note": "found via Category:Ukrainian pysanka",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -16291,7 +16281,7 @@
    "licenceText": "Attribution  ",
    "evidence": "description: Захарук Дмитро Васильович, народний депутат України I скликання",
    "group": "commons:нду 1 захарук дмитро васильович",
-   "note": "found via search \"сорочка вишита\"",
+   "note": "found via search \"вишиванка\"",
    "licence": null,
    "status": "licence-not-public-use",
    "flags": []
@@ -16571,7 +16561,7 @@
    "licenceText": "Attribution  ",
    "evidence": "description: Лук'яненко Левко Григорович, народний депутат України I, II, IV, V скликань",
    "group": "commons:нду 2 лук'яненко левко григорович",
-   "note": "found via search \"вишиванка\"",
+   "note": "found via search \"вишита сорочка\"",
    "licence": null,
    "status": "licence-not-public-use",
    "flags": []
@@ -17054,7 +17044,9 @@
    "note": "found via Category:Coats of arms of families of Ukraine",
    "licence": "CC0",
    "status": "not-ornament-or-textile",
-   "flags": []
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "commons-122873477",
@@ -17406,7 +17398,7 @@
    "group": "commons:орнамент з книг видавництва дрібної біблїотеки",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -17476,7 +17468,7 @@
    "group": "commons:любов яновська оповідання 1905pdf",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -17823,6 +17815,20 @@
    "flags": []
   },
   {
+   "id": "commons-126635828",
+   "source": "commons",
+   "title": "Орнамент в українських виданнях (США-Канада) - 02.jpg",
+   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82_%D0%B2_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D1%85_%D0%B2%D0%B8%D0%B4%D0%B0%D0%BD%D0%BD%D1%8F%D1%85_(%D0%A1%D0%A8%D0%90-%D0%9A%D0%B0%D0%BD%D0%B0%D0%B4%D0%B0)_-_02.jpg",
+   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9c/%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82_%D0%B2_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D1%85_%D0%B2%D0%B8%D0%B4%D0%B0%D0%BD%D0%BD%D1%8F%D1%85_%28%D0%A1%D0%A8%D0%90-%D0%9A%D0%B0%D0%BD%D0%B0%D0%B4%D0%B0%29_-_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+   "licenceText": "Public domain Public domain pd",
+   "evidence": "title: Орнамент в українських виданнях (США-Канада) - 02.jpg",
+   "group": "commons:орнамент в українських виданнях (сша-канада)",
+   "note": "found via search \"Ukrainian ornament\"",
+   "licence": "public-domain",
+   "status": "no-counted-grid-read",
+   "flags": []
+  },
+  {
    "id": "commons-126708188",
    "source": "commons",
    "title": "2021 Tongeren, Teseum, schatkamer (55)",
@@ -17924,20 +17930,6 @@
    "flags": []
   },
   {
-   "id": "commons-127315694",
-   "source": "commons",
-   "title": "Орнамент в українських виданнях (США-Канада) - 04.jpg",
-   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82_%D0%B2_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D1%85_%D0%B2%D0%B8%D0%B4%D0%B0%D0%BD%D0%BD%D1%8F%D1%85_(%D0%A1%D0%A8%D0%90-%D0%9A%D0%B0%D0%BD%D0%B0%D0%B4%D0%B0)_-_04.jpg",
-   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/75/%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82_%D0%B2_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D1%85_%D0%B2%D0%B8%D0%B4%D0%B0%D0%BD%D0%BD%D1%8F%D1%85_%28%D0%A1%D0%A8%D0%90-%D0%9A%D0%B0%D0%BD%D0%B0%D0%B4%D0%B0%29_-_04.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-   "licenceText": "Public domain Public domain pd",
-   "evidence": "title: Орнамент в українських виданнях (США-Канада) - 04.jpg",
-   "group": "commons:орнамент в українських виданнях (сша-канада)",
-   "note": "found via search \"Ukrainian ornament\"",
-   "licence": "public-domain",
-   "status": "no-counted-grid-read",
-   "flags": []
-  },
-  {
    "id": "commons-127386332",
    "source": "commons",
    "title": "Орнамент в українських виданнях (США-Канада) - 06.jpg",
@@ -17948,12 +17940,8 @@
    "group": "commons:орнамент в українських виданнях (сша-канада)",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.492,
-   "separation": 5.66,
-   "quality": 0.492
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-127386333",
@@ -18282,12 +18270,8 @@
    "group": "commons:easter egg-ukraine (british museum)",
    "note": "found via Category:Ukrainian pysanka",
    "licence": "CC-BY-SA",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 4,
-   "confidence": 0.885,
-   "separation": 2.28,
-   "quality": 0.885
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-127876971",
@@ -19349,7 +19333,7 @@
    "group": "commons:орнамент з книг видавництва криниця в києві",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -19486,7 +19470,7 @@
    "group": "commons:орнамент з книги - котляревський і. наталка-полтавка. москаль-чарівник (1937)",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -19749,7 +19733,7 @@
    "group": "commons:орнамент з книг видавництва криниця",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -19791,7 +19775,7 @@
    "group": "commons:орнамент з книг видавництва криниця",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -19819,7 +19803,7 @@
    "group": "commons:орнамент з книг видавництва криниця",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -19893,7 +19877,7 @@
    "group": "commons:орнамент з книг видавництва криниця",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -20718,12 +20702,8 @@
    "group": "commons:килимова вишивка селища первомайське на миколаївщині - carpet embroidery of the village of pervomaiske in the mykolaiv region",
    "note": "found via search \"українська вишивка\"",
    "licence": "CC-BY-SA",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.435,
-   "separation": 1.37,
-   "quality": 0.297
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-129740367",
@@ -23937,6 +23917,24 @@
    "flags": []
   },
   {
+   "id": "commons-130726521",
+   "source": "commons",
+   "title": "Орнамент в українських виданнях (США-Канада) - 08.jpg",
+   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82_%D0%B2_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D1%85_%D0%B2%D0%B8%D0%B4%D0%B0%D0%BD%D0%BD%D1%8F%D1%85_(%D0%A1%D0%A8%D0%90-%D0%9A%D0%B0%D0%BD%D0%B0%D0%B4%D0%B0)_-_08.jpg",
+   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/ff/%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82_%D0%B2_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D1%85_%D0%B2%D0%B8%D0%B4%D0%B0%D0%BD%D0%BD%D1%8F%D1%85_%28%D0%A1%D0%A8%D0%90-%D0%9A%D0%B0%D0%BD%D0%B0%D0%B4%D0%B0%29_-_08.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+   "licenceText": "Public domain Public domain pd",
+   "evidence": "title: Орнамент в українських виданнях (США-Канада) - 08.jpg",
+   "group": "commons:орнамент в українських виданнях (сша-канада)",
+   "note": "found via search \"Ukrainian ornament\"",
+   "licence": "public-domain",
+   "status": "grid-read",
+   "flags": [],
+   "motifs": 1,
+   "confidence": 0.629,
+   "separation": 4.21,
+   "quality": 0.629
+  },
+  {
    "id": "commons-130726522",
    "source": "commons",
    "title": "Орнамент в українських виданнях (США-Канада) - 09.jpg",
@@ -23947,12 +23945,8 @@
    "group": "commons:орнамент в українських виданнях (сша-канада)",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.448,
-   "separation": 2.87,
-   "quality": 0.448
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-130736635",
@@ -24399,9 +24393,9 @@
    "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
    "evidence": "categories: People of Kharkiv|Faculty of Kharkiv State Academy of Culture|Self-published work|Women wearing vyshyvankas in Ukraine",
    "group": "commons:solianyk alla",
-   "note": "found via search \"вишита сорочка\"",
+   "note": "found via search \"сорочка вишита\"",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -24899,12 +24893,8 @@
    "evidence": "title: Вишиті рушники, Ніна Федірко",
    "group": "commons:вишиті рушники, ніна федірко",
    "licence": "CC-BY-SA",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 2,
-   "confidence": 0.517,
-   "separation": 2.82,
-   "quality": 0.517
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-133456924",
@@ -25202,20 +25192,6 @@
    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%B0%D0%BD%D0%BA%D0%B0_%E2%80%94_%D1%86%D0%B5_%D1%81%D0%B8%D0%BC%D0%B2%D0%BE%D0%BB_%D0%BD%D0%B0%D1%86%D1%96%D1%97_1.jpg/1920px-%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%B0%D0%BD%D0%BA%D0%B0_%E2%80%94_%D1%86%D0%B5_%D1%81%D0%B8%D0%BC%D0%B2%D0%BE%D0%BB_%D0%BD%D0%B0%D1%86%D1%96%D1%97_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
    "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
    "evidence": "title: Вишиванка — це символ нації 1.jpg",
-   "group": "commons:вишиванка — це символ нації",
-   "note": "found via search \"вишиванка\"",
-   "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
-   "flags": []
-  },
-  {
-   "id": "commons-134008419",
-   "source": "commons",
-   "title": "Вишиванка — це символ нації 2.jpg",
-   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%B0%D0%BD%D0%BA%D0%B0_%E2%80%94_%D1%86%D0%B5_%D1%81%D0%B8%D0%BC%D0%B2%D0%BE%D0%BB_%D0%BD%D0%B0%D1%86%D1%96%D1%97_2.jpg",
-   "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/61/%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%B0%D0%BD%D0%BA%D0%B0_%E2%80%94_%D1%86%D0%B5_%D1%81%D0%B8%D0%BC%D0%B2%D0%BE%D0%BB_%D0%BD%D0%B0%D1%86%D1%96%D1%97_2.jpg/1920px-%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%B0%D0%BD%D0%BA%D0%B0_%E2%80%94_%D1%86%D0%B5_%D1%81%D0%B8%D0%BC%D0%B2%D0%BE%D0%BB_%D0%BD%D0%B0%D1%86%D1%96%D1%97_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-   "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
-   "evidence": "title: Вишиванка — це символ нації 2.jpg",
    "group": "commons:вишиванка — це символ нації",
    "note": "found via search \"вишиванка\"",
    "licence": "CC-BY-SA",
@@ -27686,12 +27662,8 @@
    "group": "commons:вишита сорочка - мамин оберіг",
    "note": "found via search \"сорочка вишита\"",
    "licence": "CC0",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 8,
-   "confidence": 0.621,
-   "separation": 1.23,
-   "quality": 0.383
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-145111244",
@@ -28780,7 +28752,7 @@
    "group": "commons:орнамент в українських виданнях (сша-канада)",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -29889,12 +29861,8 @@
    "group": "commons:для школи і дому титул",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.405,
-   "separation": 2.42,
-   "quality": 0.405
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-147082694",
@@ -31874,7 +31842,7 @@
    "group": "commons:орнамент в українських виданнях (сша-канада)",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -32508,7 +32476,9 @@
    "note": "found via Category:Folk art of Ukraine",
    "licence": "CC-BY-SA",
    "status": "not-ornament-or-textile",
-   "flags": []
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "commons-153793940",
@@ -32938,7 +32908,7 @@
    "licenceText": "Public domain Public domain pd",
    "evidence": "categories: PD Old|Template Unknown (author)|CC-PD-Mark|Photos of Ivan Franko|Ivan Franko wearing vyshyvankas",
    "group": "commons:іван франко",
-   "note": "found via search \"сорочка вишита\"",
+   "note": "found via search \"вишита сорочка\"",
    "licence": "public-domain",
    "status": "grid-read",
    "flags": [],
@@ -33299,12 +33269,8 @@
    "group": "commons:орнамент з книг друкарні редера (ляйпціґ)",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.658,
-   "separation": 3.91,
-   "quality": 0.658
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-155231881",
@@ -33317,6 +33283,20 @@
    "group": "commons:ticking",
    "licence": "public-domain",
    "status": "no-ukrainian-attribution-in-own-metadata",
+   "flags": []
+  },
+  {
+   "id": "commons-155328026",
+   "source": "commons",
+   "title": "Орнамент з книг накладом Михайла Таранька - 001.jpg",
+   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82_%D0%B7_%D0%BA%D0%BD%D0%B8%D0%B3_%D0%BD%D0%B0%D0%BA%D0%BB%D0%B0%D0%B4%D0%BE%D0%BC_%D0%9C%D0%B8%D1%85%D0%B0%D0%B9%D0%BB%D0%B0_%D0%A2%D0%B0%D1%80%D0%B0%D0%BD%D1%8C%D0%BA%D0%B0_-_001.jpg",
+   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b6/%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82_%D0%B7_%D0%BA%D0%BD%D0%B8%D0%B3_%D0%BD%D0%B0%D0%BA%D0%BB%D0%B0%D0%B4%D0%BE%D0%BC_%D0%9C%D0%B8%D1%85%D0%B0%D0%B9%D0%BB%D0%B0_%D0%A2%D0%B0%D1%80%D0%B0%D0%BD%D1%8C%D0%BA%D0%B0_-_001.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+   "licenceText": "Public domain Public domain pd",
+   "evidence": "categories: PD-old-70-expired|Template Unknown (author)|CC-PD-Mark|PD-old missing SDC copyright status|Ornaments in Ukrainian books",
+   "group": "commons:орнамент з книг накладом михайла таранька",
+   "note": "found via search \"Ukrainian ornament\"",
+   "licence": "public-domain",
+   "status": "no-counted-grid-read",
    "flags": []
   },
   {
@@ -34140,12 +34120,8 @@
    "group": "commons:штемпель першого дня «кримськотатарська вишивка - код народу». київ",
    "note": "found via search \"українська вишивка\"",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.437,
-   "separation": 3.92,
-   "quality": 0.437
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-157180816",
@@ -34302,7 +34278,9 @@
    "note": "found via Category:Military coats of arms of Ukraine",
    "licence": "CC-BY-SA",
    "status": "not-ornament-or-textile",
-   "flags": []
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "commons-157808650",
@@ -34471,7 +34449,7 @@
    "group": "commons:гуцульський одяг та вишивка у залі",
    "note": "found via search \"українська вишивка\"",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -35281,7 +35259,7 @@
    "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
    "evidence": "title: Школа в вишиванці Курінка.jpg",
    "group": "commons:школа в вишиванці курінка",
-   "note": "found via search \"Ukrainian ornament\"",
+   "note": "found via search \"Ukrainian embroidery pattern\"",
    "licence": "CC-BY-SA",
    "status": "grid-read",
    "flags": [],
@@ -35612,7 +35590,7 @@
    "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
    "evidence": "title: Вишивка. Узор 01.jpg",
    "group": "commons:вишивка. узор",
-   "note": "found via search \"Ukrainian embroidery pattern\"",
+   "note": "found via search \"українська вишивка\"",
    "licence": "CC-BY-SA",
    "status": "no-counted-grid-read",
    "flags": []
@@ -35662,7 +35640,7 @@
    "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
    "evidence": "title: Вишивка. Узор 10.jpg",
    "group": "commons:вишивка. узор",
-   "note": "found via search \"Ukrainian embroidery pattern\"",
+   "note": "found via search \"українська вишивка\"",
    "licence": "CC-BY-SA",
    "status": "grid-read",
    "flags": [],
@@ -35680,7 +35658,7 @@
    "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
    "evidence": "title: Вишивка. Узор 11.jpg",
    "group": "commons:вишивка. узор",
-   "note": "found via search \"Ukrainian embroidery pattern\"",
+   "note": "found via search \"українська вишивка\"",
    "licence": "CC-BY-SA",
    "status": "grid-read",
    "flags": [],
@@ -36852,6 +36830,24 @@
    "licence": "CC-BY-SA",
    "status": "not-ornament-or-textile",
    "flags": []
+  },
+  {
+   "id": "commons-159927021",
+   "source": "commons",
+   "title": "Вишивка. Узор 32.jpg",
+   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0._%D0%A3%D0%B7%D0%BE%D1%80_32.jpg",
+   "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8d/%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0._%D0%A3%D0%B7%D0%BE%D1%80_32.jpg/1920px-%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0._%D0%A3%D0%B7%D0%BE%D1%80_32.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+   "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
+   "evidence": "title: Вишивка. Узор 32.jpg",
+   "group": "commons:вишивка. узор",
+   "note": "found via search \"українська вишивка\"",
+   "licence": "CC-BY-SA",
+   "status": "grid-read",
+   "flags": [],
+   "motifs": 3,
+   "confidence": 0.701,
+   "separation": 1.36,
+   "quality": 0.478
   },
   {
    "id": "commons-159927022",
@@ -39115,7 +39111,7 @@
    "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
    "evidence": "title: Ukrainian community activist Peter Kardasz at the BWF 2017.jpg",
    "group": "commons:ukrainian community activist peter kardasz at the bwf",
-   "note": "found via search \"сорочка вишита\"",
+   "note": "found via search \"вишиванка\"",
    "licence": "CC-BY-SA",
    "status": "grid-read",
    "flags": [],
@@ -39396,12 +39392,8 @@
    "evidence": "title: 08500 der traditionelle Tracht der Ukraine, 2011",
    "group": "commons:08500 der traditionelle tracht der ukraine,",
    "licence": "CC-BY-SA",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.374,
-   "separation": 1.26,
-   "quality": 0.235
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-16184916",
@@ -39514,20 +39506,6 @@
    "note": "found via Category:Folk art of Ukraine",
    "licence": "CC-BY-SA",
    "status": "not-ornament-or-textile",
-   "flags": []
-  },
-  {
-   "id": "commons-162295221",
-   "source": "commons",
-   "title": "Mykolaychukove Kolo - Yuri Garmash (2006, by Oleksiy-Nestor Naumenko).pdf",
-   "pageUrl": "https://commons.wikimedia.org/wiki/File:Mykolaychukove_Kolo_-_Yuri_Garmash_(2006,_by_Oleksiy-Nestor_Naumenko).pdf",
-   "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/Mykolaychukove_Kolo_-_Yuri_Garmash_%282006%2C_by_Oleksiy-Nestor_Naumenko%29.pdf/page1-960px-Mykolaychukove_Kolo_-_Yuri_Garmash_%282006%2C_by_Oleksiy-Nestor_Naumenko%29.pdf.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-   "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
-   "evidence": "categories: Actors from Ukraine|Ivan Mykolaichuk|Self-published work|Items with VRTS permission confirmed|Male film directors from Ukraine",
-   "group": "commons:mykolaychukove kolo - yuri garmash (2006, by oleksiy-nestor naumenko).pdf",
-   "note": "found via search \"рушник вишитий\"",
-   "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
    "flags": []
   },
   {
@@ -41268,7 +41246,7 @@
    "group": "commons:вишита сорочка",
    "note": "found via search \"сорочка вишита\"",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -41282,12 +41260,8 @@
    "group": "commons:весільна вишивка білим по білому",
    "note": "found via search \"українська вишивка\"",
    "licence": "CC-BY-SA",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 2,
-   "confidence": 0.578,
-   "separation": 1.33,
-   "quality": 0.385
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-163034736",
@@ -42830,6 +42804,24 @@
    "quality": 0.275
   },
   {
+   "id": "commons-171150875",
+   "source": "commons",
+   "title": "Вишивка стрічками. Декор скриньки.jpg",
+   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%81%D1%82%D1%80%D1%96%D1%87%D0%BA%D0%B0%D0%BC%D0%B8._%D0%94%D0%B5%D0%BA%D0%BE%D1%80_%D1%81%D0%BA%D1%80%D0%B8%D0%BD%D1%8C%D0%BA%D0%B8.jpg",
+   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/1/1f/%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%81%D1%82%D1%80%D1%96%D1%87%D0%BA%D0%B0%D0%BC%D0%B8._%D0%94%D0%B5%D0%BA%D0%BE%D1%80_%D1%81%D0%BA%D1%80%D0%B8%D0%BD%D1%8C%D0%BA%D0%B8.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+   "licenceText": "CC BY 4.0 Creative Commons Attribution 4.0 cc-by-4.0",
+   "evidence": "title: Вишивка стрічками. Декор скриньки.jpg",
+   "group": "commons:вишивка стрічками. декор скриньки",
+   "note": "found via search \"українська вишивка\"",
+   "licence": "CC-BY",
+   "status": "grid-read",
+   "flags": [],
+   "motifs": 3,
+   "confidence": 0.362,
+   "separation": 1.48,
+   "quality": 0.268
+  },
+  {
    "id": "commons-171150886",
    "source": "commons",
    "title": "Вишивка стрічками. Декорування подушки.jpg",
@@ -43434,7 +43426,7 @@
    "group": "commons:славянска община донецка \"дикое поле\"",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -44868,34 +44860,6 @@
    "flags": []
   },
   {
-   "id": "commons-178062905",
-   "source": "commons",
-   "title": "Бочковський О. І. Життя і світогляд Т.Г. Масарика (1921).djvu стор. 42.jpg",
-   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%91%D0%BE%D1%87%D0%BA%D0%BE%D0%B2%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D0%9E._%D0%86._%D0%96%D0%B8%D1%82%D1%82%D1%8F_%D1%96_%D1%81%D0%B2%D1%96%D1%82%D0%BE%D0%B3%D0%BB%D1%8F%D0%B4_%D0%A2.%D0%93._%D0%9C%D0%B0%D1%81%D0%B0%D1%80%D0%B8%D0%BA%D0%B0_(1921).djvu_%D1%81%D1%82%D0%BE%D1%80._42.jpg",
-   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/76/%D0%91%D0%BE%D1%87%D0%BA%D0%BE%D0%B2%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D0%9E._%D0%86._%D0%96%D0%B8%D1%82%D1%82%D1%8F_%D1%96_%D1%81%D0%B2%D1%96%D1%82%D0%BE%D0%B3%D0%BB%D1%8F%D0%B4_%D0%A2.%D0%93._%D0%9C%D0%B0%D1%81%D0%B0%D1%80%D0%B8%D0%BA%D0%B0_%281921%29.djvu_%D1%81%D1%82%D0%BE%D1%80._42.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-   "licenceText": "Public domain Public domain pd",
-   "evidence": "categories: Files with no machine-readable author|Uploaded with pattypan|PD Old auto: no death date|Media lacking author information|PD US expired|Ornaments in Ukrainian bo",
-   "group": "commons:бочковський о. і. життя і світогляд т.г. масарика (1921).djvu стор",
-   "note": "found via search \"Ukrainian ornament\"",
-   "licence": "public-domain",
-   "status": "no-counted-grid-read",
-   "flags": []
-  },
-  {
-   "id": "commons-178062915",
-   "source": "commons",
-   "title": "Бочковський О. І. Життя і світогляд Т.Г. Масарика (1921).djvu стор. 7.jpg",
-   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%91%D0%BE%D1%87%D0%BA%D0%BE%D0%B2%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D0%9E._%D0%86._%D0%96%D0%B8%D1%82%D1%82%D1%8F_%D1%96_%D1%81%D0%B2%D1%96%D1%82%D0%BE%D0%B3%D0%BB%D1%8F%D0%B4_%D0%A2.%D0%93._%D0%9C%D0%B0%D1%81%D0%B0%D1%80%D0%B8%D0%BA%D0%B0_(1921).djvu_%D1%81%D1%82%D0%BE%D1%80._7.jpg",
-   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e5/%D0%91%D0%BE%D1%87%D0%BA%D0%BE%D0%B2%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D0%9E._%D0%86._%D0%96%D0%B8%D1%82%D1%82%D1%8F_%D1%96_%D1%81%D0%B2%D1%96%D1%82%D0%BE%D0%B3%D0%BB%D1%8F%D0%B4_%D0%A2.%D0%93._%D0%9C%D0%B0%D1%81%D0%B0%D1%80%D0%B8%D0%BA%D0%B0_%281921%29.djvu_%D1%81%D1%82%D0%BE%D1%80._7.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-   "licenceText": "Public domain Public domain pd",
-   "evidence": "categories: Files with no machine-readable author|Uploaded with pattypan|PD Old auto: no death date|Media lacking author information|PD US expired|PD-old missing SDC copyri",
-   "group": "commons:бочковський о. і. життя і світогляд т.г. масарика (1921).djvu стор",
-   "note": "found via search \"Ukrainian ornament\"",
-   "licence": "public-domain",
-   "status": "no-counted-grid-read",
-   "flags": []
-  },
-  {
    "id": "commons-17811418",
    "source": "commons",
    "title": "COA Obolonskyi, Kyiv, Ukraine UHT.svg",
@@ -45246,7 +45210,7 @@
    "group": "commons:костомаров м. дві руські народності. 1920s.pdf",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -46254,7 +46218,7 @@
    "licenceText": "Public domain Public domain pd",
    "evidence": "description: Ukrainian folk tale \"About the stingy man\"",
    "group": "commons:pro skupoho cholovika",
-   "note": "found via search \"сорочка вишита\"",
+   "note": "found via search \"вишиванка\"",
    "licence": "public-domain",
    "status": "grid-read",
    "flags": [],
@@ -47415,12 +47379,8 @@
    "group": "commons:вишивка пані катерини полив'яної (зафіксовано під час моєї експедиції)",
    "note": "found via search \"українська вишивка\"",
    "licence": "CC-BY-SA",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 2,
-   "confidence": 0.479,
-   "separation": 1.91,
-   "quality": 0.458
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-185833836",
@@ -47523,7 +47483,7 @@
    "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
    "evidence": "categories: Self-published work|Bar Historical Museum|Images from Wiki Loves Folklore 2026|Images from Wiki Loves Folklore 2026 in Ukraine|Images from Wiki Loves Folklore 2",
    "group": "commons:виставка в барському історичному музеї 20250515",
-   "note": "found via search \"сорочка вишита\"",
+   "note": "found via search \"вишиванка\"",
    "licence": "CC-BY-SA",
    "status": "no-counted-grid-read",
    "flags": []
@@ -47949,7 +47909,7 @@
    "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
    "evidence": "title: Вишиванки із Барського ПБЛ 20250515 16.jpg",
    "group": "commons:вишиванки із барського пбл 20250515",
-   "note": "found via search \"сорочка вишита\"",
+   "note": "found via search \"вишиванка\"",
    "licence": "CC-BY-SA",
    "status": "grid-read",
    "flags": [],
@@ -48687,12 +48647,8 @@
    "group": "commons:вишивка. узор на спині і рукавах",
    "note": "found via search \"українська вишивка\"",
    "licence": "CC-BY-SA",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.718,
-   "separation": 1.75,
-   "quality": 0.628
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-186366486",
@@ -49332,6 +49288,20 @@
    "confidence": 0.554,
    "separation": 1.3,
    "quality": 0.36
+  },
+  {
+   "id": "commons-187156496",
+   "source": "commons",
+   "title": "5T6A5401.jpg",
+   "pageUrl": "https://commons.wikimedia.org/wiki/File:5T6A5401.jpg",
+   "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0b/5T6A5401.jpg/1920px-5T6A5401.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+   "licenceText": "CC BY 4.0 Creative Commons Attribution 4.0 cc-by-4.0",
+   "evidence": "description: Petrykivka painting is a traditional Ukrainian decorative and ornamental art that originates from the village of Petrykivka (Dnipropetrovsk region) and is inclu",
+   "group": "commons:5t6a",
+   "note": "found via search \"Ukrainian ornament\"",
+   "licence": "CC-BY",
+   "status": "no-counted-grid-read",
+   "flags": []
   },
   {
    "id": "commons-187233955",
@@ -50732,6 +50702,20 @@
    "flags": []
   },
   {
+   "id": "commons-194077060",
+   "source": "commons",
+   "title": "An American business adventure; the story of Henry A. Dix (IA anamericanbusine00dixmrich).pdf",
+   "pageUrl": "https://commons.wikimedia.org/wiki/File:An_American_business_adventure;_the_story_of_Henry_A._Dix_(IA_anamericanbusine00dixmrich).pdf",
+   "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/An_American_business_adventure%3B_the_story_of_Henry_A._Dix_%28IA_anamericanbusine00dixmrich%29.pdf/page1-500px-An_American_business_adventure%3B_the_story_of_Henry_A._Dix_%28IA_anamericanbusine00dixmrich%29.pdf.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+   "licenceText": "Public domain Public domain pd",
+   "evidence": null,
+   "group": "commons:an american business adventure; the story of henry a. dix (ia anamericanbusine00dixmrich).pdf",
+   "note": "found via search \"Ukrainian embroidery pattern\"",
+   "licence": "public-domain",
+   "status": "no-ukrainian-attribution-in-own-metadata",
+   "flags": []
+  },
+  {
    "id": "commons-194126266",
    "source": "commons",
    "title": "Emblem of the Antimonopoly Committee of Ukraine.svg",
@@ -52027,6 +52011,20 @@
    "flags": []
   },
   {
+   "id": "commons-198663522",
+   "source": "commons",
+   "title": "ВИДАННЄ СОЮЗА ВИЗВОЛЕННЯ УКРАЇНИ.png",
+   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%92%D0%98%D0%94%D0%90%D0%9D%D0%9D%D0%84_%D0%A1%D0%9E%D0%AE%D0%97%D0%90_%D0%92%D0%98%D0%97%D0%92%D0%9E%D0%9B%D0%95%D0%9D%D0%9D%D0%AF_%D0%A3%D0%9A%D0%A0%D0%90%D0%87%D0%9D%D0%98.png",
+   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/40/%D0%92%D0%98%D0%94%D0%90%D0%9D%D0%9D%D0%84_%D0%A1%D0%9E%D0%AE%D0%97%D0%90_%D0%92%D0%98%D0%97%D0%92%D0%9E%D0%9B%D0%95%D0%9D%D0%9D%D0%AF_%D0%A3%D0%9A%D0%A0%D0%90%D0%87%D0%9D%D0%98.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+   "licenceText": "Public domain Public domain pd",
+   "evidence": "title: ВИДАННЄ СОЮЗА ВИЗВОЛЕННЯ УКРАЇНИ.png",
+   "group": "commons:виданнє союза визволення україни",
+   "note": "found via search \"Ukrainian ornament\"",
+   "licence": "public-domain",
+   "status": "no-counted-grid-read",
+   "flags": []
+  },
+  {
    "id": "commons-198777097",
    "source": "commons",
    "title": "Герб селища Ставище.png",
@@ -52221,7 +52219,7 @@
    "group": "commons:амічіс е. малі герої (1923), літера т",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -52354,7 +52352,7 @@
    "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%9F%D0%B5%D1%87%D0%B8%D0%B2%D0%BE_%C2%AB%D0%9C%D0%B0%D1%80%D1%96%D1%8F%C2%BB_-_20260918_095640.jpg",
    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/03/%D0%9F%D0%B5%D1%87%D0%B8%D0%B2%D0%BE_%C2%AB%D0%9C%D0%B0%D1%80%D1%96%D1%8F%C2%BB_-_20260918_095640.jpg/1920px-%D0%9F%D0%B5%D1%87%D0%B8%D0%B2%D0%BE_%C2%AB%D0%9C%D0%B0%D1%80%D1%96%D1%8F%C2%BB_-_20260918_095640.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
    "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
-   "evidence": "categories: Cyrillic Em|Creative Commons Attribution-Share Alike missing SDC copyright status|Self-published work|Information field template with formatting|Creative Common",
+   "evidence": "categories: Cyrillic Em|Self-published work|Information field template with formatting|Photographs by Mykola Vasylechko|Round objects in Zakarpattia Oblast|17 objects in Uk",
    "group": "commons:печиво «марія» - 20260918",
    "note": "found via Category:Textiles of Zakarpattia Oblast",
    "licence": "CC-BY-SA",
@@ -52368,7 +52366,7 @@
    "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%9F%D0%B5%D1%87%D0%B8%D0%B2%D0%BE_%C2%AB%D0%9C%D0%B0%D1%80%D1%96%D1%8F%C2%BB_-_20260918_095629.jpg",
    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/%D0%9F%D0%B5%D1%87%D0%B8%D0%B2%D0%BE_%C2%AB%D0%9C%D0%B0%D1%80%D1%96%D1%8F%C2%BB_-_20260918_095629.jpg/1920px-%D0%9F%D0%B5%D1%87%D0%B8%D0%B2%D0%BE_%C2%AB%D0%9C%D0%B0%D1%80%D1%96%D1%8F%C2%BB_-_20260918_095629.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
    "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
-   "evidence": "categories: Cyrillic Em|Creative Commons Attribution-Share Alike missing SDC copyright status|Self-published work|Information field template with formatting|Creative Common",
+   "evidence": "categories: Cyrillic Em|Self-published work|Information field template with formatting|Photographs by Mykola Vasylechko|Round objects in Zakarpattia Oblast|17 objects in Uk",
    "group": "commons:печиво «марія» - 20260918",
    "note": "found via Category:Textiles of Zakarpattia Oblast",
    "licence": "CC-BY-SA",
@@ -52929,7 +52927,7 @@
    "group": "commons:ukrainian pysanky dscn",
    "note": "found via Category:Ukrainian pysanka",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -53556,7 +53554,7 @@
    "evidence": "title: Rushnyk Ukraine embroidered decorative towels",
    "group": "commons:rushnyk ukraine embroidered decorative towels",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -53868,7 +53866,7 @@
    "group": "commons:ukrainian easter egg on stamp",
    "note": "found via Category:Ukrainian pysanka",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -53882,7 +53880,7 @@
    "group": "commons:ukrainian easter egg on stamp",
    "note": "found via Category:Ukrainian pysanka",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -53910,12 +53908,8 @@
    "group": "commons:ukrainian easter egg on stamp",
    "note": "found via Category:Ukrainian pysanka",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.434,
-   "separation": 1.99,
-   "quality": 0.432
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-21639753",
@@ -55287,20 +55281,6 @@
    "flags": []
   },
   {
-   "id": "commons-22715453",
-   "source": "commons",
-   "title": "Podolyany (1898) by Zigmund Aydukevych.jpg",
-   "pageUrl": "https://commons.wikimedia.org/wiki/File:Podolyany_(1898)_by_Zigmund_Aydukevych.jpg",
-   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Podolyany_%281898%29_by_Zigmund_Aydukevych.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-   "licenceText": "Public domain Public domain pd",
-   "evidence": "categories: Zygmunt Ajdukiewicz|PD Old|CC-PD-Mark|Traditional clothing of Ukraine in historical images|Ukrainian women wearing vyshyvankas|Clothing of Pokuttya",
-   "group": "commons:podolyany (1898) by zigmund aydukevych",
-   "note": "found via search \"сорочка вишита\"",
-   "licence": "public-domain",
-   "status": "image-error: Error: HTTP 429",
-   "flags": []
-  },
-  {
    "id": "commons-22716802",
    "source": "commons",
    "title": "З весілля 1891.jpg",
@@ -55594,9 +55574,9 @@
    "status": "grid-read",
    "flags": [],
    "motifs": 1,
-   "confidence": 0.567,
+   "confidence": 0.568,
    "separation": 1.32,
-   "quality": 0.374
+   "quality": 0.375
   },
   {
    "id": "commons-22950987",
@@ -55716,7 +55696,9 @@
    "note": "found via Category:Sorochka (Ukraine)",
    "licence": "public-domain",
    "status": "not-ornament-or-textile",
-   "flags": []
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "commons-23069048",
@@ -55729,8 +55711,14 @@
    "group": "commons:bukowyna",
    "note": "found via search \"сорочка вишита\"",
    "licence": "public-domain",
-   "status": "image-error: Error: HTTP 429",
-   "flags": []
+   "status": "grid-read",
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
+   "motifs": 1,
+   "confidence": 0.424,
+   "separation": 2.02,
+   "quality": 0.424
   },
   {
    "id": "commons-23069991",
@@ -56160,10 +56148,16 @@
    "licenceText": "Public domain Public domain pd",
    "evidence": "title: 1 Буковина. Bukovina 1900.jpg",
    "group": "commons:1 буковина. bukovina",
-   "note": "found via search \"вишита сорочка\"",
+   "note": "found via search \"сорочка вишита\"",
    "licence": "public-domain",
-   "status": "image-error: Error: HTTP 429",
-   "flags": []
+   "status": "grid-read",
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
+   "motifs": 1,
+   "confidence": 0.671,
+   "separation": 1.86,
+   "quality": 0.623
   },
   {
    "id": "commons-233313",
@@ -56610,12 +56604,8 @@
    "group": "commons:ajdukiewicz 1. станіслав",
    "note": "found via search \"сорочка вишита\"",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.72,
-   "separation": 1.89,
-   "quality": 0.679
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-2373426",
@@ -57053,8 +57043,12 @@
    "group": "commons:pod",
    "note": "found via search \"сорочка вишита\"",
    "licence": "public-domain",
-   "status": "image-error: Error: HTTP 429",
-   "flags": []
+   "status": "grid-read",
+   "flags": [],
+   "motifs": 3,
+   "confidence": 0.459,
+   "separation": 1.89,
+   "quality": 0.434
   },
   {
    "id": "commons-24176693",
@@ -57136,12 +57130,8 @@
    "evidence": "title: Вишиванка 2",
    "group": "commons:вишиванка",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.698,
-   "separation": 1.98,
-   "quality": 0.69
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-24177348",
@@ -57170,12 +57160,8 @@
    "evidence": "title: Вишиванка київська",
    "group": "commons:вишиванка київська",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 3,
-   "confidence": 0.359,
-   "separation": 2.02,
-   "quality": 0.359
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-24177456",
@@ -57461,12 +57447,8 @@
    "group": "commons:34 m",
    "note": "found via search \"сорочка вишита\"",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 4,
-   "confidence": 0.677,
-   "separation": 2.11,
-   "quality": 0.677
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-24278232",
@@ -57506,12 +57488,8 @@
    "evidence": "title: 5Українська вишиванка",
    "group": "commons:5українська вишиванка",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.45,
-   "separation": 2.6,
-   "quality": 0.45
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-24278256",
@@ -57765,7 +57743,9 @@
    "note": "found via Category:Vyshyvanka in art",
    "licence": "public-domain",
    "status": "not-ornament-or-textile",
-   "flags": []
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "commons-24601102",
@@ -58457,7 +58437,9 @@
    "group": "commons:carpatho-rusyn sub-groups - transcarpathian rusyns in original goral folk-costumes from maramureş .",
    "licence": "CC-BY",
    "status": "no-ukrainian-attribution-in-own-metadata",
-   "flags": []
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "commons-2553466",
@@ -58643,7 +58625,7 @@
    "group": "commons:volynpysanky",
    "note": "found via Category:Ukrainian pysanka",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -59073,12 +59055,8 @@
    "group": "commons:русинка з холмщини",
    "note": "found via search \"вишиванка\"",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.391,
-   "separation": 1.41,
-   "quality": 0.276
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-25991992",
@@ -59413,12 +59391,8 @@
    "group": "commons:ivan franko",
    "note": "found via search \"сорочка вишита\"",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.611,
-   "separation": 2.03,
-   "quality": 0.611
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-26219478",
@@ -59829,7 +59803,7 @@
    "group": "commons:hutsuls",
    "note": "found via Category:Hutsul ornaments",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -59877,24 +59851,6 @@
    "licence": "public-domain",
    "status": "not-ornament-or-textile",
    "flags": []
-  },
-  {
-   "id": "commons-26765917",
-   "source": "commons",
-   "title": "Hutsuls (30).jpg",
-   "pageUrl": "https://commons.wikimedia.org/wiki/File:Hutsuls_(30).jpg",
-   "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Hutsuls_%2830%29.jpg/1920px-Hutsuls_%2830%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-   "licenceText": "Public domain Public domain pd",
-   "evidence": "title: Hutsuls (30).jpg",
-   "group": "commons:hutsuls",
-   "note": "found via search \"вишита сорочка\"",
-   "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 8,
-   "confidence": 0.651,
-   "separation": 1.75,
-   "quality": 0.569
   },
   {
    "id": "commons-26765928",
@@ -61407,7 +61363,7 @@
    "evidence": "title: Кролевецкий рушник Старый Оскол",
    "group": "commons:кролевецкий рушник старый оскол",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -61420,7 +61376,7 @@
    "evidence": "title: Рушник Старый Оскол 02",
    "group": "commons:рушник старый оскол",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -61506,12 +61462,8 @@
    "evidence": "title: Рушник Старый Оскол 09",
    "group": "commons:рушник старый оскол",
    "licence": "CC-BY-SA",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 2,
-   "confidence": 0.466,
-   "separation": 1.43,
-   "quality": 0.333
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-27783883",
@@ -61796,10 +61748,10 @@
    "licence": "CC-BY-SA",
    "status": "grid-read",
    "flags": [],
-   "motifs": 1,
-   "confidence": 0.769,
-   "separation": 1.79,
-   "quality": 0.688
+   "motifs": 2,
+   "confidence": 0.77,
+   "separation": 1.33,
+   "quality": 0.511
   },
   {
    "id": "commons-27866928",
@@ -64731,7 +64683,9 @@
    "note": "found via Category:Bukovina pysanka",
    "licence": "CC-BY-SA",
    "status": "no-counted-grid-read",
-   "flags": []
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "commons-2966324",
@@ -64745,7 +64699,9 @@
    "note": "found via Category:Bukovina pysanka",
    "licence": "CC-BY-SA",
    "status": "no-counted-grid-read",
-   "flags": []
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "commons-29743769",
@@ -65026,6 +64982,24 @@
    "licence": "CC-BY-SA",
    "status": "not-ornament-or-textile",
    "flags": []
+  },
+  {
+   "id": "commons-30016724",
+   "source": "commons",
+   "title": "Ягідне, Чернігівський район PB230110 06.JPG",
+   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%AF%D0%B3%D1%96%D0%B4%D0%BD%D0%B5,_%D0%A7%D0%B5%D1%80%D0%BD%D1%96%D0%B3%D1%96%D0%B2%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D1%80%D0%B0%D0%B9%D0%BE%D0%BD_PB230110_06.JPG",
+   "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/97/%D0%AF%D0%B3%D1%96%D0%B4%D0%BD%D0%B5%2C_%D0%A7%D0%B5%D1%80%D0%BD%D1%96%D0%B3%D1%96%D0%B2%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D1%80%D0%B0%D0%B9%D0%BE%D0%BD_PB230110_06.JPG/1920px-%D0%AF%D0%B3%D1%96%D0%B4%D0%BD%D0%B5%2C_%D0%A7%D0%B5%D1%80%D0%BD%D1%96%D0%B3%D1%96%D0%B2%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D1%80%D0%B0%D0%B9%D0%BE%D0%BD_PB230110_06.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+   "licenceText": "CC BY-SA 3.0 Creative Commons Attribution-Share Alike 3.0 cc-by-sa-3.0",
+   "evidence": "title: Ягідне, Чернігівський район PB230110 06.JPG",
+   "group": "commons:ягідне, чернігівський район pb230110",
+   "note": "found via search \"Ukrainian ornament\"",
+   "licence": "CC-BY-SA",
+   "status": "grid-read",
+   "flags": [],
+   "motifs": 6,
+   "confidence": 0.698,
+   "separation": 1.45,
+   "quality": 0.505
   },
   {
    "id": "commons-30030942",
@@ -69285,8 +69259,8 @@
    "flags": [],
    "motifs": 4,
    "confidence": 0.853,
-   "separation": 1.55,
-   "quality": 0.662
+   "separation": 1.67,
+   "quality": 0.714
   },
   {
    "id": "commons-35670724",
@@ -73626,12 +73600,8 @@
    "group": "commons:ruzha (ukrainian pysanka)",
    "note": "found via Category:Ukrainian pysanka",
    "licence": "CC-BY-SA",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 2,
-   "confidence": 0.712,
-   "separation": 1.4,
-   "quality": 0.499
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-38546615",
@@ -73644,8 +73614,12 @@
    "group": "commons:ukrainian pysanka with birds",
    "note": "found via Category:Ukrainian pysanka",
    "licence": "CC-BY-SA",
-   "status": "image-error: Error: HTTP 429",
-   "flags": []
+   "status": "grid-read",
+   "flags": [],
+   "motifs": 4,
+   "confidence": 0.393,
+   "separation": 1.85,
+   "quality": 0.364
   },
   {
    "id": "commons-38546692",
@@ -73690,8 +73664,12 @@
    "group": "commons:ukrainian pysanka with rake motifs",
    "note": "found via Category:Ukrainian pysanka",
    "licence": "CC-BY-SA",
-   "status": "image-error: Error: HTTP 429",
-   "flags": []
+   "status": "grid-read",
+   "flags": [],
+   "motifs": 1,
+   "confidence": 0.434,
+   "separation": 1.78,
+   "quality": 0.386
   },
   {
    "id": "commons-38547920",
@@ -73704,7 +73682,7 @@
    "group": "commons:meander motif on a ukrainian pysanka",
    "note": "found via Category:Ukrainian pysanka",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -73791,20 +73769,6 @@
    "note": "found via Category:Straw art of Ukraine",
    "licence": "public-domain",
    "status": "not-ornament-or-textile",
-   "flags": []
-  },
-  {
-   "id": "commons-3868862",
-   "source": "commons",
-   "title": "Detail corner Ornament HildoKrop Oudwijk entrance Utrecht.JPG",
-   "pageUrl": "https://commons.wikimedia.org/wiki/File:Detail_corner_Ornament_HildoKrop_Oudwijk_entrance_Utrecht.JPG",
-   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3a/Detail_corner_Ornament_HildoKrop_Oudwijk_entrance_Utrecht.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-   "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
-   "evidence": null,
-   "group": "commons:detail corner ornament hildokrop oudwijk entrance utrecht",
-   "note": "found via search \"Ukrainian ornament\"",
-   "licence": "CC-BY-SA",
-   "status": "no-ukrainian-attribution-in-own-metadata",
    "flags": []
   },
   {
@@ -74405,12 +74369,8 @@
    "evidence": "title: Рушник 8",
    "group": "commons:рушник",
    "licence": "CC-BY-SA",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 4,
-   "confidence": 0.876,
-   "separation": 1.93,
-   "quality": 0.845
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-38981627",
@@ -74422,12 +74382,8 @@
    "evidence": "title: Рушник 9",
    "group": "commons:рушник",
    "licence": "CC-BY-SA",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.891,
-   "separation": 1.98,
-   "quality": 0.883
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-38981628",
@@ -74699,7 +74655,9 @@
    "note": "found via Category:Bukovina fabric",
    "licence": "CC-BY-SA",
    "status": "not-ornament-or-textile",
-   "flags": []
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "commons-39132869",
@@ -74713,7 +74671,9 @@
    "note": "found via Category:Bukovina fabric",
    "licence": "CC-BY-SA",
    "status": "not-ornament-or-textile",
-   "flags": []
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "commons-39132870",
@@ -74727,7 +74687,9 @@
    "note": "found via Category:Bukovina fabric",
    "licence": "CC-BY-SA",
    "status": "not-ornament-or-textile",
-   "flags": []
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "commons-39132872",
@@ -74741,7 +74703,9 @@
    "note": "found via Category:Bukovina fabric",
    "licence": "CC-BY-SA",
    "status": "not-ornament-or-textile",
-   "flags": []
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "commons-39132876",
@@ -74755,7 +74719,9 @@
    "note": "found via Category:Bukovina fabric",
    "licence": "CC-BY-SA",
    "status": "not-ornament-or-textile",
-   "flags": []
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "commons-39132879",
@@ -74769,7 +74735,9 @@
    "note": "found via Category:Bukovina fabric",
    "licence": "CC-BY-SA",
    "status": "not-ornament-or-textile",
-   "flags": []
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "commons-39132880",
@@ -74783,7 +74751,9 @@
    "note": "found via Category:Bukovina fabric",
    "licence": "CC-BY-SA",
    "status": "not-ornament-or-textile",
-   "flags": []
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "commons-39132881",
@@ -74797,7 +74767,9 @@
    "note": "found via Category:Bukovina fabric",
    "licence": "CC-BY-SA",
    "status": "not-ornament-or-textile",
-   "flags": []
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "commons-39133689",
@@ -74838,7 +74810,7 @@
    "group": "commons:berehynia pysanka",
    "note": "found via Category:Ukrainian pysanka",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -74879,12 +74851,8 @@
    "group": "commons:pantry from medvedivtsi",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "CC-BY-SA",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 6,
-   "confidence": 0.352,
-   "separation": 1.34,
-   "quality": 0.235
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-39209516",
@@ -75396,7 +75364,7 @@
    "group": "commons:saskatoon",
    "note": "found via Category:Ukrainian pysanka",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -75777,7 +75745,7 @@
    "group": "commons:vyshkiv gerb",
    "note": "found via Category:Ukrainian embroidery in heraldry",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -77696,7 +77664,9 @@
    "group": "commons:буковинська сорочка",
    "licence": "public-domain",
    "status": "grid-read",
-   "flags": [],
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
    "motifs": 3,
    "confidence": 0.494,
    "separation": 2.23,
@@ -77783,22 +77753,12 @@
    "group": "commons:українки в луганську",
    "note": "found via search \"сорочка вишита\"",
    "licence": "public-domain",
-   "status": "image-error: Error: HTTP 429",
-   "flags": []
-  },
-  {
-   "id": "commons-44852484",
-   "source": "commons",
-   "title": "Старобільська школа мистецтв.jpg",
-   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%A1%D1%82%D0%B0%D1%80%D0%BE%D0%B1%D1%96%D0%BB%D1%8C%D1%81%D1%8C%D0%BA%D0%B0_%D1%88%D0%BA%D0%BE%D0%BB%D0%B0_%D0%BC%D0%B8%D1%81%D1%82%D0%B5%D1%86%D1%82%D0%B2.jpg",
-   "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f5/%D0%A1%D1%82%D0%B0%D1%80%D0%BE%D0%B1%D1%96%D0%BB%D1%8C%D1%81%D1%8C%D0%BA%D0%B0_%D1%88%D0%BA%D0%BE%D0%BB%D0%B0_%D0%BC%D0%B8%D1%81%D1%82%D0%B5%D1%86%D1%82%D0%B2.jpg/1920px-%D0%A1%D1%82%D0%B0%D1%80%D0%BE%D0%B1%D1%96%D0%BB%D1%8C%D1%81%D1%8C%D0%BA%D0%B0_%D1%88%D0%BA%D0%BE%D0%BB%D0%B0_%D0%BC%D0%B8%D1%81%D1%82%D0%B5%D1%86%D1%82%D0%B2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-   "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
-   "evidence": "categories: Taken with HTC Wildfire S|Self-published work|Building ornaments in Ukraine|Blue plaques in Ukraine|Buildings in Ukraine photographed in 2012|Educational instit",
-   "group": "commons:старобільська школа мистецтв",
-   "note": "found via search \"Ukrainian ornament\"",
-   "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
-   "flags": []
+   "status": "grid-read",
+   "flags": [],
+   "motifs": 1,
+   "confidence": 0.557,
+   "separation": 1.83,
+   "quality": 0.51
   },
   {
    "id": "commons-4485460",
@@ -78494,7 +78454,7 @@
    "group": "commons:сільський театр №7 (1926). орнамент №",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -78905,6 +78865,24 @@
    "quality": 0.895
   },
   {
+   "id": "commons-46174015",
+   "source": "commons",
+   "title": "Орнаментація української книжки. Зображення №40.png",
+   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D1%96%D1%8F_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D1%97_%D0%BA%D0%BD%D0%B8%D0%B6%D0%BA%D0%B8._%D0%97%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F_%E2%84%9640.png",
+   "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D1%96%D1%8F_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D1%97_%D0%BA%D0%BD%D0%B8%D0%B6%D0%BA%D0%B8._%D0%97%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F_%E2%84%9640.png/1920px-%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D1%96%D1%8F_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D1%97_%D0%BA%D0%BD%D0%B8%D0%B6%D0%BA%D0%B8._%D0%97%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F_%E2%84%9640.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+   "licenceText": "Public domain Public domain pd",
+   "evidence": "title: Орнаментація української книжки. Зображення №40.png",
+   "group": "commons:орнаментація української книжки. зображення №",
+   "note": "found via search \"Ukrainian ornament\"",
+   "licence": "public-domain",
+   "status": "grid-read",
+   "flags": [],
+   "motifs": 12,
+   "confidence": 0.801,
+   "separation": 15.84,
+   "quality": 0.801
+  },
+  {
    "id": "commons-46174016",
    "source": "commons",
    "title": "Орнаментація української книжки. Зображення №41.png",
@@ -78975,6 +78953,24 @@
    "confidence": 0.555,
    "separation": 18.33,
    "quality": 0.555
+  },
+  {
+   "id": "commons-46174023",
+   "source": "commons",
+   "title": "Орнаментація української книжки. Зображення №36.png",
+   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D1%96%D1%8F_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D1%97_%D0%BA%D0%BD%D0%B8%D0%B6%D0%BA%D0%B8._%D0%97%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F_%E2%84%9636.png",
+   "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D1%96%D1%8F_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D1%97_%D0%BA%D0%BD%D0%B8%D0%B6%D0%BA%D0%B8._%D0%97%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F_%E2%84%9636.png/1920px-%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D1%96%D1%8F_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D1%97_%D0%BA%D0%BD%D0%B8%D0%B6%D0%BA%D0%B8._%D0%97%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F_%E2%84%9636.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+   "licenceText": "Public domain Public domain pd",
+   "evidence": "title: Орнаментація української книжки. Зображення №36.png",
+   "group": "commons:орнаментація української книжки. зображення №",
+   "note": "found via search \"Ukrainian ornament\"",
+   "licence": "public-domain",
+   "status": "grid-read",
+   "flags": [],
+   "motifs": 12,
+   "confidence": 0.535,
+   "separation": 6.63,
+   "quality": 0.535
   },
   {
    "id": "commons-46174024",
@@ -79059,6 +79055,20 @@
    "flags": []
   },
   {
+   "id": "commons-46174029",
+   "source": "commons",
+   "title": "Орнаментація української книжки. Зображення №29.png",
+   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D1%96%D1%8F_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D1%97_%D0%BA%D0%BD%D0%B8%D0%B6%D0%BA%D0%B8._%D0%97%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F_%E2%84%9629.png",
+   "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/24/%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D1%96%D1%8F_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D1%97_%D0%BA%D0%BD%D0%B8%D0%B6%D0%BA%D0%B8._%D0%97%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F_%E2%84%9629.png/1920px-%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D1%96%D1%8F_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D1%97_%D0%BA%D0%BD%D0%B8%D0%B6%D0%BA%D0%B8._%D0%97%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F_%E2%84%9629.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+   "licenceText": "Public domain Public domain pd",
+   "evidence": "title: Орнаментація української книжки. Зображення №29.png",
+   "group": "commons:орнаментація української книжки. зображення №",
+   "note": "found via search \"Ukrainian ornament\"",
+   "licence": "public-domain",
+   "status": "no-counted-grid-read",
+   "flags": []
+  },
+  {
    "id": "commons-46174030",
    "source": "commons",
    "title": "Орнаментація української книжки. Зображення №30.png",
@@ -79094,20 +79104,6 @@
    "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D1%96%D1%8F_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D1%97_%D0%BA%D0%BD%D0%B8%D0%B6%D0%BA%D0%B8._%D0%97%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F_%E2%84%9628.png/1920px-%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D1%96%D1%8F_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D1%97_%D0%BA%D0%BD%D0%B8%D0%B6%D0%BA%D0%B8._%D0%97%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F_%E2%84%9628.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
    "licenceText": "Public domain Public domain pd",
    "evidence": "title: Орнаментація української книжки. Зображення №28.png",
-   "group": "commons:орнаментація української книжки. зображення №",
-   "note": "found via search \"Ukrainian ornament\"",
-   "licence": "public-domain",
-   "status": "no-counted-grid-read",
-   "flags": []
-  },
-  {
-   "id": "commons-46174033",
-   "source": "commons",
-   "title": "Орнаментація української книжки. Зображення №27.png",
-   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D1%96%D1%8F_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D1%97_%D0%BA%D0%BD%D0%B8%D0%B6%D0%BA%D0%B8._%D0%97%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F_%E2%84%9627.png",
-   "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/36/%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D1%96%D1%8F_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D1%97_%D0%BA%D0%BD%D0%B8%D0%B6%D0%BA%D0%B8._%D0%97%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F_%E2%84%9627.png/1920px-%D0%9E%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D1%96%D1%8F_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D1%97_%D0%BA%D0%BD%D0%B8%D0%B6%D0%BA%D0%B8._%D0%97%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F_%E2%84%9627.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-   "licenceText": "Public domain Public domain pd",
-   "evidence": "title: Орнаментація української книжки. Зображення №27.png",
    "group": "commons:орнаментація української книжки. зображення №",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
@@ -80256,12 +80252,8 @@
    "group": "commons:«українська хата»",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.373,
-   "separation": 1.49,
-   "quality": 0.277
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-48316838",
@@ -80542,7 +80534,7 @@
    "group": "commons:редакция новый день",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -80800,12 +80792,8 @@
    "group": "commons:конан дойль. пес баскервілів. орнамент",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 12,
-   "confidence": 0.398,
-   "separation": 13.23,
-   "quality": 0.398
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-49228219",
@@ -80939,12 +80927,8 @@
    "group": "commons:володимир великий. зображення №",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 12,
-   "confidence": 0.662,
-   "separation": 144.61,
-   "quality": 0.662
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-49317770",
@@ -80993,7 +80977,7 @@
    "group": "commons:володимир великий. зображення №",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -81079,12 +81063,8 @@
    "group": "commons:дмитро фальківський. обрії поезії (1927) зобр. №",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 2,
-   "confidence": 0.42,
-   "separation": 217.63,
-   "quality": 0.42
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-49388927",
@@ -81172,13 +81152,13 @@
    "flags": []
   },
   {
-   "id": "commons-49624488",
+   "id": "commons-49624489",
    "source": "commons",
-   "title": "Значіннє самостійної України для европейської рівноваги. Зобр. №1.png",
-   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%97%D0%BD%D0%B0%D1%87%D1%96%D0%BD%D0%BD%D1%94_%D1%81%D0%B0%D0%BC%D0%BE%D1%81%D1%82%D1%96%D0%B9%D0%BD%D0%BE%D1%97_%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B8_%D0%B4%D0%BB%D1%8F_%D0%B5%D0%B2%D1%80%D0%BE%D0%BF%D0%B5%D0%B9%D1%81%D1%8C%D0%BA%D0%BE%D1%97_%D1%80%D1%96%D0%B2%D0%BD%D0%BE%D0%B2%D0%B0%D0%B3%D0%B8._%D0%97%D0%BE%D0%B1%D1%80._%E2%84%961.png",
-   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/a/aa/%D0%97%D0%BD%D0%B0%D1%87%D1%96%D0%BD%D0%BD%D1%94_%D1%81%D0%B0%D0%BC%D0%BE%D1%81%D1%82%D1%96%D0%B9%D0%BD%D0%BE%D1%97_%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B8_%D0%B4%D0%BB%D1%8F_%D0%B5%D0%B2%D1%80%D0%BE%D0%BF%D0%B5%D0%B9%D1%81%D1%8C%D0%BA%D0%BE%D1%97_%D1%80%D1%96%D0%B2%D0%BD%D0%BE%D0%B2%D0%B0%D0%B3%D0%B8._%D0%97%D0%BE%D0%B1%D1%80._%E2%84%961.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+   "title": "Значіннє самостійної України для европейської рівноваги. Зобр. №2.png",
+   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%97%D0%BD%D0%B0%D1%87%D1%96%D0%BD%D0%BD%D1%94_%D1%81%D0%B0%D0%BC%D0%BE%D1%81%D1%82%D1%96%D0%B9%D0%BD%D0%BE%D1%97_%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B8_%D0%B4%D0%BB%D1%8F_%D0%B5%D0%B2%D1%80%D0%BE%D0%BF%D0%B5%D0%B9%D1%81%D1%8C%D0%BA%D0%BE%D1%97_%D1%80%D1%96%D0%B2%D0%BD%D0%BE%D0%B2%D0%B0%D0%B3%D0%B8._%D0%97%D0%BE%D0%B1%D1%80._%E2%84%962.png",
+   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d2/%D0%97%D0%BD%D0%B0%D1%87%D1%96%D0%BD%D0%BD%D1%94_%D1%81%D0%B0%D0%BC%D0%BE%D1%81%D1%82%D1%96%D0%B9%D0%BD%D0%BE%D1%97_%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B8_%D0%B4%D0%BB%D1%8F_%D0%B5%D0%B2%D1%80%D0%BE%D0%BF%D0%B5%D0%B9%D1%81%D1%8C%D0%BA%D0%BE%D1%97_%D1%80%D1%96%D0%B2%D0%BD%D0%BE%D0%B2%D0%B0%D0%B3%D0%B8._%D0%97%D0%BE%D0%B1%D1%80._%E2%84%962.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
    "licenceText": "Public domain Public domain pd",
-   "evidence": "title: Значіннє самостійної України для европейської рівноваги. Зобр. №1.png",
+   "evidence": "title: Значіннє самостійної України для европейської рівноваги. Зобр. №2.png",
    "group": "commons:значіннє самостійної україни для европейської рівноваги. зобр. №",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
@@ -81549,12 +81529,8 @@
    "group": "commons:книги, що говорять",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "CC-BY-SA",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 2,
-   "confidence": 0.43,
-   "separation": 5.25,
-   "quality": 0.43
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-50499264",
@@ -83885,7 +83861,7 @@
    "group": "commons:stamp of ukraine ua136st",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -96506,12 +96482,8 @@
    "group": "commons:chorna tysa gerb",
    "note": "found via Category:Ukrainian embroidery in heraldry",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.461,
-   "separation": 5.38,
-   "quality": 0.461
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-63537313",
@@ -96601,6 +96573,20 @@
    "confidence": 0.673,
    "separation": 1.55,
    "quality": 0.521
+  },
+  {
+   "id": "commons-63752056",
+   "source": "commons",
+   "title": "Muzeum pisanki-130.jpg",
+   "pageUrl": "https://commons.wikimedia.org/wiki/File:Muzeum_pisanki-130.jpg",
+   "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d6/Muzeum_pisanki-130.jpg/1920px-Muzeum_pisanki-130.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+   "licenceText": "CC BY-SA 3.0 Creative Commons Attribution-Share Alike 3.0 cc-by-sa-3.0",
+   "evidence": "categories: Ornaments in Ukraine|Pysanka Museum in Kolomyia|Carpathian Ethnography Project",
+   "group": "commons:muzeum pisanki",
+   "note": "found via search \"Ukrainian ornament\"",
+   "licence": "CC-BY-SA",
+   "status": "no-counted-grid-read",
+   "flags": []
   },
   {
    "id": "commons-63752084",
@@ -98943,12 +98929,8 @@
    "group": "commons:turchynci gerb",
    "note": "found via Category:Ukrainian embroidery in heraldry",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.828,
-   "separation": 3.97,
-   "quality": 0.828
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-64697843",
@@ -98959,7 +98941,7 @@
    "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
    "evidence": "categories: Self-published work|Boys wearing vyshyvankas|Plast in Ukraine",
    "group": "commons:наше спільне фото",
-   "note": "found via search \"вишиванка\"",
+   "note": "found via search \"сорочка вишита\"",
    "licence": "CC-BY-SA",
    "status": "grid-read",
    "flags": [],
@@ -99878,7 +99860,7 @@
    "group": "commons:coin of ukraine ohienko a",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -100229,7 +100211,7 @@
    "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
    "evidence": "categories: Velyka Mykhailivka children's library|Taken with Fujifilm FinePix AV10|Self-published work|Children of Rozdilna Raion|Groups of unidentified people in Rozdilna ",
    "group": "commons:свято \"одещині 85\"",
-   "note": "found via search \"сорочка вишита\"",
+   "note": "found via search \"вишита сорочка\"",
    "licence": "CC-BY-SA",
    "status": "grid-read",
    "flags": [],
@@ -103105,7 +103087,7 @@
    "group": "commons:pysanka-spivack",
    "note": "found via Category:Ukrainian pysanka",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -104026,7 +104008,7 @@
    "group": "commons:рисунок на стене",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -104174,7 +104156,7 @@
    "group": "commons:michel terestchenko 2014 (cropped)",
    "note": "found via search \"сорочка вишита\"",
    "licence": "CC-BY-SA",
-   "status": "image-error: Error: HTTP 429",
+   "status": "no-counted-grid-read",
    "flags": []
   },
   {
@@ -107790,20 +107772,6 @@
    "quality": 0.509
   },
   {
-   "id": "commons-81776247",
-   "source": "commons",
-   "title": "Лука. Школа земська трикомплектна. \"Вишиванка\" на стіні.jpg",
-   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%9B%D1%83%D0%BA%D0%B0._%D0%A8%D0%BA%D0%BE%D0%BB%D0%B0_%D0%B7%D0%B5%D0%BC%D1%81%D1%8C%D0%BA%D0%B0_%D1%82%D1%80%D0%B8%D0%BA%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BA%D1%82%D0%BD%D0%B0._%22%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%B0%D0%BD%D0%BA%D0%B0%22_%D0%BD%D0%B0_%D1%81%D1%82%D1%96%D0%BD%D1%96.jpg",
-   "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/%D0%9B%D1%83%D0%BA%D0%B0._%D0%A8%D0%BA%D0%BE%D0%BB%D0%B0_%D0%B7%D0%B5%D0%BC%D1%81%D1%8C%D0%BA%D0%B0_%D1%82%D1%80%D0%B8%D0%BA%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BA%D1%82%D0%BD%D0%B0._%22%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%B0%D0%BD%D0%BA%D0%B0%22_%D0%BD%D0%B0_%D1%81%D1%82%D1%96%D0%BD%D1%96.jpg/1920px-%D0%9B%D1%83%D0%BA%D0%B0._%D0%A8%D0%BA%D0%BE%D0%BB%D0%B0_%D0%B7%D0%B5%D0%BC%D1%81%D1%8C%D0%BA%D0%B0_%D1%82%D1%80%D0%B8%D0%BA%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BA%D1%82%D0%BD%D0%B0._%22%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%B0%D0%BD%D0%BA%D0%B0%22_%D0%BD%D0%B0_%D1%81%D1%82%D1%96%D0%BD%D1%96.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-   "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
-   "evidence": "title: Лука. Школа земська трикомплектна. \"Вишиванка\" на стіні.jpg",
-   "group": "commons:лука. школа земська трикомплектна. \"вишиванка\" на стіні",
-   "note": "found via search \"вишиванка\"",
-   "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
-   "flags": []
-  },
-  {
    "id": "commons-81777307",
    "source": "commons",
    "title": "Шевченкове. Школа земська однокомплектна. \"Вишиванка\" на стіні.jpg",
@@ -109149,6 +109117,20 @@
    "flags": []
   },
   {
+   "id": "commons-84502149",
+   "source": "commons",
+   "title": "Будинок з ірисами (вхід) 20191130.jpg",
+   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%91%D1%83%D0%B4%D0%B8%D0%BD%D0%BE%D0%BA_%D0%B7_%D1%96%D1%80%D0%B8%D1%81%D0%B0%D0%BC%D0%B8_(%D0%B2%D1%85%D1%96%D0%B4)_20191130.jpg",
+   "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/58/%D0%91%D1%83%D0%B4%D0%B8%D0%BD%D0%BE%D0%BA_%D0%B7_%D1%96%D1%80%D0%B8%D1%81%D0%B0%D0%BC%D0%B8_%28%D0%B2%D1%85%D1%96%D0%B4%29_20191130.jpg/1920px-%D0%91%D1%83%D0%B4%D0%B8%D0%BD%D0%BE%D0%BA_%D0%B7_%D1%96%D1%80%D0%B8%D1%81%D0%B0%D0%BC%D0%B8_%28%D0%B2%D1%85%D1%96%D0%B4%29_20191130.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+   "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
+   "evidence": "description: Вхід, Будинок з ірисами , Київ , вулиця Юрія Іллєнка , 8",
+   "group": "commons:будинок з ірисами (вхід)",
+   "note": "found via search \"Ukrainian ornament\"",
+   "licence": "CC-BY-SA",
+   "status": "no-counted-grid-read",
+   "flags": []
+  },
+  {
    "id": "commons-84539962",
    "source": "commons",
    "title": "Journal des Dames et des Modes, Costume Parisien, 1805, An 13 (604) Costume à Demi Négligé, BI-2010-1642-17",
@@ -110012,12 +109994,8 @@
    "group": "commons:писанкарка ганна студія",
    "note": "found via Category:Ukrainian pysanka",
    "licence": "CC-BY-SA",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.383,
-   "separation": 1.26,
-   "quality": 0.242
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-85904712",
@@ -110076,12 +110054,8 @@
    "group": "commons:писанка т. коновал \"доля\"",
    "note": "found via Category:Ukrainian pysanka",
    "licence": "CC-BY-SA",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.786,
-   "separation": 1.37,
-   "quality": 0.538
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-8605025",
@@ -110652,7 +110626,7 @@
    "licenceText": "CC BY-SA 2.0 Creative Commons Attribution-Share Alike 2.0 cc-by-sa-2.0",
    "evidence": null,
    "group": "commons:broadstairs folk week 2018 funk9214",
-   "note": "found via search \"сорочка вишита\"",
+   "note": "found via search \"вишиванка\"",
    "licence": "CC-BY-SA",
    "status": "no-ukrainian-attribution-in-own-metadata",
    "flags": []
@@ -111242,7 +111216,7 @@
    "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
    "evidence": "description: This photo has been taken in the country: Ukraine",
    "group": "commons:жінка за роботою",
-   "note": "found via search \"сорочка вишита\"",
+   "note": "found via search \"вишиванка\"",
    "licence": "CC-BY-SA",
    "status": "no-counted-grid-read",
    "flags": []
@@ -113520,7 +113494,7 @@
    "group": "commons:українська книгарня - скрентон - 2 квітки",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -113534,7 +113508,7 @@
    "group": "commons:українська книгарня - скрентон - квітка",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -114086,7 +114060,7 @@
    "group": "commons:уникальный монастырь",
    "note": "found via search \"Ukrainian ornament\"",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -114200,12 +114174,8 @@
    "group": "commons:stamp of ukraine s",
    "note": "found via search \"українська вишивка\"",
    "licence": "public-domain",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 2,
-   "confidence": 0.397,
-   "separation": 2.14,
-   "quality": 0.397
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-93884056",
@@ -114218,7 +114188,7 @@
    "group": "commons:stamp of ukraine s",
    "note": "found via search \"українська вишивка\"",
    "licence": "public-domain",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -114260,20 +114230,6 @@
    "note": "found via Category:Rugs and carpets of Ukraine",
    "licence": "CC-BY-SA",
    "status": "not-ornament-or-textile",
-   "flags": []
-  },
-  {
-   "id": "commons-94055089",
-   "source": "commons",
-   "title": "Чортків, Микола Блаженко, 2020.jpg",
-   "pageUrl": "https://commons.wikimedia.org/wiki/File:%D0%A7%D0%BE%D1%80%D1%82%D0%BA%D1%96%D0%B2,_%D0%9C%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0_%D0%91%D0%BB%D0%B0%D0%B6%D0%B5%D0%BD%D0%BA%D0%BE,_2020.jpg",
-   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/47/%D0%A7%D0%BE%D1%80%D1%82%D0%BA%D1%96%D0%B2%2C_%D0%9C%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0_%D0%91%D0%BB%D0%B0%D0%B6%D0%B5%D0%BD%D0%BA%D0%BE%2C_2020.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-   "licenceText": "CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 cc-by-sa-4.0",
-   "evidence": "description: Микола Блаженко під час урочистостей з нагоди відзначення Дня Державного Прапора України та Дня Незалежності України на центральній площі Чорткова.",
-   "group": "commons:чортків, микола блаженко,",
-   "note": "found via search \"сорочка вишита\"",
-   "licence": "CC-BY-SA",
-   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -116155,12 +116111,8 @@
    "group": "commons:із серії «пінчук»",
    "note": "found via search \"українська вишивка\"",
    "licence": "CC-BY-SA",
-   "status": "grid-read",
-   "flags": [],
-   "motifs": 1,
-   "confidence": 0.357,
-   "separation": 1.68,
-   "quality": 0.3
+   "status": "image-error: Error: HTTP 429",
+   "flags": []
   },
   {
    "id": "commons-95268744",
@@ -116893,8 +116845,8 @@
    "flags": [],
    "motifs": 12,
    "confidence": 0.534,
-   "separation": 1.48,
-   "quality": 0.395
+   "separation": 1.5,
+   "quality": 0.402
   },
   {
    "id": "commons-96737668",
@@ -117126,10 +117078,10 @@
    "licence": "public-domain",
    "status": "grid-read",
    "flags": [],
-   "motifs": 9,
+   "motifs": 3,
    "confidence": 0.698,
-   "separation": 1.32,
-   "quality": 0.461
+   "separation": 1.27,
+   "quality": 0.443
   },
   {
    "id": "commons-96737735",
@@ -118298,7 +118250,7 @@
    "group": "commons:учасник v міжнародного конкурсу \"арт-домінанта\"",
    "note": "found via search \"вишиванка\"",
    "licence": "CC-BY-SA",
-   "status": "no-counted-grid-read",
+   "status": "image-error: Error: HTTP 429",
    "flags": []
   },
   {
@@ -119865,7 +119817,9 @@
    "note": "provider Podlasie Digital Library, Poland; type IMAGE",
    "licence": "public-domain",
    "status": "image-error: Error: Input buffer contains unsupported image format",
-   "flags": []
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "europeana-2021009-011d0903-8655-4414-97cc-3b9e17e2f409",
@@ -120298,8 +120252,14 @@
    "group": "europeana:Moldova National Museum Complex:cămeșă",
    "note": "provider Moldova National Museum Complex, Romania; type IMAGE",
    "licence": "CC-BY-SA",
-   "status": "not-ornament-or-textile",
-   "flags": []
+   "status": "grid-read",
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
+   "motifs": 2,
+   "confidence": 0.526,
+   "separation": 2.44,
+   "quality": 0.526
   },
   {
    "id": "europeana-2048047-Clasate-0f81e4c1146d4d8db69418539dafbd16",
@@ -120312,8 +120272,14 @@
    "group": "europeana:Moldova National Museum Complex:cămeșă",
    "note": "provider Moldova National Museum Complex, Romania; type IMAGE",
    "licence": "CC-BY-SA",
-   "status": "not-ornament-or-textile",
-   "flags": []
+   "status": "grid-read",
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
+   "motifs": 2,
+   "confidence": 0.431,
+   "separation": 1.92,
+   "quality": 0.413
   },
   {
    "id": "europeana-2048047-Clasate-d48fefa0a69f48d28abdab9a3899df78",
@@ -120326,8 +120292,14 @@
    "group": "europeana:Moldova National Museum Complex:cămeșă; ie",
    "note": "provider Moldova National Museum Complex, Romania; type IMAGE",
    "licence": "CC-BY-SA",
-   "status": "not-ornament-or-textile",
-   "flags": []
+   "status": "grid-read",
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
+   "motifs": 4,
+   "confidence": 0.553,
+   "separation": 1.73,
+   "quality": 0.478
   },
   {
    "id": "europeana-945-EUROPEANHERITAGEAWARDSXARCHIVEXEUX0X826593",
@@ -120355,7 +120327,9 @@
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
    "status": "grid-read",
-   "flags": [],
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
    "motifs": 5,
    "confidence": 0.977,
    "separation": 2.66,
@@ -120372,8 +120346,10 @@
    "group": "europeana:National Museum of Bukovina:formă dreptunghiulară, altiță separată dintr-o mânecă de cămașă. decorul geometrizant este dispus în trei registre încadrate de un chenar pe trei laturi, reprezentat prin motive geometrice, romburi și pătrate, combinate cu motive fitomorfe și florale stilizate. culoarea broderiei este violet închis( vinețiu). piesa a fost decupată dintr-o mânecă de cămașă și păstrată pentru exemplificarea modelului.",
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
-   "status": "not-ornament-or-textile",
-   "flags": []
+   "status": "no-counted-grid-read",
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "europeana-951-Culturalia-25316388-e533-4ac0-866f-0c646ce09e04",
@@ -120386,8 +120362,10 @@
    "group": "europeana:National Museum of Bukovina:cămașă femeiască cu altiță, decor geometrizant realizat cu motive geometrice, motive fitomorfe; altița realizată separat și apoi asamblată de încreț prezintă patru registre paralele orizontale cu motive florale încadrate într-un chenar dispus pe trei laturi, executate cu bumbac și delimitate de alte rânduri cu motive geometrice: vârste realizate cu bumbac, fir metalic; încrețul prezintă decor geometrizant realizat cu motive geometrice: romb, linie curbă; pe mânecă sunt dispuse oblic motive fitomorfe: pomul vieții; pe față și spate cîte două rânduri înguste de motive florale; la gât prezintă încreț realizat cu feston; mâneca largă se termină tot cu feston; cromatică: negru, verde, mov, roz, galben.",
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
-   "status": "not-ornament-or-textile",
-   "flags": []
+   "status": "image-error: RangeError: Maximum call stack size exceeded",
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "europeana-951-Culturalia-39befdb0-7700-4137-83bd-1aeab2bf3ee8",
@@ -120401,7 +120379,9 @@
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
    "status": "grid-read",
-   "flags": [],
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
    "motifs": 8,
    "confidence": 0.659,
    "separation": 2.32,
@@ -120418,8 +120398,14 @@
    "group": "europeana:National Museum of Bukovina:formă dreptunghiulară, decupată dintr-o mânecă de cămașă. decorul geometrizant este reprezentat de un motiv floral stilizat compus din romburi, coarnele berbecului, lalea. la unul dintre capete a fost păstrat un ajur iar marginea a fost tivită cu cusătură cu găurele. culorile broderiei sunt roșu, galben, mov, verde, crem,negru. mijlocul florilor este marcat de mărgele roșii și paiete. piesa a fost decupată dintr-o mânecă de cămașă și păstrată pentru exemplificarea modelului.",
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
-   "status": "not-ornament-or-textile",
-   "flags": []
+   "status": "grid-read",
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
+   "motifs": 5,
+   "confidence": 0.409,
+   "separation": 1.31,
+   "quality": 0.267
   },
   {
    "id": "europeana-951-Culturalia-49992083-cc94-4c35-b131-ba8d543e6d81",
@@ -120432,8 +120418,14 @@
    "group": "europeana:National Museum of Bukovina:cămașă femeiască cu altiță, decor geometrizant realizat cu motive geometrice, motive fitomorfe; altița realizată separat și apoi asamblată de încreț prezintă patru registre paralele orizontale cu motive geometrice: cârligul ciobanului încadrate într-un chenar dispus pe trei laturi, executate cu bumbac și delimitate de trei rânduri cu motive geometrice realizate cu bumbac, fir metalizat argintiu și auriu; încrețul prezintă decor geometrizant realizat cu motive geometrice: hexagon care alternează cu pătrat și linie; pe mânecă sunt dispuse oblic două tipuri de râuri cu motive fitomorfe; pe față și spate cîte două rânduri înguste cu motive zoomorfe: picior de broască; mâneca încrețită, tivită; la gât brezărău; cromatică: negru, violet închis, galben, verde, roșu, albastru, galben.",
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
-   "status": "not-ornament-or-textile",
-   "flags": []
+   "status": "grid-read",
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
+   "motifs": 12,
+   "confidence": 0.872,
+   "separation": 5.27,
+   "quality": 0.872
   },
   {
    "id": "europeana-951-Culturalia-546fb8e7-028d-42cb-80b4-9ef5f28e215b",
@@ -120447,7 +120439,9 @@
    "note": "provider ASTRA National Museum Complex, Romania; type IMAGE",
    "licence": "CC-BY-SA",
    "status": "no-counted-grid-read",
-   "flags": []
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "europeana-951-Culturalia-68f78cb3-b72a-412b-9cde-71825bb89777",
@@ -120461,7 +120455,9 @@
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
    "status": "grid-read",
-   "flags": [],
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
    "motifs": 12,
    "confidence": 0.387,
    "separation": 1.83,
@@ -120478,8 +120474,14 @@
    "group": "europeana:National Museum of Bukovina:formă dreptunghiulară, decupată dintr-o mânecă de cămașă, partea de jos. decorul geometrizant este amplasat pe toată suprafața, în trei registre cu motive fitomorfe, dispuse pe vericală în alternanță cromatică. culorile broderiei sunt roșu, negru, mov, verde, frez, violet. piesa a fost decupată dintr-o mânecă de cămașă și păstrată pentru exemplificarea modelului.",
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
-   "status": "not-ornament-or-textile",
-   "flags": []
+   "status": "grid-read",
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
+   "motifs": 1,
+   "confidence": 0.89,
+   "separation": 1.83,
+   "quality": 0.815
   },
   {
    "id": "europeana-951-Culturalia-73ecd8b7-c1eb-486a-b563-005e47434a43",
@@ -120493,7 +120495,9 @@
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
    "status": "grid-read",
-   "flags": [],
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
    "motifs": 1,
    "confidence": 0.551,
    "separation": 2.27,
@@ -120511,7 +120515,9 @@
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
    "status": "grid-read",
-   "flags": [],
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
    "motifs": 12,
    "confidence": 0.941,
    "separation": 1.64,
@@ -120528,8 +120534,14 @@
    "group": "europeana:National Museum of Bukovina:formă dreptunghiulară, altiță și încreț separate dintr-o mânecă de cămașă femeiască. decorul geometrizant este un motiv geometric propriu-zis, romburi, pe încreț brodat cu verde turcoaz și un motiv floral pe altiță. altița are trei registre delimitate de un chenar dublu parțial cu fir metalic pe margine și vârste orizontale. motivul floral decorat în alternanță cromatică, este încadrat de o vârstă șerpuită din fir metalic. culorile broderiei sunt negru, cărămiziu, galben, mov, verde, portocaliu, violet. piesa a fost decupată dintr-o mânecă de cămașă și păstrată pentru exemplificarea modelului.",
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
-   "status": "not-ornament-or-textile",
-   "flags": []
+   "status": "grid-read",
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
+   "motifs": 2,
+   "confidence": 0.909,
+   "separation": 1.54,
+   "quality": 0.7
   },
   {
    "id": "europeana-951-Culturalia-ae82dcf2-6bda-4277-a7d0-24dd4754142f",
@@ -120542,8 +120554,14 @@
    "group": "europeana:National Museum of Bukovina:altiță și încreț separate, formă dreptunghiulară, cu amplasarea decorului pe toată suprafața. altița are un decor geometrizant, ordonat în patru registre delimitate de vârste din fir metalic argintiu și auriu, cu motive geometrice, romburi și linii frânte, cu un chenar pe trei laturi din fir metalic. broderia este în alternanță cromatică în culorile: negru, mov, cărămiziu, albastru, galben. încrețul are decor geometrizant, romburi încadrate de linii șerpuite în culoarea vernil. năframa era folosită în ceremonialul de nuntă ca dar pentru mire, vătăjei și vornic. după nuntă se punea pe pereții camerelor cu rol decorativ.",
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
-   "status": "not-ornament-or-textile",
-   "flags": []
+   "status": "grid-read",
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
+   "motifs": 12,
+   "confidence": 0.739,
+   "separation": 1.45,
+   "quality": 0.537
   },
   {
    "id": "europeana-951-Culturalia-af25d528-258f-45df-837f-b34ec3a3cb3f",
@@ -120557,7 +120575,9 @@
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
    "status": "grid-read",
-   "flags": [],
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
    "motifs": 12,
    "confidence": 0.902,
    "separation": 3.09,
@@ -120574,8 +120594,14 @@
    "group": "europeana:National Museum of Bukovina:formă dreptunghiulară, fragment de broderie de pe râurii unei cămăși femeiești. decorul geometrizant este în alternanță decorativă reprezentând un motiv fitomorf organizat axial, alternând ramuri din dinți de fierăstrău cu buchete de flori în alternanță cromatică. culorile broderiei sunt galben, roșu, albastru, verde și negru și mărgele verzi și albastre păstrate parțial. piesa a fost decupată dintr-o mânecă de cămașă și păstrată pentru exemplificarea modelului.",
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
-   "status": "not-ornament-or-textile",
-   "flags": []
+   "status": "grid-read",
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
+   "motifs": 1,
+   "confidence": 0.623,
+   "separation": 1.74,
+   "quality": 0.541
   },
   {
    "id": "europeana-951-Culturalia-bc768987-3611-4efc-91cd-feda005fc6b1",
@@ -120588,8 +120614,10 @@
    "group": "europeana:National Museum of Bukovina:cămașă femeiască cu altiță, decor geometrizant realizat cu motive geometrice: romb; motive florale; altița realizată separat și apoi asamblată de încreț prezintă șapte rânduri cu motive geometrice: vârste late cu motive în zig-zag delimitate de vârste înguste, aceleași motive care mărginesc altiță pe cele trei laturi, executate cu lână și fir metalizat; încrețul prezintă decor geometrizant realizat cu motive geometrice: romburi mici încadrate în altele mari brodate cu bumbac colorat, ce alternează cromatic; pe mânecă sunt dispuse oblic patru râuri cu motive fitomorfe: grupe de câte doi brăduți poziționați în zig-zag; câte două rânduri cu motive avimorfe: fluture se regăsesc pe piepți și spate; mâneca este încrețită cu manșetă cusută cu motive geometrice; la gât încreț realizat cu feston și brezărău; cromatică: negru, albastru, verde, roșu, roz, mov.",
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
-   "status": "not-ornament-or-textile",
-   "flags": []
+   "status": "no-counted-grid-read",
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "europeana-951-Culturalia-c545906e-1b80-4a33-84b1-b25e01ffa86f",
@@ -120602,8 +120630,14 @@
    "group": "europeana:National Museum of Bukovina:cămașă femeiască cu altiță, decor geometrizant realizat cu motive geometrice, motive floral stilizate, motive fitomorfe; altița, realizată separat și apoi asamblată de încreț prezintă două registre cu motive floral stilizate executate cu bumbac, mărgele colorate și paiete, registre delimitate de două rânduri de motive geometrice realizate cu fir argintiu și auriu, toate registrele încadrate într-un chenar dispus pe trei laturi; încrețul lat prezintă decor geometrizant realizat cu motive geometrice: romburi mici încadrate în romburi mari având în interior cruce în x; pe mânecă sunt dispuse râuri cu motive fitomorfe: pomul vieții intercalate cu motive floral stilizate; pe față și spate cîte două rânduri înguste de motive floral stilizate; la gât prezintă brezărău și feston; mâneca încrețită se termină tot cu feston; cromatică: negru, mov, verde, roșu, portocaliu, galben.",
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
-   "status": "not-ornament-or-textile",
-   "flags": []
+   "status": "grid-read",
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
+   "motifs": 12,
+   "confidence": 0.975,
+   "separation": 1.47,
+   "quality": 0.716
   },
   {
    "id": "europeana-951-Culturalia-ccc7c320-5267-4610-9838-09d79fb5a841",
@@ -120617,7 +120651,9 @@
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
    "status": "grid-read",
-   "flags": [],
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
    "motifs": 12,
    "confidence": 0.842,
    "separation": 2.57,
@@ -120635,7 +120671,9 @@
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
    "status": "not-ornament-or-textile",
-   "flags": []
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "europeana-951-Culturalia-dba5c607-54d8-420d-b8e9-4e246f3a0be1",
@@ -120649,7 +120687,9 @@
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
    "status": "no-counted-grid-read",
-   "flags": []
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "europeana-951-Culturalia-df19b4f2-cd11-44ca-b742-da3a1228bc87",
@@ -120662,8 +120702,10 @@
    "group": "europeana:National Museum of Bukovina:altiță separată de formă dreptunghiulară, cu amplasarea decorului pe toată supafața. decorul geonetrizant este ordonat în două registre, încadrat de vârste pe trei laturi format din motive geometrice, romburi și linii frânte. firul metalic care este cusut pe marginea piesei și între registre este auriu și argintiu. broderia este în alternanță cromatică în culorile: negru, cărămiziu, galben, verde, albastru, roșu, mov. năframa era folosită în ceremonialul de nuntă ca dar pentru mire, vătăjei și vornic. după nuntă se punea pe pereții camerelor cu rol decorativ.",
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
-   "status": "not-ornament-or-textile",
-   "flags": []
+   "status": "no-counted-grid-read",
+   "flags": [
+    "shared-tradition-check-attribution"
+   ]
   },
   {
    "id": "europeana-951-Culturalia-f06313ad-5875-43f9-bb46-1bafff7a2741",
@@ -120676,8 +120718,14 @@
    "group": "europeana:National Museum of Bukovina:cămașă femeiască cu altiță, decor geometrizant realizat cu motive geometrice, motive fitomorfe; altița realizată separat și apoi asamblată de încreț prezintă patru registre paralele orizontale cu motive geometrice încadrate într-un chenar dispus pe trei laturi, executate cu bumbac; acestea sunt delimitate de rânduri cu motive geometrice: vârste realizate cu bumbac, fir argintiu și auriu; încrețul prezintă decor geometrizant realizat cu motive geometrice: romb; pe mânecă sunt dispuse oblic râuri cu motive fitomorfe; pe față și spate cîte două rânduri înguste de motive floral stilizate; la gât prezintă brezărău și feston; mâneca încrețită; cromatică: violet închis, verde, roșu, albastru, cărămiziu, portocaliu, galben, roz.",
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
-   "status": "not-ornament-or-textile",
-   "flags": []
+   "status": "grid-read",
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
+   "motifs": 12,
+   "confidence": 0.878,
+   "separation": 4.47,
+   "quality": 0.878
   },
   {
    "id": "europeana-951-Culturalia-fc03c055-4238-45a0-a569-17d9cc9dae66",
@@ -120690,8 +120738,14 @@
    "group": "europeana:National Museum of Bukovina:cămașă femeiască cu altiță, decor geometrizant realizat cu motive geometrice, motive floral stilizate, motive fitomorfe; altița, realizată separat și apoi asamblată de încreț prezintă cinci registre paralele orizontale cu motive floral stilizate delimitate de patru rânduri de motive geometrice realizate cu fir metalic; încrețul este realizat cu motive geometrice: romb executate cu mărgele colorate; pe mânecă sunt dispuse oblic două tipuri de râuri cu motive fitomorfe și geometrice; pe față și spate cîte două rânduri înguste de motive astrale: stea; la gât ciupag și deschidere pe stanul din față; mâneca încrețită se termină cu manșetă pe care sunt cusute un rând de motive geometrice; cromatică: negru, roșu, verde, albastru, galben, alb.",
    "note": "provider National Museum of Bukovina, Romania; type IMAGE",
    "licence": "CC-BY-SA",
-   "status": "not-ornament-or-textile",
-   "flags": []
+   "status": "grid-read",
+   "flags": [
+    "shared-tradition-check-attribution"
+   ],
+   "motifs": 3,
+   "confidence": 0.782,
+   "separation": 1.52,
+   "quality": 0.594
   },
   {
    "id": "ia-coll_esej_2020_06_1-p1",
