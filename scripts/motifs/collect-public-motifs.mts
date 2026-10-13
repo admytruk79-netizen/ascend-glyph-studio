@@ -5,7 +5,7 @@
  * Sources: the Neon research corpus (Commons files, Internet Archive pages), Wikimedia Commons (categories + file
  * search, licence from each file's own metadata), Art Institute of Chicago (public domain), Cleveland Museum of Art (CC0),
  * Library of Congress (no known restrictions), Internet Archive pattern books published before 1929, NYPL Digital
- * Collections (public domain), museum-digital Ukraine (Ukrainian museums), Finna (Finnish museums and archives), DigitaltMuseum (Swedish and Norwegian museums), and,
+ * Collections (public domain), Openverse (CC-licensed images shared on Flickr and elsewhere), museum-digital Ukraine (Ukrainian museums), Finna (Finnish museums and archives), DigitaltMuseum (Swedish and Norwegian museums), and,
  * when their API keys are configured, Europeana (open reuse) and Smithsonian (CC0).
  *
  * Rules:
@@ -310,6 +310,25 @@ async function fromMuseumDigitalUa() {
   for (let i = 0; i < list.length; i += 4) { await Promise.all(list.slice(i, i + 4).map(one)); await sleep(250); }
   console.log(`museum-digital-ua: ${list.length} objects checked`);
 }
+// ---------- source: Openverse (openly licensed images people shared on Flickr and elsewhere; keyless) ----------
+// Commons is crawled directly above, so Openverse is used for the other providers only. The licence filter asks for
+// CC BY, CC BY-SA, CC0 and the public domain mark; each result's own licence is still checked.
+async function fromOpenverse() {
+  for (const q of ["ukrainian embroidery", "вишивка", "вишиванка", "вишита сорочка", "рушник", "vyshyvanka", "ukrainian cross stitch", "hutsul embroidery", "ukrainian folk costume", "ukrainian ornament", "ukrainian blouse", "ukrainian rushnyk", "ukrainian towel embroidery"])
+    for (let page = 1; page <= 12; page++) {
+      const r = await get(`https://api.openverse.org/v1/images/?q=${encodeURIComponent(q)}&license=by,by-sa,cc0,pdm&page_size=20&page=${page}`);
+      const rows = r?.results ?? []; if (!rows.length) break;
+      for (const x of rows) {
+        if (x.source === "wikimedia" || !x.url) continue;
+        const text = [x.title, (x.tags ?? []).map((t: any) => t.name).join(" ")].join(" ");
+        add({ id: `openverse-${x.id}`, source: `openverse-${x.source}`, title: String(x.title ?? "").slice(0, 200), pageUrl: x.foreign_landing_url ?? "", imageUrl: x.url,
+          licenceText: `${x.license ?? ""} ${x.license_version ?? ""} ${x.license_url ?? ""}`, evidence: UA.test(text) ? `title/tags: ${text.replace(/\s+/g, " ").slice(0, 160)}` : null,
+          group: `openverse:${x.source}:${x.creator ?? "?"}`, note: `shared by ${x.creator ?? "?"} on ${x.source}; ${x.attribution ?? ""}`.slice(0, 300) });
+      }
+      if (page >= (r?.page_count ?? 0)) break;
+      await sleep(1500);
+    }
+}
 async function fromSmithsonian() {
   const key = process.env.SI_API_KEY; if (!key) { console.log("smithsonian: no SI_API_KEY, skipped"); return; }
   for (const q of ["ukrainian embroidery", "ukrainian blouse", "ukraine embroidered"]) for (let start = 0; start < 500; start += 100) {
@@ -370,7 +389,7 @@ async function readImage(url: string) {
 }
 
 // ---------- run ----------
-for (const [name, fn] of [["neon", fromNeon], ["commons", fromCommons], ["aic", fromAic], ["cleveland", fromCleveland], ["loc", fromLoc], ["ia-pattern-books", fromIaPatternBooks], ["nypl", fromNypl], ["museum-digital-ua", fromMuseumDigitalUa], ["finna", fromFinna], ["digitaltmuseum", fromDigitaltMuseum], ["europeana", fromEuropeana], ["smithsonian", fromSmithsonian]] as const) {
+for (const [name, fn] of [["neon", fromNeon], ["commons", fromCommons], ["aic", fromAic], ["cleveland", fromCleveland], ["loc", fromLoc], ["ia-pattern-books", fromIaPatternBooks], ["nypl", fromNypl], ["museum-digital-ua", fromMuseumDigitalUa], ["openverse", fromOpenverse], ["finna", fromFinna], ["digitaltmuseum", fromDigitaltMuseum], ["europeana", fromEuropeana], ["smithsonian", fromSmithsonian]] as const) {
   try { await fn(); } catch (e) { console.error(`${name} failed:`, String(e)); }
 }
 console.log(`candidates: ${candidates.size}`);
