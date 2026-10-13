@@ -16,3 +16,13 @@ it('bounds dimensions and capacity, rejects unsupported machines, and responds t
  expect(generateReferenceBand({...i,complexity:.1}).columns).toBeLessThan(generateReferenceBand(i).columns);
  expect(generateReferenceBand({...i,seed:'b'}).svg).not.toEqual(generateReferenceBand(i).svg);
 });
+it('builds paired cells with separated footprints and checks the selected machine field without approval',()=>{
+ const input={widthMm:250,heightMm:60,complexity:.7,seed:'a',placement:'cuff' as const,composition:'paired' as const,machineProfileId:'brother-pr1055x-reference'};
+ const r=generateReferenceBand(input);
+ expect(r.productionObjects).toHaveLength(r.columns*4);expect(r.minimumFootprintGapMm).toBeGreaterThanOrEqual(2);
+ expect(r.stitchObjects.filter(o=>o.id.startsWith('frame-rule-'))).toHaveLength(2);
+ expect(r.machineCheck?.fieldFits).toBe(true);expect(r.productionApproved).toBe(false);
+ const tooWide=generateReferenceBand({...input,widthMm:400});expect(tooWide.machineCheck?.fieldFits).toBe(false);
+ expect(tooWide.manufacturingJob.validation.errors).toContain('machine-field-exceeded:segmentation-required');
+ expect(()=>generateReferenceBand({...input,machineProfileId:'industrial-multihead-generic'})).toThrow('measured embroidery field');
+});
