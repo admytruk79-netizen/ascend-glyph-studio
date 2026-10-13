@@ -3,7 +3,9 @@
  * Runs on a GitHub runner (museum hosts are reachable there; Neon via TESSERACT_DATABASE_URL, read-only).
  *
  * Sources: the Neon research corpus (Commons files, Internet Archive pages), Wikimedia Commons (categories + file
- * search, licence from each file's own metadata), Art Institute of Chicago (public domain), Cleveland Museum of Art (CC0).
+ * search, licence from each file's own metadata), Art Institute of Chicago (public domain), Cleveland Museum of Art (CC0),
+ * Library of Congress (no known restrictions), Internet Archive pattern books published before 1929, NYPL Digital
+ * Collections (public domain), and, when their API keys are configured, Europeana (open reuse) and Smithsonian (CC0).
  *
  * Rules:
  *  - licence must be public domain, CC0, CC BY or CC BY-SA (any version); NC / ND / unknown are listed and skipped;
@@ -23,7 +25,7 @@ import type { MotifRecord } from "../../packages/motif-learner/src/model.ts";
 
 const OUT = "data/motifs/public";
 const MAX_MINUTES = Number(process.env.COLLECT_MAX_MINUTES ?? 150);
-const MAX_IMAGES = Number(process.env.COLLECT_MAX_IMAGES ?? 6000);
+const MAX_IMAGES = Number(process.env.COLLECT_MAX_IMAGES ?? 15000);
 const UA_HEADER = "ASCEND-motif-learner/0.1 (https://github.com/admytruk79-netizen/ascend-glyph-studio; provenance-first research)";
 const started = Date.now(), minutes = () => (Date.now() - started) / 60000;
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -84,8 +86,12 @@ async function fromNeon() {
 
 // ---------- source: Wikimedia Commons ----------
 const COMMONS = "https://commons.wikimedia.org/w/api.php?format=json&formatversion=2&origin=*";
-const ROOT_CATEGORIES = ["Embroidery of Ukraine", "Rushnyky", "Vyshyvanka", "Ukrainian embroidery", "Ornaments of Ukraine", "Ukrainian ornaments", "Embroidered shirts of Ukraine", "Cross-stitch in Ukraine", "Pysanky", "Ukrainian folk art", "Textiles of Ukraine", "Motifs of Ukrainian ornament", "Мотиви українського орнаменту"];
-const SEARCHES = ["Мотиви українського орнаменту", "український орнамент", "українська вишивка", "вишивка хрестиком", "рушник вишитий", "вишиванка орнамент", "Ukrainian embroidery pattern", "Ukrainian cross-stitch", "Ukrainian ornament", "Hutsul embroidery", "Poltava embroidery", "Podillia embroidery"];
+const ROOT_CATEGORIES = ["Embroidery of Ukraine", "Rushnyky", "Vyshyvanka", "Ukrainian embroidery", "Ornaments of Ukraine", "Ukrainian ornaments", "Embroidered shirts of Ukraine", "Cross-stitch in Ukraine", "Pysanky", "Ukrainian folk art", "Textiles of Ukraine", "Motifs of Ukrainian ornament", "Мотиви українського орнаменту",
+  // shirts and museum collections (vyshyvanka focus)
+  "Vyshyvankas", "Embroidered shirts", "Ukrainian embroidered shirts", "Folk costumes of Ukraine", "Ukrainian folk costume", "Ukrainian national costume",
+  "Ivan Honchar Museum", "National Museum of Ukrainian Folk Decorative Art", "Embroidery in museums of Ukraine", "Rushnyky in museums", "Ukrainian women's shirts", "Sorochka"];
+const SEARCHES = ["Мотиви українського орнаменту", "український орнамент", "українська вишивка", "вишивка хрестиком", "рушник вишитий", "вишиванка орнамент", "Ukrainian embroidery pattern", "Ukrainian cross-stitch", "Ukrainian ornament", "Hutsul embroidery", "Poltava embroidery", "Podillia embroidery",
+  "вишиванка", "сорочка вишита", "вишита сорочка", "жіноча сорочка вишивка", "чоловіча сорочка вишита", "вишита сорочка музей", "уставка сорочки", "Ukrainian embroidered shirt", "vyshyvanka museum", "Ukrainian blouse embroidery"];
 const fileInfo = (p: any, via: string) => {
   const ii = p.imageinfo?.[0]; if (!ii) return;
   const m = ii.extmetadata ?? {}, strip = (s?: { value?: string }) => (s?.value ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
@@ -153,10 +159,90 @@ async function fromCleveland() {
   }
 }
 
+// ---------- source: Library of Congress (keyless; "no known restrictions" items only) ----------
+async function fromLoc() {
+  for (const q of ["ukrainian embroidery", "ukrainian embroidered shirt", "ukrainian costume embroidery", "вишивка"]) for (let page = 1; page <= 3; page++) {
+    const r = await get(`https://www.loc.gov/search/?q=${encodeURIComponent(q)}&fo=json&c=100&sp=${page}`);
+    const rows = r?.results ?? []; if (!rows.length) break;
+    for (const x of rows) {
+      const img = (x.image_url ?? []).slice(-1)[0]; if (!img) continue;
+      const rights = [x.rights_advisory, x.rights, x.item?.rights_advisory].flat().filter(Boolean).join(" ");
+      const text = [x.title, (x.subject ?? []).join(" "), (x.location ?? []).join(" "), (x.description ?? []).join(" ")].join(" ");
+      const own = UA.test(text) ? text.slice(0, 160) : null;
+      add({ id: `loc-${String(x.id ?? x.url).replace(/[^A-Za-z0-9]+/g, "-").slice(-60)}`, source: "loc", title: String(x.title ?? "").slice(0, 200), pageUrl: x.url ?? x.id ?? "", imageUrl: img.split("#")[0],
+        licenceText: /no known restrictions/i.test(rights) ? `public domain (LOC: ${rights.slice(0, 80)})` : rights || "unknown", evidence: own ? `title/subject/place: ${own}` : null, group: `loc:${series(String(x.title ?? x.id))}` });
+    }
+    await sleep(800);
+  }
+}
+
+// ---------- source: Internet Archive embroidery pattern books (published before 1929) ----------
+async function fromIaPatternBooks() {
+  const q = encodeURIComponent('(вишивка OR вишивання OR узори OR вышивания OR "ukrainian embroidery" OR "ruthenian embroidery" OR "малороссийские узоры") AND mediatype:texts AND year:[1800 TO 1928]');
+  const r = await get(`https://archive.org/advancedsearch.php?q=${q}&fl[]=identifier&fl[]=title&fl[]=year&fl[]=imagecount&rows=200&output=json`);
+  for (const d of r?.response?.docs ?? []) {
+    const title = String(Array.isArray(d.title) ? d.title[0] : d.title ?? ""), pages = Math.min(Number(d.imagecount ?? 0) || 40, 80);
+    if (!UA.test(title) && !/узор|вышив|embroider/i.test(title)) continue;
+    for (let n = 0; n < pages; n++) add({ id: `iab-${d.identifier}-p${n}`, source: "ia", title: `${title} (${d.year ?? ""}), page ${n}`, pageUrl: `https://archive.org/details/${d.identifier}/page/n${n}`,
+      imageUrl: `https://archive.org/download/${d.identifier}/page/n${n}_w1600.jpg`, licenceText: `Published ${d.year}; public domain in the US`,
+      evidence: UA.test(title) ? `title: ${title.slice(0, 120)}` : null, group: `ia:${d.identifier}` });
+  }
+}
+
+// ---------- source: NYPL Digital Collections (public-domain items, IIIF manifests) ----------
+const NYPL_ITEMS = ["a9d644f0-62d0-013b-76bb-0242ac110003", "a9395470-62d0-013b-fa13-0242ac110003"]; // Karagodina, Albom uzorov dlia vyshyvaniia (Odessa, 1895)
+async function fromNypl() {
+  for (const uuid of NYPL_ITEMS) {
+    const m = await get(`https://api-collections.nypl.org/manifests/${uuid}`);
+    if (!m) { console.log(`nypl: no manifest for ${uuid}`); continue; }
+    const text = JSON.stringify(m), label = String(m.label?.en?.[0] ?? m.label ?? "NYPL item");
+    const services = [...new Set([...text.matchAll(/https?:\/\/iiif\.nypl\.org\/iiif\/[23]\/[A-Za-z0-9._-]+/g)].map((x) => x[0]))];
+    const own = /ukrain|україн|украин|odessa|одес/i.test(text) ? "NYPL catalogue metadata (Ukrainian; Odessa 1895)" : null;
+    services.forEach((svc, n) => add({ id: `nypl-${uuid.slice(0, 8)}-p${n}`, source: "nypl", title: `${label}, plate ${n + 1}`, pageUrl: `https://digitalcollections.nypl.org/items/${uuid}`,
+      imageUrl: `${svc}/full/1600,/0/default.jpg`, licenceText: "public domain in the US (NYPL)", evidence: own, group: `nypl:${uuid}` }));
+    console.log(`nypl: ${services.length} images in ${uuid}`);
+  }
+}
+
+// ---------- keyed sources: used only when the repository has the secret ----------
+async function fromEuropeana() {
+  const key = process.env.EUROPEANA_API_KEY; if (!key) { console.log("europeana: no EUROPEANA_API_KEY, skipped"); return; }
+  for (const q of ["вишиванка", "vyshyvanka", "Ukrainian embroidered shirt", "Ukrainian embroidery", "вишивка", "рушник"]) {
+    let cursor = "*";
+    for (let i = 0; i < 10 && cursor; i++) {
+      const r = await get(`https://api.europeana.eu/record/v2/search.json?wskey=${key}&query=${encodeURIComponent(q)}&reusability=open&media=true&rows=100&profile=rich&cursor=${encodeURIComponent(cursor)}`);
+      for (const x of r?.items ?? []) {
+        const img = x.edmIsShownBy?.[0]; if (!img) continue;
+        const text = [x.title?.[0], x.dcDescription?.[0], (x.dcSubjectLangAware ? JSON.stringify(x.dcSubjectLangAware) : ""), x.country?.[0]].join(" ");
+        add({ id: `europeana-${String(x.id).replace(/[^A-Za-z0-9]+/g, "-").slice(1, 80)}`, source: "europeana", title: String(x.title?.[0] ?? "").slice(0, 200), pageUrl: x.guid ?? "", imageUrl: img,
+          licenceText: x.rights?.[0] ?? "", evidence: UA.test(text) ? `title/description/subject: ${text.slice(0, 140)}` : null, group: `europeana:${x.dataProvider?.[0] ?? ""}:${series(String(x.title?.[0] ?? x.id))}` });
+      }
+      cursor = r?.nextCursor ?? ""; await sleep(300);
+    }
+  }
+}
+async function fromSmithsonian() {
+  const key = process.env.SI_API_KEY; if (!key) { console.log("smithsonian: no SI_API_KEY, skipped"); return; }
+  for (const q of ["ukrainian embroidery", "ukrainian blouse", "ukraine embroidered"]) for (let start = 0; start < 500; start += 100) {
+    const r = await get(`https://api.si.edu/openaccess/api/v1.0/search?q=${encodeURIComponent(q)}&start=${start}&rows=100&api_key=${key}`);
+    const rows = r?.response?.rows ?? []; if (!rows.length) break;
+    for (const x of rows) {
+      const media = (x.content?.descriptiveNonRepeating?.online_media?.media ?? []).find((m: any) => /CC0/i.test(m.usage?.access ?? "")); if (!media) continue;
+      const text = JSON.stringify(x.content?.freetext ?? {}) + " " + x.title;
+      add({ id: `si-${x.id}`, source: "smithsonian", title: String(x.title ?? "").slice(0, 200), pageUrl: x.content?.descriptiveNonRepeating?.record_link ?? "", imageUrl: media.content,
+        licenceText: "CC0 (Smithsonian Open Access)", evidence: UA.test(text) ? "catalogue text mentions Ukraine" : null, group: `si:${x.id}` });
+    }
+    await sleep(300);
+  }
+}
+
 // ---------- reading ----------
-/** Separate motifs on one image: clusters of stitches more than `gap` empty cells apart, each at least min×min. */
-export function splitMotifs(g: Grid, gap = 2, min = 5): Grid[] {
-  const label = new Int32Array(g.cells.length).fill(-1), out: Grid[] = [];
+/**
+ * Separate motifs on one image: clusters of stitches more than `gap` empty cells apart, each at least min×min.
+ * `complete` is false when a motif touches the edge of the area read (it runs off the photograph or the crop).
+ */
+export function splitMotifs(g: Grid, gap = 2, min = 5): { grid: Grid; complete: boolean }[] {
+  const label = new Int32Array(g.cells.length).fill(-1), out: { grid: Grid; complete: boolean }[] = [];
   for (let i = 0; i < g.cells.length; i++) {
     if (!g.cells[i] || label[i] >= 0) continue;
     const id = out.length, stack = [i], members: number[] = []; label[i] = id;
@@ -168,16 +254,18 @@ export function splitMotifs(g: Grid, gap = 2, min = 5): Grid[] {
       }
     }
     const part = blank(g.w, g.h); members.forEach((j) => (part.cells[j] = g.cells[j]!));
-    out.push(crop(part));
+    const xs = members.map((j) => j % g.w), ys = members.map((j) => Math.floor(j / g.w));
+    const complete = Math.min(...xs) > 0 && Math.min(...ys) > 0 && Math.max(...xs) < g.w - 1 && Math.max(...ys) < g.h - 1;
+    out.push({ grid: crop(part), complete });
   }
-  return out.filter((m) => m.w >= min && m.h >= min && m.w <= 120 && m.h <= 120 && density(m) > 0.05 && density(m) < 0.9);
+  return out.filter(({ grid: m }) => m.w >= min && m.h >= min && m.w <= 120 && m.h <= 120 && density(m) > 0.05 && density(m) < 0.9);
 }
 
 async function readImage(url: string) {
   const buf: Buffer | null = await get(url, false);
   if (!buf) throw new Error("image unavailable");
   const meta = await sharp(buf).metadata(), W = meta.width ?? 0, H = meta.height ?? 0;
-  let best: { motifs: Grid[]; confidence: number; separation: number; quality: number; pitch: [number, number]; crop: string } | null = null;
+  let best: { motifs: { grid: Grid; complete: boolean }[]; confidence: number; separation: number; quality: number; pitch: [number, number]; crop: string } | null = null;
   for (const frac of [1, 0.6, 0.35]) for (const work of [1000, 1800]) {
     const cw = Math.round(W * frac), ch = Math.round(H * frac);
     if (cw < 64 || ch < 64) continue;
@@ -185,7 +273,7 @@ async function readImage(url: string) {
     const got = extractGrid({ width: info.width, height: info.height, data, channels: 3 }, { minConfidence: 0.35 });
     if (!got) continue;
     // the largest motifs first, at most 12 per image (a plate rarely holds more; more usually means noise)
-    const motifs = splitMotifs(got.grid).sort((a, b) => b.w * b.h - a.w * a.h).slice(0, 12);
+    const motifs = splitMotifs(got.grid).sort((a, b) => b.grid.w * b.grid.h - a.grid.w * a.grid.h).slice(0, 12);
     const quality = got.confidence * Math.min(1, got.separation / 2);
     if (motifs.length && (!best || quality > best.quality)) best = { motifs, confidence: got.confidence, separation: got.separation, quality, pitch: got.pitch, crop: `centre ${Math.round(frac * 100)}% at ${info.width}px` };
   }
@@ -193,7 +281,7 @@ async function readImage(url: string) {
 }
 
 // ---------- run ----------
-for (const [name, fn] of [["neon", fromNeon], ["commons", fromCommons], ["aic", fromAic], ["cleveland", fromCleveland]] as const) {
+for (const [name, fn] of [["neon", fromNeon], ["commons", fromCommons], ["aic", fromAic], ["cleveland", fromCleveland], ["loc", fromLoc], ["ia-pattern-books", fromIaPatternBooks], ["nypl", fromNypl], ["europeana", fromEuropeana], ["smithsonian", fromSmithsonian]] as const) {
   try { await fn(); } catch (e) { console.error(`${name} failed:`, String(e)); }
 }
 console.log(`candidates: ${candidates.size}`);
@@ -214,7 +302,7 @@ const todo = rows.filter((r) => {
 });
 console.log(`to read: ${todo.length}`);
 
-const records: (MotifRecord & { quality: number })[] = [];
+const records: (MotifRecord & { quality: number; complete: boolean })[] = [];
 let next = 0;
 async function worker() {
   while (next < todo.length && minutes() < MAX_MINUTES) {
@@ -223,12 +311,12 @@ async function worker() {
       const read = await readImage(r.imageUrl);
       if (!read) { r.status = "no-counted-grid-read"; continue; }
       r.status = "grid-read"; r.motifs = read.motifs.length; r.confidence = +read.confidence.toFixed(3); r.separation = +read.separation.toFixed(2); r.quality = +read.quality.toFixed(3);
-      read.motifs.forEach((g, k) => {
+      read.motifs.forEach(({ grid: g, complete }, k) => {
         const id = read.motifs.length > 1 ? `${r.id}-m${k + 1}` : r.id;
         records.push({
-          id, quality: +read.quality.toFixed(3), name: r.title.slice(0, 120), tradition: "Ukrainian", region: null, technique: "unverified-counted", sourceGroup: r.group, chart: toChart(g),
+          id, quality: +read.quality.toFixed(3), complete, name: r.title.slice(0, 120), tradition: "Ukrainian", region: null, technique: "unverified-counted", sourceGroup: r.group, chart: toChart(g),
           provenance: { kind: r.source === "ia" ? "pattern-book" : "museum-object", licence: r.licence!, culturalAccess: "review", independentSource: true, url: r.pageUrl,
-            note: `${r.source}; ${r.licenceText.slice(0, 80)}; Ukrainian evidence (${r.evidence}); ${r.flags.length ? `FLAGS: ${r.flags.join(", ")}; ` : ""}grid read automatically (${read.crop}, pitch ${read.pitch.join("×")} px, confidence ${read.confidence.toFixed(2)}, colour separation ${read.separation.toFixed(2)}, symmetry ${detectSymmetry(g)}${read.motifs.length > 1 ? `, motif ${k + 1} of ${read.motifs.length}` : ""}). Check against the image, set technique and documented region, then set culturalAccess to open.` },
+            note: `${r.source}; ${r.licenceText.slice(0, 80)}; Ukrainian evidence (${r.evidence}); ${r.flags.length ? `FLAGS: ${r.flags.join(", ")}; ` : ""}grid read automatically (${read.crop}, pitch ${read.pitch.join("×")} px, confidence ${read.confidence.toFixed(2)}, colour separation ${read.separation.toFixed(2)}, ${complete ? "complete" : "CUT OFF at the edge of the image"}, symmetry ${detectSymmetry(g)}${read.motifs.length > 1 ? `, motif ${k + 1} of ${read.motifs.length}` : ""}). Check against the image, set technique and documented region, then set culturalAccess to open.` },
         });
       });
     } catch (e) { r.status = `image-error: ${String(e).slice(0, 80)}`; }

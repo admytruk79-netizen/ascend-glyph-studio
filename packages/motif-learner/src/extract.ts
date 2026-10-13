@@ -22,7 +22,8 @@ function period(profile: number[], min = 4, max = 64): { p: number; strength: nu
   // the fundamental: the shortest local peak nearly as strong as the strongest (multiples of the pitch also peak)
   const lags: { p: number; strength: number }[] = [];
   for (let lag = min; lag <= Math.min(max, n >> 2); lag++) lags.push({ p: lag, strength: ac(lag) / zero });
-  const peaks = lags.filter((l, i) => l.strength > 0 && l.strength >= (lags[i - 1]?.strength ?? -1) && l.strength >= (lags[i + 1]?.strength ?? -1));
+  // interior peaks only: a correlation still falling at the shortest lag is blur or weave, not a stitch repeat
+  const peaks = lags.filter((l, i) => i > 0 && i < lags.length - 1 && l.strength > 0 && l.strength > lags[i - 1]!.strength && l.strength >= lags[i + 1]!.strength);
   const top = Math.max(0, ...peaks.map((l) => l.strength));
   return peaks.find((l) => l.strength >= 0.8 * top) ?? { p: 0, strength: 0 };
 }

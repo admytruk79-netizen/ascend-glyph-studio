@@ -27,7 +27,8 @@ function loadRecords(files: string[]): MotifRecord[] {
   // seed charts at the top level, plus reviewed public records (unreviewed collections stay out)
   const reviewed = join(dir, "reviewed"), list = (d: string) => (existsSync(d) ? readdirSync(d).filter((f) => f.endsWith(".json")).map((f) => join(d, f)) : []);
   const paths = files.length ? files.map((f) => resolve(f)) : [...list(dir), ...list(reviewed)];
-  return paths.flatMap((p) => (JSON.parse(readFileSync(p, "utf8")) as { records: MotifRecord[] }).records);
+  // only motif-record sets (decision snapshots and models live beside them)
+  return paths.flatMap((p) => { const j = JSON.parse(readFileSync(p, "utf8")) as { schema?: string; records?: MotifRecord[] }; return j.schema === "ascend.motif-records.v1" ? j.records ?? [] : []; });
 }
 
 if (cmd === "train") {
@@ -59,7 +60,7 @@ if (cmd === "train") {
     process.exit(0);
   }
   const { accepted, rejected } = generate(sub, model.dataset, { count: +flag("count", "12")!, seed: +flag("seed", "1")!, ...(size ? { size: +size } : {}), ...(group ? { group: group as never } : {}) });
-  const cell = 7, cols = 4, tile = 24 * cell, tiles = accepted.map((c, i) => `<g transform="translate(${(i % cols) * tile + (tile - c.grid.w * cell) / 2},${Math.floor(i / cols) * (tile + 16)})">${toSvg(c.grid, cell, `${c.group} ${c.logLikelihood.toFixed(2)} ≈${(c.nearest.iou * 100).toFixed(0)}%`)}</g>`);
+  const cell = 7, cols = 4, tile = (Math.max(18, ...accepted.map((c) => Math.max(c.grid.w, c.grid.h))) + 2) * cell, tiles = accepted.map((c, i) => `<g transform="translate(${(i % cols) * tile + (tile - c.grid.w * cell) / 2},${Math.floor(i / cols) * (tile + 16)})">${toSvg(c.grid, cell, `${c.group} ${c.logLikelihood.toFixed(2)} ≈${(c.nearest.iou * 100).toFixed(0)}%`)}</g>`);
   const band = accepted.length >= 2 ? composeBand([accepted[0]!.grid, accepted[1]!.grid], "A A A | B | A A A") : null;
   const bandY = Math.ceil(accepted.length / cols) * (tile + 16) + 10, W = Math.max(cols * tile, (band?.w ?? 0) * 5);
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${bandY + (band ? band.h * 5 + 20 : 0)}"><rect width="100%" height="100%" fill="#fff"/>${tiles.join("")}${band ? `<g transform="translate(0,${bandY})">${toSvg(band, 5, "band: A A A | B | A A A")}</g>` : ""}</svg>`;

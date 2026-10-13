@@ -35,14 +35,18 @@ jobs:
       - name: Collect and read
         env:
           DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+          EUROPEANA_API_KEY: ${{ secrets.EUROPEANA_API_KEY }}
+          SI_API_KEY: ${{ secrets.SI_API_KEY }}
           COLLECT_MAX_MINUTES: ${{ inputs.max_minutes || '150' }}
         run: npx tsx scripts/motifs/collect-public-motifs.mts
+      - name: Filter and rank the review queue
+        run: npx tsx scripts/motifs/filter-public-motifs.mts && npx tsx scripts/motifs/rerank-queue.mts
       - name: Commit review records
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/motifs/public || true
+          git add data/motifs/public data/motifs/reviewed || true
           if git diff --cached --quiet; then echo "no changes"; exit 0; fi
           git commit -m "Collect public-use motif candidates for review (run ${{ github.run_id }})"
           git pull --rebase origin ${{ github.ref_name }}

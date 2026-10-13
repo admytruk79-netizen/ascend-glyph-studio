@@ -44,7 +44,9 @@ export function generateShape(sub: SubModel, o: GenerateOptions): { grid: Grid; 
   if (size % 2 === 0) size++;
   const target = o.density ?? Math.min(0.75, Math.max(0.15, sub.density.mean + (r() - 0.5) * sub.density.sd));
   const islands = Math.max(1, Math.round(sub.islands.mean));
-  const g = blank(size, size), orb = orbits(group, size, size);
+  // complete motifs only: the outer ring stays bare ground, so nothing runs off the frame
+  const onEdge = (i: number) => { const x = i % size, y = (i - x) / size; return x === 0 || y === 0 || x === size - 1 || y === size - 1; };
+  const g = blank(size, size), orb = orbits(group, size, size).filter((cells) => !cells.some(onEdge));
   orb.forEach((cells) => { const on = r() < target ? 1 : 0; cells.forEach((i) => (g.cells[i] = on)); });
 
   // windows whose 3×3 touches an orbit, as centre coordinates

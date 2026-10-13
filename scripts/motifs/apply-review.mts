@@ -1,6 +1,6 @@
 /**
  * Review decisions → training records.
- *   npx tsx scripts/motifs/apply-review.mts <decisions-dir>
+ *   npx tsx scripts/motifs/apply-review.mts [decisions-dir]   (default: the data/motifs/reviewed/decisions.json snapshot)
  * <decisions-dir> holds one JSON file per decision (an ArtifactData export of the Motif Review page's "decisions"
  * collection: { verdict: "keep" | "reject", coloursWrong }). Kept motifs are written to
  * data/motifs/reviewed/public-reviewed.v1.json with culturalAccess "open"; kept with wrong colours become
@@ -11,9 +11,9 @@ import { join } from "node:path";
 import type { MotifRecord } from "../../packages/motif-learner/src/model.ts";
 
 const dir = process.argv[2];
-if (!dir) throw new Error("usage: apply-review.mts <decisions-dir>");
-const files = readdirSync(dir, { recursive: true }).map(String).filter((f) => f.endsWith(".json"));
-const decisions = new Map(files.map((f) => [f.replace(/^.*\//, "").replace(/\.json$/, ""), JSON.parse(readFileSync(join(dir, f), "utf8"))]));
+const decisions = new Map<string, any>(dir
+  ? readdirSync(dir, { recursive: true }).map(String).filter((f) => f.endsWith(".json")).map((f) => [f.replace(/^.*\//, "").replace(/\.json$/, ""), JSON.parse(readFileSync(join(dir, f), "utf8"))])
+  : Object.entries(JSON.parse(readFileSync("data/motifs/reviewed/decisions.json", "utf8")).decisions));
 const records = (JSON.parse(readFileSync("data/motifs/public/public-motifs.unreviewed.json", "utf8")) as { records: (MotifRecord & { quality?: number })[] }).records;
 const out: MotifRecord[] = [];
 let shapeOnly = 0;

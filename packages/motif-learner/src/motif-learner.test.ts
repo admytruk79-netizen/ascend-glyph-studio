@@ -150,3 +150,11 @@ test("quality filter: real motifs pass; lines, scatter, specks and solid fills a
   assert.ok(motifQuality(parseChart(blob)).reasons.includes("single-colour-fill"));
   assert.ok(motifQuality(parseChart(["RR", "RR"])).reasons.includes("too-small"));
 });
+
+test("generated motifs are complete: nothing touches the frame", () => {
+  for (const seed of [3, 11, 21]) {
+    const { grid } = generateShape(ua, { seed, size: 15, iterations: 3000 });
+    for (let i = 0; i < 15; i++) for (const [x, y] of [[i, 0], [i, 14], [0, i], [14, i]] as const) assert.equal(grid.cells[y * 15 + x], 0);
+    assert.ok(grid.cells.some(Boolean));
+  }
+});
