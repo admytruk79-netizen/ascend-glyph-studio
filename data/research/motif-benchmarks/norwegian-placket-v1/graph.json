@@ -1,0 +1,847 @@
+{
+  "schema": "ascend.motif-graph.v1",
+  "state": "REFERENCE",
+  "units": "mm",
+  "seed": "cleveland-106581-placket-v1",
+  "widthMm": 3400,
+  "heightMm": 1191,
+  "minGapMm": 0,
+  "nodes": [
+    {
+      "id": "composition",
+      "kind": "composition",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.7,
+      "evidence": [
+        "Manual full-resolution source-crop and overlay review of three left-placket units"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "assembly:diamond-1",
+      "kind": "assembly",
+      "parentId": "field:left-placket",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.7,
+      "evidence": [
+        "Manual full-resolution source-crop and overlay review of three left-placket units"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "element:diamond-1",
+      "kind": "element",
+      "parentId": "assembly:diamond-1",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.5,
+      "evidence": [
+        "Manually reviewed separate image-space diamond envelope, approximate polygon.",
+        "visual hypothesis: angular diamond envelope; review: draft"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      },
+      "geometry": {
+        "namespace": "reference",
+        "ports": {},
+        "paths": [
+          [
+            {
+              "x": 1608,
+              "y": 457
+            },
+            {
+              "x": 1636,
+              "y": 493
+            },
+            {
+              "x": 1604,
+              "y": 528
+            },
+            {
+              "x": 1575,
+              "y": 500
+            },
+            {
+              "x": 1608,
+              "y": 457
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "assembly:diamond-1-lobe-1",
+      "kind": "assembly",
+      "parentId": "assembly:diamond-1",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.7,
+      "evidence": [
+        "Manual full-resolution source-crop and overlay review of three left-placket units"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "element:diamond-1-lobe-1",
+      "kind": "element",
+      "parentId": "assembly:diamond-1-lobe-1",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.45,
+      "evidence": [
+        "Approximate visible red interior envelope; no botanical or symbolic identity inferred.",
+        "visual hypothesis: red lobed interior form; review: draft"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      },
+      "geometry": {
+        "namespace": "reference",
+        "ports": {},
+        "paths": [
+          [
+            {
+              "x": 1605,
+              "y": 471
+            },
+            {
+              "x": 1612,
+              "y": 475
+            },
+            {
+              "x": 1616,
+              "y": 480
+            },
+            {
+              "x": 1611,
+              "y": 485
+            },
+            {
+              "x": 1605,
+              "y": 489
+            },
+            {
+              "x": 1599,
+              "y": 485
+            },
+            {
+              "x": 1594,
+              "y": 480
+            },
+            {
+              "x": 1598,
+              "y": 475
+            },
+            {
+              "x": 1605,
+              "y": 471
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "assembly:diamond-1-lobe-2",
+      "kind": "assembly",
+      "parentId": "assembly:diamond-1",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.7,
+      "evidence": [
+        "Manual full-resolution source-crop and overlay review of three left-placket units"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "element:diamond-1-lobe-2",
+      "kind": "element",
+      "parentId": "assembly:diamond-1-lobe-2",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.45,
+      "evidence": [
+        "Approximate visible red interior envelope; no botanical or symbolic identity inferred.",
+        "visual hypothesis: red lobed interior form; review: draft"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      },
+      "geometry": {
+        "namespace": "reference",
+        "ports": {},
+        "paths": [
+          [
+            {
+              "x": 1604,
+              "y": 503
+            },
+            {
+              "x": 1611,
+              "y": 507
+            },
+            {
+              "x": 1615,
+              "y": 512
+            },
+            {
+              "x": 1610,
+              "y": 517
+            },
+            {
+              "x": 1604,
+              "y": 521
+            },
+            {
+              "x": 1598,
+              "y": 517
+            },
+            {
+              "x": 1593,
+              "y": 512
+            },
+            {
+              "x": 1597,
+              "y": 507
+            },
+            {
+              "x": 1604,
+              "y": 503
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "assembly:diamond-2",
+      "kind": "assembly",
+      "parentId": "field:left-placket",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.7,
+      "evidence": [
+        "Manual full-resolution source-crop and overlay review of three left-placket units"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "element:diamond-2",
+      "kind": "element",
+      "parentId": "assembly:diamond-2",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.5,
+      "evidence": [
+        "Manually reviewed separate image-space diamond envelope, approximate polygon.",
+        "visual hypothesis: angular diamond envelope; review: draft"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      },
+      "geometry": {
+        "namespace": "reference",
+        "ports": {},
+        "paths": [
+          [
+            {
+              "x": 1605,
+              "y": 549
+            },
+            {
+              "x": 1637,
+              "y": 589
+            },
+            {
+              "x": 1602,
+              "y": 639
+            },
+            {
+              "x": 1567,
+              "y": 600
+            },
+            {
+              "x": 1605,
+              "y": 549
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "assembly:diamond-2-lobe-1",
+      "kind": "assembly",
+      "parentId": "assembly:diamond-2",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.7,
+      "evidence": [
+        "Manual full-resolution source-crop and overlay review of three left-placket units"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "element:diamond-2-lobe-1",
+      "kind": "element",
+      "parentId": "assembly:diamond-2-lobe-1",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.45,
+      "evidence": [
+        "Approximate visible red interior envelope; no botanical or symbolic identity inferred.",
+        "visual hypothesis: red lobed interior form; review: draft"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      },
+      "geometry": {
+        "namespace": "reference",
+        "ports": {},
+        "paths": [
+          [
+            {
+              "x": 1604,
+              "y": 568
+            },
+            {
+              "x": 1611,
+              "y": 572
+            },
+            {
+              "x": 1615,
+              "y": 577
+            },
+            {
+              "x": 1610,
+              "y": 582
+            },
+            {
+              "x": 1604,
+              "y": 586
+            },
+            {
+              "x": 1598,
+              "y": 582
+            },
+            {
+              "x": 1593,
+              "y": 577
+            },
+            {
+              "x": 1597,
+              "y": 572
+            },
+            {
+              "x": 1604,
+              "y": 568
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "assembly:diamond-2-lobe-2",
+      "kind": "assembly",
+      "parentId": "assembly:diamond-2",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.7,
+      "evidence": [
+        "Manual full-resolution source-crop and overlay review of three left-placket units"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "element:diamond-2-lobe-2",
+      "kind": "element",
+      "parentId": "assembly:diamond-2-lobe-2",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.45,
+      "evidence": [
+        "Approximate visible red interior envelope; no botanical or symbolic identity inferred.",
+        "visual hypothesis: red lobed interior form; review: draft"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      },
+      "geometry": {
+        "namespace": "reference",
+        "ports": {},
+        "paths": [
+          [
+            {
+              "x": 1603,
+              "y": 607
+            },
+            {
+              "x": 1610,
+              "y": 611
+            },
+            {
+              "x": 1614,
+              "y": 616
+            },
+            {
+              "x": 1609,
+              "y": 621
+            },
+            {
+              "x": 1603,
+              "y": 625
+            },
+            {
+              "x": 1597,
+              "y": 621
+            },
+            {
+              "x": 1592,
+              "y": 616
+            },
+            {
+              "x": 1596,
+              "y": 611
+            },
+            {
+              "x": 1603,
+              "y": 607
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "assembly:diamond-3",
+      "kind": "assembly",
+      "parentId": "field:left-placket",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.7,
+      "evidence": [
+        "Manual full-resolution source-crop and overlay review of three left-placket units"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "element:diamond-3",
+      "kind": "element",
+      "parentId": "assembly:diamond-3",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.5,
+      "evidence": [
+        "Manually reviewed separate image-space diamond envelope, approximate polygon.",
+        "visual hypothesis: angular diamond envelope; review: draft"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      },
+      "geometry": {
+        "namespace": "reference",
+        "ports": {},
+        "paths": [
+          [
+            {
+              "x": 1604,
+              "y": 663
+            },
+            {
+              "x": 1636,
+              "y": 693
+            },
+            {
+              "x": 1601,
+              "y": 732
+            },
+            {
+              "x": 1568,
+              "y": 692
+            },
+            {
+              "x": 1604,
+              "y": 663
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "assembly:diamond-3-lobe-1",
+      "kind": "assembly",
+      "parentId": "assembly:diamond-3",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.7,
+      "evidence": [
+        "Manual full-resolution source-crop and overlay review of three left-placket units"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "element:diamond-3-lobe-1",
+      "kind": "element",
+      "parentId": "assembly:diamond-3-lobe-1",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.45,
+      "evidence": [
+        "Approximate visible red interior envelope; no botanical or symbolic identity inferred.",
+        "visual hypothesis: red lobed interior form; review: draft"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      },
+      "geometry": {
+        "namespace": "reference",
+        "ports": {},
+        "paths": [
+          [
+            {
+              "x": 1604,
+              "y": 669
+            },
+            {
+              "x": 1611,
+              "y": 673
+            },
+            {
+              "x": 1615,
+              "y": 678
+            },
+            {
+              "x": 1610,
+              "y": 683
+            },
+            {
+              "x": 1604,
+              "y": 687
+            },
+            {
+              "x": 1598,
+              "y": 683
+            },
+            {
+              "x": 1593,
+              "y": 678
+            },
+            {
+              "x": 1597,
+              "y": 673
+            },
+            {
+              "x": 1604,
+              "y": 669
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "assembly:diamond-3-lobe-2",
+      "kind": "assembly",
+      "parentId": "assembly:diamond-3",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.7,
+      "evidence": [
+        "Manual full-resolution source-crop and overlay review of three left-placket units"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "element:diamond-3-lobe-2",
+      "kind": "element",
+      "parentId": "assembly:diamond-3-lobe-2",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.45,
+      "evidence": [
+        "Approximate visible red interior envelope; no botanical or symbolic identity inferred.",
+        "visual hypothesis: red lobed interior form; review: draft"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      },
+      "geometry": {
+        "namespace": "reference",
+        "ports": {},
+        "paths": [
+          [
+            {
+              "x": 1602,
+              "y": 701
+            },
+            {
+              "x": 1609,
+              "y": 705
+            },
+            {
+              "x": 1613,
+              "y": 710
+            },
+            {
+              "x": 1608,
+              "y": 715
+            },
+            {
+              "x": 1602,
+              "y": 719
+            },
+            {
+              "x": 1596,
+              "y": 715
+            },
+            {
+              "x": 1591,
+              "y": 710
+            },
+            {
+              "x": 1595,
+              "y": 705
+            },
+            {
+              "x": 1602,
+              "y": 701
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "field:collar-window",
+      "parentId": "composition",
+      "kind": "region",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.7,
+      "evidence": [
+        "Manually selected source window for collar-window; crop boundary is not a garment seam.",
+        "Draft source field box pixels: {\"x\":1450,\"y\":215,\"width\":470,\"height\":215}; no contours reconstructed"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "field:left-placket",
+      "parentId": "composition",
+      "kind": "region",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.7,
+      "evidence": [
+        "Manually selected source window for left-placket; crop boundary is not a garment seam.",
+        "Draft source field box pixels: {\"x\":1560,\"y\":445,\"width\":100,\"height\":315}; partial observed contours"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "field:left-cuff-window",
+      "parentId": "composition",
+      "kind": "region",
+      "provenanceId": "cleveland-106581-print",
+      "confidence": 0.7,
+      "evidence": [
+        "Manually selected source window for left-cuff-window; crop boundary is not a garment seam.",
+        "Draft source field box pixels: {\"x\":90,\"y\":380,\"width\":300,\"height\":450}; no contours reconstructed"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    }
+  ],
+  "relations": [
+    {
+      "kind": "nest",
+      "from": "assembly:diamond-1",
+      "to": "element:diamond-1-lobe-1"
+    },
+    {
+      "kind": "nest",
+      "from": "assembly:diamond-1",
+      "to": "element:diamond-1-lobe-2"
+    },
+    {
+      "kind": "nest",
+      "from": "assembly:diamond-2",
+      "to": "element:diamond-2-lobe-1"
+    },
+    {
+      "kind": "nest",
+      "from": "assembly:diamond-2",
+      "to": "element:diamond-2-lobe-2"
+    },
+    {
+      "kind": "nest",
+      "from": "assembly:diamond-3",
+      "to": "element:diamond-3-lobe-1"
+    },
+    {
+      "kind": "nest",
+      "from": "assembly:diamond-3",
+      "to": "element:diamond-3-lobe-2"
+    }
+  ],
+  "negativeSpace": [
+    {
+      "xMm": 1678,
+      "yMm": 527,
+      "widthMm": 22,
+      "heightMm": 240
+    }
+  ],
+  "provenance": [
+    {
+      "schema": "ascend.motif-provenance.v1",
+      "id": "cleveland-106581-print",
+      "source": "https://clevelandart.org/art/1924.629",
+      "creator": null,
+      "community": null,
+      "culturalContext": "Norwegian peasant blouse, Hardanger, 19th century. Museum catalogue attribution retained; no transfer to Ukrainian attribution or inferred symbolism.",
+      "retrievedAt": "2026-10-13T02:42:18.962278+00:00",
+      "originalSha256": "b6c879248d99e54ccf78201b09924af4cc7f20e00f10edc0edfb520529986da1",
+      "permission": {
+        "status": "verified",
+        "evidence": "Retained Cleveland API share_license_status=CC0 and https://www.clevelandart.org/open-access; visually reviewed print image. Local shape-only statistical experiment; catalogue culture retained in shirt-image-sources/review.json; no semantic or physical approval.",
+        "purposes": [
+          "analysis",
+          "reconstruction"
+        ]
+      },
+      "access": "documented-public",
+      "confidence": 0.7,
+      "transformations": [
+        {
+          "operation": "sparse observed contour annotation",
+          "evidence": "cleveland-106581-placket-v1; draft; normalized 1 mm/pixel; not physically calibrated; Approximate outer diamond envelopes and inner red lobed motifs; not individual stitches or complete cell contours.; Image deformation is preserved; units are not exact translated copies.; Collar and cuff windows identify source regions only; their internal motifs remain untraced.; No independent expert ground truth, calibrated fabric grid or manufacturing approval."
+        },
+        {
+          "operation": "manual field decomposition",
+          "evidence": "collar-window: Manually selected source window for collar-window; crop boundary is not a garment seam.; left-placket: Manually selected source window for left-placket; crop boundary is not a garment seam.; left-cuff-window: Manually selected source window for left-cuff-window; crop boundary is not a garment seam.; Visible interior strip of central placket opening; incomplete boundary protection."
+        }
+      ],
+      "regionalAttribution": {
+        "status": "documented",
+        "region": "Hardanger",
+        "evidence": {
+          "source": "https://clevelandart.org/art/1924.629",
+          "locator": "official Cleveland object API culture field",
+          "quotation": "Norway, Hardanger, 19th century"
+        }
+      }
+    }
+  ]
+}

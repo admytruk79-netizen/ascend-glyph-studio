@@ -9,8 +9,8 @@ import {fitMotifRelationModel,motifRelationTrainingRows,predictMotifRelation,ran
 import {reconstructMotif} from '../../packages/tesseract-engine/src/motif-reconstruction';
 import {stitchIrToSvg} from '../../packages/tesseract-engine/src/canonical-preview';
 async function main(){
-const manifestPath=process.argv[2]??'data/research/training/motif-relation-manifest-v2.json';
-const out=process.argv[3]??'artifacts/motif-reconstruction/trained-relations-v2';
+const manifestPath=process.argv[2]??'data/research/training/motif-relation-manifest-v3.json';
+const out=process.argv[3]??'artifacts/motif-reconstruction/trained-relations-v3';
 const startedAt=new Date().toISOString();
 const hash=(data:Uint8Array|string)=>createHash('sha256').update(data).digest('hex');
 const manifestBytes=readFileSync(manifestPath),manifest:TrainingPermissionManifest=JSON.parse(manifestBytes.toString());

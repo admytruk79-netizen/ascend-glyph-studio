@@ -1,0 +1,80 @@
+{
+  "schema": "ascend.observed-fields-benchmark.v1",
+  "source": {
+    "schema": "ascend.motif-provenance.v1",
+    "id": "cleveland-106581-print",
+    "source": "https://clevelandart.org/art/1924.629",
+    "creator": null,
+    "community": null,
+    "culturalContext": "Norwegian peasant blouse, Hardanger, 19th century. Museum catalogue attribution retained; no transfer to Ukrainian attribution or inferred symbolism.",
+    "retrievedAt": "2026-10-13T02:42:18.962278+00:00",
+    "originalSha256": "b6c879248d99e54ccf78201b09924af4cc7f20e00f10edc0edfb520529986da1",
+    "permission": {
+      "status": "verified",
+      "evidence": "Retained Cleveland API share_license_status=CC0 and https://www.clevelandart.org/open-access; visually reviewed print image. Local shape-only statistical experiment; catalogue culture retained in shirt-image-sources/review.json; no semantic or physical approval.",
+      "purposes": [
+        "analysis",
+        "reconstruction"
+      ]
+    },
+    "access": "documented-public",
+    "confidence": 0.7,
+    "transformations": [],
+    "regionalAttribution": {
+      "status": "documented",
+      "region": "Hardanger",
+      "evidence": {
+        "source": "https://clevelandart.org/art/1924.629",
+        "locator": "official Cleveland object API culture field",
+        "quotation": "Norway, Hardanger, 19th century"
+      }
+    }
+  },
+  "review": {
+    "status": "draft",
+    "method": "Manual full-resolution source-crop and overlay review of three left-placket units",
+    "limitations": [
+      "Approximate outer diamond envelopes and inner red lobed motifs; not individual stitches or complete cell contours.",
+      "Image deformation is preserved; units are not exact translated copies.",
+      "Collar and cuff windows identify source regions only; their internal motifs remain untraced.",
+      "No independent expert ground truth, calibrated fabric grid or manufacturing approval."
+    ]
+  },
+  "fieldCount": 3,
+  "fieldsWithoutContours": [
+    "collar-window",
+    "left-cuff-window"
+  ],
+  "contourCount": 9,
+  "structure": {
+    "junctionCount": 0,
+    "brokenJunctions": 0,
+    "repeatCount": 0,
+    "brokenRepeats": 0,
+    "nestedRelations": 6,
+    "negativeSpaceViolations": 0
+  },
+  "clearance": {
+    "basis": "observed-polyline-centrelines",
+    "minimumCenterlineGapMm": 2.5077841392315636,
+    "junctionExclusionRadiusMm": 0.000001,
+    "clearanceViolations": [],
+    "portsOffPath": [],
+    "outsideEnvelope": []
+  },
+  "annotationHashes": [
+    {
+      "path": "data/research/motif-annotations/cleveland-106581-placket-v1.json",
+      "sha256": "367a35ae304ed6edf9e3a3c4b0d60e26ec7cb777cbaa63638d936622e37e336e"
+    },
+    {
+      "path": "data/research/motif-annotations/cleveland-106581-fields-v1.json",
+      "sha256": "be4d18f588d29fd43a40c9a6105cfe7b4ce296cdf4484fca82946affb25f6aea"
+    }
+  ],
+  "geometryBasis": "image coordinates normalized to reference units; not physical mm",
+  "modelTrainingPerformed": false,
+  "fullHistoricalDecomposition": false,
+  "stitchCount": null,
+  "productionApproved": false
+}

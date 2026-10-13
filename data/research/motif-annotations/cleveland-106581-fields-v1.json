@@ -1,0 +1,59 @@
+{
+  "schema": "ascend.observed-motif-fields.v1",
+  "fields": [
+    {
+      "id": "collar-window",
+      "boxPx": {
+        "x": 1450,
+        "y": 215,
+        "width": 470,
+        "height": 215
+      },
+      "elementIds": [],
+      "evidence": "Manually selected source window for collar-window; crop boundary is not a garment seam."
+    },
+    {
+      "id": "left-placket",
+      "boxPx": {
+        "x": 1560,
+        "y": 445,
+        "width": 100,
+        "height": 315
+      },
+      "elementIds": [
+        "diamond-1",
+        "diamond-1-lobe-1",
+        "diamond-1-lobe-2",
+        "diamond-2",
+        "diamond-2-lobe-1",
+        "diamond-2-lobe-2",
+        "diamond-3",
+        "diamond-3-lobe-1",
+        "diamond-3-lobe-2"
+      ],
+      "evidence": "Manually selected source window for left-placket; crop boundary is not a garment seam."
+    },
+    {
+      "id": "left-cuff-window",
+      "boxPx": {
+        "x": 90,
+        "y": 380,
+        "width": 300,
+        "height": 450
+      },
+      "elementIds": [],
+      "evidence": "Manually selected source window for left-cuff-window; crop boundary is not a garment seam."
+    }
+  ],
+  "protectedSpaces": [
+    {
+      "boxPx": {
+        "x": 1678,
+        "y": 527,
+        "width": 22,
+        "height": 240
+      },
+      "evidence": "Visible interior strip of central placket opening; incomplete boundary protection."
+    }
+  ]
+}
