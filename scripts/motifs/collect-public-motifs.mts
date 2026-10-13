@@ -44,6 +44,9 @@ async function get(url: string, asJson = true): Promise<any> {
 
 // ---------- evidence, licence, flags ----------
 const UA = /ukrai[nń]|ukrajin|україн|украин|ucrain|ruthen|руськ|hutsul|huculsk|huzul|гуцул|poltav|полтав|podil|поділ|подол|bukovyn|буковин|volyn|волин|kyiv|київ|kiev|chernihiv|чернігів|lviv|львів|galici|галич|polissia|полісс|slobo|слобож|вишив|вишит|рушник|vyshyv|rushnyk|писанк|pysank/i;
+// a record that names a place in Ukraine (oblast, region, ОТГ hromada) is attributed by its own metadata too;
+// such records must still name an ornament or garment themselves, not just through the search that found them
+const UA_PLACE = /вінниц|vinnyts|житомир|zhytomyr|закарпат|zakarpat|transcarpath|запоріж|zaporiz|івано-франків|ivano-frankiv|кіровоград|kirovohrad|кропивниц|kropyvnyts|луганськ|luhansk|миколаївськ|миколаївщин|mykolaiv|одеськ|одещин|odesa|рівнен|rivne|сумськ|сумщин|тернопіл|ternopil|харків|kharkiv|херсон|kherson|хмельниц|khmelnyts|черкас|cherkas|чернівец|чернівц|chernivts|дніпропетров|дніпров|dnipro|донецьк|донеччин|покутт|pokut|бойків|бойки|boyko|(?<![а-яіїєґ])ОТГ(?![а-яіїєґ])|територіальн\S* громад/i;
 const RUSSIA = /белгород|belgorod|шебекин|shebekin|курск|kursk|воронеж|voronezh|брянск|bryansk/i;
 const PEOPLE = /festival|фестивал|couple|patron|parade|roundelay|toronto|girl|дівчин|україночк|woman|women|man in|men in|portrait|портрет|wearing|одягн|день вишиванки|vyshyvanka day|парад|march|марш|selfie|actor|singer|politician/i;
 const ORNAMENT = /embroider|haft|koszul|stickerei|hemd|výšiv|vysiv|blouse|costume|kostium|tracht|cămaș|camas|cămeș|cames|altiț|altit|broderi|плахт|запаск|спідниц|фартух|попередниц|керсетк|корсетк|кептар|сердак|безрукавк|plakht|plachta|zapask|kersetk|keptar|kieptar|serdak|apron|skirt|\bvests?\b|fartuch|spódnic|kamizel|schürze|zástěr|sukn|вишив|вишит|рушник|сорочк|хрестик|cross.?stitch|орнамент|ornament|узор|візерун|пояс|sash|textile|towel|shirt|sampler|пис[аа]нк|pysank|pattern|design|мотив|motif|ткан|weav|kilim|килим/i;
@@ -100,7 +103,9 @@ const fileInfo = (p: any, via: string) => {
   const ii = p.imageinfo?.[0]; if (!ii) return;
   const m = ii.extmetadata ?? {}, strip = (s?: { value?: string }) => (s?.value ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
   const title = String(p.title ?? "").replace(/^File:/, ""), desc = strip(m.ImageDescription), cats = strip(m.Categories);
-  const own = [title, desc, cats].find((s) => UA.test(s));
+  const own = [title, desc, cats].find((s) => UA.test(s)), place = own ? undefined : [title, desc, cats].find((s) => UA_PLACE.test(s));
+  if (place) return add({ id: `commons-${p.pageid}`, source: "commons", title, pageUrl: ii.descriptionurl ?? "", imageUrl: ii.thumburl ?? ii.url, licenceText: `${strip(m.LicenseShortName)} ${strip(m.UsageTerms)} ${strip(m.License)}`,
+    evidence: `place in Ukraine in ${place === title ? "title" : place === desc ? "description" : "categories"}: ${place.slice(0, 160)}`, group: `commons:${series(title)}`, note: `found via ${via}` });
   add({ id: `commons-${p.pageid}`, source: "commons", title, pageUrl: ii.descriptionurl ?? "", imageUrl: ii.thumburl ?? ii.url, licenceText: `${strip(m.LicenseShortName)} ${strip(m.UsageTerms)} ${strip(m.License)}`,
     evidence: own ? `${own === title ? "title" : own === desc ? "description" : "categories"}: ${own.slice(0, 160)}` : null, group: `commons:${series(title)}`, note: `found via ${via}` });
 };
@@ -226,7 +231,7 @@ async function fromEuropeana() {
         const lang = (o: any) => (o ? Object.values(o).flat().join(" ") : "");
         const text = [x.title?.join(" "), x.dcDescription?.join(" "), lang(x.dcSubjectLangAware), lang(x.edmPlaceLabelLangAware), lang(x.dcCreatorLangAware)].join(" ");
         add({ id: `europeana-${String(x.id).replace(/[^A-Za-z0-9]+/g, "-").replace(/^-/, "").slice(0, 80)}`, source: "europeana", title: String(x.title?.[0] ?? "").slice(0, 200), pageUrl: x.guid ?? "", imageUrl: img,
-          licenceText: x.rights?.[0] ?? "", evidence: UA.test(text) ? `title/description/subject/place: ${text.replace(/\s+/g, " ").slice(0, 140)}` : null,
+          licenceText: x.rights?.[0] ?? "", evidence: UA.test(text) ? `title/description/subject/place: ${text.replace(/\s+/g, " ").slice(0, 140)}` : UA_PLACE.test(text) ? `place in Ukraine in title/description/subject/place: ${text.replace(/\s+/g, " ").slice(0, 140)}` : null,
           group: `europeana:${x.dataProvider?.[0] ?? ""}:${series(String(x.title?.[0] ?? x.id))}`, note: `provider ${x.dataProvider?.[0] ?? "?"}, ${x.country?.[0] ?? "?"}; type ${x.type ?? ""}` });
       }
       cursor = r?.nextCursor ?? ""; await sleep(own ? 300 : 1200);
@@ -311,7 +316,7 @@ const todo = rows.filter((r) => {
   if (!r.licence) return !(r.status = "licence-not-public-use");
   if (!r.evidence) return !(r.status = "no-ukrainian-attribution-in-own-metadata");
   if (PEOPLE.test(r.title)) return !(r.status = "photo-of-people");
-  if (!ORNAMENT.test(`${r.title} ${r.evidence} ${r.note ?? ""}`)) return !(r.status = "not-ornament-or-textile");
+  if (!ORNAMENT.test(r.evidence.startsWith("place in Ukraine") ? `${r.title} ${r.evidence}` : `${r.title} ${r.evidence} ${r.note ?? ""}`)) return !(r.status = "not-ornament-or-textile");
   return true;
 });
 console.log(`to read: ${todo.length}`);
