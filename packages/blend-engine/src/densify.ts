@@ -111,7 +111,7 @@ export function densify(k: Kit, o: DensifyOptions): number {
         if (to) { const L = Math.hypot(to.x - foot.x, to.y - foot.y); if (L >= 1.5 && L <= R * 2.2) k.run("stalk", c.leaf, [foot, P(to.x + ((to.x - foot.x) / L) * 0.4, to.y + ((to.y - foot.y) / L) * 0.4)]); }
       }
       if (R >= 4.6) { for (const s of [-1, 0, 1]) k.leaf(s ? c.leaf : c.accent, P(px, py + R * 0.55), -Math.PI / 2 + s * 0.65 * f, R * 1.35, Math.max(1, R * 0.22), 0, 0.45, "sprig"); k.disc(c.main, px, py + R * 0.6, Math.max(1, R * 0.16), "sprig-seed"); }
-      else if (R >= 3.2) { const r = Math.max(1, R * 0.32); for (const [dx, dy] of [[0, -1.05], [-0.95, 0.55], [0.95, 0.55]]) k.disc(c.main, px + dx * r, py + dy * r, r, "kalyna"); }
+      else if (R >= 3.2) { const r = Math.max(1, R * 0.32); for (const [dx, dy] of [[0, -1.05], [-0.95, 0.55], [0.95, 0.55]] as const) k.disc(c.main, px + dx * r, py + dy * r, r, "kalyna"); }
       else k.disc(R >= 2.6 ? c.accent : c.light, px, py, Math.max(1, R * 0.55), "seed");
       k.objs.slice(before).forEach((ob, i) => stamp(grid, gw, gh, cell, ob, owner, before + i));
     };

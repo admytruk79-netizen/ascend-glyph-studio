@@ -22,21 +22,21 @@ export function measureMotifStructure(graph:MotifGraph){
  const ir=reconstructMotif(graph);let junctionCount=0,brokenJunctions=0,repeatCount=0,brokenRepeats=0;
  for(const r of graph.relations){
   if(r.kind==='junction'){junctionCount++;const a=graph.nodes.find(n=>n.id===r.from)!,b=graph.nodes.find(n=>n.id===r.to)!;
-   const x=transformMotifPoint(graph,a.id,a.geometry!.ports[r.fromPort]),y=transformMotifPoint(graph,b.id,b.geometry!.ports[r.toPort]);
+   const x=transformMotifPoint(graph,a.id,a.geometry!.ports[r.fromPort]!),y=transformMotifPoint(graph,b.id,b.geometry!.ports[r.toPort]!);
    if(Math.hypot(x.x-y.x,x.y-y.y)>r.toleranceMm)brokenJunctions++;
   }
   if(r.kind==='repeat'){repeatCount++;const points=r.members.map(id=>transformMotifPoint(graph,id,{x:0,y:0}));
-   if(points.slice(1).some((p,i)=>Math.hypot(p.x-points[i].x-r.stepMm.x,p.y-points[i].y-r.stepMm.y)>r.toleranceMm))brokenRepeats++;
+   if(points.slice(1).some((p,i)=>Math.hypot(p.x-points[i]!.x-r.stepMm.x,p.y-points[i]!.y-r.stepMm.y)>r.toleranceMm))brokenRepeats++;
   }
  }
  // Segment/rectangle clipping detects paths crossing protected space, including segments with both endpoints outside.
  const crosses=(a:{x:number;y:number},b:{x:number;y:number},r:MotifGraph['negativeSpace'][number])=>{
   let lo=0,hi=1;const dx=b.x-a.x,dy=b.y-a.y;
-  for(const [p,q] of [[-dx,a.x-r.xMm],[dx,r.xMm+r.widthMm-a.x],[-dy,a.y-r.yMm],[dy,r.yMm+r.heightMm-a.y]]){
+  for(const [p,q] of [[-dx,a.x-r.xMm],[dx,r.xMm+r.widthMm-a.x],[-dy,a.y-r.yMm],[dy,r.yMm+r.heightMm-a.y]] as const){
    if(p===0){if(q<0)return false;}else{const t=q/p;if(p<0)lo=Math.max(lo,t);else hi=Math.min(hi,t);if(lo>hi)return false;}
   }return true;
  };
- const negativeSpaceViolations=ir.filter(o=>o.kind==='run'&&o.path.slice(1).some((p,i)=>graph.negativeSpace.some(r=>crosses(o.path[i],p,r)))).length;
+ const negativeSpaceViolations=ir.filter(o=>o.kind==='run'&&o.path.slice(1).some((p,i)=>graph.negativeSpace.some(r=>crosses(o.path[i]!,p,r)))).length;
  return {junctionCount,brokenJunctions,repeatCount,brokenRepeats,nestedRelations:graph.relations.filter(r=>r.kind==='nest').length,negativeSpaceViolations};
 }
 /** Explicit design mapping, not inferred cultural equivalence or historical-to-canonical relabeling.
@@ -47,7 +47,7 @@ export function assembleAscendMotif(graph:MotifGraph,mapping:Record<string,strin
  if(envelope.machine&&envelope.machine.id!==options.machine?.id)throw new Error('motif-machine-envelope-mismatch');
  if(Object.keys(mapping).length!==elements.length||elements.some(n=>!mapping[n.id]))throw new Error('explicit ASCEND mapping required for every element');
  const base=Math.max(8,envelope.minFeatureMm*8);
- const nodes=elements.map(n=>{const form=mapping[n.id];if(!primitiveForForm(form))throw new Error('unknown canonical ASCEND form');
+ const nodes=elements.map(n=>{const form=mapping[n.id]!;if(!primitiveForForm(form))throw new Error('unknown canonical ASCEND form');
   let cursor:typeof n|undefined=n;
   while(cursor){const t=cursor.transform;if(t.reflectX||Math.abs(t.scaleX-t.scaleY)>1e-9)throw new Error('canonical bridge does not support reflection or anisotropic scale');cursor=graph.nodes.find(p=>p.id===cursor!.parentId);}
   const a=transformMotifPoint(graph,n.id,{x:0,y:0}),b=transformMotifPoint(graph,n.id,{x:1,y:0});const scale=Math.hypot(b.x-a.x,b.y-a.y)*100/base;

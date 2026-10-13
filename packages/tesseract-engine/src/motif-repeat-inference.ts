@@ -32,9 +32,9 @@ export function inferAnnotatedRepeatLattices(input:MotifGraph):MotifGraph {
   group.sort((a,b)=>a.origin.x-b.origin.x||a.origin.y-b.origin.y);
   const members=group.map(x=>x.node.id);
   if(graph.relations.some(r=>r.kind==='repeat'&&r.members.some(id=>members.includes(id))))continue;
-  const stepMm={x:group[1].origin.x-group[0].origin.x,y:group[1].origin.y-group[0].origin.y};
+  const stepMm={x:group[1]!.origin.x-group[0]!.origin.x,y:group[1]!.origin.y-group[0]!.origin.y};
   const toleranceMm=.01;
-  if(Math.hypot(stepMm.x,stepMm.y)<1e-6||group.slice(1).some((item,i)=>Math.hypot(item.origin.x-group[i].origin.x-stepMm.x,item.origin.y-group[i].origin.y-stepMm.y)>toleranceMm))continue;
+  if(Math.hypot(stepMm.x,stepMm.y)<1e-6||group.slice(1).some((item,i)=>Math.hypot(item.origin.x-group[i]!.origin.x-stepMm.x,item.origin.y-group[i]!.origin.y-stepMm.y)>toleranceMm))continue;
   const evidence=[...new Set(group.flatMap(item=>[...item.node.evidence,...item.descendants.flatMap(n=>n.evidence)]))];
   // Confidence is bounded by declared input annotation confidence, not a trained probability.
   const confidence=Math.min(...group.flatMap(item=>[item.node.confidence,...item.descendants.map(n=>n.confidence)]),

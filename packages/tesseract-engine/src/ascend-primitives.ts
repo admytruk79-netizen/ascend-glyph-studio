@@ -33,5 +33,5 @@ export function corpusPrimitiveForForm(form:string):PrimitiveGeometry|undefined{
 export function primitiveForForm(form:string):PrimitiveGeometry|undefined{
  // Corpus measurements may guide composition, but cannot supply ASCEND paths.
  const map:Record<string,PrimitiveId>={seed:"seed",axis:"axis",torus:"torus",bifurcation:"branch",branch:"branch",opposition:"opposition",crossing:"crossing",enclosure:"torus",mutation:"spatial-flow","spatial-flow":"spatial-flow","radial-emission":"radial-emission",void:"void",orbit:"orbit"};
- return ASCEND_PRIMITIVES[map[form]];
+ const id=map[form];return id===undefined?undefined:ASCEND_PRIMITIVES[id];
 }

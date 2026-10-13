@@ -25,7 +25,7 @@ function outsideJunction([a,b]:Segment,center:Point,radius:number):Segment[]{
  const cuts=[0,1];
  if(discriminant>0)for(const t of [(-B-Math.sqrt(discriminant))/(2*A),(-B+Math.sqrt(discriminant))/(2*A)])if(t>0&&t<1)cuts.push(t);
  cuts.sort((x,y)=>x-y);
- return cuts.slice(1).flatMap((hi,i)=>distance(interpolate(a,b,(hi+cuts[i])/2),center)>=radius-1e-9?[[interpolate(a,b,cuts[i]),interpolate(a,b,hi)] as Segment]:[]);
+ return cuts.slice(1).flatMap((hi,i)=>distance(interpolate(a,b,(hi+cuts[i]!)/2),center)>=radius-1e-9?[[interpolate(a,b,cuts[i]!),interpolate(a,b,hi)] as Segment]:[]);
 }
 
 /** Observed polylines: centreline clearance only, not thread width, fills or fabric validation. */
@@ -41,7 +41,7 @@ export function measureMotifClearance(graph:MotifGraph){
  const portsOffPath:string[]=[];
  for(const r of graph.relations)if(r.kind==='junction'){
   const from=graph.nodes.find(n=>n.id===r.from)!,to=graph.nodes.find(n=>n.id===r.to)!;
-  const a=transformMotifPoint(graph,from.id,from.geometry!.ports[r.fromPort]),b=transformMotifPoint(graph,to.id,to.geometry!.ports[r.toPort]);
+  const a=transformMotifPoint(graph,from.id,from.geometry!.ports[r.fromPort]!),b=transformMotifPoint(graph,to.id,to.geometry!.ports[r.toPort]!);
   const onPath=(id:string,p:Point)=>byId.get(id)!.segments.some(s=>pointSegmentDistance(p,s)<=1e-6);
   const aOn=onPath(from.id,a),bOn=onPath(to.id,b);
   if(!aOn)portsOffPath.push(`${from.id}:${r.fromPort}`);if(!bOn)portsOffPath.push(`${to.id}:${r.toPort}`);
@@ -51,7 +51,7 @@ export function measureMotifClearance(graph:MotifGraph){
  const junctionExclusionRadiusMm=Math.max(graph.minGapMm,1e-6);
  const violations:{from:string;to:string;centerlineGapMm:number}[]=[];
  for(let i=0;i<elements.length;i++)for(let j=i+1;j<elements.length;j++){
-  const a=elements[i],b=elements[j];let left=a.segments,right=b.segments;
+  const a=elements[i]!,b=elements[j]!;let left=a.segments,right=b.segments;
   for(const join of joins){
    const forward=join.from===a.id&&join.to===b.id,reverse=join.from===b.id&&join.to===a.id;
    if(!forward&&!reverse)continue;

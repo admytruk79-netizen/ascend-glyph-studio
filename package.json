@@ -33,7 +33,8 @@
     "train:references:user": "tsx scripts/train/train-user-reference-study.ts",
     "benchmark:motif:original": "tsx scripts/benchmark-original-ornament.ts",
     "motif:fragments:extract": "tsx scripts/extract-jigsaw-fragments.ts",
-    "benchmark:motif:jigsaw": "tsx scripts/benchmark-motif-jigsaw.ts"
+    "benchmark:motif:jigsaw": "tsx scripts/benchmark-motif-jigsaw.ts",
+    "benchmark:motif:learned": "tsx scripts/benchmark-learned-runtime.ts"
   },
   "devDependencies": {
     "tsx": "^4.19.2",

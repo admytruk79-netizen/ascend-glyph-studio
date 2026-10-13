@@ -164,7 +164,7 @@ export function vine(k: Kit, x: number, yBase: number, height: number, width: nu
       k.run("sprig", c.red, [P(px, y - 0.6), P(sx, sy + Math.max(1, width * 0.045) * 2.4), P(sx, sy)]);
       // a cluster of three berries, touching, at the sprig's end
       const br = Math.max(1, width * 0.045);
-      for (const [dx, dy] of [[0, 0], [-1.6, -1.05], [1.6, -1.05]]) k.disc(c.red, sx + dx * br, sy + dy * br, br, "berry");
+      for (const [dx, dy] of [[0, 0], [-1.6, -1.05], [1.6, -1.05]] as const) k.disc(c.red, sx + dx * br, sy + dy * br, br, "berry");
     }
   }
   starLily(k, X(1), yBase - top - width * 0.15, width * 0.9, c);
