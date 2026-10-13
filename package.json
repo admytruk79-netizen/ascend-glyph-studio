@@ -31,7 +31,9 @@
     "benchmark:motif:palestinian-fields": "tsx scripts/benchmark-motif-palestinian-fields.ts",
     "benchmark:motif:norwegian-placket": "tsx scripts/benchmark-motif-norwegian-placket.ts",
     "train:references:user": "tsx scripts/train/train-user-reference-study.ts",
-    "benchmark:motif:original": "tsx scripts/benchmark-original-ornament.ts"
+    "benchmark:motif:original": "tsx scripts/benchmark-original-ornament.ts",
+    "motif:fragments:extract": "tsx scripts/extract-jigsaw-fragments.ts",
+    "benchmark:motif:jigsaw": "tsx scripts/benchmark-motif-jigsaw.ts"
   },
   "devDependencies": {
     "tsx": "^4.19.2",

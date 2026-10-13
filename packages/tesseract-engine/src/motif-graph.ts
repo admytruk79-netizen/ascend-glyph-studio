@@ -86,8 +86,9 @@ export function assertMotifGraph(g:MotifGraph):void {
  }
  for(const r of g.negativeSpace)if(!finite(r.xMm,r.yMm,r.widthMm,r.heightMm)||r.xMm<0||r.yMm<0||r.widthMm<=0||r.heightMm<=0||r.xMm+r.widthMm>g.widthMm||r.yMm+r.heightMm>g.heightMm)fail('negative-space');
 }
-export function transformMotifPoint(g:MotifGraph,nodeId:string,p:StitchIrPoint):StitchIrPoint {
- const nodes=new Map(g.nodes.map(n=>[n.id,n]));let n=nodes.get(nodeId);if(!n)throw new Error('unknown motif node');
+export function createMotifPointTransformer(g:MotifGraph){
+ const nodes=new Map(g.nodes.map(n=>[n.id,n]));
+ return (nodeId:string,p:StitchIrPoint):StitchIrPoint=>{let n=nodes.get(nodeId);if(!n)throw new Error('unknown motif node');
  let out={...p};const seen=new Set<string>();
  while(n){if(seen.has(n.id))throw new Error('motif hierarchy cycle');seen.add(n.id);
   const t=n.transform,a=t.rotationDeg*Math.PI/180,x=out.x*t.scaleX*(t.reflectX?-1:1),y=out.y*t.scaleY;
@@ -95,4 +96,8 @@ export function transformMotifPoint(g:MotifGraph,nodeId:string,p:StitchIrPoint):
   if(!finite(out.x,out.y))throw new Error('motif-graph:transform-overflow');
  }
  return out;
+};
+}
+export function transformMotifPoint(g:MotifGraph,nodeId:string,p:StitchIrPoint):StitchIrPoint {
+ return createMotifPointTransformer(g)(nodeId,p);
 }

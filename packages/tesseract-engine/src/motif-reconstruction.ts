@@ -1,4 +1,4 @@
-import {assertMotifGraph,transformMotifPoint,type MotifGraph} from './motif-graph';
+import {assertMotifGraph,createMotifPointTransformer,transformMotifPoint,type MotifGraph} from './motif-graph';
 import type {StitchIrObject} from './production-stitch-ir';
 import {compileProductionObjectsToStitchIr} from './production-stitch-ir';
 import {productionObjectsFromTopology,placeProductionObjects} from './production-object';
@@ -15,8 +15,8 @@ export function decomposeAnnotatedMotif(annotations:MotifGraph,options:{inferRep
  return options.inferRepeats?inferAnnotatedRepeatLattices(graph):graph;
 }
 export function reconstructMotif(graph:MotifGraph):StitchIrObject[]{
- assertMotifGraph(graph);
- return graph.nodes.flatMap(n=>(n.geometry?.paths??[]).map((path,i)=>({kind:'run' as const,id:`${n.id}:p${i}`,color:'#111111',length:2.5,path:path.map(p=>transformMotifPoint(graph,n.id,p))})));
+ assertMotifGraph(graph);const transform=createMotifPointTransformer(graph);
+ return graph.nodes.flatMap(n=>(n.geometry?.paths??[]).map((path,i)=>({kind:'run' as const,id:`${n.id}:p${i}`,color:'#111111',length:2.5,path:path.map(p=>transform(n.id,p))})));
 }
 export function measureMotifStructure(graph:MotifGraph){
  const ir=reconstructMotif(graph);let junctionCount=0,brokenJunctions=0,repeatCount=0,brokenRepeats=0;
