@@ -1,0 +1,195 @@
+{
+  "schema": "ascend.user-reference-study.v1",
+  "scope": "local-experimental-descriptor-fit",
+  "authorizationEvidence": "User supplied these five screenshots and explicitly instructed: Use these to train engine. This is local experiment authorization, not ownership or an original-image licence claim.",
+  "sourceGroup": "user-google-image-reference-session-2026-10-13",
+  "sources": [
+    {
+      "id": "user-screenshot-1",
+      "imagePath": "/tmp/codex-remote-attachments/01a11f14-9d63-7207-b091-0c2f5b5e803b/fa527281-0458-428e-ac5f-e186bfc4fdea/1-1000072311.jpg",
+      "imageSha256": "08b68d23cbd722e77ba94d336e165baba613529a2bd6488978472352f3ebf494",
+      "width": 591,
+      "height": 1280
+    },
+    {
+      "id": "user-screenshot-2",
+      "imagePath": "/tmp/codex-remote-attachments/01a11f14-9d63-7207-b091-0c2f5b5e803b/fa527281-0458-428e-ac5f-e186bfc4fdea/2-1000072309.jpg",
+      "imageSha256": "cce489709660b5a6bb51674f830e766c53de3732df36baf647129b9bde859c62",
+      "width": 591,
+      "height": 1280
+    },
+    {
+      "id": "user-screenshot-3",
+      "imagePath": "/tmp/codex-remote-attachments/01a11f14-9d63-7207-b091-0c2f5b5e803b/fa527281-0458-428e-ac5f-e186bfc4fdea/3-1000072307.jpg",
+      "imageSha256": "53240369840495a5574d075504962a97ab6064886fce71102ddd948874e68f02",
+      "width": 591,
+      "height": 1280
+    },
+    {
+      "id": "user-screenshot-4",
+      "imagePath": "/tmp/codex-remote-attachments/01a11f14-9d63-7207-b091-0c2f5b5e803b/fa527281-0458-428e-ac5f-e186bfc4fdea/4-1000072301.jpg",
+      "imageSha256": "0444ea8bd5f7b4802ced5f121e5c7e96b64a76a828b7298313f1158fda8a6833",
+      "width": 591,
+      "height": 1280
+    },
+    {
+      "id": "user-screenshot-5",
+      "imagePath": "/tmp/codex-remote-attachments/01a11f14-9d63-7207-b091-0c2f5b5e803b/fa527281-0458-428e-ac5f-e186bfc4fdea/5-1000072303.jpg",
+      "imageSha256": "7e0051988f9438bff28961aa98794bb168bb0106a18967b8b062a5a160920556",
+      "width": 591,
+      "height": 1280
+    }
+  ],
+  "crops": [
+    {
+      "id": "towel-bands",
+      "sourceId": "user-screenshot-1",
+      "box": {
+        "left": 20,
+        "top": 450,
+        "width": 240,
+        "height": 260
+      },
+      "observedApproaches": [
+        "multi-band",
+        "framed-repeat"
+      ],
+      "reviewStatus": "draft-visual-study",
+      "originalSourceAttribution": "unverified search-result thumbnail; original creator, date and region not established"
+    },
+    {
+      "id": "cutwork-border",
+      "sourceId": "user-screenshot-1",
+      "box": {
+        "left": 15,
+        "top": 855,
+        "width": 270,
+        "height": 160
+      },
+      "observedApproaches": [
+        "angular-border",
+        "openwork-reference"
+      ],
+      "reviewStatus": "draft-visual-study",
+      "originalSourceAttribution": "unverified search-result thumbnail; original creator, date and region not established"
+    },
+    {
+      "id": "dark-floral-field",
+      "sourceId": "user-screenshot-2",
+      "box": {
+        "left": 15,
+        "top": 365,
+        "width": 270,
+        "height": 205
+      },
+      "observedApproaches": [
+        "branching-floral",
+        "nested-fields"
+      ],
+      "reviewStatus": "draft-visual-study",
+      "originalSourceAttribution": "unverified search-result thumbnail; original creator, date and region not established"
+    },
+    {
+      "id": "sleeve-diamond-grid",
+      "sourceId": "user-screenshot-2",
+      "box": {
+        "left": 25,
+        "top": 670,
+        "width": 250,
+        "height": 170
+      },
+      "observedApproaches": [
+        "nested-geometric",
+        "field-repeat"
+      ],
+      "reviewStatus": "draft-visual-study",
+      "originalSourceAttribution": "unverified search-result thumbnail; original creator, date and region not established"
+    },
+    {
+      "id": "star-and-tree-towel",
+      "sourceId": "user-screenshot-3",
+      "box": {
+        "left": 317,
+        "top": 180,
+        "width": 245,
+        "height": 300
+      },
+      "observedApproaches": [
+        "star-grid",
+        "branching-lower-band"
+      ],
+      "reviewStatus": "draft-visual-study",
+      "originalSourceAttribution": "unverified search-result thumbnail; original creator, date and region not established"
+    },
+    {
+      "id": "floral-sleeve",
+      "sourceId": "user-screenshot-3",
+      "box": {
+        "left": 25,
+        "top": 947,
+        "width": 235,
+        "height": 235
+      },
+      "observedApproaches": [
+        "branching-floral",
+        "garment-placement"
+      ],
+      "reviewStatus": "draft-visual-study",
+      "originalSourceAttribution": "unverified search-result thumbnail; original creator, date and region not established"
+    },
+    {
+      "id": "red-diamond-band",
+      "sourceId": "user-screenshot-4",
+      "box": {
+        "left": 322,
+        "top": 669,
+        "width": 229,
+        "height": 187
+      },
+      "observedApproaches": [
+        "nested-geometric",
+        "border-repeat"
+      ],
+      "reviewStatus": "draft-visual-study",
+      "originalSourceAttribution": "unverified search-result thumbnail; original creator, date and region not established"
+    },
+    {
+      "id": "neck-diamond-panel",
+      "sourceId": "user-screenshot-5",
+      "box": {
+        "left": 18,
+        "top": 520,
+        "width": 250,
+        "height": 297
+      },
+      "observedApproaches": [
+        "nested-geometric",
+        "garment-placement"
+      ],
+      "reviewStatus": "draft-visual-study",
+      "originalSourceAttribution": "unverified search-result thumbnail; original creator, date and region not established"
+    },
+    {
+      "id": "angular-birdlike-field",
+      "sourceId": "user-screenshot-5",
+      "box": {
+        "left": 23,
+        "top": 930,
+        "width": 240,
+        "height": 220
+      },
+      "observedApproaches": [
+        "angular-forms",
+        "multi-band"
+      ],
+      "reviewStatus": "draft-visual-study",
+      "originalSourceAttribution": "unverified search-result thumbnail; original creator, date and region not established"
+    }
+  ],
+  "limitations": [
+    "Screenshot thumbnails are low-resolution and may contain distortion or partial garment views.",
+    "Observed approaches are manual study labels, not verified cultural taxonomy or semantic ground truth.",
+    "All five screenshots are one correlated group; duplicated motifs are not independent samples.",
+    "Original photographs are not traced, redistributed or admitted as CC0/owned sources."
+  ]
+}

@@ -29,7 +29,8 @@
     "train:patterns:sequence": "tsx scripts/train/train-pattern-sequence.ts",
     "benchmark:motif:interlace": "tsx scripts/benchmark-motif-interlace.ts",
     "benchmark:motif:palestinian-fields": "tsx scripts/benchmark-motif-palestinian-fields.ts",
-    "benchmark:motif:norwegian-placket": "tsx scripts/benchmark-motif-norwegian-placket.ts"
+    "benchmark:motif:norwegian-placket": "tsx scripts/benchmark-motif-norwegian-placket.ts",
+    "train:references:user": "tsx scripts/train/train-user-reference-study.ts"
   },
   "devDependencies": {
     "tsx": "^4.19.2",
