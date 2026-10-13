@@ -20,6 +20,11 @@ const probes: Record<string, string[]> = {
   "polona": ["https://polona.pl/api/entities/?query=haft%20ukrai%C5%84ski&size=5"],
   "harvard": ["https://api.harvardartmuseums.org/object?keyword=ukrainian&size=5"],
   "va": ["https://api.vam.ac.uk/v2/objects/search?q=ukrainian%20embroidery&page_size=5&images_exist=1"],
+  "museum-digital-ua": ["https://ua.museum-digital.org/json/objects?s=%D0%B2%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0", "https://ua.museum-digital.org/objects?s=%D0%B2%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0&output=json",
+    "https://global.museum-digital.org/json/objects?s=ukrain%20embroidery"],
+  "nlu-elib": ["https://elib.nlu.org.ua/search.html?q=%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82"],
+  "honchar": ["https://honchar.org.ua/"],
+  "esu-museum": ["https://museum-portal.com/"],
   "cma-check": ["https://openaccess-api.clevelandart.org/api/artworks/?q=ukrainian&has_image=1&limit=5&cc0"],
 };
 const out: Record<string, unknown> = {};
@@ -28,7 +33,7 @@ for (const [name, urls] of Object.entries(probes)) {
     try {
       const r = await fetch(url, { headers: { "User-Agent": UA, Accept: "application/json, application/ld+json;q=0.9, */*;q=0.5" }, signal: AbortSignal.timeout(30000) });
       const body = await r.text();
-      return { url, status: r.status, type: r.headers.get("content-type"), length: body.length, sample: body.slice(0, 6000) };
+      return { url, status: r.status, type: r.headers.get("content-type"), length: body.length, sample: body.slice(0, 8000) };
     } catch (e) { return { url, error: String(e) }; }
   }));
   console.log(name, JSON.stringify((out[name] as any[]).map((p) => p.status ?? p.error)));

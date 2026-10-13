@@ -44,7 +44,7 @@ async function get(url: string, asJson = true): Promise<any> {
 }
 
 // ---------- evidence, licence, flags ----------
-const UA = /ukrai[nń]|ukrajin|україн|украин|ucrain|ruthen|руськ|hutsul|huculsk|huzul|гуцул|poltav|полтав|podil|поділ|подол|bukovyn|буковин|volyn|волин|kyiv|київ|kiev|chernihiv|чернігів|lviv|львів|galici|галич|polissia|полісс|slobo|слобож|вишив|вишит|рушник|vyshyv|rushnyk|писанк|pysank/i;
+const UA = /малорос|малорус|южнорус|южно-рус|malorus|little russia|ukrai[nń]|ukrajin|україн|украин|ucrain|ruthen|руськ|hutsul|huculsk|huzul|гуцул|poltav|полтав|podil|поділ|подол|bukovyn|буковин|volyn|волин|kyiv|київ|kiev|chernihiv|чернігів|lviv|львів|galici|галич|polissia|полісс|slobo|слобож|вишив|вишит|рушник|vyshyv|rushnyk|писанк|pysank/i;
 // a record that names a place in Ukraine (oblast, region, ОТГ hromada) is attributed by its own metadata too;
 // such records must still name an ornament or garment themselves, not just through the search that found them
 const UA_PLACE = /вінниц|vinnyts|житомир|zhytomyr|закарпат|zakarpat|transcarpath|запоріж|zaporiz|івано-франків|ivano-frankiv|кіровоград|kirovohrad|кропивниц|kropyvnyts|луганськ|luhansk|миколаївськ|миколаївщин|mykolaiv|одеськ|одещин|odesa|рівнен|rivne|сумськ|сумщин|тернопіл|ternopil|харків|kharkiv|херсон|kherson|хмельниц|khmelnyts|черкас|cherkas|чернівец|чернівц|chernivts|дніпропетров|дніпров|dnipro|донецьк|донеччин|покутт|pokut|бойків|бойки|boyko|(?<![а-яіїєґ])ОТГ(?![а-яіїєґ])|територіальн\S* громад/i;
@@ -96,9 +96,14 @@ const ROOT_CATEGORIES = ["Embroidery of Ukraine", "Rushnyky", "Vyshyvanka", "Ukr
   "Ivan Honchar Museum", "National Museum of Ukrainian Folk Decorative Art", "Embroidery in museums of Ukraine", "Rushnyky in museums", "Ukrainian women's shirts", "Sorochka",
   // skirts, aprons and vests of the Ukrainian costume
   "Plakhta", "Zapaska", "Kersetka", "Keptar", "Keptars", "Aprons of Ukraine", "Skirts of Ukraine", "Vests of Ukraine", "Hutsul costume", "Ukrainian folk clothing"];
+// collections of Ukrainian museums on Commons: found by searching category names, then walked one level down
+const MUSEUM_CATEGORY_SEARCHES = ["музей вишивки", "музей рушника", "музей народного мистецтва", "музей етнографії", "музей народної архітектури та побуту", "музей гуцульщини", "Museum of Hutsul", "Museum of Ethnography and Crafts",
+  "Pyrohiv museum", "Pereiaslav museum", "Museum of Ukrainian Folk Decorative Art", "Ivan Honchar Museum", "Kolomyia museum", "Lviv Museum of Ethnography", "Poltava Local Lore Museum", "Chernihiv museum", "краєзнавчий музей вишивка",
+  "Exhibits in museums of Ukraine", "Embroidery in museums", "Ukrainian ornament album", "орнамент український альбом"];
 const SEARCHES = ["Мотиви українського орнаменту", "український орнамент", "українська вишивка", "вишивка хрестиком", "рушник вишитий", "вишиванка орнамент", "Ukrainian embroidery pattern", "Ukrainian cross-stitch", "Ukrainian ornament", "Hutsul embroidery", "Poltava embroidery", "Podillia embroidery",
   "вишиванка", "сорочка вишита", "вишита сорочка", "жіноча сорочка вишивка", "чоловіча сорочка вишита", "вишита сорочка музей", "уставка сорочки", "Ukrainian embroidered shirt", "vyshyvanka museum", "Ukrainian blouse embroidery",
   "плахта", "запаска", "спідниця вишита", "фартух вишитий", "попередниця", "керсетка", "корсетка", "кептар", "сердак", "безрукавка вишита",
+  "Український народний орнамент", "Пчілка орнамент", "народний орнамент вишивки", "орнамент рушника", "малоросійський орнамент", "южнорусский орнамент", "Ukrainian folk ornament album",
   "plakhta", "Ukrainian apron embroidery", "Ukrainian skirt", "Hutsul keptar", "Ukrainian vest embroidered"];
 const fileInfo = (p: any, via: string) => {
   const ii = p.imageinfo?.[0]; if (!ii) return;
@@ -112,7 +117,12 @@ const fileInfo = (p: any, via: string) => {
 };
 async function fromCommons() {
   const seen = new Set<string>(), queue: [string, number][] = ROOT_CATEGORIES.map((c) => [c, 0]);
-  while (queue.length && seen.size < 400 && candidates.size < MAX_IMAGES) {
+  for (const term of MUSEUM_CATEGORY_SEARCHES) {
+    const r = await get(`${COMMONS}&${new URLSearchParams({ action: "query", list: "search", srsearch: term, srnamespace: "14", srlimit: "30" })}`);
+    for (const h of r?.query?.search ?? []) queue.push([String(h.title).replace(/^Category:/, ""), 1]);
+    await sleep(200);
+  }
+  while (queue.length && seen.size < 900 && candidates.size < MAX_IMAGES) {
     const [cat, depth] = queue.shift()!;
     if (seen.has(cat)) continue; seen.add(cat);
     let cont: any = {};
@@ -188,11 +198,11 @@ async function fromLoc() {
 
 // ---------- source: Internet Archive embroidery pattern books (published before 1929) ----------
 async function fromIaPatternBooks() {
-  const q = encodeURIComponent('(вишивка OR вишивання OR узори OR вышивания OR "ukrainian embroidery" OR "ruthenian embroidery" OR "малороссийские узоры") AND mediatype:texts AND year:[1800 TO 1928]');
+  const q = encodeURIComponent('(вишивка OR вишивання OR узори OR вышивания OR "ukrainian embroidery" OR "ruthenian embroidery" OR "малороссийские узоры" OR орнамент OR орнаментъ OR "ukrainian ornament" OR "малорусский орнамент" OR "южнорусский орнамент") AND mediatype:texts AND year:[1800 TO 1928]');
   const r = await get(`https://archive.org/advancedsearch.php?q=${q}&fl[]=identifier&fl[]=title&fl[]=year&fl[]=imagecount&rows=200&output=json`);
   for (const d of r?.response?.docs ?? []) {
     const title = String(Array.isArray(d.title) ? d.title[0] : d.title ?? ""), pages = Math.min(Number(d.imagecount ?? 0) || 40, 80);
-    if (!UA.test(title) && !/узор|вышив|embroider/i.test(title)) continue;
+    if (!UA.test(title) || !/узор|вышив|вишив|орнамент|embroider|ornament/i.test(title)) continue;
     for (let n = 0; n < pages; n++) add({ id: `iab-${d.identifier}-p${n}`, source: "ia", title: `${title} (${d.year ?? ""}), page ${n}`, pageUrl: `https://archive.org/details/${d.identifier}/page/n${n}`,
       imageUrl: `https://archive.org/download/${d.identifier}/page/n${n}_w1600.jpg`, licenceText: `Published ${d.year}; public domain in the US`,
       evidence: UA.test(title) ? `title: ${title.slice(0, 120)}` : null, group: `ia:${d.identifier}` });
