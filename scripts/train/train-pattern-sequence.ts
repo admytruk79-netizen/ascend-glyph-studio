@@ -7,8 +7,8 @@ import {learnImage,featureOf,kmeans} from '../../packages/tesseract-engine/src/r
 // Refit cumulatively in manifest order; descriptors are unsupervised shapes,
 // never historical species, stitch routes or semantic motif labels.
 async function main(){
- const path=process.argv[2]??'data/research/training/pattern-sequence-manifest-v2.json';
- const out=process.argv[3]??'artifacts/motif-reconstruction/pattern-sequence-v2';
+ const path=process.argv[2]??'data/research/training/pattern-sequence-manifest-v3.json';
+ const out=process.argv[3]??'artifacts/motif-reconstruction/pattern-sequence-v3';
  const bytes=readFileSync(path),manifest:TrainingPermissionManifest=JSON.parse(bytes.toString());
  const permissions=trainingPermissions(manifest),seen=new Set<string>();
  const examples=await Promise.all(manifest.entries.map(async e=>{
