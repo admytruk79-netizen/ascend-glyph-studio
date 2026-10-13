@@ -3,7 +3,7 @@
  * results, which licence fields they return. Writes data/motifs/probe/museums.json (a sample of each response).
  * Runs on a GitHub runner; the local sandbox cannot reach museum hosts.
  */
-import { writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 
 const UA = "ASCEND-motif-learner/0.1 (https://github.com/admytruk79-netizen/ascend-glyph-studio; provenance-first research)";
 const probes: Record<string, string[]> = {
@@ -33,4 +33,5 @@ for (const [name, urls] of Object.entries(probes)) {
   }));
   console.log(name, JSON.stringify((out[name] as any[]).map((p) => p.status ?? p.error)));
 }
+mkdirSync("data/motifs/probe", { recursive: true });
 writeFileSync("data/motifs/probe/museums.json", JSON.stringify(out, null, 1) + "\n");
