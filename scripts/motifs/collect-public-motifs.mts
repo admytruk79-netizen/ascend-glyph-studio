@@ -46,7 +46,7 @@ async function get(url: string, asJson = true): Promise<any> {
 const UA = /ukrai[nń]|ukrajin|україн|украин|ucrain|ruthen|руськ|hutsul|huculsk|huzul|гуцул|poltav|полтав|podil|поділ|подол|bukovyn|буковин|volyn|волин|kyiv|київ|kiev|chernihiv|чернігів|lviv|львів|galici|галич|polissia|полісс|slobo|слобож|вишив|вишит|рушник|vyshyv|rushnyk|писанк|pysank/i;
 const RUSSIA = /белгород|belgorod|шебекин|shebekin|курск|kursk|воронеж|voronezh|брянск|bryansk/i;
 const PEOPLE = /festival|фестивал|couple|patron|parade|roundelay|toronto|girl|дівчин|україночк|woman|women|man in|men in|portrait|портрет|wearing|одягн|день вишиванки|vyshyvanka day|парад|march|марш|selfie|actor|singer|politician/i;
-const ORNAMENT = /embroider|haft|koszul|stickerei|hemd|výšiv|vysiv|blouse|costume|kostium|tracht|cămaș|camas|cămeș|cames|altiț|altit|broderi|вишив|вишит|рушник|сорочк|хрестик|cross.?stitch|орнамент|ornament|узор|візерун|пояс|sash|textile|towel|shirt|sampler|пис[аа]нк|pysank|pattern|design|мотив|motif|ткан|weav|kilim|килим/i;
+const ORNAMENT = /embroider|haft|koszul|stickerei|hemd|výšiv|vysiv|blouse|costume|kostium|tracht|cămaș|camas|cămeș|cames|altiț|altit|broderi|плахт|запаск|спідниц|фартух|попередниц|керсетк|корсетк|кептар|сердак|безрукавк|plakht|plachta|zapask|kersetk|keptar|kieptar|serdak|apron|skirt|\bvests?\b|fartuch|spódnic|kamizel|schürze|zástěr|sukn|вишив|вишит|рушник|сорочк|хрестик|cross.?stitch|орнамент|ornament|узор|візерун|пояс|sash|textile|towel|shirt|sampler|пис[аа]нк|pysank|pattern|design|мотив|motif|ткан|weav|kilim|килим/i;
 
 type Licence = "public-domain" | "CC0" | "CC-BY" | "CC-BY-SA";
 function licenceOf(text: string | undefined | null): Licence | null {
@@ -89,9 +89,13 @@ const COMMONS = "https://commons.wikimedia.org/w/api.php?format=json&formatversi
 const ROOT_CATEGORIES = ["Embroidery of Ukraine", "Rushnyky", "Vyshyvanka", "Ukrainian embroidery", "Ornaments of Ukraine", "Ukrainian ornaments", "Embroidered shirts of Ukraine", "Cross-stitch in Ukraine", "Pysanky", "Ukrainian folk art", "Textiles of Ukraine", "Motifs of Ukrainian ornament", "Мотиви українського орнаменту",
   // shirts and museum collections (vyshyvanka focus)
   "Vyshyvankas", "Embroidered shirts", "Ukrainian embroidered shirts", "Folk costumes of Ukraine", "Ukrainian folk costume", "Ukrainian national costume",
-  "Ivan Honchar Museum", "National Museum of Ukrainian Folk Decorative Art", "Embroidery in museums of Ukraine", "Rushnyky in museums", "Ukrainian women's shirts", "Sorochka"];
+  "Ivan Honchar Museum", "National Museum of Ukrainian Folk Decorative Art", "Embroidery in museums of Ukraine", "Rushnyky in museums", "Ukrainian women's shirts", "Sorochka",
+  // skirts, aprons and vests of the Ukrainian costume
+  "Plakhta", "Zapaska", "Kersetka", "Keptar", "Keptars", "Aprons of Ukraine", "Skirts of Ukraine", "Vests of Ukraine", "Hutsul costume", "Ukrainian folk clothing"];
 const SEARCHES = ["Мотиви українського орнаменту", "український орнамент", "українська вишивка", "вишивка хрестиком", "рушник вишитий", "вишиванка орнамент", "Ukrainian embroidery pattern", "Ukrainian cross-stitch", "Ukrainian ornament", "Hutsul embroidery", "Poltava embroidery", "Podillia embroidery",
-  "вишиванка", "сорочка вишита", "вишита сорочка", "жіноча сорочка вишивка", "чоловіча сорочка вишита", "вишита сорочка музей", "уставка сорочки", "Ukrainian embroidered shirt", "vyshyvanka museum", "Ukrainian blouse embroidery"];
+  "вишиванка", "сорочка вишита", "вишита сорочка", "жіноча сорочка вишивка", "чоловіча сорочка вишита", "вишита сорочка музей", "уставка сорочки", "Ukrainian embroidered shirt", "vyshyvanka museum", "Ukrainian blouse embroidery",
+  "плахта", "запаска", "спідниця вишита", "фартух вишитий", "попередниця", "керсетка", "корсетка", "кептар", "сердак", "безрукавка вишита",
+  "plakhta", "Ukrainian apron embroidery", "Ukrainian skirt", "Hutsul keptar", "Ukrainian vest embroidered"];
 const fileInfo = (p: any, via: string) => {
   const ii = p.imageinfo?.[0]; if (!ii) return;
   const m = ii.extmetadata ?? {}, strip = (s?: { value?: string }) => (s?.value ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
@@ -210,7 +214,8 @@ async function fromEuropeana() {
   const own = process.env.EUROPEANA_API_KEY, key = own || "api2demo", pages = own ? 10 : 3;
   if (!own) console.log("europeana: no EUROPEANA_API_KEY, using the public demo key with a small cap");
   const queries = ["вишиванка", "вишивка", "рушник", "сорочка вишита", "vyshyvanka", "Ukrainian embroidery", "Ukrainian embroidered shirt", "Ukrainian folk costume",
-    "haft ukraiński", "koszula ukraińska", "huculski haft", "ukrainische Stickerei", "ukrainisches Hemd", "ukrajinská výšivka"];
+    "haft ukraiński", "koszula ukraińska", "huculski haft", "ukrainische Stickerei", "ukrainisches Hemd", "ukrajinská výšivka",
+    "плахта", "запаска", "керсетка", "кептар", "plachta ukraińska", "fartuch ukraiński", "kieptar huculski", "ukrainische Schürze", "Ukrainian apron", "Ukrainian skirt", "Ukrainian vest"];
   for (const q of queries) {
     let cursor = "*";
     for (let i = 0; i < pages && cursor; i++) {
