@@ -1,0 +1,113 @@
+{
+  "schema": "ascend.user-imagery-examples.v1",
+  "entries": [
+    {
+      "id": "floral-sleeve",
+      "inputFilename": "4-1000072297.jpg",
+      "inputSha256": "a504c6bd59b2f2745c4b2a5bd2988736f1383e1075438267c8e8ed1aea291f1f",
+      "box": {
+        "left": 123,
+        "top": 236,
+        "width": 344,
+        "height": 613
+      },
+      "cropSha256": "5242ced20c5d9e3eaf274b8410b122787ffd260617659805473f1cdecb06e1a3",
+      "imagePath": "data/research/user-imagery-examples/floral-sleeve.jpg",
+      "status": "user-supplied-local-reference-study",
+      "originalCreator": null,
+      "originalLicence": "unverified",
+      "region": "unassigned",
+      "authorization": "User supplied the screenshots and asked to use their imagery. No ownership, CC0 or production-library claim."
+    },
+    {
+      "id": "branching-border",
+      "inputFilename": "3-1000072299.jpg",
+      "inputSha256": "21d36bb0f6fd69474eddf3f36be301535902f3b8fee08ad326cd4eeed6fb476c",
+      "box": {
+        "left": 302,
+        "top": 244,
+        "width": 275,
+        "height": 245
+      },
+      "cropSha256": "f3dbfff4b09d67de9f7b77a723c95176b285a93d71b16bc80dc34a5e50d239af",
+      "imagePath": "data/research/user-imagery-examples/branching-border.jpg",
+      "status": "user-supplied-local-reference-study",
+      "originalCreator": null,
+      "originalLicence": "unverified",
+      "region": "unassigned",
+      "authorization": "User supplied the screenshots and asked to use their imagery. No ownership, CC0 or production-library claim."
+    },
+    {
+      "id": "scroll-and-vine",
+      "inputFilename": "3-1000072299.jpg",
+      "inputSha256": "21d36bb0f6fd69474eddf3f36be301535902f3b8fee08ad326cd4eeed6fb476c",
+      "box": {
+        "left": 18,
+        "top": 480,
+        "width": 264,
+        "height": 335
+      },
+      "cropSha256": "8d64485eb9da8eaf751f4cadb088693d0400d596b4ed11cafe50553ce6ca10bd",
+      "imagePath": "data/research/user-imagery-examples/scroll-and-vine.jpg",
+      "status": "user-supplied-local-reference-study",
+      "originalCreator": null,
+      "originalLicence": "unverified",
+      "region": "unassigned",
+      "authorization": "User supplied the screenshots and asked to use their imagery. No ownership, CC0 or production-library claim."
+    },
+    {
+      "id": "mixed-diamond-band",
+      "inputFilename": "3-1000072299.jpg",
+      "inputSha256": "21d36bb0f6fd69474eddf3f36be301535902f3b8fee08ad326cd4eeed6fb476c",
+      "box": {
+        "left": 306,
+        "top": 594,
+        "width": 267,
+        "height": 190
+      },
+      "cropSha256": "7bfdc78cdf516bb30e341cd2efda9fe4755df02376dae4cfde2dc61f35e9c10a",
+      "imagePath": "data/research/user-imagery-examples/mixed-diamond-band.jpg",
+      "status": "user-supplied-local-reference-study",
+      "originalCreator": null,
+      "originalLicence": "unverified",
+      "region": "unassigned",
+      "authorization": "User supplied the screenshots and asked to use their imagery. No ownership, CC0 or production-library claim."
+    },
+    {
+      "id": "geometric-sleeve",
+      "inputFilename": "1-1000072301.jpg",
+      "inputSha256": "0444ea8bd5f7b4802ced5f121e5c7e96b64a76a828b7298313f1158fda8a6833",
+      "box": {
+        "left": 322,
+        "top": 664,
+        "width": 235,
+        "height": 210
+      },
+      "cropSha256": "8f12e738a8ad25a6bd4a29949445c1c173137da7157382b0cf3e757e7c2732f5",
+      "imagePath": "data/research/user-imagery-examples/geometric-sleeve.jpg",
+      "status": "user-supplied-local-reference-study",
+      "originalCreator": null,
+      "originalLicence": "unverified",
+      "region": "unassigned",
+      "authorization": "User supplied the screenshots and asked to use their imagery. No ownership, CC0 or production-library claim."
+    },
+    {
+      "id": "angular-figure-field",
+      "inputFilename": "2-1000072303.jpg",
+      "inputSha256": "7e0051988f9438bff28961aa98794bb168bb0106a18967b8b062a5a160920556",
+      "box": {
+        "left": 17,
+        "top": 935,
+        "width": 261,
+        "height": 217
+      },
+      "cropSha256": "5a1958d8aa4dfe85a8eddda1dacfac6e46f8c641a7190e0a0807341d68a06fcd",
+      "imagePath": "data/research/user-imagery-examples/angular-figure-field.jpg",
+      "status": "user-supplied-local-reference-study",
+      "originalCreator": null,
+      "originalLicence": "unverified",
+      "region": "unassigned",
+      "authorization": "User supplied the screenshots and asked to use their imagery. No ownership, CC0 or production-library claim."
+    }
+  ]
+}
