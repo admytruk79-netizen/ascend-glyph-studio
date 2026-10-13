@@ -46,7 +46,7 @@ async function get(url: string, asJson = true): Promise<any> {
 const UA = /ukrai[nń]|ukrajin|україн|украин|ucrain|ruthen|руськ|hutsul|huculsk|huzul|гуцул|poltav|полтав|podil|поділ|подол|bukovyn|буковин|volyn|волин|kyiv|київ|kiev|chernihiv|чернігів|lviv|львів|galici|галич|polissia|полісс|slobo|слобож|вишив|вишит|рушник|vyshyv|rushnyk|писанк|pysank/i;
 const RUSSIA = /белгород|belgorod|шебекин|shebekin|курск|kursk|воронеж|voronezh|брянск|bryansk/i;
 const PEOPLE = /festival|фестивал|couple|patron|parade|roundelay|toronto|girl|дівчин|україночк|woman|women|man in|men in|portrait|портрет|wearing|одягн|день вишиванки|vyshyvanka day|парад|march|марш|selfie|actor|singer|politician/i;
-const ORNAMENT = /embroider|haft|koszul|stickerei|hemd|výšiv|vysiv|blouse|costume|kostium|tracht|вишив|вишит|рушник|сорочк|хрестик|cross.?stitch|орнамент|ornament|узор|візерун|пояс|sash|textile|towel|shirt|sampler|пис[аа]нк|pysank|pattern|design|мотив|motif|ткан|weav|kilim|килим/i;
+const ORNAMENT = /embroider|haft|koszul|stickerei|hemd|výšiv|vysiv|blouse|costume|kostium|tracht|cămaș|camas|cămeș|cames|altiț|altit|broderi|вишив|вишит|рушник|сорочк|хрестик|cross.?stitch|орнамент|ornament|узор|візерун|пояс|sash|textile|towel|shirt|sampler|пис[аа]нк|pysank|pattern|design|мотив|motif|ткан|weav|kilim|килим/i;
 
 type Licence = "public-domain" | "CC0" | "CC-BY" | "CC-BY-SA";
 function licenceOf(text: string | undefined | null): Licence | null {
@@ -297,6 +297,8 @@ type Row = Candidate & { licence: Licence | null; status: string; flags: string[
 const rows: Row[] = [...candidates.values()].map((c) => {
   const flags: string[] = [];
   if (RUSSIA.test(`${c.title} ${c.evidence ?? ""}`)) flags.push("place-now-in-russia");
+  // Bukovina and other borderlands are shared Romanian-Ukrainian (or Polish-Ukrainian) traditions: a person decides
+  if (/bucovin|bukovin|буковин|maramure|мармар/i.test(`${c.title} ${c.evidence ?? ""} ${c.note ?? ""}`) || /Romania|Poland|Moldova/.test(c.note ?? "")) flags.push("shared-tradition-check-attribution");
   if (/in the us/i.test(c.licenceText)) flags.push("public-domain-in-us-only");
   return { ...c, licence: licenceOf(c.licenceText), status: "", flags };
 });
