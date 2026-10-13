@@ -5,7 +5,8 @@
  * Sources: the Neon research corpus (Commons files, Internet Archive pages), Wikimedia Commons (categories + file
  * search, licence from each file's own metadata), Art Institute of Chicago (public domain), Cleveland Museum of Art (CC0),
  * Library of Congress (no known restrictions), Internet Archive pattern books published before 1929, NYPL Digital
- * Collections (public domain), and, when their API keys are configured, Europeana (open reuse) and Smithsonian (CC0).
+ * Collections (public domain), Finna (Finnish museums and archives), DigitaltMuseum (Swedish and Norwegian museums), and,
+ * when their API keys are configured, Europeana (open reuse) and Smithsonian (CC0).
  *
  * Rules:
  *  - licence must be public domain, CC0, CC BY or CC BY-SA (any version); NC / ND / unknown are listed and skipped;
@@ -49,7 +50,7 @@ const UA = /ukrai[nń]|ukrajin|україн|украин|ucrain|ruthen|русь�
 const UA_PLACE = /вінниц|vinnyts|житомир|zhytomyr|закарпат|zakarpat|transcarpath|запоріж|zaporiz|івано-франків|ivano-frankiv|кіровоград|kirovohrad|кропивниц|kropyvnyts|луганськ|luhansk|миколаївськ|миколаївщин|mykolaiv|одеськ|одещин|odesa|рівнен|rivne|сумськ|сумщин|тернопіл|ternopil|харків|kharkiv|херсон|kherson|хмельниц|khmelnyts|черкас|cherkas|чернівец|чернівц|chernivts|дніпропетров|дніпров|dnipro|донецьк|донеччин|покутт|pokut|бойків|бойки|boyko|(?<![а-яіїєґ])ОТГ(?![а-яіїєґ])|територіальн\S* громад/i;
 const RUSSIA = /белгород|belgorod|шебекин|shebekin|курск|kursk|воронеж|voronezh|брянск|bryansk/i;
 const PEOPLE = /festival|фестивал|couple|patron|parade|roundelay|toronto|girl|дівчин|україночк|woman|women|man in|men in|portrait|портрет|wearing|одягн|день вишиванки|vyshyvanka day|парад|march|марш|selfie|actor|singer|politician/i;
-const ORNAMENT = /embroider|haft|koszul|stickerei|hemd|výšiv|vysiv|blouse|costume|kostium|tracht|cămaș|camas|cămeș|cames|altiț|altit|broderi|плахт|запаск|спідниц|фартух|попередниц|керсетк|корсетк|кептар|сердак|безрукавк|plakht|plachta|zapask|kersetk|keptar|kieptar|serdak|apron|skirt|\bvests?\b|fartuch|spódnic|kamizel|schürze|zástěr|sukn|вишив|вишит|рушник|сорочк|хрестик|cross.?stitch|орнамент|ornament|узор|візерун|пояс|sash|textile|towel|shirt|sampler|пис[аа]нк|pysank|pattern|design|мотив|motif|ткан|weav|kilim|килим/i;
+const ORNAMENT = /embroider|haft|koszul|stickerei|hemd|výšiv|vysiv|blouse|costume|kostium|tracht|cămaș|camas|cămeș|cames|altiț|altit|broderi|плахт|запаск|спідниц|фартух|попередниц|керсетк|корсетк|кептар|сердак|безрукавк|plakht|plachta|zapask|kersetk|keptar|kieptar|serdak|apron|skirt|\bvests?\b|fartuch|spódnic|kamizel|schürze|zástěr|sukn|вишив|вишит|рушник|сорочк|хрестик|cross.?stitch|орнамент|ornament|узор|візерун|пояс|sash|textile|towel|shirt|sampler|пис[аа]нк|pysank|pattern|design|мотив|motif|ткан|weav|kilim|килим|brodyr|broderad|brodert|bunad|dräkt|drakt|handduk|skjorta|\bblus|kirjont|kirjail|pyyhe|paita|kansanpuku|textil|tekstil|mönster|kuvio/i;
 
 type Licence = "public-domain" | "CC0" | "CC-BY" | "CC-BY-SA";
 function licenceOf(text: string | undefined | null): Licence | null {
@@ -57,7 +58,7 @@ function licenceOf(text: string | undefined | null): Licence | null {
   if (!t) return null;
   if (/\bnc\b|non-?commercial|\bnd\b|no-?deriv/.test(t)) return null;
   if (/cc0|publicdomain\/zero/.test(t)) return "CC0";
-  if (/public domain|publicdomain|\bpd\b|pd-/.test(t)) return "public-domain";
+  if (/public domain|publicdomain|\bpd\b|pd-|\bpdm\b/.test(t)) return "public-domain";
   if (/by-sa|by sa|sharealike|share-alike/.test(t)) return "CC-BY-SA";
   if (/cc[- ]by|creativecommons\.org\/licenses\/by\//.test(t)) return "CC-BY";
   return null;
@@ -238,6 +239,45 @@ async function fromEuropeana() {
     }
   }
 }
+// ---------- source: Finna (Finnish museums, archives and libraries; keyless; licence per image) ----------
+async function fromFinna() {
+  const fields = ["id", "title", "imageRights", "images", "subjects", "geographicSubjects", "summary", "buildings"].map((f) => `field[]=${f}`).join("&");
+  const flat = (v: any): string => (Array.isArray(v) ? v.map(flat).join(" ") : String(v ?? ""));
+  for (const q of ["ukrainalainen", "Ukraina", "ukrainsk", "ukrainian"]) for (let page = 1; page <= 6; page++) {
+    const r = await get(`https://api.finna.fi/v1/search?lookfor=${encodeURIComponent(q)}&filter[]=online_boolean:1&limit=100&page=${page}&${fields}`);
+    const rows = r?.records ?? []; if (!rows.length) break;
+    for (const x of rows) {
+      const img = x.images?.[0]; if (!img || !x.imageRights) continue;
+      const text = [x.title, flat(x.subjects), flat(x.geographicSubjects), flat(x.summary)].join(" "), owner = x.buildings?.[0]?.translated ?? "?";
+      add({ id: `finna-${String(x.id).replace(/[^A-Za-z0-9]+/g, "-").slice(0, 80)}`, source: "finna", title: String(x.title ?? "").slice(0, 200), pageUrl: `https://www.finna.fi/Record/${encodeURIComponent(x.id)}`,
+        imageUrl: `https://api.finna.fi${img}`, licenceText: `${x.imageRights.copyright ?? ""} ${x.imageRights.link ?? ""}`,
+        evidence: UA.test(text) ? `title/subjects/place: ${text.replace(/\s+/g, " ").slice(0, 160)}` : null, group: `finna:${owner}:${series(String(x.title ?? x.id))}`, note: `held by ${owner}` });
+    }
+    if (rows.length < 100) break;
+    await sleep(500);
+  }
+}
+
+// ---------- source: DigitaltMuseum (Swedish and Norwegian museums; keyless demo key; licence per object) ----------
+async function fromDigitaltMuseum() {
+  const fl = ["identifier.id", "identifier.owner", "artifact.uniqueId", "artifact.ingress.title", "artifact.ingress.subjects", "artifact.ingress.description", "artifact.ingress.classification",
+    "artifact.ingress.production.place", "artifact.ingress.license", "artifact.defaultMediaIdentifier"].join(",");
+  const join = (v: any) => [v].flat().filter(Boolean).join(" ");
+  for (const q of ["ukraina", "ukrainsk", "ukrainska", "ukrainske"]) for (let start = 0; start < 2000; start += 100) {
+    const r = await get(`https://api.dimu.org/api/solr/select?q=${encodeURIComponent(q)}&fq=artifact.hasPictures:true&wt=json&rows=100&start=${start}&fl=${encodeURIComponent(fl)}&api.key=demo`);
+    const docs = r?.response?.docs ?? []; if (!docs.length) break;
+    for (const x of docs) {
+      const media = x["artifact.defaultMediaIdentifier"]; if (!media) continue;
+      const title = join(x["artifact.ingress.title"]), owner = x["identifier.owner"] ?? "?";
+      const text = [title, join(x["artifact.ingress.subjects"]), join(x["artifact.ingress.description"]), join(x["artifact.ingress.classification"]), join(x["artifact.ingress.production.place"])].join(" ");
+      add({ id: `dimu-${x["artifact.uniqueId"] ?? x["identifier.id"]}`, source: "digitaltmuseum", title: title.slice(0, 200), pageUrl: `https://digitaltmuseum.org/${x["artifact.uniqueId"]}/`,
+        imageUrl: `https://mm.dimu.org/image/${media}?dimension=1200x1200`, licenceText: join(x["artifact.ingress.license"]) || "unknown",
+        evidence: UA.test(text) ? `title/subjects/description/place: ${text.replace(/\s+/g, " ").slice(0, 160)}` : null, group: `dimu:${owner}:${series(title || String(x["identifier.id"]))}`, note: `held by ${owner}` });
+    }
+    if (start + 100 >= (r?.response?.numFound ?? 0)) break;
+    await sleep(500);
+  }
+}
 async function fromSmithsonian() {
   const key = process.env.SI_API_KEY; if (!key) { console.log("smithsonian: no SI_API_KEY, skipped"); return; }
   for (const q of ["ukrainian embroidery", "ukrainian blouse", "ukraine embroidered"]) for (let start = 0; start < 500; start += 100) {
@@ -298,7 +338,7 @@ async function readImage(url: string) {
 }
 
 // ---------- run ----------
-for (const [name, fn] of [["neon", fromNeon], ["commons", fromCommons], ["aic", fromAic], ["cleveland", fromCleveland], ["loc", fromLoc], ["ia-pattern-books", fromIaPatternBooks], ["nypl", fromNypl], ["europeana", fromEuropeana], ["smithsonian", fromSmithsonian]] as const) {
+for (const [name, fn] of [["neon", fromNeon], ["commons", fromCommons], ["aic", fromAic], ["cleveland", fromCleveland], ["loc", fromLoc], ["ia-pattern-books", fromIaPatternBooks], ["nypl", fromNypl], ["finna", fromFinna], ["digitaltmuseum", fromDigitaltMuseum], ["europeana", fromEuropeana], ["smithsonian", fromSmithsonian]] as const) {
   try { await fn(); } catch (e) { console.error(`${name} failed:`, String(e)); }
 }
 console.log(`candidates: ${candidates.size}`);
