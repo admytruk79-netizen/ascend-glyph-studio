@@ -137,3 +137,16 @@ test("reader: cloth tone and uneven lighting are ground; fuzzy, low-contrast ima
   const faded = renderPixels(parseChart(seed[0]!.chart), 11, 70, 9, { ground: "#c9b48a" });
   assert.equal(extractGrid(faded), null);
 });
+
+test("quality filter: real motifs pass; lines, scatter, specks and solid fills are rejected", async () => {
+  const { motifQuality } = await import("./quality.ts");
+  for (const r of seed) assert.ok(motifQuality(parseChart(r.chart)).passes, r.id);
+  const diag = Array.from({ length: 20 }, (_, y) => ".".repeat(y) + "R" + ".".repeat(19 - y));
+  assert.ok(motifQuality(parseChart(diag)).reasons.includes("thin-line"));
+  const scatter = Array.from({ length: 16 }, (_, y) => Array.from({ length: 16 }, (_, x) => ((x * 7 + y * 13) % 5 === 0 && x % 2 === 0 ? "Y" : ".")).join(""));
+  assert.ok(motifQuality(parseChart(scatter)).reasons.includes("scattered"));
+  assert.ok(motifQuality(parseChart(Array(12).fill("Y".repeat(12)))).reasons.includes("solid-fill"));
+  const blob = Array.from({ length: 14 }, (_, y) => Array.from({ length: 14 }, (_, x) => ((x - 6.5) ** 2 + (y - 6.5) ** 2 < 49 ? "K" : ".")).join(""));
+  assert.ok(motifQuality(parseChart(blob)).reasons.includes("single-colour-fill"));
+  assert.ok(motifQuality(parseChart(["RR", "RR"])).reasons.includes("too-small"));
+});
