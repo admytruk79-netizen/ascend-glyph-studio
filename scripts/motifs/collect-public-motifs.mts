@@ -5,7 +5,7 @@
  * Sources: the Neon research corpus (Commons files, Internet Archive pages), Wikimedia Commons (categories + file
  * search, licence from each file's own metadata), Art Institute of Chicago (public domain), Cleveland Museum of Art (CC0),
  * Library of Congress (no known restrictions), Internet Archive pattern books published before 1929, NYPL Digital
- * Collections (public domain), Finna (Finnish museums and archives), DigitaltMuseum (Swedish and Norwegian museums), and,
+ * Collections (public domain), museum-digital Ukraine (Ukrainian museums), Finna (Finnish museums and archives), DigitaltMuseum (Swedish and Norwegian museums), and,
  * when their API keys are configured, Europeana (open reuse) and Smithsonian (CC0).
  *
  * Rules:
@@ -288,6 +288,28 @@ async function fromDigitaltMuseum() {
     await sleep(500);
   }
 }
+// ---------- source: museum-digital Ukraine (Ukrainian museums; keyless; licence per image, most are CC BY-NC-SA and skipped) ----------
+async function fromMuseumDigitalUa() {
+  const base = "https://ua.museum-digital.org", ids = new Map<number, string>();
+  for (const q of ["вишивка", "вишита", "рушник", "сорочка", "плахта", "запаска", "фартух", "керсетка", "орнамент", "узор"]) for (let start = 0; start < 2000; start += 100) {
+    const rows = await get(`${base}/json/objects?s=${encodeURIComponent(q)}&gbreitenat=100&startwert=${start}`);
+    if (!Array.isArray(rows) || !rows.length) break;
+    for (const x of rows) ids.set(Number(x.objekt_id), q);
+    if (rows.length < 100) break;
+    await sleep(300);
+  }
+  const list = [...ids.keys()];
+  const one = async (id: number) => {
+    const o = await get(`${base}/json/object/${id}`); if (!o?.object_images?.length) return;
+    const img = o.object_images.find((i: any) => i.type === "image" && licenceOf(i.rights)) ?? o.object_images.find((i: any) => i.type === "image"); if (!img) return;
+    const text = [o.object_name, o.object_type, o.object_description, o.object_material_technique].join(" "), owner = o.object_institution?.institution_name ?? "?";
+    const ev = UA.test(text) ? `name/description: ${text.replace(/\s+/g, " ").slice(0, 160)}` : UA_PLACE.test(text) ? `place in Ukraine in name/description: ${text.replace(/\s+/g, " ").slice(0, 160)}` : null;
+    add({ id: `mdua-${id}`, source: "museum-digital-ua", title: String(o.object_name ?? "").slice(0, 200), pageUrl: `${base}/object/${id}`, imageUrl: `${base}/data/${o.md_subset}/${img.folder}/${img.filename_loc}`,
+      licenceText: img.rights || "unknown", evidence: ev, group: `mdua:${o.object_institution?.institution_id ?? "?"}:${series(String(o.object_name ?? id))}`, note: `held by ${owner}; found via ${ids.get(id)}` });
+  };
+  for (let i = 0; i < list.length; i += 4) { await Promise.all(list.slice(i, i + 4).map(one)); await sleep(250); }
+  console.log(`museum-digital-ua: ${list.length} objects checked`);
+}
 async function fromSmithsonian() {
   const key = process.env.SI_API_KEY; if (!key) { console.log("smithsonian: no SI_API_KEY, skipped"); return; }
   for (const q of ["ukrainian embroidery", "ukrainian blouse", "ukraine embroidered"]) for (let start = 0; start < 500; start += 100) {
@@ -348,7 +370,7 @@ async function readImage(url: string) {
 }
 
 // ---------- run ----------
-for (const [name, fn] of [["neon", fromNeon], ["commons", fromCommons], ["aic", fromAic], ["cleveland", fromCleveland], ["loc", fromLoc], ["ia-pattern-books", fromIaPatternBooks], ["nypl", fromNypl], ["finna", fromFinna], ["digitaltmuseum", fromDigitaltMuseum], ["europeana", fromEuropeana], ["smithsonian", fromSmithsonian]] as const) {
+for (const [name, fn] of [["neon", fromNeon], ["commons", fromCommons], ["aic", fromAic], ["cleveland", fromCleveland], ["loc", fromLoc], ["ia-pattern-books", fromIaPatternBooks], ["nypl", fromNypl], ["museum-digital-ua", fromMuseumDigitalUa], ["finna", fromFinna], ["digitaltmuseum", fromDigitaltMuseum], ["europeana", fromEuropeana], ["smithsonian", fromSmithsonian]] as const) {
   try { await fn(); } catch (e) { console.error(`${name} failed:`, String(e)); }
 }
 console.log(`candidates: ${candidates.size}`);
