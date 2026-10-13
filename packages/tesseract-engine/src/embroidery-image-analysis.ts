@@ -5,7 +5,7 @@ export type ImageStructure={schema:"ascend.image-structure.v1";foregroundRatio:n
 const clamp=(x:number)=>Math.max(0,Math.min(255,x));
 export function analyzeEmbroideryPixels(frame:PixelFrame,backgroundRgb:[number,number,number],threshold=55):ImageStructure{
  const {width,height,rgba}=frame;
- if(!Number.isInteger(width)||!Number.isInteger(height)||width<8||height<8||width*height>12_000_000||rgba.length!==width*height*4)throw Error("Invalid image dimensions or RGBA buffer");
+ if(!Number.isInteger(width)||!Number.isInteger(height)||width<8||height<8||width*height>262_144||rgba.length!==width*height*4)throw Error("Invalid image dimensions or RGBA buffer");
  if(backgroundRgb.some(x=>!Number.isFinite(x)||x<0||x>255)||!Number.isFinite(threshold)||threshold<=0||threshold>441.673)throw Error("Invalid segmentation settings");
  const row=new Array<number>(height).fill(0),col=new Array<number>(width).fill(0);
  const mask=new Uint8Array(width*height);
@@ -21,9 +21,9 @@ export function analyzeEmbroideryPixels(frame:PixelFrame,backgroundRgb:[number,n
  const lag=(horizontal:boolean):number|null=>{
   const length=horizontal?width:height,other=horizontal?height:width;
   let bestLag:number|null=null,best=-Infinity;
-  for(let shift=2;shift<=Math.floor(length/2);shift++){
+  for(let shift=2;shift<=Math.min(64,Math.floor(length/2));shift++){
    let matches=0,compared=0,positive=0;
-   for(let a=0;a<length-shift;a++)for(let b=0;b<other;b++){
+   for(let a=0;a<length-shift;a+=2)for(let b=0;b<other;b+=2){
     const i=horizontal?b*width+a:a*width+b,j=horizontal?b*width+a+shift:(a+shift)*width+b;
     const p=mask[i]!,q=mask[j]!;
     if(p||q)positive++;
