@@ -7,8 +7,8 @@ import {learnImage,featureOf,kmeans} from '../../packages/tesseract-engine/src/r
 // Refit cumulatively in manifest order; descriptors are unsupervised shapes,
 // never historical species, stitch routes or semantic motif labels.
 async function main(){
- const path=process.argv[2]??'data/research/training/pattern-sequence-manifest-v1.json';
- const out=process.argv[3]??'artifacts/motif-reconstruction/pattern-sequence-v1';
+ const path=process.argv[2]??'data/research/training/pattern-sequence-manifest-v2.json';
+ const out=process.argv[3]??'artifacts/motif-reconstruction/pattern-sequence-v2';
  const bytes=readFileSync(path),manifest:TrainingPermissionManifest=JSON.parse(bytes.toString());
  const permissions=trainingPermissions(manifest),seen=new Set<string>();
  const examples=await Promise.all(manifest.entries.map(async e=>{
@@ -32,7 +32,7 @@ async function main(){
    }
   }
   if(!features.length||features.some(v=>v.some(x=>!Number.isFinite(x))))throw new Error(`training:invalid-descriptors:${e.id}`);
-  return {id:e.id,group:e.sourceGroup,imageSha256:hash,density:learned.density,extraction,features};
+  return {id:e.id,source:e.source,permission:e.permission,group:e.sourceGroup,imageSha256:hash,density:learned.density,extraction,features};
  }));
  const distance=(a:number[],b:number[])=>a.reduce((s,x,i)=>s+(x-b[i])**2,0);
  const error=(rows:number[][],centers:number[][])=>rows.reduce((s,v)=>s+Math.min(...centers.map(c=>distance(v,c))),0)/rows.length;
@@ -48,8 +48,10 @@ async function main(){
  });
  mkdirSync(out,{recursive:true});
  const report={schema:'ascend.pattern-sequence-training.v1',trained:true,method:'existing-raster-features-cumulative-kmeans',status:'candidate',runtime:process.version,
-  manifestSha256:createHash('sha256').update(bytes).digest('hex'),sources:examples.map(({features,...e})=>({...e,descriptorCount:features.length})),stages,folds,
-  limitations:['Connected pixel components are not expert motif parts; large connected designs can be discarded by existing component-size limits.','Four source groups are insufficient for generalisation claims.','No semantic family classifier, image segmentation fine-tune, crossing-order reconstruction, cultural inference or stitch model was trained.','Raw descriptor distances are diagnostic, not aesthetic quality or machine feasibility.'],canonicalGeometryChanged:false,neonWrites:false,productionApproved:false};
+  manifest:path,manifestSha256:createHash('sha256').update(bytes).digest('hex'),sourceGroupCount:folds.length,
+  codeFingerprints:['scripts/train/train-pattern-sequence.ts','scripts/train/training-permission.ts','packages/tesseract-engine/src/raster-features.ts'].map(path=>({path,sha256:createHash('sha256').update(readFileSync(path)).digest('hex')})),
+  sources:examples.map(({features,...e})=>({...e,descriptorCount:features.length})),stages,folds,
+  limitations:['Connected pixel components are not expert motif parts; large connected designs can be discarded by existing component-size limits.','Small object-group holdouts do not establish unseen-artist, regional or motif-family generalisation.','No semantic family classifier, image segmentation fine-tune, crossing-order reconstruction, cultural inference or stitch model was trained.','Raw descriptor distances are diagnostic, not aesthetic quality or machine feasibility.'],canonicalGeometryChanged:false,neonWrites:false,productionApproved:false};
  writeFileSync(`${out}/report.json`,JSON.stringify(report,null,2)+'\n');
  writeFileSync(`${out}/model.json`,JSON.stringify({schema:'ascend.pattern-codebook.v1',status:'candidate',centers:stages.at(-1)!.centers,featureImplementation:'raster-features.featureOf',productionApproved:false},null,2)+'\n');
  console.log(JSON.stringify({trained:true,sources:examples.length,stages:stages.length,descriptors:stages.at(-1)!.descriptorCount,folds,productionApproved:false},null,2));
