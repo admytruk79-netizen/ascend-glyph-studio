@@ -1,0 +1,137 @@
+{
+  "schema": "ascend.observed-motif-annotations.v1",
+  "id": "cleveland-117038-lower-diamond-v1",
+  "image": {
+    "width": 630,
+    "height": 893
+  },
+  "provenance": {
+    "schema": "ascend.motif-provenance.v1",
+    "id": "cleveland-117038",
+    "source": "https://clevelandart.org/art/1937.582",
+    "creator": null,
+    "community": null,
+    "culturalContext": "Palestinian embroidered blouse front, 19th century; silk on linen. Museum catalogue attribution retained; no city, symbolism or narrower community assigned.",
+    "retrievedAt": "2026-10-13T02:05:51.448854+00:00",
+    "originalSha256": "e8cb4239b5373aba3326b2bcfd0d9a7c2e63ec7583591eee088bc5d4dbf3c0b0",
+    "permission": {
+      "status": "verified",
+      "evidence": "Museum object API share_license_status=CC0; https://www.clevelandart.org/open-access",
+      "purposes": [
+        "analysis",
+        "reconstruction"
+      ]
+    },
+    "access": "documented-public",
+    "confidence": 0.7,
+    "transformations": [],
+    "regionalAttribution": {
+      "status": "unassigned"
+    }
+  },
+  "review": {
+    "status": "draft",
+    "method": "Manual examination of retained Cleveland source image: lower nested angular motif and separated garment fields",
+    "limitations": [
+      "Approximate envelope polygons, not individual stitches or exact traced outlines.",
+      "Only three nested lower-field envelopes are reconstructed; band interiors and placket are not decomposed.",
+      "Protected neck rectangle is an interior subset of the irregular neck opening, not its complete outline.",
+      "No independent expert annotation, physical calibration, stitch count or production approval."
+    ]
+  },
+  "elements": [
+    {
+      "id": "outer-diamond",
+      "parentElementId": null,
+      "hypothesis": "nested diamond-like geometric envelope",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            313,
+            657
+          ],
+          [
+            416,
+            753
+          ],
+          [
+            313,
+            849
+          ],
+          [
+            210,
+            753
+          ],
+          [
+            313,
+            657
+          ]
+        ]
+      ],
+      "evidence": "Manual approximate lower-field angular envelope; geometric nesting only, no cultural symbolic interpretation."
+    },
+    {
+      "id": "inner-diamond",
+      "parentElementId": "outer-diamond",
+      "hypothesis": "nested diamond-like geometric envelope",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            313,
+            704
+          ],
+          [
+            363,
+            753
+          ],
+          [
+            313,
+            802
+          ],
+          [
+            263,
+            753
+          ],
+          [
+            313,
+            704
+          ]
+        ]
+      ],
+      "evidence": "Manual approximate lower-field angular envelope; geometric nesting only, no cultural symbolic interpretation."
+    },
+    {
+      "id": "centre-diamond",
+      "parentElementId": "inner-diamond",
+      "hypothesis": "nested diamond-like geometric envelope",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            313,
+            731
+          ],
+          [
+            336,
+            753
+          ],
+          [
+            313,
+            775
+          ],
+          [
+            290,
+            753
+          ],
+          [
+            313,
+            731
+          ]
+        ]
+      ],
+      "evidence": "Manual approximate lower-field angular envelope; geometric nesting only, no cultural symbolic interpretation."
+    }
+  ]
+}

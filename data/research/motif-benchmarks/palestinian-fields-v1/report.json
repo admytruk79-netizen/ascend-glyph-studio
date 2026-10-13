@@ -1,0 +1,77 @@
+{
+  "schema": "ascend.observed-fields-benchmark.v1",
+  "source": {
+    "schema": "ascend.motif-provenance.v1",
+    "id": "cleveland-117038",
+    "source": "https://clevelandart.org/art/1937.582",
+    "creator": null,
+    "community": null,
+    "culturalContext": "Palestinian embroidered blouse front, 19th century; silk on linen. Museum catalogue attribution retained; no city, symbolism or narrower community assigned.",
+    "retrievedAt": "2026-10-13T02:05:51.448854+00:00",
+    "originalSha256": "e8cb4239b5373aba3326b2bcfd0d9a7c2e63ec7583591eee088bc5d4dbf3c0b0",
+    "permission": {
+      "status": "verified",
+      "evidence": "Museum object API share_license_status=CC0; https://www.clevelandart.org/open-access",
+      "purposes": [
+        "analysis",
+        "reconstruction"
+      ]
+    },
+    "access": "documented-public",
+    "confidence": 0.7,
+    "transformations": [],
+    "regionalAttribution": {
+      "status": "unassigned"
+    }
+  },
+  "review": {
+    "status": "draft",
+    "method": "Manual examination of retained Cleveland source image: lower nested angular motif and separated garment fields",
+    "limitations": [
+      "Approximate envelope polygons, not individual stitches or exact traced outlines.",
+      "Only three nested lower-field envelopes are reconstructed; band interiors and placket are not decomposed.",
+      "Protected neck rectangle is an interior subset of the irregular neck opening, not its complete outline.",
+      "No independent expert annotation, physical calibration, stitch count or production approval."
+    ]
+  },
+  "fieldCount": 6,
+  "fieldsWithoutContours": [
+    "left-upper-bands",
+    "right-upper-bands",
+    "central-placket",
+    "left-transition",
+    "right-transition"
+  ],
+  "contourCount": 3,
+  "structure": {
+    "junctionCount": 0,
+    "brokenJunctions": 0,
+    "repeatCount": 0,
+    "brokenRepeats": 0,
+    "nestedRelations": 2,
+    "negativeSpaceViolations": 0
+  },
+  "clearance": {
+    "basis": "observed-polyline-centrelines",
+    "minimumCenterlineGapMm": 18.898071723710743,
+    "junctionExclusionRadiusMm": 0.000001,
+    "clearanceViolations": [],
+    "portsOffPath": [],
+    "outsideEnvelope": []
+  },
+  "annotationHashes": [
+    {
+      "path": "data/research/motif-annotations/cleveland-117038-lower-diamond-v1.json",
+      "sha256": "37d179f78aca383f751e2ed426843249adb4bf56627106388f7b4897e395aa44"
+    },
+    {
+      "path": "data/research/motif-annotations/cleveland-117038-fields-v1.json",
+      "sha256": "ed04e8dce3b847c91815b01903631e5d2a8a26f2493aeea71848b6a2e377e76e"
+    }
+  ],
+  "geometryBasis": "image coordinates normalized to reference units; not physical mm",
+  "modelTrainingPerformed": false,
+  "fullHistoricalDecomposition": false,
+  "stitchCount": null,
+  "productionApproved": false
+}
