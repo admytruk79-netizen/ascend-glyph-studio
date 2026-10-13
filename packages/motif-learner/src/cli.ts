@@ -5,7 +5,7 @@
  *   tsx src/cli.ts extract <image> --id ID --tradition T --group G
  *                                                    → a record to review; its licence stays "unreviewed" (excluded) until a person sets it
  */
-import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { composeBand } from "./band.ts";
@@ -24,7 +24,9 @@ const positional = rest.filter((a, i) => !a.startsWith("--") && !rest[i - 1]?.st
 
 function loadRecords(files: string[]): MotifRecord[] {
   const dir = join(root, "data/motifs");
-  const paths = files.length ? files.map((f) => resolve(f)) : readdirSync(dir).filter((f) => f.endsWith(".json")).map((f) => join(dir, f));
+  // seed charts at the top level, plus reviewed public records (unreviewed collections stay out)
+  const reviewed = join(dir, "reviewed"), list = (d: string) => (existsSync(d) ? readdirSync(d).filter((f) => f.endsWith(".json")).map((f) => join(d, f)) : []);
+  const paths = files.length ? files.map((f) => resolve(f)) : [...list(dir), ...list(reviewed)];
   return paths.flatMap((p) => (JSON.parse(readFileSync(p, "utf8")) as { records: MotifRecord[] }).records);
 }
 
