@@ -1,7 +1,8 @@
 import React,{useMemo,useState} from 'react';
+import {EmbroideryImagery} from './EmbroideryImagery';
 import {generateReferenceBand} from '../../../packages/tesseract-engine/src/reference-band-template';
 import {MACHINE_TEMPLATES} from '../../../packages/tesseract-engine/src/machine-template';
-export function ReferenceConstruction(){
+function CanonicalConstruction(){
  const [width,setWidth]=useState(250),[height,setHeight]=useState(60),[complexity,setComplexity]=useState(.7),[seed,setSeed]=useState('reference-001');
  const [placement,setPlacement]=useState<'band'|'collar'|'cuff'>('cuff');
  const [composition,setComposition]=useState<'single'|'paired'>('paired'),[machineId,setMachineId]=useState('');
@@ -32,3 +33,5 @@ export function ReferenceConstruction(){
   </aside>
  </section>;
 }
+
+export function ReferenceConstruction(){return <EmbroideryImagery canonicalView={<CanonicalConstruction/>}/>;}

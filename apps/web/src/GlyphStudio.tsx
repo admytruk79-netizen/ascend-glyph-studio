@@ -47,7 +47,7 @@ export default function GlyphStudio(){
  const [cart,setCart]=useState(false);
  const [canonReview,setCanonReview]=useState(false);
  const [runReview,setRunReview]=useState(false);
- const [constructionLab,setConstructionLab]=useState(false);
+ const [constructionLab,setConstructionLab]=useState(true);
 
  const patterns=useMemo(()=>generatePatterns({seed:seed+":"+revision,concepts,paletteId,mode,complexity,medium,placement:mode,variations:12,width:960,height:260}),[seed,revision,concepts,paletteId,mode,complexity,medium]);
  const active=patterns[Math.min(selected,Math.max(0,patterns.length-1))];
@@ -60,8 +60,8 @@ export default function GlyphStudio(){
 
  return <main className="studioApp">
   <header className="topbar">
-   <div><div className="eyebrow">ASCEND</div><h1>Glyph Studio</h1><small>Universal engine · {universal.id}</small></div>
-   <div className="topActions"><span className="liveBadge">LIVE GENERATOR</span>
+   <div><div className="eyebrow">ASCEND</div><h1>Glyph Studio</h1><small>{constructionLab?"Embroidery imagery and construction":`Universal engine · ${universal.id}`}</small></div>
+   <div className="topActions"><span className="liveBadge">{constructionLab?"REFERENCE STUDY":"LIVE GENERATOR"}</span>
 <button className="cartBtn" onClick={()=>{setConstructionLab(false);setRunReview(false);setCanonReview(v=>!v)}}>{canonReview?"Studio":"Canon Review"}</button>
 <button className="cartBtn" onClick={()=>{setConstructionLab(false);setCanonReview(false);setRunReview(v=>!v)}}>{runReview?"Studio":"Run Review"}</button>
 <button className="cartBtn" onClick={()=>{setCanonReview(false);setRunReview(false);setConstructionLab(v=>!v)}}>{constructionLab?"Studio":"Construction lab"}</button>
