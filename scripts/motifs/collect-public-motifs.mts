@@ -43,10 +43,10 @@ async function get(url: string, asJson = true): Promise<any> {
 }
 
 // ---------- evidence, licence, flags ----------
-const UA = /ukrain|україн|украин|ucrain|ruthen|руськ|hutsul|гуцул|poltav|полтав|podil|поділ|подол|bukovyn|буковин|volyn|волин|kyiv|київ|kiev|chernihiv|чернігів|lviv|львів|galici|галич|polissia|полісс|slobo|слобож|вишив|вишит|рушник|vyshyv|rushnyk|писанк|pysank/i;
+const UA = /ukrai[nń]|ukrajin|україн|украин|ucrain|ruthen|руськ|hutsul|huculsk|huzul|гуцул|poltav|полтав|podil|поділ|подол|bukovyn|буковин|volyn|волин|kyiv|київ|kiev|chernihiv|чернігів|lviv|львів|galici|галич|polissia|полісс|slobo|слобож|вишив|вишит|рушник|vyshyv|rushnyk|писанк|pysank/i;
 const RUSSIA = /белгород|belgorod|шебекин|shebekin|курск|kursk|воронеж|voronezh|брянск|bryansk/i;
 const PEOPLE = /festival|фестивал|couple|patron|parade|roundelay|toronto|girl|дівчин|україночк|woman|women|man in|men in|portrait|портрет|wearing|одягн|день вишиванки|vyshyvanka day|парад|march|марш|selfie|actor|singer|politician/i;
-const ORNAMENT = /embroider|вишив|вишит|рушник|сорочк|хрестик|cross.?stitch|орнамент|ornament|узор|візерун|пояс|sash|textile|towel|shirt|sampler|пис[аа]нк|pysank|pattern|design|мотив|motif|ткан|weav|kilim|килим/i;
+const ORNAMENT = /embroider|haft|koszul|stickerei|hemd|výšiv|vysiv|blouse|costume|kostium|tracht|вишив|вишит|рушник|сорочк|хрестик|cross.?stitch|орнамент|ornament|узор|візерун|пояс|sash|textile|towel|shirt|sampler|пис[аа]нк|pysank|pattern|design|мотив|motif|ткан|weav|kilim|килим/i;
 
 type Licence = "public-domain" | "CC0" | "CC-BY" | "CC-BY-SA";
 function licenceOf(text: string | undefined | null): Licence | null {
@@ -206,18 +206,25 @@ async function fromNypl() {
 
 // ---------- keyed sources: used only when the repository has the secret ----------
 async function fromEuropeana() {
-  const key = process.env.EUROPEANA_API_KEY; if (!key) { console.log("europeana: no EUROPEANA_API_KEY, skipped"); return; }
-  for (const q of ["вишиванка", "vyshyvanka", "Ukrainian embroidered shirt", "Ukrainian embroidery", "вишивка", "рушник"]) {
+  // Without the repository's own key, Europeana's public demo key gives a capped sample (about 300 items per search).
+  const own = process.env.EUROPEANA_API_KEY, key = own || "api2demo", pages = own ? 10 : 3;
+  if (!own) console.log("europeana: no EUROPEANA_API_KEY, using the public demo key with a small cap");
+  const queries = ["вишиванка", "вишивка", "рушник", "сорочка вишита", "vyshyvanka", "Ukrainian embroidery", "Ukrainian embroidered shirt", "Ukrainian folk costume",
+    "haft ukraiński", "koszula ukraińska", "huculski haft", "ukrainische Stickerei", "ukrainisches Hemd", "ukrajinská výšivka"];
+  for (const q of queries) {
     let cursor = "*";
-    for (let i = 0; i < 10 && cursor; i++) {
+    for (let i = 0; i < pages && cursor; i++) {
       const r = await get(`https://api.europeana.eu/record/v2/search.json?wskey=${key}&query=${encodeURIComponent(q)}&reusability=open&media=true&rows=100&profile=rich&cursor=${encodeURIComponent(cursor)}`);
       for (const x of r?.items ?? []) {
         const img = x.edmIsShownBy?.[0]; if (!img) continue;
-        const text = [x.title?.[0], x.dcDescription?.[0], (x.dcSubjectLangAware ? JSON.stringify(x.dcSubjectLangAware) : ""), x.country?.[0]].join(" ");
-        add({ id: `europeana-${String(x.id).replace(/[^A-Za-z0-9]+/g, "-").slice(1, 80)}`, source: "europeana", title: String(x.title?.[0] ?? "").slice(0, 200), pageUrl: x.guid ?? "", imageUrl: img,
-          licenceText: x.rights?.[0] ?? "", evidence: UA.test(text) ? `title/description/subject: ${text.slice(0, 140)}` : null, group: `europeana:${x.dataProvider?.[0] ?? ""}:${series(String(x.title?.[0] ?? x.id))}` });
+        // the object's own description only; the provider's country says where the museum is, not where the object is from
+        const lang = (o: any) => (o ? Object.values(o).flat().join(" ") : "");
+        const text = [x.title?.join(" "), x.dcDescription?.join(" "), lang(x.dcSubjectLangAware), lang(x.edmPlaceLabelLangAware), lang(x.dcCreatorLangAware)].join(" ");
+        add({ id: `europeana-${String(x.id).replace(/[^A-Za-z0-9]+/g, "-").replace(/^-/, "").slice(0, 80)}`, source: "europeana", title: String(x.title?.[0] ?? "").slice(0, 200), pageUrl: x.guid ?? "", imageUrl: img,
+          licenceText: x.rights?.[0] ?? "", evidence: UA.test(text) ? `title/description/subject/place: ${text.replace(/\s+/g, " ").slice(0, 140)}` : null,
+          group: `europeana:${x.dataProvider?.[0] ?? ""}:${series(String(x.title?.[0] ?? x.id))}`, note: `provider ${x.dataProvider?.[0] ?? "?"}, ${x.country?.[0] ?? "?"}; type ${x.type ?? ""}` });
       }
-      cursor = r?.nextCursor ?? ""; await sleep(300);
+      cursor = r?.nextCursor ?? ""; await sleep(own ? 300 : 1200);
     }
   }
 }
