@@ -1,0 +1,78 @@
+name: Historical image baseline training
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: Maximum accepted public-domain images
+        required: false
+        default: '40'
+      query:
+        description: Museum search term
+        required: false
+        default: embroidery
+  push:
+    branches:
+      - automation/machine-feasibility-runtime-20261011
+    paths:
+      - scripts/train-historical-image-baseline.ts
+      - .github/workflows/historical-image-baseline.yml
+      - scripts/preview-historical-clusters.ts
+concurrency:
+  group: historical-image-baseline-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    env:
+      MET_LIMIT: ${{ inputs.limit || '40' }}
+      MET_QUERY: ${{ inputs.query || 'embroidery' }}
+      MET_MAX_CANDIDATES: '250'
+      MET_OUTPUT: data/historical-baseline
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - name: Fetch public-domain museum imagery and fit baseline
+        run: npx tsx scripts/train-historical-image-baseline.ts
+        timeout-minutes: 22
+      - name: Report ingestion diagnostics
+        if: always()
+        run: |
+          if test -f data/historical-baseline/ingestion-report.json; then
+            cat data/historical-baseline/ingestion-report.json
+          else
+            echo "No ingestion report was produced; failure occurred before ingestion finished."
+          fi
+      - name: Check model and provenance manifest
+        run: |
+          node -e "const fs=require('fs');const m=JSON.parse(fs.readFileSync('data/historical-baseline/model.json'));const a=JSON.parse(fs.readFileSync('data/historical-baseline/manifest.json'));const d=JSON.parse(fs.readFileSync('data/historical-baseline/ingestion-report.json'));const valid=x=>Array.isArray(x)&&x.length===33&&x.every(Number.isFinite);if(m.examples<3||a.length!==m.examples||d.accepted!==m.examples||!Array.isArray(m.centers)||m.centers.length!==m.k||!m.centers.every(valid)||a.some(x=>x.commercialDerivation!==false||!x.sha256||!valid(x.features)))process.exit(1);console.log('VERIFIED historical baseline',JSON.stringify({examples:m.examples,clusters:m.k,dimensions:33,sources:[...new Set(a.map(x=>x.institution))]}))"
+      - name: Render learned cluster structure
+        run: npx tsx scripts/preview-historical-clusters.ts
+      - name: Publish training result in job summary
+        if: always()
+        run: |
+          echo '## Historical image training' >> "$GITHUB_STEP_SUMMARY"
+          if test -f data/historical-baseline/model.json; then
+            node -e "const m=require('./data/historical-baseline/model.json');console.log('Images: '+m.examples+'; clusters: '+m.k+'; method: '+m.method)" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'No model produced. Check ingestion report and training logs.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if test -f data/historical-baseline/ingestion-report.json; then
+            echo '### Ingestion diagnostics' >> "$GITHUB_STEP_SUMMARY"
+            echo '\`\`\`json' >> "$GITHUB_STEP_SUMMARY"
+            cat data/historical-baseline/ingestion-report.json >> "$GITHUB_STEP_SUMMARY"
+            echo '\`\`\`' >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload research-only model and provenance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: historical-image-baseline
+          path: data/historical-baseline/
+          if-no-files-found: warn
+          retention-days: 30
