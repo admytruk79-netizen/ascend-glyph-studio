@@ -1,0 +1,230 @@
+{
+  "meta": {
+    "version": "2.1",
+    "_links": {
+      "self": {
+        "href": "https://api.vam.ac.uk/v2/object/O364307"
+      },
+      "collection_page": {
+        "href": "https://collections.vam.ac.uk/item/O364307/"
+      }
+    },
+    "images": {
+      "_primary_thumbnail": "https://framemark.vam.ac.uk/collections/2019MB5185/full/!100,100/0/default.jpg",
+      "_iiif_image": "https://framemark.vam.ac.uk/collections/2019MB5185/",
+      "_alt_iiif_image": [],
+      "imageResolution": "high",
+      "_images_meta": [
+        {
+          "assetRef": "2019MB5185",
+          "copyright": "© Victoria and Albert Museum, London",
+          "sensitiveImage": false
+        },
+        {
+          "assetRef": "2019MB5184",
+          "copyright": "© Victoria and Albert Museum, London",
+          "sensitiveImage": false
+        },
+        {
+          "assetRef": "2019MB5186",
+          "copyright": "© Victoria and Albert Museum, London",
+          "sensitiveImage": false
+        },
+        {
+          "assetRef": "2019MB5187",
+          "copyright": "© Victoria and Albert Museum, London",
+          "sensitiveImage": false
+        }
+      ]
+    },
+    "see_also": {
+      "_iiif_pres": "https://iiif.vam.ac.uk/collections/O364307/manifest.json",
+      "_alt_iiif_pres": []
+    }
+  },
+  "record": {
+    "systemNumber": "O364307",
+    "accessionNumber": "T.7&A-1964",
+    "objectType": "Shirt",
+    "titles": [
+      {
+        "title": "",
+        "type": ""
+      }
+    ],
+    "summaryDescription": "",
+    "physicalDescription": "Shirt and apron of embroidered white linen. The garments were intended for wearing at a wedding.\r\n\r\nThe shirt is straight cut with a high round neck, front opening neck to waist and wide sleeves gathered onto the neck and at the wrist. Machine-stitched. Decorative bands of embroidery in red and black. On the sleeves are two wide bands, and the uppermost consists of linked diamond shapes outlined with shield motifs surmounting a flower in a cross stitch ornamented diamond. The lower band consists of diamond shapes outlined in a similar fashion, a diamond shape filled with cross stitch. On the lower part of the sleeve are scattered alternating floral shapes similar to the main motif in each band. The embroidery is carried out either in black satin stitch outlined in red or red satin stitch outlined in black. The fillings are in red and black cross stitch. The neck is edged with a band filled with similar floral shapes in red and at the hem are two bands of cross stitch embroidery edging a band of bobbin lace. The neck band and cuffs are decorated with linked diamonds filled with satin stitch. There are two red cotton stitched loops at the neck for fastening.\n\nThe apron reaches from the waist where there is a buttoned waistband to the hem. The hem is trimmed with a band of bobbin lace, with diamond shaped motifs and has two bands of embroidery of the same pattern to those on the sleeves, and above them are four narrow tucks. Floral motifs like those on the sleeves are scattered across the front of the garment. The apron has been shortened by catching up a band of lace originally intended to demarcate the two bands of embroidery.",
+    "artistMakerPerson": [
+      {
+        "name": {
+          "text": "Unknown",
+          "id": "A1848"
+        },
+        "association": {
+          "text": "",
+          "id": ""
+        },
+        "note": ""
+      }
+    ],
+    "artistMakerOrganisations": [],
+    "artistMakerPeople": [],
+    "materials": [],
+    "techniques": [],
+    "materialsAndTechniques": "Embroidered linen, edged with bobbin lace, cotton",
+    "categories": [
+      {
+        "text": "Textiles",
+        "id": "THES48885"
+      },
+      {
+        "text": "Embroidery",
+        "id": "THES48960"
+      },
+      {
+        "text": "Lace",
+        "id": "THES48926"
+      },
+      {
+        "text": "Womenswear",
+        "id": "THES49044"
+      }
+    ],
+    "styles": [],
+    "collectionCode": {
+      "text": "T&F",
+      "id": "THES48601"
+    },
+    "images": [
+      "2019MB5185",
+      "2019MB5184",
+      "2019MB5186",
+      "2019MB5187"
+    ],
+    "imageResolution": "high",
+    "galleryLocations": [
+      {
+        "current": {
+          "text": "001",
+          "id": "THES311720"
+        },
+        "free": "",
+        "case": "",
+        "shelf": "",
+        "box": ""
+      },
+      {
+        "current": {
+          "text": "008",
+          "id": "THES312931"
+        },
+        "free": "",
+        "case": "",
+        "shelf": "",
+        "box": ""
+      }
+    ],
+    "partTypes": [
+      [
+        {
+          "text": "Dress",
+          "id": ""
+        }
+      ],
+      [
+        {
+          "text": "Apron",
+          "id": ""
+        }
+      ]
+    ],
+    "contentWarnings": [
+      {
+        "apprise": "",
+        "note": ""
+      },
+      {
+        "apprise": "",
+        "note": ""
+      },
+      {
+        "apprise": "",
+        "note": ""
+      }
+    ],
+    "placesOfOrigin": [
+      {
+        "place": {
+          "text": "Ukraine",
+          "id": "x36758"
+        },
+        "association": {
+          "text": "made",
+          "id": "x28654"
+        },
+        "note": "Identified as from northern Ukraine, south of Belarus, following feedback from a Explore the Collections contact."
+      }
+    ],
+    "productionDates": [
+      {
+        "date": {
+          "text": "19th century",
+          "earliest": "1800-01-01",
+          "latest": "1899-12-31"
+        },
+        "association": {
+          "text": "made",
+          "id": "x28654"
+        },
+        "note": ""
+      }
+    ],
+    "associatedObjects": [],
+    "creditLine": "Given by Mr J. Sassoon",
+    "dimensions": [],
+    "dimensionsNote": "",
+    "marksAndInscriptions": [],
+    "objectHistory": "",
+    "historicalContext": "",
+    "briefDescription": "Shirt and apron, embroidered linen, Ukraine (catalogued at accessioning as Russian), 19th century",
+    "bibliographicReferences": [],
+    "production": "",
+    "productionType": {
+      "text": "",
+      "id": ""
+    },
+    "contentDescription": "",
+    "contentPlaces": [],
+    "associatedPlaces": [],
+    "contentPerson": [],
+    "associatedPerson": [],
+    "contentOrganisations": [],
+    "associatedOrganisations": [],
+    "contentPeople": [],
+    "associatedPeople": [],
+    "contentEvents": [],
+    "associatedEvents": [],
+    "contentOthers": [],
+    "contentConcepts": [],
+    "contentLiteraryRefs": [],
+    "galleryLabels": [],
+    "partNumbers": [
+      "T.7-1964",
+      "T.7A-1964"
+    ],
+    "accessionNumberNum": "7",
+    "accessionNumberPrefix": "T",
+    "accessionYear": 1964,
+    "otherNumbers": [],
+    "copyNumber": "",
+    "aspects": [
+      "WHOLE",
+      "Dress",
+      "Apron"
+    ],
+    "assets": [],
+    "recordModificationDate": "2026-07-22",
+    "recordCreationDate": "2009-06-24",
+    "availableToBook": true
+  }
+}

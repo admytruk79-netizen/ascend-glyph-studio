@@ -1,0 +1,166 @@
+{
+  "@context": "http://iiif.io/api/presentation/2/context.json",
+  "@id": "https://iiif.vam.ac.uk/collections/O364307/manifest.json",
+  "@type": "sc:Manifest",
+  "label": "Shirt",
+  "metadata": [
+    {
+      "label": "Object Type",
+      "value": "Shirt"
+    },
+    {
+      "label": "Brief Description",
+      "value": "Shirt and apron, embroidered linen, Ukraine (catalogued at accessioning as Russian), 19th century"
+    },
+    {
+      "label": "Materials and Techniques",
+      "value": "Embroidered linen, edged with bobbin lace, cotton"
+    },
+    {
+      "label": "Place",
+      "value": "Ukraine (made)"
+    },
+    {
+      "label": "Accession Number",
+      "value": "T.7&A-1964"
+    },
+    {
+      "label": "Rights Statement",
+      "value": "Image and metadata usage subject to V&A <a href=\"https://www.vam.ac.uk/info/va-websites-terms-conditions\">Terms and Conditions</a>"
+    },
+    {
+      "label": "Manifest",
+      "value": "https://iiif.vam.ac.uk/collections/O364307/manifest.json"
+    }
+  ],
+  "description": "Shirt and apron, embroidered linen, Ukraine (catalogued at accessioning as Russian), 19th century",
+  "attribution": "\u00a9Victoria and Albert Museum, London",
+  "license": "https://www.vam.ac.uk/info/va-websites-terms-conditions",
+  "logo": "https://framemark.vam.ac.uk/logos/valogo_social_2021/full/200,200/0/default.jpg",
+  "viewingDirection": "left-to-right",
+  "viewingHint": "individuals",
+  "sequences": [
+    {
+      "@id": "https://iiif.vam.ac.uk/collections/O364307/sequence/normal",
+      "@type": "sc:Sequence",
+      "canvases": [
+        {
+          "@id": "https://iiif.vam.ac.uk/collections/O364307/canvas/c0",
+          "@type": "sc:Canvas",
+          "label": "Image 0",
+          "thumbnail": "https://framemark.vam.ac.uk/collections/2019MB5185/full/!100,100/0/default.jpg",
+          "height": 2500,
+          "width": 1519,
+          "images": [
+            {
+              "@id": "https://iiif.vam.ac.uk/collections/O364307/canvas/c0/annotation/a0",
+              "@type": "oa:Annotation",
+              "motivation": "sc:painting",
+              "resource": {
+                "@id": "https://framemark.vam.ac.uk/collections/2019MB5185/full/full/0/default.jpg",
+                "@type": "dctypes:Image",
+                "format": "image/jpeg",
+                "height": 2500,
+                "width": 1519,
+                "service": {
+                  "@context": "http://iiif.io/api/image/2/context.json",
+                  "@id": "https://framemark.vam.ac.uk/collections/2019MB5185",
+                  "profile": "http://iiif.io/api/image/2/level2.json"
+                }
+              },
+              "on": "https://iiif.vam.ac.uk/collections/O364307/canvas/c0"
+            }
+          ]
+        },
+        {
+          "@id": "https://iiif.vam.ac.uk/collections/O364307/canvas/c1",
+          "@type": "sc:Canvas",
+          "label": "Image 1",
+          "thumbnail": "https://framemark.vam.ac.uk/collections/2019MB5184/full/!100,100/0/default.jpg",
+          "height": 2500,
+          "width": 1640,
+          "images": [
+            {
+              "@id": "https://iiif.vam.ac.uk/collections/O364307/canvas/c1/annotation/a0",
+              "@type": "oa:Annotation",
+              "motivation": "sc:painting",
+              "resource": {
+                "@id": "https://framemark.vam.ac.uk/collections/2019MB5184/full/full/0/default.jpg",
+                "@type": "dctypes:Image",
+                "format": "image/jpeg",
+                "height": 2500,
+                "width": 1640,
+                "service": {
+                  "@context": "http://iiif.io/api/image/2/context.json",
+                  "@id": "https://framemark.vam.ac.uk/collections/2019MB5184",
+                  "profile": "http://iiif.io/api/image/2/level2.json"
+                }
+              },
+              "on": "https://iiif.vam.ac.uk/collections/O364307/canvas/c1"
+            }
+          ]
+        },
+        {
+          "@id": "https://iiif.vam.ac.uk/collections/O364307/canvas/c2",
+          "@type": "sc:Canvas",
+          "label": "Image 2",
+          "thumbnail": "https://framemark.vam.ac.uk/collections/2019MB5186/full/!100,100/0/default.jpg",
+          "height": 2500,
+          "width": 2120,
+          "images": [
+            {
+              "@id": "https://iiif.vam.ac.uk/collections/O364307/canvas/c2/annotation/a0",
+              "@type": "oa:Annotation",
+              "motivation": "sc:painting",
+              "resource": {
+                "@id": "https://framemark.vam.ac.uk/collections/2019MB5186/full/full/0/default.jpg",
+                "@type": "dctypes:Image",
+                "format": "image/jpeg",
+                "height": 2500,
+                "width": 2120,
+                "service": {
+                  "@context": "http://iiif.io/api/image/2/context.json",
+                  "@id": "https://framemark.vam.ac.uk/collections/2019MB5186",
+                  "profile": "http://iiif.io/api/image/2/level2.json"
+                }
+              },
+              "on": "https://iiif.vam.ac.uk/collections/O364307/canvas/c2"
+            }
+          ]
+        },
+        {
+          "@id": "https://iiif.vam.ac.uk/collections/O364307/canvas/c3",
+          "@type": "sc:Canvas",
+          "label": "Image 3",
+          "thumbnail": "https://framemark.vam.ac.uk/collections/2019MB5187/full/!100,100/0/default.jpg",
+          "height": 2500,
+          "width": 1998,
+          "images": [
+            {
+              "@id": "https://iiif.vam.ac.uk/collections/O364307/canvas/c3/annotation/a0",
+              "@type": "oa:Annotation",
+              "motivation": "sc:painting",
+              "resource": {
+                "@id": "https://framemark.vam.ac.uk/collections/2019MB5187/full/full/0/default.jpg",
+                "@type": "dctypes:Image",
+                "format": "image/jpeg",
+                "height": 2500,
+                "width": 1998,
+                "service": {
+                  "@context": "http://iiif.io/api/image/2/context.json",
+                  "@id": "https://framemark.vam.ac.uk/collections/2019MB5187",
+                  "profile": "http://iiif.io/api/image/2/level2.json"
+                }
+              },
+              "on": "https://iiif.vam.ac.uk/collections/O364307/canvas/c3"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "related": {
+    "@id": "http://collections.vam.ac.uk/item/O364307",
+    "@format": "text/html"
+  }
+}

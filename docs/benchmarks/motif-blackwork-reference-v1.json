@@ -1,0 +1,79 @@
+{
+  "schema": "ascend.blackwork-reference-benchmark.v1",
+  "annotationId": "met-239343-leaf-v1",
+  "profile": {
+    "schema": "ascend.motif-construction-profile.v1",
+    "state": "REFERENCE",
+    "method": "declared-unit-network-v1",
+    "sourceEvidence": [
+      {
+        "id": "met-239343-original",
+        "source": "https://www.metmuseum.org/art/collection/search/239343",
+        "originalSha256": "b0ea1b05bc3ef138b2168b264f19a9f62067c45b21780040d1b51b59c7bc5fb6",
+        "creator": null,
+        "community": null,
+        "culturalContext": "Blackwork embroidery, ca. 1590. Met record has an empty culture field; regional and national attribution are unassigned. Linen embroidered with silk and gilded silver metal-wrapped threads.",
+        "access": "documented-public",
+        "confidence": 0.8,
+        "permissionEvidence": "Retained Met object API 239343 isPublicDomain=true; image supplied by Met Open Access. CC0 policy https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+        "regionalAttribution": {
+          "status": "unassigned"
+        }
+      }
+    ],
+    "regionCount": 1,
+    "elementCount": 2,
+    "closedContourCount": 1,
+    "nestedRelationCount": 1,
+    "maximumAssemblyNestingDepth": 1,
+    "declaredContactCount": 0,
+    "internalUnitContactCount": 0,
+    "unitCount": 1,
+    "unitEdgeCount": 0,
+    "connectedUnitComponents": 1,
+    "unitContactCycleRank": 0,
+    "terminalUnitCount": 0,
+    "multiNeighbourUnitCount": 0,
+    "maxUnitDegree": 0,
+    "declaredRepeatGroupCount": 0,
+    "unitDegrees": [
+      {
+        "id": "assembly:serrated-leaf",
+        "neighbours": [],
+        "degree": 0
+      }
+    ],
+    "minimumElementConfidence": 0.4,
+    "historicalGrammarVerified": false,
+    "productionApproved": false
+  },
+  "landmarkCount": 79,
+  "microDetail": {
+    "roi": {
+      "left": 2360,
+      "top": 830,
+      "width": 175,
+      "height": 143
+    },
+    "foregroundPixels": 9319,
+    "componentCount": 39,
+    "loopCount": 64,
+    "holeCount": 25,
+    "binaryMaskPixelErrors": 0,
+    "semanticAccuracy": null
+  },
+  "annotationCoordinateRmse": 0,
+  "imageTracingAccuracy": null,
+  "physicalCalibration": null,
+  "stitchCount": null,
+  "productionApproved": false,
+  "modelTrainingPerformed": false,
+  "limitations": [
+    "Only one serrated leaf and an approximate interior vein are annotated.",
+    "Not exact tracing or expert-reviewed botanical identification.",
+    "Micro-fill pattern and adjacent stems are not integrated into this macro leaf graph.",
+    "Physical dimensions of the object do not calibrate this unrectified photograph.",
+    "Micro-fill patch is separate from the leaf graph; dark pixels can include texture, damage and photographic shading.",
+    "Zero pixel error measures mask round-trip preservation, not historical identification or image segmentation accuracy."
+  ]
+}

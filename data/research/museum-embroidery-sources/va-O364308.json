@@ -1,0 +1,305 @@
+{
+  "meta": {
+    "version": "2.1",
+    "_links": {
+      "self": {
+        "href": "https://api.vam.ac.uk/v2/object/O364308"
+      },
+      "collection_page": {
+        "href": "https://collections.vam.ac.uk/item/O364308/"
+      }
+    },
+    "images": {
+      "_primary_thumbnail": "https://framemark.vam.ac.uk/collections/2019MD9521/full/!100,100/0/default.jpg",
+      "_iiif_image": "https://framemark.vam.ac.uk/collections/2019MD9521/",
+      "_alt_iiif_image": [],
+      "imageResolution": "high",
+      "_images_meta": [
+        {
+          "assetRef": "2019MD9521",
+          "copyright": "© Victoria and Albert Museum, London",
+          "sensitiveImage": false
+        },
+        {
+          "assetRef": "2019MD9517",
+          "copyright": "© Victoria and Albert Museum, London",
+          "sensitiveImage": false
+        },
+        {
+          "assetRef": "2019MD9508",
+          "copyright": "© Victoria and Albert Museum, London",
+          "sensitiveImage": false
+        },
+        {
+          "assetRef": "2019MB5192",
+          "copyright": "© Victoria and Albert Museum, London",
+          "sensitiveImage": false
+        },
+        {
+          "assetRef": "2019MB5191",
+          "copyright": "© Victoria and Albert Museum, London",
+          "sensitiveImage": false
+        },
+        {
+          "assetRef": "2011ER5865",
+          "copyright": "© Victoria and Albert Museum, London",
+          "sensitiveImage": false
+        }
+      ]
+    },
+    "see_also": {
+      "_iiif_pres": "https://iiif.vam.ac.uk/collections/O364308/manifest.json",
+      "_alt_iiif_pres": []
+    }
+  },
+  "record": {
+    "systemNumber": "O364308",
+    "accessionNumber": "T.70-1951",
+    "objectType": "Jacket and apron",
+    "titles": [
+      {
+        "title": "Jacket and apron",
+        "type": ""
+      }
+    ],
+    "summaryDescription": "",
+    "physicalDescription": "Child's jacket and apron with bands of embroidered cotton and lace",
+    "artistMakerPerson": [
+      {
+        "name": {
+          "text": "Unknown",
+          "id": "A1848"
+        },
+        "association": {
+          "text": "maker",
+          "id": "x40240"
+        },
+        "note": ""
+      }
+    ],
+    "artistMakerOrganisations": [],
+    "artistMakerPeople": [],
+    "materials": [
+      {
+        "text": "cotton (textile)",
+        "id": "AAT14067"
+      },
+      {
+        "text": "lace",
+        "id": "AAT132861"
+      }
+    ],
+    "techniques": [
+      {
+        "text": "embroidery",
+        "id": "x40351"
+      }
+    ],
+    "materialsAndTechniques": "",
+    "categories": [
+      {
+        "text": "Children's clothes",
+        "id": "THES48979"
+      },
+      {
+        "text": "Embroidery",
+        "id": "THES48960"
+      },
+      {
+        "text": "Regional Dress",
+        "id": "THES283114"
+      }
+    ],
+    "styles": [],
+    "collectionCode": {
+      "text": "T&F",
+      "id": "THES48601"
+    },
+    "images": [
+      "2019MD9521",
+      "2019MD9517",
+      "2019MD9508",
+      "2019MB5192",
+      "2019MB5191",
+      "2011ER5865"
+    ],
+    "imageResolution": "high",
+    "galleryLocations": [
+      {
+        "current": {
+          "text": "001",
+          "id": "THES311720"
+        },
+        "free": "",
+        "case": "",
+        "shelf": "",
+        "box": ""
+      },
+      {
+        "current": {
+          "text": "008",
+          "id": "THES312931"
+        },
+        "free": "",
+        "case": "",
+        "shelf": "",
+        "box": ""
+      }
+    ],
+    "partTypes": [
+      [
+        {
+          "text": "Jacket",
+          "id": ""
+        }
+      ],
+      [
+        {
+          "text": "Apron",
+          "id": ""
+        }
+      ]
+    ],
+    "contentWarnings": [
+      {
+        "apprise": "",
+        "note": ""
+      },
+      {
+        "apprise": "",
+        "note": ""
+      },
+      {
+        "apprise": "",
+        "note": ""
+      }
+    ],
+    "placesOfOrigin": [
+      {
+        "place": {
+          "text": "Ukraine",
+          "id": "x36758"
+        },
+        "association": {
+          "text": "",
+          "id": ""
+        },
+        "note": ""
+      }
+    ],
+    "productionDates": [
+      {
+        "date": {
+          "text": "1800s",
+          "earliest": "1800-01-01",
+          "latest": "1809-12-31"
+        },
+        "association": {
+          "text": "made",
+          "id": "x28654"
+        },
+        "note": ""
+      }
+    ],
+    "associatedObjects": [],
+    "creditLine": "Given by Mrs Van der Put",
+    "dimensions": [
+      {
+        "dimension": "Length",
+        "value": "53.3",
+        "unit": "cm",
+        "qualifier": "",
+        "date": {
+          "text": "",
+          "earliest": null,
+          "latest": null
+        },
+        "part": "jacket",
+        "note": "converted from department register"
+      },
+      {
+        "dimension": "Width",
+        "value": "43.2",
+        "unit": "cm",
+        "qualifier": "",
+        "date": {
+          "text": "",
+          "earliest": null,
+          "latest": null
+        },
+        "part": "jackets",
+        "note": "converted from department register"
+      },
+      {
+        "dimension": "Length",
+        "value": "58.4",
+        "unit": "cm",
+        "qualifier": "",
+        "date": {
+          "text": "",
+          "earliest": null,
+          "latest": null
+        },
+        "part": "apron",
+        "note": "converted from department register"
+      },
+      {
+        "dimension": "Width",
+        "value": "35.6",
+        "unit": "cm",
+        "qualifier": "",
+        "date": {
+          "text": "",
+          "earliest": null,
+          "latest": null
+        },
+        "part": "apron",
+        "note": "converted from department register"
+      }
+    ],
+    "dimensionsNote": "",
+    "marksAndInscriptions": [],
+    "objectHistory": "",
+    "historicalContext": "",
+    "briefDescription": "Child's jacket and apron, Ukraine (probably), 1800s, cotton, lace, embroidered",
+    "bibliographicReferences": [],
+    "production": "",
+    "productionType": {
+      "text": "",
+      "id": ""
+    },
+    "contentDescription": "",
+    "contentPlaces": [],
+    "associatedPlaces": [],
+    "contentPerson": [],
+    "associatedPerson": [],
+    "contentOrganisations": [],
+    "associatedOrganisations": [],
+    "contentPeople": [],
+    "associatedPeople": [],
+    "contentEvents": [],
+    "associatedEvents": [],
+    "contentOthers": [],
+    "contentConcepts": [],
+    "contentLiteraryRefs": [],
+    "galleryLabels": [],
+    "partNumbers": [
+      "T.70-1951",
+      "T.70A-1951"
+    ],
+    "accessionNumberNum": "70",
+    "accessionNumberPrefix": "T",
+    "accessionYear": 1951,
+    "otherNumbers": [],
+    "copyNumber": "",
+    "aspects": [
+      "WHOLE",
+      "Jacket",
+      "Apron"
+    ],
+    "assets": [],
+    "recordModificationDate": "2026-03-08",
+    "recordCreationDate": "2009-06-24",
+    "availableToBook": true
+  }
+}

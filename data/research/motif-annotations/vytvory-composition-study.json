@@ -1,0 +1,52 @@
+{
+  "schema": "ascend.composition-reference-study.v1",
+  "source": "https://vytvory.ua",
+  "checkedAt": "2026-10-12",
+  "role": "composition and garment-region reference; no source artwork copied into the engine",
+  "pages": [
+    "https://vytvory.ua",
+    "https://vytvory.ua/uk/catalog",
+    "https://vytvory.ua/uk/product/sorochka-zhinocha-traditsiyna-278"
+  ],
+  "pageHashes": {
+    "home.html": "25bc776aad805c1b5d15113e04bab45a7c4e20e34b84da4c9c4b12a612e56d12",
+    "catalog.html": "c68510ba441bab8c2dfd7a78e06c6ffd98cda6a57908a1ca115a0a35528f381a",
+    "product278.html": "ee206f923870e254163a901949ba5fa5a328585d3b1165e35d2cad5cb6a5a8c3"
+  },
+  "catalogueRegionLabels": [
+    "Волинське Полісся",
+    "Житомирське Полісся",
+    "Новгород-Сіверське Полісся",
+    "Полтавщина",
+    "Середнє Подніпров’я",
+    "Слобожанщина",
+    "Східне Поділля",
+    "Чернігівське Полісся"
+  ],
+  "observations": [
+    {
+      "source": "https://vytvory.ua/assets/i/promo-slider-img-3.jpg",
+      "finding": "Dense red/black ornament follows sleeve regions; cuff and collar ornament have separate band scales; body fabric remains comparatively quiet."
+    },
+    {
+      "source": "https://vytvory.ua/assets/i/promo-slider-img-8.jpg",
+      "finding": "Tonal white ornament concentrates on sleeve/shoulder regions; contrast and density are design choices, not evidence of a specific flower species."
+    },
+    {
+      "source": "https://vytvory.ua/uk/product/sorochka-zhinocha-traditsiyna-278",
+      "finding": "Product text cites shirt sample KYD58. The inspected sweep image shows a regularly branching ornamental field and a separate narrow geometric border; exact garment-piece identities are not established from this image alone."
+    }
+  ],
+  "authoredImplementation": [
+    "Uniform reference motif grid with explicit region margins and gaps",
+    "Alternating reflected sleeve rows with translation repeats only between matching orientations",
+    "Narrower cuff/collar reference bands",
+    "Unmodified input gap constraints and rejection of invalid source graphs"
+  ],
+  "limitations": [
+    "No Vytvory template, photograph or motif artwork admitted as an engine reconstruction source.",
+    "Site regional labels and KYD58 are not transferred to Neon plate 37.",
+    "Reference dimensions do not establish actual garment pieces or machine feasibility.",
+    "No model training, digitizing or production approval claimed."
+  ]
+}

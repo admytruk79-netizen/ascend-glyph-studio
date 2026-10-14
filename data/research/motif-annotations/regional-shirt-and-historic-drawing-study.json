@@ -1,0 +1,476 @@
+{
+  "schema": "ascend.regional-shirt-historic-drawing-study.v1",
+  "reviewedAt": "2026-10-12T16:30:32.066485+00:00",
+  "scope": {
+    "shirtRecords": 13,
+    "regions": 10,
+    "sampleMethod": "First public listing per region plus three deliberate comparisons; not statistically representative.",
+    "historicalSources": 5,
+    "ukrainianScholarlySources": 2
+  },
+  "shirts": [
+    {
+      "id": "kro-404",
+      "source": "https://krovets.ua/item/kro-404",
+      "title": "Сорочка жіноча KYD122 —  Волинське Полісся | КРОВЕЦЬ",
+      "recordHtmlSha256": "89bbcc193de037f4c49100cb8f5d433e27e3b70e00360c28ad382424f2b3a8e1",
+      "previewSha256": "744de6cbdc8cf1a3e2ef955b693dc42d7a80fffd27a058e4e279939a692cf661",
+      "documentedRegion": "Волинське Полісся",
+      "documentedOrnament": "геометричний",
+      "documentedTechniques": "вишиття, занизування, призбирування, хрестик",
+      "documentedDate": "початок ХХст.",
+      "documentedCreator": "Невідомий",
+      "documentedCutId": "K37",
+      "visualObservations": [
+        "Isolated red square-like units repeat across sleeves below a denser shoulder band; collar uses smaller multicolour detail.",
+        "Different motif size and density by garment region, rather than one global all-over pattern."
+      ],
+      "review": "manual public title-preview examination; provisional visual descriptions, not full segmentation or stitch analysis",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false
+    },
+    {
+      "id": "kro-3209",
+      "source": "https://krovets.ua/item/kro-3209",
+      "title": "Сорочка жіноча KYD2927 —  Житомирське Полісся | КРОВЕЦЬ",
+      "recordHtmlSha256": "1dbf856752cae44fa0aeb4e11e174075fb9f19f730eed8e12f7247cfbc2ce3c5",
+      "previewSha256": "ef02306ee85737481e7f213f81d39aad688119121abe761fe5212119f9cf7f79",
+      "documentedRegion": "Житомирське Полісся",
+      "documentedOrnament": "геометричний, рослинний",
+      "documentedTechniques": "вишиття, занизування, призбирування, хрестик",
+      "documentedDate": "перша половина ХХст.",
+      "documentedCreator": "Невідомий",
+      "documentedCutId": "K33",
+      "visualObservations": [
+        "Angular flower-like clusters descend in diagonal sleeve trails beneath a distinct shoulder band, with related narrow cuff ornament.",
+        "Catalogue explicitly lists both geometric and plant ornament; no botanical species is established."
+      ],
+      "review": "manual public title-preview examination; provisional visual descriptions, not full segmentation or stitch analysis",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false
+    },
+    {
+      "id": "kro-345",
+      "source": "https://krovets.ua/item/kro-345",
+      "title": "Сорочка жіноча KYD63 —  Чернігівське Полісся | КРОВЕЦЬ",
+      "recordHtmlSha256": "b1e6a36c67f8b7fbec041bcad65bb21447d587a28c40f542d4886289c59e9d03",
+      "previewSha256": "62e22b24f1709d20d1d0bd3fd22d8bb26bbd38f4114b1f290e757501dd6f98c6",
+      "documentedRegion": "Чернігівське Полісся",
+      "documentedOrnament": "геометричний",
+      "documentedTechniques": "вишиття, змережування, мережка , призбирування",
+      "documentedDate": "початок ХХст.",
+      "documentedCreator": "Невідомий",
+      "documentedCutId": "K27",
+      "visualObservations": [
+        "Small red/black units form a sparse sleeve field beneath denser zigzag-like upper bands.",
+        "Joining and openwork appear in the technique record; preview cannot isolate each stitch technique."
+      ],
+      "review": "manual public title-preview examination; provisional visual descriptions, not full segmentation or stitch analysis",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false
+    },
+    {
+      "id": "kro-2785",
+      "source": "https://krovets.ua/item/kro-2785",
+      "title": "Сорочка жіноча KYD2503 —  Бойківщина | КРОВЕЦЬ",
+      "recordHtmlSha256": "abdb3ff863e43c0f22bdf1da2fc256edcbdcb267ca02b0a5684a8aaa9e45b42a",
+      "previewSha256": "ecbaa7d4fe8c0e14f71a7fa49521d9e1d8c4aef7997c6d56e6d42d4bdfe94c3c",
+      "documentedRegion": "Бойківщина",
+      "documentedOrnament": "геометричний",
+      "documentedTechniques": "вишиття, низинка, призбирування",
+      "documentedDate": "перша половина ХХст.",
+      "documentedCreator": "Невідомий",
+      "documentedCutId": "K112",
+      "visualObservations": [
+        "Compact polychrome geometric bands decorate upper chest/shoulders and cuffs; much of the sleeve and torso stays plain.",
+        "Band-only organisation is a different design family from all-over sleeve ornament."
+      ],
+      "review": "manual public title-preview examination; provisional visual descriptions, not full segmentation or stitch analysis",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false
+    },
+    {
+      "id": "kro-733",
+      "source": "https://krovets.ua/item/kro-733",
+      "title": "Сорочка жіноча KYD451 —  Буковина | КРОВЕЦЬ",
+      "recordHtmlSha256": "b6b82a5849d445898c2361f49c5e5c5cad40d776e0caf6f14077ed735a57f9dc",
+      "previewSha256": "cbe0becdef292e562cdd124c6af4c68f840976bcc65d1a4fb0b35b8ed7eb9877",
+      "documentedRegion": "Буковина",
+      "documentedOrnament": "геометричний, зооморфний",
+      "documentedTechniques": "вишиття, гладь, змережування, кафасор, ланцюжок, призбирування, хрестик",
+      "documentedDate": "перша половина ХХст.",
+      "documentedCreator": "Невідомий",
+      "documentedCutId": "K149",
+      "visualObservations": [
+        "Stacked small upper-sleeve rows, a blue diamond-like band below, and larger spaced red forms on lower sleeve trails.",
+        "Zoomorphic ornament is documented, but specific animals and corresponding tiny silhouettes are unresolved in this preview."
+      ],
+      "review": "manual public title-preview examination; provisional visual descriptions, not full segmentation or stitch analysis",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false
+    },
+    {
+      "id": "kro-2756",
+      "source": "https://krovets.ua/item/kro-2756",
+      "title": "Сорочка жіноча \"довганя\" KYD2474 —  Закарпаття | КРОВЕЦЬ",
+      "recordHtmlSha256": "f62a896f3c4c11572536dd2ec8901e55bf8b6acce7c1f53699fd77e858ec3ed6",
+      "previewSha256": "65d8c62a8bff264923800ba2ee6cc5194be1817d1fdef7c808bbc4c0bf69da20",
+      "documentedRegion": "Закарпаття",
+      "documentedOrnament": "геометричний",
+      "documentedTechniques": "кучерявий шов, вирізування, вишиття, змережування, обметування, призбирування, хрестик",
+      "documentedDate": "кінець ХІХст.",
+      "documentedCreator": "Салей Василина",
+      "documentedCutId": "K70",
+      "visualObservations": [
+        "Large nested diamond-like panels fill upper sleeves; narrower chest and cuff treatments share a palette but have different scales.",
+        "Cutwork and joining are recorded separately from coloured embroidery; oral ownership/wedding account is not an independently dated manufacture record."
+      ],
+      "review": "manual public title-preview examination; provisional visual descriptions, not full segmentation or stitch analysis",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false
+    },
+    {
+      "id": "kro-629",
+      "source": "https://krovets.ua/item/kro-629",
+      "title": "Сорочка жіноча KYD347 —  Західне Поділля | КРОВЕЦЬ",
+      "recordHtmlSha256": "ee966e738339792912a0e047d1f13075ea93323c40f34a4a82bdba6f27485055",
+      "previewSha256": "2517d5d66d9838457ef03a70dd87581800e7c1cfb9ee0c802946a47332742573",
+      "documentedRegion": "Західне Поділля",
+      "documentedOrnament": "геометричний, рослинний",
+      "documentedTechniques": "вишивка по брижах, вишиття, колодка, ланцюжок, мережка , обметування, призбирування",
+      "documentedDate": "початок ХХст.",
+      "documentedCreator": "Невідомий",
+      "documentedCutId": "K141",
+      "visualObservations": [
+        "Dark dense upper sleeves/chest contrast with separated diagonal black lower-sleeve bands and small cuff details.",
+        "Colour, stitch texture and negative space contribute to hierarchy; the record is not sufficient to calibrate density."
+      ],
+      "review": "manual public title-preview examination; provisional visual descriptions, not full segmentation or stitch analysis",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false
+    },
+    {
+      "id": "kro-292",
+      "source": "https://krovets.ua/item/kro-292",
+      "title": "Сорочка жіноча KYD10 —  Слобожанщина | КРОВЕЦЬ",
+      "recordHtmlSha256": "286f4e52ad2526c44d0c18f7f6182fb50cae0138419fb23cd140bbc93c7a8604",
+      "previewSha256": "1e99dfe0eabd846bb3376f74c5a7edc1e82aa684ed0b790524c6558e2eb8a833",
+      "documentedRegion": "Слобожанщина",
+      "documentedOrnament": "геометричний, рослинний",
+      "documentedTechniques": "мережка чисна з настилуванням, зерновий вивід, виколювання, вистіг, вишиття, зубцювання, лиштва, мережка , рясування",
+      "documentedDate": "перша половина ХХст.",
+      "documentedCreator": "Невідомий",
+      "documentedCutId": "K49",
+      "visualObservations": [
+        "White-on-white angular lattice covers sleeves with a quieter body.",
+        "Record explicitly calls the treatment white on white and names drawn-thread/openwork techniques; a dark-pixel mask would lose important structure."
+      ],
+      "review": "manual public title-preview examination; provisional visual descriptions, not full segmentation or stitch analysis",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false
+    },
+    {
+      "id": "kro-395",
+      "source": "https://krovets.ua/item/kro-395",
+      "title": "Сорочка жіноча KYD113 —  Опілля | КРОВЕЦЬ",
+      "recordHtmlSha256": "73daf1d5ccbad010cd71f43b76b0208fa23ab5250a4ffdc1c995f5bf03329056",
+      "previewSha256": "6895db4cbc8f7ea7a4b306c30ef2361ef7aa874b56a5f2b14b772f01b6faf3b5",
+      "documentedRegion": "Опілля",
+      "documentedOrnament": "геометричний",
+      "documentedTechniques": "виколювання, вишиття, змережування, косичка, обметування, призбирування",
+      "documentedDate": "перша половина ХХст.",
+      "documentedCreator": "Невідомий",
+      "documentedCutId": "K156",
+      "visualObservations": [
+        "Black geometric bands at shoulders, neck and cuffs surround mostly plain sleeve/body surfaces.",
+        "Controlled distribution of density can be sophisticated without increasing total motif count."
+      ],
+      "review": "manual public title-preview examination; provisional visual descriptions, not full segmentation or stitch analysis",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false
+    },
+    {
+      "id": "kro-3130",
+      "source": "https://krovets.ua/item/kro-3130",
+      "title": "Сорочка жіноча KYD2848 —  Лемківщина | КРОВЕЦЬ",
+      "recordHtmlSha256": "1567c2e1ba6e448c3a73b185e93f3fc2776f9807b9b20a267e03a457e3807fd6",
+      "previewSha256": "2622e23be38b43616a48d0eab72680a362b38d52dac3bab1d7a72151905f77c3",
+      "documentedRegion": "Лемківщина",
+      "documentedOrnament": "рослинний",
+      "documentedTechniques": "вишиття, рішельє",
+      "documentedDate": "перша половина ХХст.",
+      "documentedCreator": "Невідомий",
+      "documentedCutId": null,
+      "visualObservations": [
+        "Flower-like cutwork openings occur on sleeves and shaped collar/cuffs.",
+        "Richelieu is documented; apertures and their connecting fabric bridges need distinct representation from painted fills."
+      ],
+      "review": "manual public title-preview examination; provisional visual descriptions, not full segmentation or stitch analysis",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false
+    },
+    {
+      "id": "kro-405",
+      "source": "https://krovets.ua/item/kro-405",
+      "title": "Сорочка жіноча KYD123 —  Волинське Полісся | КРОВЕЦЬ",
+      "recordHtmlSha256": "77776a2ead036815aa270a72d064d6c38c6ef4f8d69bf64bd4c8d279bc832c92",
+      "previewSha256": "86196d5545b772e321550f67e75a6342edd1eb42fb5c93d5d4a450b3eaac1129",
+      "documentedRegion": "Волинське Полісся",
+      "documentedOrnament": "геометричний, рослинний",
+      "documentedTechniques": "вишиття, занизування, змережування, призбирування, хрестик",
+      "documentedDate": "початок ХХст.",
+      "documentedCreator": "Невідомий",
+      "documentedCutId": "K37",
+      "visualObservations": [
+        "Thin diagonal rows occupy sleeves below multiple larger upper-arm bands.",
+        "Compare with KYD122: same documented cut K37 and region, different sleeve rhythm and density."
+      ],
+      "review": "manual public title-preview examination; provisional visual descriptions, not full segmentation or stitch analysis",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false
+    },
+    {
+      "id": "kro-340",
+      "source": "https://krovets.ua/item/kro-340",
+      "title": "Сорочка жіноча KYD58 —  Чернігівське Полісся | КРОВЕЦЬ",
+      "recordHtmlSha256": "b8942689f923332304151129ebe1df9eae1308423069f0f9d09a8c82e8575993",
+      "previewSha256": "ea24e84fc85f7233715e72f35af409fa42852b2b0db94d309fc2e0e08957d2c1",
+      "documentedRegion": "Чернігівське Полісся",
+      "documentedOrnament": "геометричний",
+      "documentedTechniques": "верхоплут , вирізування, вишиття, гачкування, лиштва, мережка , призбирування",
+      "documentedDate": "початок ХХст.",
+      "documentedCreator": "Невідомий",
+      "documentedCutId": "K131",
+      "visualObservations": [
+        "White tonal ornament is concentrated on sleeves with distinct upper bands and a plain torso.",
+        "Record documents geometric ornament, cutwork and drawn-thread techniques. Vytvory product 278 cites this KYD58 code; this does not make its modern colour variant identical to the historical object."
+      ],
+      "review": "manual public title-preview examination; provisional visual descriptions, not full segmentation or stitch analysis",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false
+    },
+    {
+      "id": "kro-4291",
+      "source": "https://krovets.ua/item/kro-4291",
+      "title": "Сорочка чоловіча KYD3784 —  Опілля | КРОВЕЦЬ",
+      "recordHtmlSha256": "b20a4701724f33dbd6a050028eee7532d88a423947a119e04a15e48e3a7cda12",
+      "previewSha256": "aa7c04828b844e225a0b2bf3ddaf8bb5795f1fc03ab67686c8565902a99b5286",
+      "documentedRegion": "Опілля",
+      "documentedOrnament": "геометричний",
+      "documentedTechniques": "виколювання, вишиття, косичка, настил, призбирування",
+      "documentedDate": "перша половина ХХст.",
+      "documentedCreator": "Невідомий",
+      "documentedCutId": "R82",
+      "visualObservations": [
+        "The men’s shirt concentrates dark geometric details on collar, placket and cuffs while keeping the body and sleeve field plain.",
+        "Record provides a separate cut ID R82; do not transfer women’s shirt fields or cut geometry unchanged."
+      ],
+      "review": "manual public title-preview examination; provisional visual descriptions, not full segmentation or stitch analysis",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false
+    }
+  ],
+  "historicalDrawingSources": [
+    {
+      "id": "sibmacher-1604",
+      "source": "https://www.metmuseum.org/art/collection/search/357206",
+      "title": "Newes Modelbuch in Kupffer",
+      "creator": "Johann Sibmacher",
+      "date": "1604",
+      "sourceType": "primary historical pattern book",
+      "metadataSha256": "295f80b0dcf4c8b61cbd5b42317e83dc0dfabf7d2bfb7a8d33c792a5d78fa17d",
+      "imageSha256": "c1cdee434e71dde92b18cbf7967ac8afe9d975ee13add1b12dcaab806c663e9c",
+      "imageSource": "https://images.metmuseum.org/CRDImages/dp/original/DP363819.jpg",
+      "review": "Two selected additional images viewed: index 10, text with ornamental border; index 30, counted floral/geometric pattern bands. Not a complete book review.",
+      "finding": "Explicit counted-cell drawings provide boundaries, repeated band units, nested geometric figures and a distinction between shape and pattern filling.",
+      "rights": {
+        "assessment": "Current official Met API isPublicDomain=true; Met Open Access CC0 policy",
+        "source": "https://www.metmuseum.org/about-the-met/policies-and-documents/open-access"
+      }
+    },
+    {
+      "id": "sibmacher-1597-plate37",
+      "source": "https://archive.org/details/clevelandart-1993.114-plate-37-from-schon",
+      "title": "Plate 37 from Schon News Modelbuch",
+      "catalogueCreator": "Hans Sibmacher",
+      "date": "1597",
+      "sourceType": "primary historical printed pattern plate",
+      "metadataSha256": "1ec8761d07411be9a76c5e3f44ed0f39bb6d3e82dd32791bf92c56012f83528c",
+      "imageSha256": "204790c2327f16bdb23c5052fcbbdd590516e9371008ac335cadb7f8d49ed3a4",
+      "review": "Full plate visually examined.",
+      "finding": "Different repeats fit three shaped panels; large units, smaller intervening units, border ornaments and a dense counted-grid alternative have distinct roles.",
+      "rights": {
+        "assessment": "Retained Archive.org record declares CC0; current official Cleveland API refresh returned HTTP403. No new fixture admission."
+      }
+    },
+    {
+      "id": "durer-before1521",
+      "source": "https://www.metmuseum.org/art/collection/search/388374",
+      "title": "Embroidery Pattern with Round Medallion in its Center",
+      "creator": "Albrecht Dürer",
+      "date": "before 1521",
+      "sourceType": "primary historical pattern print",
+      "metadataSha256": "500f5b4403c1e5737b7ddc9172313b0a1c5cb670c506deb0dc50a3df3a19c98b",
+      "imageSha256": "beda3a3b189590b95ef273c6f610dca17cd489dc721ad5e8022e95f2854fc93b",
+      "review": "Full image visually examined and museum description read.",
+      "finding": "Concentric knotwork tiers surround a central medallion, with separate corner ornaments. Over/under crossings are not ordinary attachment junctions.",
+      "rights": {
+        "assessment": "Current official Met API isPublicDomain=true; Met Open Access CC0 policy",
+        "source": "https://www.metmuseum.org/about-the-met/policies-and-documents/open-access"
+      }
+    },
+    {
+      "id": "fowler-craggs-1924",
+      "source": "https://archive.org/details/embroidery-and-pattern-design",
+      "title": "Embroidery And Pattern Design: A Handbook for Teachers and Art Students",
+      "creator": "Hannah Fowler; George F. Craggs",
+      "date": "1924",
+      "sourceType": "primary historical design instruction",
+      "metadataSha256": "5fa95073f1ca3ddba2fba4ca4bbc371ee08be4c234cc4790cba7ee2b92fc7307",
+      "textSha256": "42030be4a43efa7237d6e829e1f7eacd733f835bf7d7144cf1cdea2b38628819",
+      "review": "Selected OCR passages: printed pages 110, 118, 128 and 144–149. OCR can contain errors; selected illustration PDF request returned HTTP500, and those book illustrations were not visually verified.",
+      "finding": "Mass before detail; radial growth from a point or line; layout borders before an interior network; proportion/spacing; tracing, pouncing and stencil transfer as separate stages.",
+      "rights": {
+        "assessment": "Research reading only; no worldwide reuse licence verified and no geometry admitted."
+      }
+    },
+    {
+      "id": "silljan-1908",
+      "source": "https://archive.org/details/twentiethcentury00sill",
+      "title": "The Twentieth century pattern book for Norwegian lace and embroidery",
+      "catalogueCreator": "Elsie H. Silljan",
+      "printedEditor": "Elise H. Silljan",
+      "date": "1908",
+      "sourceType": "primary historical pattern publication",
+      "metadataSha256": "c174feefa7896d1499a9ed5ba8992da6b11fd0bdcb2ff8709321f248e712e403",
+      "pdfSha256": "38630690cc2371917bc155ab1d0779028aece86ff1a0024b36a2b6eca446cd51",
+      "review": "OCR captions read and PDF page 12, bedspread pattern 16, visually examined. Not all pattern plates reviewed. Catalogue/printed editor spelling discrepancy retained.",
+      "finding": "Different central and flanking band vocabularies combine counted units with open fabric structure.",
+      "rights": {
+        "assessment": "Research reading only; no fresh item-specific worldwide reuse assessment and no geometry admitted."
+      }
+    }
+  ],
+  "ukrainianScholarlySources": [
+    {
+      "source": "https://doi.org/10.15407/nz2021.05.1150",
+      "title": "Embroidery on Ukrainian clothes: the problem of origins",
+      "authors": [
+        "Vasyl Balushok",
+        "Maryna Oliynyk"
+      ],
+      "date": "2021",
+      "pdfSha256": "9ed0162a688f4c062fad42e7c395817e1cf826327bf50be3b4f92124bec3221c",
+      "review": "Abstract, selected body passages about source evidence and ornamental origins, conclusions and bibliography read.",
+      "finding": "Early origins and woven-versus-embroidered precedence are unresolved hypotheses; this paper does not certify the antiquity or symbolism of a selected motif."
+    },
+    {
+      "source": "https://doi.org/10.32405/978-966-644-495-3-2019-135",
+      "title": "Технології: Українська народна вишивка. 10–11 кл. Профільний рівень",
+      "author": "Т. С. Мачача",
+      "publicationEvidence": "Title-page bibliography says 2017; PDF copyright and DOI metadata say 2019. Preserve both rather than silently normalising.",
+      "pdfSha256": "ca9036aef355701e862acd75d4e23692c31c2215de874d355d9343c996bd739f",
+      "review": "Selected design-analysis/modeling/construction passages around printed pages 69–74 and bibliography read.",
+      "finding": "Compare cultural analogues, sketch alternatives, determine size/placement, select composition, prepare separate technical drawings and material/operation plans."
+    }
+  ],
+  "bibliographicLeads": [
+    {
+      "citation": "Я. Клунний; Г. Клунний. Альбом українських узорів: гладь, вирізування, мережка. Київ, 1915. 48 с.",
+      "evidenceSource": "https://doi.org/10.32405/978-966-644-495-3-2019-135",
+      "locator": "PDF page 133, bibliography item 10",
+      "primarySourceRetrieved": false
+    },
+    {
+      "citation": "П. Савицкий. Об украинской вышивке XVIII века и современном ее возрождении. Черниговская земская неделя. 1914, №24 (13 июня), с.1–5.",
+      "evidenceSource": "https://doi.org/10.15407/nz2021.05.1150",
+      "locator": "PDF page 12, printed page 1161, bibliography item 5",
+      "primarySourceRetrieved": false
+    },
+    {
+      "citation": "А. Миллер. Лотос в малорусском орнаменте. Труды археологического съезда в Чернигове, т.III; Москва, 1911, с.81–88.",
+      "evidenceSource": "https://doi.org/10.15407/nz2021.05.1150",
+      "locator": "PDF page 14, printed page 1163, bibliography item 42",
+      "primarySourceRetrieved": false,
+      "qualification": "Older ethnographic terminology is retained in the cited title; proposed botanical derivations have not been independently verified."
+    },
+    {
+      "citation": "М. Р. Селівачов. Лексикон української орнаментики (іконографія, номінація, стилістика, типологія). Київ, 2005.",
+      "evidenceSource": "https://doi.org/10.15407/nz2021.05.1150",
+      "locator": "PDF page 14, printed page 1163, bibliography item 40",
+      "primarySourceRetrieved": false
+    },
+    {
+      "citation": "Тетяна Причепій; Євген Причепій. Вишивка Східного Поділля. Київ: Родовід, 2008.",
+      "evidenceSource": "https://doi.org/10.32405/978-966-644-495-3-2019-135",
+      "locator": "PDF page 135, bibliography item 30",
+      "primarySourceRetrieved": false
+    },
+    {
+      "citation": "Л. Покусінська; О. Покусінський. Борщівська народна сорочка. Матеріали. Крій. Техніки шитва. Київ: Новий друк, 2012. 368 с.",
+      "evidenceSource": "https://doi.org/10.32405/978-966-644-495-3-2019-135",
+      "locator": "PDF page 135, bibliography item 28",
+      "primarySourceRetrieved": false
+    }
+  ],
+  "limitations": [
+    "Public title previews do not establish exact stitch counts, measured density, front/reverse routes, species or a universal regional grammar.",
+    "Krovets restricted images were not traced, redistributed, trained on or admitted as MotifGraphs.",
+    "No engine implementation, model training or production approval in this increment."
+  ],
+  "engineCodeChanged": false,
+  "modelTrainingPerformed": false,
+  "productionApproved": false
+}

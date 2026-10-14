@@ -1,0 +1,387 @@
+{
+  "schema": "ascend.learned-runtime-benchmark.v1",
+  "snapshotSha256": "d7569a84d718b657355623b2bce6aac605b06a57953de4715aac5a9bba1d057a",
+  "modelTrainingPerformed": false,
+  "cases": [
+    {
+      "id": "auto-0",
+      "input": {
+        "widthMm": 250,
+        "heightMm": 80,
+        "complexity": 0.8,
+        "family": "floral",
+        "motif": "auto",
+        "seed": 0
+      },
+      "plan": {
+        "hero": "horns",
+        "companions": [
+          "bird"
+        ],
+        "filler": "leaf",
+        "mirrored": false,
+        "novelPairs": [],
+        "units": 2
+      },
+      "structure": {
+        "junctionCount": 4,
+        "brokenJunctions": 0,
+        "repeatCount": 0,
+        "brokenRepeats": 0,
+        "nestedRelations": 0,
+        "negativeSpaceViolations": 0
+      },
+      "modelApplied": {
+        "id": "tesseract-learned-latest",
+        "version": "tesseract-learned/0.3-lego",
+        "builtAt": "2026-10-13T13:15:00.523Z",
+        "scope": "Ukrainian",
+        "grammarImages": 1919,
+        "interpretation": "stored model statistic, not audited training-image count",
+        "reviewState": "unreviewed-reference"
+      },
+      "objectCount": 140,
+      "stitchCount": 8604,
+      "estimatedMinutes": 25.374761904761904,
+      "gate": {
+        "release": false,
+        "checks": [
+          {
+            "id": "satin-width",
+            "pass": true,
+            "detail": "11 columns within 1–8 mm"
+          },
+          {
+            "id": "fill-density",
+            "pass": true,
+            "detail": "row spacing 0.43 mm (min 0.4)"
+          },
+          {
+            "id": "min-stitch",
+            "pass": true,
+            "detail": "0 stitches shorter than 1 mm"
+          },
+          {
+            "id": "max-stitch",
+            "pass": true,
+            "detail": "0 stitches longer than 12.1 mm"
+          },
+          {
+            "id": "hoop-fit",
+            "pass": true,
+            "detail": "design 247.8×77.8 mm, hoop design canvas (not selected hardware) 250×80 mm"
+          },
+          {
+            "id": "min-gap",
+            "pass": true,
+            "detail": "closest objects border-0/frame-2 1.10 mm (min 0.8)"
+          },
+          {
+            "id": "recipe-validated",
+            "pass": false,
+            "detail": "recipe linen-180-prewashed has no sew-out yet: prototype only"
+          }
+        ]
+      },
+      "blockers": [
+        "recipe-validated",
+        "machine-not-selected",
+        "model-source-rights-review-pending"
+      ],
+      "jobValidation": {
+        "valid": true,
+        "errors": [],
+        "warnings": [
+          "Reference plan only: material calibration, machine-specific postprocessing and sew-out are required."
+        ]
+      },
+      "svgSha256": "22f9c1670482d3ef345b92e65393333f43cf0ba93c2b08e4f7413948c8bb0dda",
+      "productionApproved": false
+    },
+    {
+      "id": "tree-1",
+      "input": {
+        "widthMm": 250,
+        "heightMm": 80,
+        "complexity": 0.8,
+        "family": "floral",
+        "motif": "tree",
+        "seed": 1
+      },
+      "plan": {
+        "hero": "tree",
+        "companions": [
+          "bird"
+        ],
+        "filler": null,
+        "mirrored": true,
+        "novelPairs": [],
+        "units": 1
+      },
+      "structure": {
+        "junctionCount": 2,
+        "brokenJunctions": 0,
+        "repeatCount": 0,
+        "brokenRepeats": 0,
+        "nestedRelations": 0,
+        "negativeSpaceViolations": 0
+      },
+      "modelApplied": {
+        "id": "tesseract-learned-latest",
+        "version": "tesseract-learned/0.3-lego",
+        "builtAt": "2026-10-13T13:15:00.523Z",
+        "scope": "Ukrainian",
+        "grammarImages": 1919,
+        "interpretation": "stored model statistic, not audited training-image count",
+        "reviewState": "unreviewed-reference"
+      },
+      "objectCount": 202,
+      "stitchCount": 8402,
+      "estimatedMinutes": 24.66952380952381,
+      "gate": {
+        "release": false,
+        "checks": [
+          {
+            "id": "satin-width",
+            "pass": true,
+            "detail": "9 columns within 1–8 mm"
+          },
+          {
+            "id": "fill-density",
+            "pass": true,
+            "detail": "row spacing 0.43 mm (min 0.4)"
+          },
+          {
+            "id": "min-stitch",
+            "pass": true,
+            "detail": "0 stitches shorter than 1 mm"
+          },
+          {
+            "id": "max-stitch",
+            "pass": true,
+            "detail": "0 stitches longer than 12.1 mm"
+          },
+          {
+            "id": "hoop-fit",
+            "pass": true,
+            "detail": "design 247.8×77.8 mm, hoop design canvas (not selected hardware) 250×80 mm"
+          },
+          {
+            "id": "min-gap",
+            "pass": true,
+            "detail": "closest objects branch-106/leaf-110 0.91 mm (min 0.8)"
+          },
+          {
+            "id": "recipe-validated",
+            "pass": false,
+            "detail": "recipe linen-180-prewashed has no sew-out yet: prototype only"
+          }
+        ]
+      },
+      "blockers": [
+        "recipe-validated",
+        "machine-not-selected",
+        "model-source-rights-review-pending"
+      ],
+      "jobValidation": {
+        "valid": true,
+        "errors": [],
+        "warnings": [
+          "Reference plan only: material calibration, machine-specific postprocessing and sew-out are required."
+        ]
+      },
+      "svgSha256": "004d9665b9a73e9653973689630893a5c0b2eecca83509a9c3d4ba0a4612a819",
+      "productionApproved": false
+    },
+    {
+      "id": "rose-2",
+      "input": {
+        "widthMm": 250,
+        "heightMm": 80,
+        "complexity": 0.8,
+        "family": "floral",
+        "motif": "rose",
+        "seed": 2
+      },
+      "plan": {
+        "hero": "rose",
+        "companions": [
+          "star-lily"
+        ],
+        "filler": "leaf",
+        "mirrored": false,
+        "novelPairs": [],
+        "units": 2
+      },
+      "structure": {
+        "junctionCount": 4,
+        "brokenJunctions": 0,
+        "repeatCount": 0,
+        "brokenRepeats": 0,
+        "nestedRelations": 0,
+        "negativeSpaceViolations": 0
+      },
+      "modelApplied": {
+        "id": "tesseract-learned-latest",
+        "version": "tesseract-learned/0.3-lego",
+        "builtAt": "2026-10-13T13:15:00.523Z",
+        "scope": "Ukrainian",
+        "grammarImages": 1919,
+        "interpretation": "stored model statistic, not audited training-image count",
+        "reviewState": "unreviewed-reference"
+      },
+      "objectCount": 188,
+      "stitchCount": 14934,
+      "estimatedMinutes": 39.33428571428571,
+      "gate": {
+        "release": false,
+        "checks": [
+          {
+            "id": "satin-width",
+            "pass": true,
+            "detail": "5 columns within 1–8 mm"
+          },
+          {
+            "id": "fill-density",
+            "pass": true,
+            "detail": "row spacing 0.43 mm (min 0.4)"
+          },
+          {
+            "id": "min-stitch",
+            "pass": true,
+            "detail": "0 stitches shorter than 1 mm"
+          },
+          {
+            "id": "max-stitch",
+            "pass": true,
+            "detail": "0 stitches longer than 12.1 mm"
+          },
+          {
+            "id": "hoop-fit",
+            "pass": true,
+            "detail": "design 247.8×77.8 mm, hoop design canvas (not selected hardware) 250×80 mm"
+          },
+          {
+            "id": "min-gap",
+            "pass": true,
+            "detail": "closest objects border-0/frame-2 1.10 mm (min 0.8)"
+          },
+          {
+            "id": "recipe-validated",
+            "pass": false,
+            "detail": "recipe linen-180-prewashed has no sew-out yet: prototype only"
+          }
+        ]
+      },
+      "blockers": [
+        "recipe-validated",
+        "machine-not-selected",
+        "model-source-rights-review-pending"
+      ],
+      "jobValidation": {
+        "valid": true,
+        "errors": [],
+        "warnings": [
+          "Reference plan only: material calibration, machine-specific postprocessing and sew-out are required."
+        ]
+      },
+      "svgSha256": "b4a331f85f1d077e4ff3a72c31346b48619daacaca6dabfac3f93f8ad7ad757c",
+      "productionApproved": false
+    },
+    {
+      "id": "medallion-3",
+      "input": {
+        "widthMm": 250,
+        "heightMm": 80,
+        "complexity": 0.8,
+        "family": "geometric",
+        "motif": "medallion",
+        "seed": 3
+      },
+      "plan": {
+        "hero": "medallion",
+        "companions": [
+          "horns"
+        ],
+        "filler": "leaf",
+        "mirrored": true,
+        "novelPairs": [],
+        "units": 2
+      },
+      "structure": {
+        "junctionCount": 4,
+        "brokenJunctions": 0,
+        "repeatCount": 0,
+        "brokenRepeats": 0,
+        "nestedRelations": 0,
+        "negativeSpaceViolations": 0
+      },
+      "modelApplied": {
+        "id": "tesseract-learned-latest",
+        "version": "tesseract-learned/0.3-lego",
+        "builtAt": "2026-10-13T13:15:00.523Z",
+        "scope": "Ukrainian",
+        "grammarImages": 1919,
+        "interpretation": "stored model statistic, not audited training-image count",
+        "reviewState": "unreviewed-reference"
+      },
+      "objectCount": 196,
+      "stitchCount": 8401,
+      "estimatedMinutes": 26.584761904761905,
+      "gate": {
+        "release": false,
+        "checks": [
+          {
+            "id": "satin-width",
+            "pass": true,
+            "detail": "17 columns within 1–8 mm"
+          },
+          {
+            "id": "fill-density",
+            "pass": true,
+            "detail": "row spacing 0.43 mm (min 0.4)"
+          },
+          {
+            "id": "min-stitch",
+            "pass": true,
+            "detail": "0 stitches shorter than 1 mm"
+          },
+          {
+            "id": "max-stitch",
+            "pass": true,
+            "detail": "0 stitches longer than 12.1 mm"
+          },
+          {
+            "id": "hoop-fit",
+            "pass": true,
+            "detail": "design 247.8×77.8 mm, hoop design canvas (not selected hardware) 250×80 mm"
+          },
+          {
+            "id": "min-gap",
+            "pass": true,
+            "detail": "closest objects stem-131/bud-134 0.95 mm (min 0.8)"
+          },
+          {
+            "id": "recipe-validated",
+            "pass": false,
+            "detail": "recipe linen-180-prewashed has no sew-out yet: prototype only"
+          }
+        ]
+      },
+      "blockers": [
+        "recipe-validated",
+        "machine-not-selected",
+        "model-source-rights-review-pending"
+      ],
+      "jobValidation": {
+        "valid": true,
+        "errors": [],
+        "warnings": [
+          "Reference plan only: material calibration, machine-specific postprocessing and sew-out are required."
+        ]
+      },
+      "svgSha256": "02d0bc5d4e549eca136e25ed2fcca8aa55f4d45d07745898f8420cdbb0893215",
+      "productionApproved": false
+    }
+  ]
+}

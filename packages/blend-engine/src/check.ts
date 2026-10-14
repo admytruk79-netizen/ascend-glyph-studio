@@ -2,7 +2,7 @@
  * Self-checks: (1) the deconstruction analyser must read back the symmetry group the generator meant;
  * (2) the stitch engine's fail-closed gate must accept the design on the target material.
  */
-import { classifyFriezeGroup } from "../../../scripts/corpus/deconstruct.ts";
+import { classifyFriezeGroup } from "../../tesseract-engine/src/raster-deconstruction.ts";
 import { estimateMinutes, plan, recipes, runGate, type DesignObject, type GateResult } from "../../stitch-engine/src/index.ts";
 import type { Candidate } from "./generate.js";
 import { rasterize } from "./raster.js";

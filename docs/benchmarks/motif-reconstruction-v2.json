@@ -1,0 +1,355 @@
+{
+  "schema": "ascend.motif-benchmark.v2",
+  "state": "REFERENCE",
+  "dataset": "authored-synthetic-vector-fixture-v1",
+  "trainingPerformed": false,
+  "seed": "fixture-v1",
+  "graphSha256": "86193beff6d97b5f925e28e8ea717277140ce36aa4febc1ad3ac32e80bd1b9c3",
+  "reconstructionSha256": "b402e761dfaf17ad3e6648926e1964e49ea59831e720006f5572409f10acc8c8",
+  "deterministic": true,
+  "referenceReconstruction": {
+    "vectorPointRmseMm": 0,
+    "structure": {
+      "junctionCount": 3,
+      "brokenJunctions": 0,
+      "repeatCount": 1,
+      "brokenRepeats": 0,
+      "nestedRelations": 1,
+      "negativeSpaceViolations": 0
+    },
+    "clearance": {
+      "basis": "observed-polyline-centrelines",
+      "minimumCenterlineGapMm": 3.761086310732444,
+      "junctionExclusionRadiusMm": 2,
+      "clearanceViolations": [],
+      "portsOffPath": [],
+      "outsideEnvelope": []
+    }
+  },
+  "negativeControl": {
+    "junctionCount": 3,
+    "brokenJunctions": 1,
+    "repeatCount": 1,
+    "brokenRepeats": 1,
+    "nestedRelations": 1,
+    "negativeSpaceViolations": 1
+  },
+  "gapNegativeControl": {
+    "basis": "observed-polyline-centrelines",
+    "minimumCenterlineGapMm": 1,
+    "junctionExclusionRadiusMm": 2,
+    "clearanceViolations": [
+      {
+        "from": "crown0",
+        "to": "crown1",
+        "centerlineGapMm": 1
+      }
+    ],
+    "portsOffPath": [],
+    "outsideEnvelope": []
+  },
+  "repeatInference": {
+    "withheldRepeatRecovered": true,
+    "relation": {
+      "kind": "repeat",
+      "members": [
+        "a0",
+        "a1",
+        "a2"
+      ],
+      "stepMm": {
+        "x": 35,
+        "y": 0
+      },
+      "toleranceMm": 0.01,
+      "inference": {
+        "method": "translated-annotated-vectors-v1",
+        "confidence": 1,
+        "evidence": [
+          "authored-annotation:v1"
+        ]
+      }
+    },
+    "geometryUnchanged": true
+  },
+  "visualRasterSimilarity": null,
+  "comparisonBaselines": {
+    "tracing": null,
+    "primitiveTiling": null,
+    "svgFirst": null
+  },
+  "referencePieceIntegration": {
+    "size": "pilot-m",
+    "pieces": [
+      {
+        "pieceId": "front-left",
+        "sourceState": "reference",
+        "productionObjects": 6,
+        "irObjects": 24,
+        "jobErrors": [
+          "machine-field-exceeded:segmentation-required",
+          "motif-canonical-layout-unvalidated"
+        ]
+      },
+      {
+        "pieceId": "front-right",
+        "sourceState": "reference",
+        "productionObjects": 6,
+        "irObjects": 24,
+        "jobErrors": [
+          "machine-field-exceeded:segmentation-required",
+          "motif-canonical-layout-unvalidated"
+        ]
+      },
+      {
+        "pieceId": "back",
+        "sourceState": "reference",
+        "productionObjects": 6,
+        "irObjects": 24,
+        "jobErrors": [
+          "machine-field-exceeded:segmentation-required",
+          "motif-canonical-layout-unvalidated"
+        ]
+      },
+      {
+        "pieceId": "yoke",
+        "sourceState": "reference",
+        "productionObjects": 6,
+        "irObjects": 24,
+        "jobErrors": [
+          "machine-field-exceeded:segmentation-required",
+          "motif-canonical-layout-unvalidated"
+        ]
+      },
+      {
+        "pieceId": "sleeve-left",
+        "sourceState": "reference",
+        "productionObjects": 6,
+        "irObjects": 24,
+        "jobErrors": [
+          "machine-field-exceeded:segmentation-required",
+          "motif-canonical-layout-unvalidated"
+        ]
+      },
+      {
+        "pieceId": "sleeve-right",
+        "sourceState": "reference",
+        "productionObjects": 6,
+        "irObjects": 24,
+        "jobErrors": [
+          "machine-field-exceeded:segmentation-required",
+          "motif-canonical-layout-unvalidated"
+        ]
+      },
+      {
+        "pieceId": "cuff-left",
+        "sourceState": "reference",
+        "productionObjects": 6,
+        "irObjects": 24,
+        "jobErrors": [
+          "motif-canonical-layout-unvalidated"
+        ]
+      },
+      {
+        "pieceId": "cuff-right",
+        "sourceState": "reference",
+        "productionObjects": 6,
+        "irObjects": 24,
+        "jobErrors": [
+          "motif-canonical-layout-unvalidated"
+        ]
+      },
+      {
+        "pieceId": "collar",
+        "sourceState": "reference",
+        "productionObjects": 6,
+        "irObjects": 24,
+        "jobErrors": [
+          "motif-canonical-layout-unvalidated"
+        ]
+      }
+    ],
+    "seamRegistrationVerified": false,
+    "machineFieldAndColorChecksApplied": true,
+    "physicalMachineValidation": false
+  },
+  "engineSleeve": {
+    "seed": "motif-sleeve-integration-v2",
+    "designs": 4,
+    "deterministic": true,
+    "jobs": [
+      {
+        "id": "pat-motif-sleeve-integration-v2-4-compact",
+        "valid": false,
+        "errors": [
+          "machine-field-exceeded:segmentation-required"
+        ]
+      },
+      {
+        "id": "pat-motif-sleeve-integration-v2-2-compact",
+        "valid": false,
+        "errors": [
+          "machine-field-exceeded:segmentation-required"
+        ]
+      },
+      {
+        "id": "pat-motif-sleeve-integration-v2-3-compact",
+        "valid": false,
+        "errors": [
+          "machine-field-exceeded:segmentation-required"
+        ]
+      },
+      {
+        "id": "pat-motif-sleeve-integration-v2-1-compact",
+        "valid": false,
+        "errors": [
+          "machine-field-exceeded:segmentation-required"
+        ]
+      }
+    ]
+  },
+  "engineFullShirt": {
+    "seed": "motif-fullshirt-integration-v2",
+    "candidates": 2,
+    "errors": [],
+    "deterministic": true,
+    "productionApproved": false,
+    "blockers": [
+      "reference-pattern-requires-validation",
+      "zone-job:front-left:chest:0:machine-field-exceeded:segmentation-required",
+      "zone-job:front-left:placket:1:machine-field-exceeded:segmentation-required",
+      "zone-job:front-right:chest:0:machine-field-exceeded:segmentation-required",
+      "zone-job:front-right:placket:1:machine-field-exceeded:segmentation-required",
+      "zone-job:back:back:0:machine-field-exceeded:segmentation-required",
+      "zone-job:back:hem:1:machine-field-exceeded:segmentation-required",
+      "zone-job:yoke:yoke:0:machine-field-exceeded:segmentation-required",
+      "zone-job:yoke:shoulder:1:machine-field-exceeded:segmentation-required",
+      "zone-job:sleeve-left:sleeve:0:machine-field-exceeded:segmentation-required",
+      "zone-job:sleeve-right:sleeve:0:machine-field-exceeded:segmentation-required"
+    ],
+    "zoneJobs": [
+      {
+        "zoneId": "front-left:chest:0",
+        "irObjects": 46,
+        "valid": false,
+        "errors": [
+          "machine-field-exceeded:segmentation-required"
+        ]
+      },
+      {
+        "zoneId": "front-left:placket:1",
+        "irObjects": 46,
+        "valid": false,
+        "errors": [
+          "machine-field-exceeded:segmentation-required"
+        ]
+      },
+      {
+        "zoneId": "front-left:hem:2",
+        "irObjects": 46,
+        "valid": true,
+        "errors": []
+      },
+      {
+        "zoneId": "front-right:chest:0",
+        "irObjects": 46,
+        "valid": false,
+        "errors": [
+          "machine-field-exceeded:segmentation-required"
+        ]
+      },
+      {
+        "zoneId": "front-right:placket:1",
+        "irObjects": 46,
+        "valid": false,
+        "errors": [
+          "machine-field-exceeded:segmentation-required"
+        ]
+      },
+      {
+        "zoneId": "front-right:hem:2",
+        "irObjects": 46,
+        "valid": true,
+        "errors": []
+      },
+      {
+        "zoneId": "back:back:0",
+        "irObjects": 46,
+        "valid": false,
+        "errors": [
+          "machine-field-exceeded:segmentation-required"
+        ]
+      },
+      {
+        "zoneId": "back:hem:1",
+        "irObjects": 46,
+        "valid": false,
+        "errors": [
+          "machine-field-exceeded:segmentation-required"
+        ]
+      },
+      {
+        "zoneId": "yoke:yoke:0",
+        "irObjects": 46,
+        "valid": false,
+        "errors": [
+          "machine-field-exceeded:segmentation-required"
+        ]
+      },
+      {
+        "zoneId": "yoke:shoulder:1",
+        "irObjects": 46,
+        "valid": false,
+        "errors": [
+          "machine-field-exceeded:segmentation-required"
+        ]
+      },
+      {
+        "zoneId": "sleeve-left:sleeve:0",
+        "irObjects": 46,
+        "valid": false,
+        "errors": [
+          "machine-field-exceeded:segmentation-required"
+        ]
+      },
+      {
+        "zoneId": "sleeve-right:sleeve:0",
+        "irObjects": 46,
+        "valid": false,
+        "errors": [
+          "machine-field-exceeded:segmentation-required"
+        ]
+      },
+      {
+        "zoneId": "cuff-left:cuff:0",
+        "irObjects": 46,
+        "valid": true,
+        "errors": []
+      },
+      {
+        "zoneId": "cuff-right:cuff:0",
+        "irObjects": 46,
+        "valid": true,
+        "errors": []
+      },
+      {
+        "zoneId": "collar:collar:0",
+        "irObjects": 46,
+        "valid": true,
+        "errors": []
+      }
+    ],
+    "note": "Existing reference pilot; this does not project the reconstructed motif onto the shirt. Piece artwork layers remain placeholders. Per-zone machine feasibility is enforced in the runtime batch and retained as packet blockers."
+  },
+  "incomplete": [
+    "Unannotated image decomposition",
+    "Historical-source fixtures and source-disjoint evaluation",
+    "Raster and comparative baselines",
+    "Symmetry scoring and non-translational lattice inference",
+    "Canonical port remapping, stroke-width/fill-aware clearance validation",
+    "Full-shirt motif zone/no-go placement and seam continuity",
+    "Registered multi-hoop segmentation",
+    "Machine-specific stitch generation and measured stitch count",
+    "Model training and physical production validation"
+  ]
+}

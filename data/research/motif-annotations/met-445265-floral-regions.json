@@ -1,0 +1,56 @@
+{
+  "schema": "ascend.floral-reference-regions.v1",
+  "reviewStatus": "draft-visual-inspection",
+  "source": "met-445265",
+  "imageDimensions": {
+    "width": 1944,
+    "height": 1872
+  },
+  "regions": [
+    {
+      "id": "elongated-flower-head",
+      "description": "Elongated gold-coloured flower head with pointed terminal lobes and interior divisions",
+      "roi": {
+        "left": 178,
+        "top": 174,
+        "width": 245,
+        "height": 210
+      }
+    },
+    {
+      "id": "small-rosette-cluster",
+      "description": "Three small radial flower-like units with central ground openings",
+      "roi": {
+        "left": 128,
+        "top": 412,
+        "width": 114,
+        "height": 134
+      }
+    },
+    {
+      "id": "striped-bud",
+      "description": "Compact striped, lobed bud-like unit; botanical identity unverified",
+      "roi": {
+        "left": 180,
+        "top": 67,
+        "width": 105,
+        "height": 90
+      }
+    },
+    {
+      "id": "curved-serrated-leaf",
+      "description": "Curved dark supporting leaf-like form with pale serrated border; this is a supporting element, not a flower",
+      "roi": {
+        "left": 278,
+        "top": 94,
+        "width": 175,
+        "height": 270
+      }
+    }
+  ],
+  "limitations": [
+    "Visual descriptors are hypotheses, not a cultural motif taxonomy.",
+    "Rectangular crops can include neighbouring ornament; they do not constitute expert object segmentation.",
+    "No botanical identity, model training or production approval is claimed."
+  ]
+}

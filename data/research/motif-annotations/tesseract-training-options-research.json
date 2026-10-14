@@ -1,0 +1,307 @@
+{
+  "schema": "ascend.training-options-research.v1",
+  "reviewedAt": "2026-10-12T17:36:09.701087+00:00",
+  "repositoryCommitInspected": "a38802cfd61d20ef140299ebba633510cfc1ef8c",
+  "trainingPerformed": false,
+  "modelOrDatabaseWrites": false,
+  "externalToolsExecuted": false,
+  "codeAudit": [
+    {
+      "path": "scripts/train/train-tesseract.mts",
+      "sha256": "c9911e6428bbeadc943eea3834e3cfec30d6de40c27c4c85e305a78d700271cd"
+    },
+    {
+      "path": "scripts/train/labels.ts",
+      "sha256": "e8c81cb6a4f286397d09dc880bfd87bb693e18c2d296e4fbeb454c5e545dfb54"
+    },
+    {
+      "path": "scripts/train/preference-model.mts",
+      "sha256": "96f45a843d0e324130f08c684af6abb7eccfe4a45a9faf7e593de1d5c203d49c"
+    },
+    {
+      "path": "scripts/train/lego.ts",
+      "sha256": "d990886add3fa27be9aba325c42fe2bc393b5ede91f1d448b7612f61fec1c70f"
+    },
+    {
+      "path": "scripts/run-tesseract-worker.ts",
+      "sha256": "2a901079e50a210986fd59658c3559e77c0333d3177dcde4b8758b08a6651323"
+    },
+    {
+      "path": "scripts/corpus/profiles.ts",
+      "sha256": "84f8a48f56d0c05b4af3a03a8c130e6ae984648ce55963644abc973326284325"
+    },
+    {
+      "path": "packages/tesseract-engine/src/production-learning.ts",
+      "sha256": "c1e635d8d85f0bc5626a25bc6347a17bdd02253c664bf7f7127098f832f5398b"
+    },
+    {
+      "path": "packages/tesseract-engine/src/motif-graph.ts",
+      "sha256": "c6b360a038601341e802eea3202ba7e5146bec86f3eae30a1fe140a08a0bbac0"
+    }
+  ],
+  "confirmedCounterexample": {
+    "test": "Synthetic legacy Commons metadata passed through traditionOf with source present versus omitted",
+    "withSource": "Other",
+    "withoutSource": "Ukrainian",
+    "regionalLabelExample": {
+      "input": "Житомирське Полісся",
+      "regionOfOutput": "Volyn–Polissia"
+    },
+    "meaning": "Neon training SELECT omits source needed by attribution guard; region labels are too coarse for new object-level research."
+  },
+  "retainedReferenceInventory": [
+    {
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9627._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg",
+      "provenanceFile": "data/research/motif-references/commons-96737731/provenance.json",
+      "imageFile": "data/research/motif-references/commons-96737731/source.jpg",
+      "sha256": "074104c967c8f7cf68fb92ea52e9dd560ddc0bc6c9f54198b47e67a245e48839",
+      "sourceObject": "commons-96737731",
+      "permissionEvidence": "Reference-use review of retained Neon Commons item commons-96737731: Public domain; catalogue publication 1902 (pre-1931 publication, public domain in the US). No successful fresh Commons licence-page check or global commercial/manufacturing approval claimed.",
+      "trainingAssessment": "Conditional candidate: retained per-item declaration and US reference-use assessment; no fresh Commons rights refresh or training admission"
+    },
+    {
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9637._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg",
+      "provenanceFile": "data/research/motif-references/commons-96737753/provenance.json",
+      "imageFile": "data/research/motif-references/commons-96737753/source.jpg",
+      "sha256": "e4b85cfafc845616091a8e03276ea7dc83d7ec9eb0498da692d3bc804c5b32b0",
+      "sourceObject": "commons-96737753",
+      "permissionEvidence": "Reference-use review of retained Neon per-item Commons rights declaration: Public domain; catalogue publication date 1902 (pre-1931 publication, public domain in the US). This is a historical reference-use assessment, not a fresh Commons licence-page verification; live requests returned HTTP 403. No manufacturing approval.",
+      "trainingAssessment": "Conditional candidate: retained per-item declaration and US reference-use assessment; no fresh Commons rights refresh or training admission"
+    },
+    {
+      "source": "https://www.metmuseum.org/art/collection/search/239343",
+      "provenanceFile": "data/research/motif-references/met-239343/provenance-original.json",
+      "imageFile": "data/research/motif-references/met-239343/source-original.jpg",
+      "sha256": "b0ea1b05bc3ef138b2168b264f19a9f62067c45b21780040d1b51b59c7bc5fb6",
+      "sourceObject": "met-239343",
+      "permissionEvidence": "Retained Met object API 239343 isPublicDomain=true; image supplied by Met Open Access. CC0 policy https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+      "trainingAssessment": "CC0/public-domain museum candidate; confirm explicit training manifest"
+    },
+    {
+      "source": "https://www.metmuseum.org/art/collection/search/445264",
+      "provenanceFile": "data/research/motif-references/met-445264/provenance-original.json",
+      "imageFile": "data/research/motif-references/met-445264/source-original.jpg",
+      "sha256": "0cdd6dbcb9ae571d3aaa4870e4cbca455570852ef6f4397504ee813f22684009",
+      "sourceObject": "met-445264",
+      "permissionEvidence": "Met object API 445264 explicitly isPublicDomain=true; Met Open Access CC0 policy https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+      "trainingAssessment": "CC0/public-domain museum candidate; confirm explicit training manifest"
+    },
+    {
+      "source": "https://www.metmuseum.org/art/collection/search/445264",
+      "provenanceFile": "data/research/motif-references/met-445264/provenance.json",
+      "imageFile": "data/research/motif-references/met-445264/source.jpg",
+      "sha256": "3d8dfc1726ee344d769c20d78006cf6adeb638a588527905e824a7945f20d27d",
+      "sourceObject": "met-445264",
+      "permissionEvidence": "Met object API 445264 explicitly isPublicDomain=true; Met Open Access CC0 policy https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+      "trainingAssessment": "CC0/public-domain museum candidate; confirm explicit training manifest"
+    },
+    {
+      "source": "https://www.metmuseum.org/art/collection/search/445265",
+      "provenanceFile": "data/research/motif-references/met-445265/provenance-original.json",
+      "imageFile": "data/research/motif-references/met-445265/source-original.jpg",
+      "sha256": "7cf10d3a774e68953e24e881babb7a70293571d923559aaf9b57f21801a2a3c8",
+      "sourceObject": "met-445265",
+      "permissionEvidence": "Retained Met object API 445265: isPublicDomain=true; Met Open Access CC0 policy https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+      "trainingAssessment": "CC0/public-domain museum candidate; confirm explicit training manifest"
+    }
+  ],
+  "independentRetainedReferenceObjects": 5,
+  "retainedReferenceImages": 6,
+  "verifiedMetObjects": 3,
+  "conditionalCommonsObjects": 2,
+  "externalSources": [
+    {
+      "id": "inkstitch",
+      "url": "https://inkstitch.org/",
+      "status": 200,
+      "sha256": "de7729e3d3819bf5ef6dd712ca82ce404be2ad54215ac0ebae8db81892f99570"
+    },
+    {
+      "id": "inkstitch-fill",
+      "url": "https://inkstitch.org/docs/fill-tools/",
+      "status": 200,
+      "sha256": "61e043d3092d6924904ba66b026814ffea6d479bfa78b3188830d098c0f2b26b"
+    },
+    {
+      "id": "inkstitch-satin",
+      "url": "https://inkstitch.org/docs/satin-tools/",
+      "status": 200,
+      "sha256": "445896609b774803d61f3aa9a58057a137b022fd408fa8ab755954de445f87e6"
+    },
+    {
+      "id": "libembroidery",
+      "url": "https://github.com/Embroidermodder/libembroidery",
+      "status": 200,
+      "sha256": "d057c5793886555cdf87f0b36cb2e5c9c008e222aedca6d0320464e621edacc7"
+    },
+    {
+      "id": "pyembroidery",
+      "url": "https://github.com/EmbroidePy/pyembroidery",
+      "status": 200,
+      "sha256": "f293ed26a4f6343bc924a7c2e1b0a5d6e9e20f822bf1c9203d8b5b6cb76a66e4"
+    },
+    {
+      "id": "seamly",
+      "url": "https://seamly.io/",
+      "status": 200,
+      "sha256": "537a97dd82f21ca8ef3607cfb6cc8eeb12e1da2dc0dacdfab304d0ea6af66fb3"
+    },
+    {
+      "id": "wilcom",
+      "url": "https://wilcom.com/",
+      "status": 200,
+      "sha256": "80e2860d6d8558725af5668f839964314d91a9bc6defc3736a12688548dcee1b"
+    },
+    {
+      "id": "hatch",
+      "url": "https://hatchembroidery.com/",
+      "status": 200,
+      "sha256": "ea9fb8fe3b45abb490126bca68669c6bdb402f960fe08e0ca556e1c13103b9cd"
+    },
+    {
+      "id": "pe-design",
+      "url": "https://www.brother-usa.com/home/sewing-embroidery/software",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "id": "sam2",
+      "url": "https://github.com/facebookresearch/sam2",
+      "status": 200,
+      "sha256": "1e8bcd8104b16d9e518d923a53c7cd599c9ce695cd40dd3de74cdc1fe442d8c9"
+    },
+    {
+      "id": "dinov2",
+      "url": "https://github.com/facebookresearch/dinov2",
+      "status": 200,
+      "sha256": "7bbdbab2564829147dd5c04ef178277a328636416c7de648a8c1ec9b5461ac0a"
+    },
+    {
+      "id": "groundingdino",
+      "url": "https://github.com/IDEA-Research/GroundingDINO",
+      "status": 200,
+      "sha256": "cec46ee6df041ab5d9cd66541048cd1da3f206a66e980c186a18c3eb4da14b48"
+    },
+    {
+      "id": "deepsvg",
+      "url": "https://github.com/alexandre01/deepsvg",
+      "status": 200,
+      "sha256": "f66bf91ddfdaa34dd9123f31cb32e220e08a07e2d79d3249197be001fc87ef98"
+    },
+    {
+      "id": "diffvg",
+      "url": "https://github.com/BachiLi/diffvg",
+      "status": 200,
+      "sha256": "c1d2cad4592a57ab3ecf071b2eb43b02e71ce1aff4e4bf4e0e8031b96821dddc"
+    },
+    {
+      "id": "lsystems",
+      "url": "https://algorithmicbotany.org/papers/",
+      "status": 200,
+      "sha256": "a138296e03e3dd5dca8186c2e7282fc3dc65eba7426a58b3dde1e6d26e1896ae"
+    },
+    {
+      "id": "blender-nodes",
+      "url": "https://docs.blender.org/manual/en/latest/modeling/geometry_nodes/introduction.html",
+      "status": 200,
+      "sha256": "0d41954e4c777f263d14a6af8ed9bde34aa859c003567479e40ab3d8e2e3ea53"
+    },
+    {
+      "id": "embird",
+      "url": "https://www.embird.net/",
+      "status": 200,
+      "sha256": "10e9337050767f377539ccae92898bbf04be173b776a110eac3abdb2f2b8acec"
+    },
+    {
+      "id": "brother-pe11",
+      "url": "https://www.brother-usa.com/products/ped11",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "id": "houdini-lsystem",
+      "url": "https://www.sidefx.com/docs/houdini/nodes/sop/lsystem.html",
+      "status": 200,
+      "sha256": "af3e505f4907ef091f9ab137bf129ec3e89d3d21354876c10d2440e1391423f3"
+    },
+    {
+      "id": "wilcom-design",
+      "url": "https://wilcom.com/embroiderystudio/designing",
+      "status": 200,
+      "sha256": "9a51588dde3e5c5060e3cd045d9b5f9b4c2bc6ea915f8a02761352bf06713e4f"
+    },
+    {
+      "id": "wilcom-api",
+      "url": "https://wilcom.com/web-api",
+      "status": 200,
+      "sha256": "0ad8308dda07c57b48de4b74d435b1cd7630ebf020ef7c682968c20a8df8167f"
+    },
+    {
+      "id": "inkstitch-cutwork",
+      "url": "https://inkstitch.org/docs/cutwork/",
+      "status": 200,
+      "sha256": "c05b9c226af7968432adfa02faee00342767f4ec389297958c86e7bf930ebec2"
+    },
+    {
+      "id": "pyg",
+      "url": "https://pytorch-geometric.readthedocs.io/en/latest/get_started/introduction.html",
+      "status": 200,
+      "sha256": "4ff27299a61e3c7bf74c84d20b47f1b0721a44661c36b38f0d0168bce8febc13"
+    },
+    {
+      "id": "abop",
+      "url": "https://algorithmicbotany.org/papers/abop/abop.pdf",
+      "status": 200,
+      "sha256": "4ac9203216a2767ef721b8c5940da96943a2cdab6c35a1e5777999cf9106cc8b"
+    }
+  ],
+  "repositoryLicenseMetadata": [
+    {
+      "repo": "inkstitch/inkstitch",
+      "url": "https://github.com/inkstitch/inkstitch",
+      "repositoryLicense": "GPL-3.0",
+      "evidence": "Retrieved public GitHub repository metadata; component/checkpoint/dataset-specific terms must also be checked"
+    },
+    {
+      "repo": "EmbroidePy/pyembroidery",
+      "url": "https://github.com/EmbroidePy/pyembroidery",
+      "repositoryLicense": "MIT",
+      "evidence": "Retrieved public GitHub repository metadata; component/checkpoint/dataset-specific terms must also be checked"
+    },
+    {
+      "repo": "Embroidermodder/libembroidery",
+      "url": "https://github.com/Embroidermodder/libembroidery",
+      "repositoryLicense": "Zlib",
+      "evidence": "Retrieved public GitHub repository metadata; component/checkpoint/dataset-specific terms must also be checked"
+    },
+    {
+      "repo": "facebookresearch/sam2",
+      "url": "https://github.com/facebookresearch/sam2",
+      "repositoryLicense": "Apache-2.0",
+      "evidence": "Retrieved public GitHub repository metadata; component/checkpoint/dataset-specific terms must also be checked"
+    },
+    {
+      "repo": "facebookresearch/dinov2",
+      "url": "https://github.com/facebookresearch/dinov2",
+      "repositoryLicense": "Apache-2.0",
+      "evidence": "Retrieved public GitHub repository metadata; component/checkpoint/dataset-specific terms must also be checked"
+    },
+    {
+      "repo": "IDEA-Research/GroundingDINO",
+      "url": "https://github.com/IDEA-Research/GroundingDINO",
+      "repositoryLicense": "Apache-2.0",
+      "evidence": "Retrieved public GitHub repository metadata; component/checkpoint/dataset-specific terms must also be checked"
+    },
+    {
+      "repo": "alexandre01/deepsvg",
+      "url": "https://github.com/alexandre01/deepsvg",
+      "repositoryLicense": "MIT",
+      "evidence": "Retrieved public GitHub repository metadata; component/checkpoint/dataset-specific terms must also be checked"
+    },
+    {
+      "repo": "BachiLi/diffvg",
+      "url": "https://github.com/BachiLi/diffvg",
+      "repositoryLicense": "Apache-2.0",
+      "evidence": "Retrieved public GitHub repository metadata; component/checkpoint/dataset-specific terms must also be checked"
+    }
+  ],
+  "qualification": "Published capabilities/documentation and static local code reviewed, not measured rival performance. Standard DINOv2 Apache-2.0 is distinct from newer XRay/Cell variants with noncommercial licences. No new model or dataset admitted."
+}

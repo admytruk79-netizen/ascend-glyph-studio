@@ -1,0 +1,97 @@
+{
+  "schema": "ascend.motif-region-benchmark.v1",
+  "motifSource": "commons-96737753",
+  "layoutStudy": "https://vytvory.ua/uk/catalog",
+  "layoutAuthorship": "ASCEND development reference grid; no Vytvory artwork or template copied",
+  "regions": [
+    {
+      "id": "sleeve-panel-reference",
+      "region": {
+        "id": "sleeve-panel-reference",
+        "widthMm": 130,
+        "heightMm": 240,
+        "columns": 2,
+        "rows": 5,
+        "gapMm": 8,
+        "marginMm": 8,
+        "mirrorAlternateRows": true
+      },
+      "tileCount": 10,
+      "elementCount": 210,
+      "uniformScale": 0.07647907647907648,
+      "structure": {
+        "junctionCount": 80,
+        "brokenJunctions": 0,
+        "repeatCount": 9,
+        "brokenRepeats": 0,
+        "nestedRelations": 120,
+        "negativeSpaceViolations": 0
+      },
+      "minimumReferenceCentrelineGapMm": 4.5049333002123835e-8,
+      "referenceClearanceViolations": 0,
+      "productionApproved": false,
+      "stitchCount": null
+    },
+    {
+      "id": "cuff-band-reference",
+      "region": {
+        "id": "cuff-band-reference",
+        "widthMm": 180,
+        "heightMm": 42,
+        "columns": 4,
+        "rows": 1,
+        "gapMm": 6,
+        "marginMm": 4
+      },
+      "tileCount": 4,
+      "elementCount": 84,
+      "uniformScale": 0.05555555555555555,
+      "structure": {
+        "junctionCount": 32,
+        "brokenJunctions": 0,
+        "repeatCount": 1,
+        "brokenRepeats": 0,
+        "nestedRelations": 48,
+        "negativeSpaceViolations": 0
+      },
+      "minimumReferenceCentrelineGapMm": 4.504835220120047e-8,
+      "referenceClearanceViolations": 0,
+      "productionApproved": false,
+      "stitchCount": null
+    },
+    {
+      "id": "collar-band-reference",
+      "region": {
+        "id": "collar-band-reference",
+        "widthMm": 180,
+        "heightMm": 25,
+        "columns": 6,
+        "rows": 1,
+        "gapMm": 4,
+        "marginMm": 3
+      },
+      "tileCount": 6,
+      "elementCount": 126,
+      "uniformScale": 0.03703703703703704,
+      "structure": {
+        "junctionCount": 48,
+        "brokenJunctions": 0,
+        "repeatCount": 1,
+        "brokenRepeats": 0,
+        "nestedRelations": 72,
+        "negativeSpaceViolations": 0
+      },
+      "minimumReferenceCentrelineGapMm": 4.504762242388468e-8,
+      "referenceClearanceViolations": 0,
+      "productionApproved": false,
+      "stitchCount": null
+    }
+  ],
+  "modelTrainingPerformed": false,
+  "limitations": [
+    "Original contour annotations remain approximate drafts.",
+    "Rectangular reference regions are not actual garment pattern pieces.",
+    "Spacing is centreline geometry; manufacturing stroke widths, fabric and hoop registration remain unvalidated.",
+    "Site regional labels are not transferred to the Neon source."
+  ]
+}

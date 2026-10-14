@@ -1,0 +1,352 @@
+{
+  "schema": "ascend.krovets-deep-research.v1",
+  "reviewedAt": "2026-10-12T15:47:06.377945+00:00",
+  "scope": "Nine additional object records and public title previews; six towels and three shirts. Purposeful small sample, not a representative regional survey.",
+  "records": [
+    {
+      "id": "kro-606",
+      "code": "KYD324",
+      "source": "https://krovets.ua/item/kro-606",
+      "recordHtmlSha256": "6eb91a0aaccf6df04f5d9f44e8cf2436d5a00bd6c5bb8b9f44ea46b2a0273a06",
+      "previewSha256": "a6b1545b57445faf8aa1b80b126e0f0204921cf81776ec84235e15a92df0175c",
+      "documentedRegion": "Середнє Подніпров’я",
+      "documentedOrnament": "рослинний",
+      "documentedTechniques": [
+        "рушникові шви",
+        "вишиття"
+      ],
+      "documentedCreator": null,
+      "documentedTreeOfLife": false,
+      "visualObservations": [
+        "Tiered central stem with paired lateral branches, rounded outlined terminals and small dot-like terminals.",
+        "Side border uses a different linked-round-unit repeat; the upper field remains open."
+      ],
+      "constructionRoles": [
+        "axial stem",
+        "branch tiers",
+        "large terminal units",
+        "small dot terminals",
+        "independent side border"
+      ],
+      "roleStatus": "manual visual hypotheses; not exact segmentation or expert annotation",
+      "access": "public title preview only",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false,
+      "geometryExtracted": false
+    },
+    {
+      "id": "kro-611",
+      "code": "KYD329",
+      "source": "https://krovets.ua/item/kro-611",
+      "recordHtmlSha256": "896384cd24627cca5a296a6cd9f5bb48b213f8d0ea128ea05254c0d13ff77854",
+      "previewSha256": "0fe295c5ca8011b5558e9e767cc41754e44b47164bab86170ac4b8372fb662ff",
+      "documentedRegion": "Середнє Подніпров’я",
+      "documentedOrnament": "рослинний",
+      "documentedTechniques": [
+        "рушникові шви",
+        "вишиття",
+        "гладь"
+      ],
+      "documentedCreator": null,
+      "documentedTreeOfLife": true,
+      "visualObservations": [
+        "An axial stack combines vessel-like forms, curled branches and differently sized flower-like units.",
+        "Small continuous side ornaments frame a larger central composition rather than duplicate it."
+      ],
+      "constructionRoles": [
+        "axial composition",
+        "curled branches",
+        "large and small flower-like units",
+        "vessel-like form",
+        "side repeat"
+      ],
+      "roleStatus": "manual visual hypotheses; not exact segmentation or expert annotation",
+      "access": "public title preview only",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false,
+      "geometryExtracted": false
+    },
+    {
+      "id": "kro-614",
+      "code": "KYD332",
+      "source": "https://krovets.ua/item/kro-614",
+      "recordHtmlSha256": "b49739a83e7808a1b5a210db8380cd8d6108ea83ca56258df1bdebb54e2e2f01",
+      "previewSha256": "6105403e763b6c68d3fb7b60878334fd3c2f2b0b638ace4f01e96815fafa4724",
+      "documentedRegion": "Чернігівське Полісся",
+      "documentedOrnament": "рослинний",
+      "documentedTechniques": [
+        "вишиття",
+        "ланцюжок"
+      ],
+      "documentedCreator": null,
+      "documentedTreeOfLife": true,
+      "visualObservations": [
+        "Compact branching clusters concentrate at the towel ends, leaving a large plain middle.",
+        "Separate lace strip at the edge must not be mistaken for embroidered motif geometry."
+      ],
+      "constructionRoles": [
+        "compact end field",
+        "branch cluster",
+        "flower-like terminals",
+        "plain field",
+        "lace trim"
+      ],
+      "roleStatus": "manual visual hypotheses; not exact segmentation or expert annotation",
+      "access": "public title preview only",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false,
+      "geometryExtracted": false
+    },
+    {
+      "id": "kro-620",
+      "code": "KYD338",
+      "source": "https://krovets.ua/item/kro-620",
+      "recordHtmlSha256": "063a268d99f693acb76e491338ac9c91863ae042fb7c106fd925ede29e368370",
+      "previewSha256": "f2fbf61bcb21e6cc0e4939242e3e9c11163a1fbeaa709a5368920bde6d054e6d",
+      "documentedRegion": "Чернігівське Полісся",
+      "documentedOrnament": "рослинний",
+      "documentedTechniques": [
+        "вишиття",
+        "ланцюжок"
+      ],
+      "documentedCreator": null,
+      "documentedTreeOfLife": true,
+      "visualObservations": [
+        "Main stem grows above a vessel-like base; large radial flowers, paired branch forms and small terminals occur at different levels.",
+        "Top inscriptions and bird-like silhouettes are separate visual roles; species and symbolism are not established."
+      ],
+      "constructionRoles": [
+        "main stem",
+        "vessel-like base",
+        "radial flower-like units",
+        "bird-like silhouettes",
+        "inscription"
+      ],
+      "roleStatus": "manual visual hypotheses; not exact segmentation or expert annotation",
+      "access": "public title preview only",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false,
+      "geometryExtracted": false
+    },
+    {
+      "id": "kro-597",
+      "code": "KYD315",
+      "source": "https://krovets.ua/item/kro-597",
+      "recordHtmlSha256": "eb96a3f5aa9ce7c50bc1a213cff55d35b35a611e41423d6d9f7a94d9de021543",
+      "previewSha256": "5450f7e7d0802929a894e97cc915d0a977344cd078fd4cb9f7ce79e84d1b880a",
+      "documentedRegion": "Східне Поділля",
+      "documentedOrnament": "геометричний",
+      "documentedTechniques": [
+        "коса гладь",
+        "вишиття",
+        "качалочка",
+        "хрестик"
+      ],
+      "documentedCreator": null,
+      "documentedTreeOfLife": false,
+      "visualObservations": [
+        "Angular branching, star-like forms and stepped colour regions sit inside rectangular frames.",
+        "Catalogue states that two towel-end fragments are sewn together; their adjacency is not evidence of an original continuous repeat."
+      ],
+      "constructionRoles": [
+        "angular branches",
+        "star-like units",
+        "stepped fill regions",
+        "frames",
+        "joined fragments"
+      ],
+      "roleStatus": "manual visual hypotheses; not exact segmentation or expert annotation",
+      "access": "public title preview only",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false,
+      "geometryExtracted": false
+    },
+    {
+      "id": "kro-2283",
+      "code": "KYD2001",
+      "source": "https://krovets.ua/item/kro-2283",
+      "recordHtmlSha256": "47008fb9e9c61b4dd02e6c225e4ad1080907a2337846c4cf588d505b79d5fe55",
+      "previewSha256": "b1f55935c20170e6f3e7f61a4c6b7ca26ba90e4aa7d7a230906acc10e14d6e13",
+      "documentedRegion": "Східне Поділля",
+      "documentedOrnament": "геометричний",
+      "documentedTechniques": [
+        "вишиття",
+        "качалочка",
+        "штапівка"
+      ],
+      "documentedCreator": null,
+      "documentedTreeOfLife": false,
+      "visualObservations": [
+        "Repeated upright tree-like forms have angled multicoloured offshoots and narrow angular edge ornament.",
+        "Visual plant resemblance must remain separate from the record’s geometric classification."
+      ],
+      "constructionRoles": [
+        "upright axis",
+        "angled offshoots",
+        "multicolour branch treatments",
+        "edge band"
+      ],
+      "roleStatus": "manual visual hypotheses; not exact segmentation or expert annotation",
+      "access": "public title preview only",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false,
+      "geometryExtracted": false
+    },
+    {
+      "id": "kro-746",
+      "code": "KYD464",
+      "source": "https://krovets.ua/item/kro-746",
+      "recordHtmlSha256": "a95d34fef4464924fed387a876bd3baba5491f2d4c227d93643e10e27c23d78b",
+      "previewSha256": "0b6f853e9e51ff70f0c701d477ac0082870619c1ed411040c5656111f730c010",
+      "documentedRegion": "Гуцульщина",
+      "documentedOrnament": "геометричний",
+      "documentedTechniques": [
+        "кручений шов",
+        "оксамитовий шов",
+        "стебловий шов",
+        "вишиття",
+        "призбирування",
+        "хрестик",
+        "штапівка"
+      ],
+      "documentedCreator": null,
+      "documentedTreeOfLife": false,
+      "visualObservations": [
+        "Dense red/blue diagonal sleeve fields contrast with a different shoulder band and narrow neck/chest decoration.",
+        "Overall preview does not reveal reliable individual stitch routing."
+      ],
+      "constructionRoles": [
+        "shoulder band",
+        "diagonal sleeve field",
+        "neck/chest band",
+        "gathers"
+      ],
+      "roleStatus": "manual visual hypotheses; not exact segmentation or expert annotation",
+      "access": "public title preview only",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false,
+      "geometryExtracted": false
+    },
+    {
+      "id": "kro-772",
+      "code": "KYD490",
+      "source": "https://krovets.ua/item/kro-772",
+      "recordHtmlSha256": "c91edcb8a6e2b548479382c47df4f52df9f197d821e0a74205d5f11a689f9138",
+      "previewSha256": "ca4eb365a9c55f0e3002a1cda06b4d260d34045c74414404c6fcc611560b0720",
+      "documentedRegion": "Покуття",
+      "documentedOrnament": "геометричний",
+      "documentedTechniques": [
+        "вишивка по брижах",
+        "зерновий вивід",
+        "курячий брід",
+        "виколювання",
+        "вишиття",
+        "гладь",
+        "змережування",
+        "мережка",
+        "призбирування",
+        "хрестик",
+        "штапівка"
+      ],
+      "documentedCreator": "Довганюки (родина)",
+      "documentedTreeOfLife": false,
+      "visualObservations": [
+        "White-on-white angular/star-like sleeve units include visible openwork, with small coloured accents at collar and cuffs.",
+        "Fabric openings, seams and gathers are different operations from filled embroidery."
+      ],
+      "constructionRoles": [
+        "whitework",
+        "openwork",
+        "angular/star-like units",
+        "joining",
+        "gathers",
+        "small colour accents"
+      ],
+      "roleStatus": "manual visual hypotheses; not exact segmentation or expert annotation",
+      "access": "public title preview only",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false,
+      "geometryExtracted": false
+    },
+    {
+      "id": "kro-3117",
+      "code": "KYD2835",
+      "source": "https://krovets.ua/item/kro-3117",
+      "recordHtmlSha256": "d593ab2f8f6edffd2ac07471c4de831baecbba75a7eb77d1485bbdb6a5f04a5c",
+      "previewSha256": "e62a60f25f3327abd0ffc8695dc656fc11f2c3b6388095ba949a05b31dccc07e",
+      "documentedRegion": "Східне Поділля",
+      "documentedOrnament": "геометричний",
+      "documentedTechniques": [
+        "вишиття",
+        "змережування",
+        "косичка",
+        "лиштва",
+        "обметування",
+        "призбирування"
+      ],
+      "documentedCreator": null,
+      "documentedTreeOfLife": false,
+      "visualObservations": [
+        "Dense upper sleeve bands transition to narrow falling ornament columns; chest ornament uses a separate chain of diamond-like units.",
+        "Shoulder, sleeve and chest require different arrangement rules despite a common red palette."
+      ],
+      "constructionRoles": [
+        "dense shoulder field",
+        "falling sleeve columns",
+        "diamond-like chest chain",
+        "collar",
+        "joins"
+      ],
+      "roleStatus": "manual visual hypotheses; not exact segmentation or expert annotation",
+      "access": "public title preview only",
+      "rights": {
+        "status": "restricted",
+        "titleImage": "CC BY-NC-ND",
+        "otherImages": "noncommercial and personal use only"
+      },
+      "eligibleForMotifGraph": false,
+      "geometryExtracted": false
+    }
+  ],
+  "digitizationReference": {
+    "source": "https://krovets.ua/digi-standard",
+    "recordHtmlSha256": "9fd7263925f635a4c680fffa67c1566812a134db1390cd7db3871c6acdda7d78",
+    "observation": "Standards distinguish consistent category-specific base views and additional detail views. This page does not establish image-quality, camera or embroidery-machine specifications.",
+    "DS1DetailedDocumentRead": false
+  },
+  "photographsRedistributed": false,
+  "modelTrainingPerformed": false,
+  "productionApproved": false
+}

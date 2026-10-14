@@ -1,0 +1,24 @@
+{
+  "schema": "ascend.motif-raster-benchmark.v1",
+  "source": "https://www.metmuseum.org/art/collection/search/445264",
+  "originalSha256": "3d8dfc1726ee344d769c20d78006cf6adeb638a588527905e824a7945f20d27d",
+  "raster": {
+    "width": 92,
+    "height": 256
+  },
+  "foregroundPixels": 6921,
+  "components": 234,
+  "binaryMaskIoU": 1,
+  "binaryMaskRmse": 0,
+  "historicalSegmentationAccuracy": null,
+  "semanticElementAccuracy": null,
+  "rectificationAccuracy": null,
+  "physicalCalibration": null,
+  "productionApproved": false,
+  "modelTrainingPerformed": false,
+  "limitations": [
+    "IoU compares a threshold mask with its lossless row-run reconstruction, not a historical expert annotation.",
+    "FFT symmetry and repeat results are hypotheses; not independently verified on this photograph.",
+    "Reference dimensions are normalized; row runs are not machine stitches."
+  ]
+}

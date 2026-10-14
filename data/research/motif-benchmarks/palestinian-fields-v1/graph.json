@@ -1,0 +1,392 @@
+{
+  "schema": "ascend.motif-graph.v1",
+  "state": "REFERENCE",
+  "units": "mm",
+  "seed": "cleveland-117038-lower-diamond-v1",
+  "widthMm": 630,
+  "heightMm": 893,
+  "minGapMm": 0,
+  "nodes": [
+    {
+      "id": "composition",
+      "kind": "composition",
+      "provenanceId": "cleveland-117038",
+      "confidence": 0.7,
+      "evidence": [
+        "Manual examination of retained Cleveland source image: lower nested angular motif and separated garment fields"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "assembly:outer-diamond",
+      "kind": "assembly",
+      "parentId": "field:lower-geometric-field",
+      "provenanceId": "cleveland-117038",
+      "confidence": 0.7,
+      "evidence": [
+        "Manual examination of retained Cleveland source image: lower nested angular motif and separated garment fields"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "element:outer-diamond",
+      "kind": "element",
+      "parentId": "assembly:outer-diamond",
+      "provenanceId": "cleveland-117038",
+      "confidence": 0.5,
+      "evidence": [
+        "Manual approximate lower-field angular envelope; geometric nesting only, no cultural symbolic interpretation.",
+        "visual hypothesis: nested diamond-like geometric envelope; review: draft"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      },
+      "geometry": {
+        "namespace": "reference",
+        "ports": {},
+        "paths": [
+          [
+            {
+              "x": 313,
+              "y": 657
+            },
+            {
+              "x": 416,
+              "y": 753
+            },
+            {
+              "x": 313,
+              "y": 849
+            },
+            {
+              "x": 210,
+              "y": 753
+            },
+            {
+              "x": 313,
+              "y": 657
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "assembly:inner-diamond",
+      "kind": "assembly",
+      "parentId": "assembly:outer-diamond",
+      "provenanceId": "cleveland-117038",
+      "confidence": 0.7,
+      "evidence": [
+        "Manual examination of retained Cleveland source image: lower nested angular motif and separated garment fields"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "element:inner-diamond",
+      "kind": "element",
+      "parentId": "assembly:inner-diamond",
+      "provenanceId": "cleveland-117038",
+      "confidence": 0.5,
+      "evidence": [
+        "Manual approximate lower-field angular envelope; geometric nesting only, no cultural symbolic interpretation.",
+        "visual hypothesis: nested diamond-like geometric envelope; review: draft"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      },
+      "geometry": {
+        "namespace": "reference",
+        "ports": {},
+        "paths": [
+          [
+            {
+              "x": 313,
+              "y": 704
+            },
+            {
+              "x": 363,
+              "y": 753
+            },
+            {
+              "x": 313,
+              "y": 802
+            },
+            {
+              "x": 263,
+              "y": 753
+            },
+            {
+              "x": 313,
+              "y": 704
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "assembly:centre-diamond",
+      "kind": "assembly",
+      "parentId": "assembly:inner-diamond",
+      "provenanceId": "cleveland-117038",
+      "confidence": 0.7,
+      "evidence": [
+        "Manual examination of retained Cleveland source image: lower nested angular motif and separated garment fields"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "element:centre-diamond",
+      "kind": "element",
+      "parentId": "assembly:centre-diamond",
+      "provenanceId": "cleveland-117038",
+      "confidence": 0.5,
+      "evidence": [
+        "Manual approximate lower-field angular envelope; geometric nesting only, no cultural symbolic interpretation.",
+        "visual hypothesis: nested diamond-like geometric envelope; review: draft"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      },
+      "geometry": {
+        "namespace": "reference",
+        "ports": {},
+        "paths": [
+          [
+            {
+              "x": 313,
+              "y": 731
+            },
+            {
+              "x": 336,
+              "y": 753
+            },
+            {
+              "x": 313,
+              "y": 775
+            },
+            {
+              "x": 290,
+              "y": 753
+            },
+            {
+              "x": 313,
+              "y": 731
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "field:left-upper-bands",
+      "parentId": "composition",
+      "kind": "region",
+      "provenanceId": "cleveland-117038",
+      "confidence": 0.7,
+      "evidence": [
+        "Manual separated crop window for left-upper-bands; not a complete pattern-cell or exact garment boundary.",
+        "Draft source field box pixels: {\"x\":35,\"y\":325,\"width\":225,\"height\":220}; no contours reconstructed"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "field:right-upper-bands",
+      "parentId": "composition",
+      "kind": "region",
+      "provenanceId": "cleveland-117038",
+      "confidence": 0.7,
+      "evidence": [
+        "Manual separated crop window for right-upper-bands; not a complete pattern-cell or exact garment boundary.",
+        "Draft source field box pixels: {\"x\":353,\"y\":325,\"width\":230,\"height\":220}; no contours reconstructed"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "field:central-placket",
+      "parentId": "composition",
+      "kind": "region",
+      "provenanceId": "cleveland-117038",
+      "confidence": 0.7,
+      "evidence": [
+        "Manual separated crop window for central-placket; not a complete pattern-cell or exact garment boundary.",
+        "Draft source field box pixels: {\"x\":278,\"y\":325,\"width\":55,\"height\":225}; no contours reconstructed"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "field:left-transition",
+      "parentId": "composition",
+      "kind": "region",
+      "provenanceId": "cleveland-117038",
+      "confidence": 0.7,
+      "evidence": [
+        "Manual separated crop window for left-transition; not a complete pattern-cell or exact garment boundary.",
+        "Draft source field box pixels: {\"x\":35,\"y\":568,\"width\":240,\"height\":65}; no contours reconstructed"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "field:right-transition",
+      "parentId": "composition",
+      "kind": "region",
+      "provenanceId": "cleveland-117038",
+      "confidence": 0.7,
+      "evidence": [
+        "Manual separated crop window for right-transition; not a complete pattern-cell or exact garment boundary.",
+        "Draft source field box pixels: {\"x\":345,\"y\":568,\"width\":238,\"height\":65}; no contours reconstructed"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    },
+    {
+      "id": "field:lower-geometric-field",
+      "parentId": "composition",
+      "kind": "region",
+      "provenanceId": "cleveland-117038",
+      "confidence": 0.7,
+      "evidence": [
+        "Manual separated crop window for lower-geometric-field; not a complete pattern-cell or exact garment boundary.",
+        "Draft source field box pixels: {\"x\":35,\"y\":650,\"width\":550,\"height\":210}; partial observed contours"
+      ],
+      "transform": {
+        "xMm": 0,
+        "yMm": 0,
+        "rotationDeg": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "reflectX": false
+      }
+    }
+  ],
+  "relations": [
+    {
+      "kind": "nest",
+      "from": "assembly:outer-diamond",
+      "to": "element:inner-diamond"
+    },
+    {
+      "kind": "nest",
+      "from": "assembly:inner-diamond",
+      "to": "element:centre-diamond"
+    }
+  ],
+  "negativeSpace": [
+    {
+      "xMm": 244,
+      "yMm": 183,
+      "widthMm": 100,
+      "heightMm": 80
+    }
+  ],
+  "provenance": [
+    {
+      "schema": "ascend.motif-provenance.v1",
+      "id": "cleveland-117038",
+      "source": "https://clevelandart.org/art/1937.582",
+      "creator": null,
+      "community": null,
+      "culturalContext": "Palestinian embroidered blouse front, 19th century; silk on linen. Museum catalogue attribution retained; no city, symbolism or narrower community assigned.",
+      "retrievedAt": "2026-10-13T02:05:51.448854+00:00",
+      "originalSha256": "e8cb4239b5373aba3326b2bcfd0d9a7c2e63ec7583591eee088bc5d4dbf3c0b0",
+      "permission": {
+        "status": "verified",
+        "evidence": "Museum object API share_license_status=CC0; https://www.clevelandart.org/open-access",
+        "purposes": [
+          "analysis",
+          "reconstruction"
+        ]
+      },
+      "access": "documented-public",
+      "confidence": 0.7,
+      "transformations": [
+        {
+          "operation": "sparse observed contour annotation",
+          "evidence": "cleveland-117038-lower-diamond-v1; draft; normalized 1 mm/pixel; not physically calibrated; Approximate envelope polygons, not individual stitches or exact traced outlines.; Only three nested lower-field envelopes are reconstructed; band interiors and placket are not decomposed.; Protected neck rectangle is an interior subset of the irregular neck opening, not its complete outline.; No independent expert annotation, physical calibration, stitch count or production approval."
+        },
+        {
+          "operation": "manual field decomposition",
+          "evidence": "left-upper-bands: Manual separated crop window for left-upper-bands; not a complete pattern-cell or exact garment boundary.; right-upper-bands: Manual separated crop window for right-upper-bands; not a complete pattern-cell or exact garment boundary.; central-placket: Manual separated crop window for central-placket; not a complete pattern-cell or exact garment boundary.; left-transition: Manual separated crop window for left-transition; not a complete pattern-cell or exact garment boundary.; right-transition: Manual separated crop window for right-transition; not a complete pattern-cell or exact garment boundary.; lower-geometric-field: Manual separated crop window for lower-geometric-field; not a complete pattern-cell or exact garment boundary.; Visible interior subset of neck opening kept free of reconstructed geometry; irregular boundary untraced."
+        }
+      ],
+      "regionalAttribution": {
+        "status": "unassigned"
+      }
+    }
+  ]
+}

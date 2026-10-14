@@ -1,0 +1,53 @@
+{
+  "schema": "ascend.neon-floral-source-audit.v1",
+  "projectId": "spring-mode-77399290",
+  "branchId": "br-long-truth-b44dfd3m",
+  "database": "neondb",
+  "checkedAt": "2026-10-12",
+  "counts": {
+    "corpusObjects": 80073,
+    "analyzedObjects": 71219,
+    "taggedImages": 31667,
+    "canonicalRecords": 24,
+    "modelRecords": 5
+  },
+  "floralThreshold": 0.5,
+  "floralTagCounts": [
+    {
+      "tradition": "Other",
+      "floral_tagged": "2338",
+      "open_floral": "2014"
+    },
+    {
+      "tradition": "English (16th–19th c.)",
+      "floral_tagged": "413",
+      "open_floral": "398"
+    },
+    {
+      "tradition": "Ukrainian",
+      "floral_tagged": "284",
+      "open_floral": "284"
+    },
+    {
+      "tradition": "Belarusian",
+      "floral_tagged": "10",
+      "open_floral": "10"
+    },
+    {
+      "tradition": "Western / cowboy material culture",
+      "floral_tagged": "1",
+      "open_floral": "1"
+    },
+    {
+      "tradition": "Lithuanian",
+      "floral_tagged": "0",
+      "open_floral": "0"
+    }
+  ],
+  "limitations": [
+    "Existing machine tags and importer-generated culture labels are not independently verified attribution.",
+    "Model table rows do not establish that this task performed training or that a model was approved.",
+    "Database queries were read-only; historical labels and existing models in Neon have not been repaired.",
+    "Live Commons licence metadata/page verification returned HTTP 403; retained candidate rights are database declarations, not new independently verified MotifGraph permissions."
+  ]
+}

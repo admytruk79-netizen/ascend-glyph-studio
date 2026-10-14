@@ -1,0 +1,21 @@
+{
+  "schema": "ascend.motif-provenance.v1",
+  "id": "neon-commons-96737731",
+  "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9627._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg",
+  "creator": "Nikolai Samokysh",
+  "community": null,
+  "culturalContext": "Illustration from Мотиви українського орнаменту, 1902, plate 27, embroidery in coloured silk, gold and silver. Ukrainian ornament; regional community, botanical identity and symbolic meaning not established.",
+  "retrievedAt": "2026-10-12T00:00:00Z",
+  "originalSha256": "074104c967c8f7cf68fb92ea52e9dd560ddc0bc6c9f54198b47e67a245e48839",
+  "permission": {
+    "status": "verified",
+    "evidence": "Reference-use review of retained Neon Commons item commons-96737731: Public domain; catalogue publication 1902 (pre-1931 publication, public domain in the US). No successful fresh Commons licence-page check or global commercial/manufacturing approval claimed.",
+    "purposes": [
+      "analysis",
+      "reconstruction"
+    ]
+  },
+  "access": "documented-public",
+  "confidence": 0.8,
+  "transformations": []
+}

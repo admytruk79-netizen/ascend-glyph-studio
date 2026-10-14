@@ -1,0 +1,622 @@
+{
+  "schema": "ascend.motif-jigsaw-benchmark.v1",
+  "librarySha256": "7c3da1b0a6372d7b9edf18dea5f2eb66314aac361d7f3afa070e3de86d92f73c",
+  "segmentationReview": "draft",
+  "edgeMatching": "soft foreground/colour edge mismatch, not exact stem joins",
+  "cases": [
+    {
+      "seed": 0,
+      "input": {
+        "widthMm": 250,
+        "heightMm": 80,
+        "complexity": 0.8,
+        "family": "floral",
+        "seed": 0
+      },
+      "placements": [
+        {
+          "id": "upper-0",
+          "fragmentId": "scroll-border-b",
+          "role": "border",
+          "xMm": 3.5,
+          "yMm": 4.3500000000000005,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "reflected": true,
+          "edgeMismatch": null
+        },
+        {
+          "id": "upper-1",
+          "fragmentId": "scroll-border-a",
+          "role": "border",
+          "xMm": 27.9,
+          "yMm": 4.268750000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "reflected": true,
+          "edgeMismatch": 0.1875
+        },
+        {
+          "id": "upper-2",
+          "fragmentId": "scroll-border-b",
+          "role": "border",
+          "xMm": 52.3,
+          "yMm": 4.3500000000000005,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "reflected": false,
+          "edgeMismatch": 0.125
+        },
+        {
+          "id": "upper-3",
+          "fragmentId": "scroll-border-a",
+          "role": "border",
+          "xMm": 76.69999999999999,
+          "yMm": 4.268750000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "reflected": true,
+          "edgeMismatch": 0.4375
+        },
+        {
+          "id": "upper-4",
+          "fragmentId": "scroll-border-b",
+          "role": "border",
+          "xMm": 101.1,
+          "yMm": 4.3500000000000005,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "reflected": false,
+          "edgeMismatch": 0.125
+        },
+        {
+          "id": "upper-5",
+          "fragmentId": "scroll-border-a",
+          "role": "border",
+          "xMm": 125.5,
+          "yMm": 4.268750000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "reflected": false,
+          "edgeMismatch": 0.375
+        },
+        {
+          "id": "upper-6",
+          "fragmentId": "scroll-border-b",
+          "role": "border",
+          "xMm": 149.89999999999998,
+          "yMm": 4.3500000000000005,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "reflected": false,
+          "edgeMismatch": 0.1875
+        },
+        {
+          "id": "upper-7",
+          "fragmentId": "scroll-border-a",
+          "role": "border",
+          "xMm": 174.29999999999998,
+          "yMm": 4.268750000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "reflected": true,
+          "edgeMismatch": 0.4375
+        },
+        {
+          "id": "upper-8",
+          "fragmentId": "scroll-border-b",
+          "role": "border",
+          "xMm": 198.7,
+          "yMm": 4.3500000000000005,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "reflected": true,
+          "edgeMismatch": 0.375
+        },
+        {
+          "id": "upper-9",
+          "fragmentId": "scroll-border-a",
+          "role": "border",
+          "xMm": 223.1,
+          "yMm": 4.268750000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "reflected": false,
+          "edgeMismatch": 0.125
+        },
+        {
+          "id": "main-0",
+          "fragmentId": "bouquet-ribbon",
+          "role": "bouquet",
+          "xMm": 4,
+          "yMm": 21.075,
+          "widthMm": 46.8,
+          "heightMm": 37.05,
+          "reflected": true,
+          "edgeMismatch": null
+        },
+        {
+          "id": "main-1",
+          "fragmentId": "branch-lobed",
+          "role": "branch",
+          "xMm": 56.09112426035503,
+          "yMm": 16,
+          "widthMm": 40.21775147928994,
+          "heightMm": 47.199999999999996,
+          "reflected": false,
+          "edgeMismatch": 0.0625
+        },
+        {
+          "id": "main-2",
+          "fragmentId": "bouquet-vase",
+          "role": "bouquet",
+          "xMm": 101.6,
+          "yMm": 17.825,
+          "widthMm": 46.8,
+          "heightMm": 43.55,
+          "reflected": true,
+          "edgeMismatch": 0.5625
+        },
+        {
+          "id": "main-3",
+          "fragmentId": "branch-lobed",
+          "role": "branch",
+          "xMm": 153.691124260355,
+          "yMm": 16,
+          "widthMm": 40.21775147928994,
+          "heightMm": 47.199999999999996,
+          "reflected": false,
+          "edgeMismatch": 0.1875
+        },
+        {
+          "id": "main-4",
+          "fragmentId": "bouquet-vase",
+          "role": "bouquet",
+          "xMm": 199.2,
+          "yMm": 17.825,
+          "widthMm": 46.8,
+          "heightMm": 43.55,
+          "reflected": true,
+          "edgeMismatch": 0.5625
+        },
+        {
+          "id": "lower-0",
+          "fragmentId": "scroll-border-a",
+          "role": "border",
+          "xMm": 3.5,
+          "yMm": 68.66875,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "reflected": true,
+          "edgeMismatch": null
+        },
+        {
+          "id": "lower-1",
+          "fragmentId": "scroll-border-b",
+          "role": "border",
+          "xMm": 27.9,
+          "yMm": 68.75,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "reflected": false,
+          "edgeMismatch": 0.125
+        },
+        {
+          "id": "lower-2",
+          "fragmentId": "scroll-border-a",
+          "role": "border",
+          "xMm": 52.3,
+          "yMm": 68.66875,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "reflected": false,
+          "edgeMismatch": 0.375
+        },
+        {
+          "id": "lower-3",
+          "fragmentId": "scroll-border-b",
+          "role": "border",
+          "xMm": 76.69999999999999,
+          "yMm": 68.75,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "reflected": false,
+          "edgeMismatch": 0.1875
+        },
+        {
+          "id": "lower-4",
+          "fragmentId": "scroll-border-a",
+          "role": "border",
+          "xMm": 101.1,
+          "yMm": 68.66875,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "reflected": true,
+          "edgeMismatch": 0.4375
+        },
+        {
+          "id": "lower-5",
+          "fragmentId": "scroll-border-b",
+          "role": "border",
+          "xMm": 125.5,
+          "yMm": 68.75,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "reflected": false,
+          "edgeMismatch": 0.125
+        },
+        {
+          "id": "lower-6",
+          "fragmentId": "scroll-border-a",
+          "role": "border",
+          "xMm": 149.89999999999998,
+          "yMm": 68.66875,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "reflected": true,
+          "edgeMismatch": 0.4375
+        },
+        {
+          "id": "lower-7",
+          "fragmentId": "scroll-border-b",
+          "role": "border",
+          "xMm": 174.29999999999998,
+          "yMm": 68.75,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "reflected": false,
+          "edgeMismatch": 0.125
+        },
+        {
+          "id": "lower-8",
+          "fragmentId": "scroll-border-a",
+          "role": "border",
+          "xMm": 198.7,
+          "yMm": 68.66875,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "reflected": false,
+          "edgeMismatch": 0.375
+        },
+        {
+          "id": "lower-9",
+          "fragmentId": "scroll-border-b",
+          "role": "border",
+          "xMm": 223.1,
+          "yMm": 68.75,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "reflected": false,
+          "edgeMismatch": 0.1875
+        }
+      ],
+      "checks": {
+        "overlappingPieceFootprints": 0,
+        "outsideEnvelope": 0
+      },
+      "elementCount": 125,
+      "svgSha256": "9b73b70de4fb7ea7a8f5a573ba73e86cc71c7638d0a46914ebbd68b082d7bd07",
+      "sourceIds": [
+        "neon-commons-96737731:scroll-border-b",
+        "neon-commons-96737731:scroll-border-a",
+        "neon-commons-96737731:bouquet-ribbon",
+        "neon-commons-96737753:branch-lobed",
+        "neon-commons-96737731:bouquet-vase"
+      ],
+      "historicalShapesReused": true,
+      "canonicalGeometryChanged": false,
+      "sourceImagesEmbedded": false,
+      "learnedModelApplied": false,
+      "physicalCalibration": null,
+      "stitchCount": null,
+      "productionApproved": false
+    },
+    {
+      "seed": 1,
+      "input": {
+        "widthMm": 250,
+        "heightMm": 80,
+        "complexity": 0.8,
+        "family": "floral",
+        "seed": 1
+      },
+      "placements": [
+        {
+          "id": "upper-0",
+          "fragmentId": "scroll-border-a",
+          "role": "border",
+          "xMm": 3.5,
+          "yMm": 4.268750000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "reflected": true,
+          "edgeMismatch": null
+        },
+        {
+          "id": "upper-1",
+          "fragmentId": "scroll-border-b",
+          "role": "border",
+          "xMm": 27.9,
+          "yMm": 4.3500000000000005,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "reflected": false,
+          "edgeMismatch": 0.125
+        },
+        {
+          "id": "upper-2",
+          "fragmentId": "scroll-border-a",
+          "role": "border",
+          "xMm": 52.3,
+          "yMm": 4.268750000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "reflected": false,
+          "edgeMismatch": 0.375
+        },
+        {
+          "id": "upper-3",
+          "fragmentId": "scroll-border-b",
+          "role": "border",
+          "xMm": 76.69999999999999,
+          "yMm": 4.3500000000000005,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "reflected": false,
+          "edgeMismatch": 0.1875
+        },
+        {
+          "id": "upper-4",
+          "fragmentId": "scroll-border-a",
+          "role": "border",
+          "xMm": 101.1,
+          "yMm": 4.268750000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "reflected": true,
+          "edgeMismatch": 0.4375
+        },
+        {
+          "id": "upper-5",
+          "fragmentId": "scroll-border-b",
+          "role": "border",
+          "xMm": 125.5,
+          "yMm": 4.3500000000000005,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "reflected": false,
+          "edgeMismatch": 0.125
+        },
+        {
+          "id": "upper-6",
+          "fragmentId": "scroll-border-a",
+          "role": "border",
+          "xMm": 149.89999999999998,
+          "yMm": 4.268750000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "reflected": true,
+          "edgeMismatch": 0.4375
+        },
+        {
+          "id": "upper-7",
+          "fragmentId": "scroll-border-b",
+          "role": "border",
+          "xMm": 174.29999999999998,
+          "yMm": 4.3500000000000005,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "reflected": false,
+          "edgeMismatch": 0.125
+        },
+        {
+          "id": "upper-8",
+          "fragmentId": "scroll-border-a",
+          "role": "border",
+          "xMm": 198.7,
+          "yMm": 4.268750000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "reflected": false,
+          "edgeMismatch": 0.375
+        },
+        {
+          "id": "upper-9",
+          "fragmentId": "scroll-border-b",
+          "role": "border",
+          "xMm": 223.1,
+          "yMm": 4.3500000000000005,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "reflected": false,
+          "edgeMismatch": 0.1875
+        },
+        {
+          "id": "main-0",
+          "fragmentId": "bouquet-ribbon",
+          "role": "bouquet",
+          "xMm": 4,
+          "yMm": 21.075,
+          "widthMm": 46.8,
+          "heightMm": 37.05,
+          "reflected": true,
+          "edgeMismatch": null
+        },
+        {
+          "id": "main-1",
+          "fragmentId": "branch-lobed",
+          "role": "branch",
+          "xMm": 56.09112426035503,
+          "yMm": 16,
+          "widthMm": 40.21775147928994,
+          "heightMm": 47.199999999999996,
+          "reflected": false,
+          "edgeMismatch": 0.0625
+        },
+        {
+          "id": "main-2",
+          "fragmentId": "bouquet-ribbon",
+          "role": "bouquet",
+          "xMm": 101.6,
+          "yMm": 21.075,
+          "widthMm": 46.8,
+          "heightMm": 37.05,
+          "reflected": false,
+          "edgeMismatch": 0.5625
+        },
+        {
+          "id": "main-3",
+          "fragmentId": "branch-lobed",
+          "role": "branch",
+          "xMm": 153.691124260355,
+          "yMm": 16,
+          "widthMm": 40.21775147928994,
+          "heightMm": 47.199999999999996,
+          "reflected": false,
+          "edgeMismatch": 0.25
+        },
+        {
+          "id": "main-4",
+          "fragmentId": "bouquet-vase",
+          "role": "bouquet",
+          "xMm": 199.2,
+          "yMm": 17.825,
+          "widthMm": 46.8,
+          "heightMm": 43.55,
+          "reflected": true,
+          "edgeMismatch": 0.5625
+        },
+        {
+          "id": "lower-0",
+          "fragmentId": "scroll-border-b",
+          "role": "border",
+          "xMm": 3.5,
+          "yMm": 68.75,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "reflected": false,
+          "edgeMismatch": null
+        },
+        {
+          "id": "lower-1",
+          "fragmentId": "scroll-border-a",
+          "role": "border",
+          "xMm": 27.9,
+          "yMm": 68.66875,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "reflected": false,
+          "edgeMismatch": 0.375
+        },
+        {
+          "id": "lower-2",
+          "fragmentId": "scroll-border-b",
+          "role": "border",
+          "xMm": 52.3,
+          "yMm": 68.75,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "reflected": false,
+          "edgeMismatch": 0.1875
+        },
+        {
+          "id": "lower-3",
+          "fragmentId": "scroll-border-a",
+          "role": "border",
+          "xMm": 76.69999999999999,
+          "yMm": 68.66875,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "reflected": false,
+          "edgeMismatch": 0.375
+        },
+        {
+          "id": "lower-4",
+          "fragmentId": "scroll-border-b",
+          "role": "border",
+          "xMm": 101.1,
+          "yMm": 68.75,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "reflected": false,
+          "edgeMismatch": 0.1875
+        },
+        {
+          "id": "lower-5",
+          "fragmentId": "scroll-border-a",
+          "role": "border",
+          "xMm": 125.5,
+          "yMm": 68.66875,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "reflected": false,
+          "edgeMismatch": 0.375
+        },
+        {
+          "id": "lower-6",
+          "fragmentId": "scroll-border-b",
+          "role": "border",
+          "xMm": 149.89999999999998,
+          "yMm": 68.75,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "reflected": false,
+          "edgeMismatch": 0.1875
+        },
+        {
+          "id": "lower-7",
+          "fragmentId": "scroll-border-a",
+          "role": "border",
+          "xMm": 174.29999999999998,
+          "yMm": 68.66875,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "reflected": false,
+          "edgeMismatch": 0.375
+        },
+        {
+          "id": "lower-8",
+          "fragmentId": "scroll-border-b",
+          "role": "border",
+          "xMm": 198.7,
+          "yMm": 68.75,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "reflected": false,
+          "edgeMismatch": 0.1875
+        },
+        {
+          "id": "lower-9",
+          "fragmentId": "scroll-border-a",
+          "role": "border",
+          "xMm": 223.1,
+          "yMm": 68.66875,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "reflected": false,
+          "edgeMismatch": 0.375
+        }
+      ],
+      "checks": {
+        "overlappingPieceFootprints": 0,
+        "outsideEnvelope": 0
+      },
+      "elementCount": 125,
+      "svgSha256": "9188fcd31faf1362769198e1543be6be273ad38cf80d90dade0de20b89d83755",
+      "sourceIds": [
+        "neon-commons-96737731:scroll-border-a",
+        "neon-commons-96737731:scroll-border-b",
+        "neon-commons-96737731:bouquet-ribbon",
+        "neon-commons-96737753:branch-lobed",
+        "neon-commons-96737731:bouquet-vase"
+      ],
+      "historicalShapesReused": true,
+      "canonicalGeometryChanged": false,
+      "sourceImagesEmbedded": false,
+      "learnedModelApplied": false,
+      "physicalCalibration": null,
+      "stitchCount": null,
+      "productionApproved": false
+    }
+  ]
+}

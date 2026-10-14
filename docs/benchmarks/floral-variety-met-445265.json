@@ -1,0 +1,101 @@
+{
+  "schema": "ascend.floral-variety-benchmark.v1",
+  "source": "https://www.metmuseum.org/art/collection/search/445265",
+  "originalSha256": "7cf10d3a774e68953e24e881babb7a70293571d923559aaf9b57f21801a2a3c8",
+  "reviewStatus": "draft-visual-inspection",
+  "regions": [
+    {
+      "id": "elongated-flower-head",
+      "description": "Elongated gold-coloured flower head with pointed terminal lobes and interior divisions",
+      "roi": {
+        "left": 178,
+        "top": 174,
+        "width": 245,
+        "height": 210
+      },
+      "raster": {
+        "width": 192,
+        "height": 165
+      },
+      "foregroundPixels": 14184,
+      "componentCount": 38,
+      "loopCount": 217,
+      "holeCount": 179,
+      "binaryMaskPixelErrors": 0,
+      "semanticAccuracy": null,
+      "productionApproved": false
+    },
+    {
+      "id": "small-rosette-cluster",
+      "description": "Three small radial flower-like units with central ground openings",
+      "roi": {
+        "left": 128,
+        "top": 412,
+        "width": 114,
+        "height": 134
+      },
+      "raster": {
+        "width": 114,
+        "height": 134
+      },
+      "foregroundPixels": 5083,
+      "componentCount": 10,
+      "loopCount": 45,
+      "holeCount": 35,
+      "binaryMaskPixelErrors": 0,
+      "semanticAccuracy": null,
+      "productionApproved": false
+    },
+    {
+      "id": "striped-bud",
+      "description": "Compact striped, lobed bud-like unit; botanical identity unverified",
+      "roi": {
+        "left": 180,
+        "top": 67,
+        "width": 105,
+        "height": 90
+      },
+      "raster": {
+        "width": 105,
+        "height": 90
+      },
+      "foregroundPixels": 2756,
+      "componentCount": 5,
+      "loopCount": 29,
+      "holeCount": 24,
+      "binaryMaskPixelErrors": 0,
+      "semanticAccuracy": null,
+      "productionApproved": false
+    },
+    {
+      "id": "curved-serrated-leaf",
+      "description": "Curved dark supporting leaf-like form with pale serrated border; this is a supporting element, not a flower",
+      "roi": {
+        "left": 278,
+        "top": 94,
+        "width": 175,
+        "height": 270
+      },
+      "raster": {
+        "width": 124,
+        "height": 192
+      },
+      "foregroundPixels": 10878,
+      "componentCount": 22,
+      "loopCount": 140,
+      "holeCount": 118,
+      "binaryMaskPixelErrors": 0,
+      "semanticAccuracy": null,
+      "productionApproved": false
+    }
+  ],
+  "modelTrainingPerformed": false,
+  "physicalCalibration": null,
+  "limitations": [
+    "Visual descriptors are hypotheses, not a cultural motif taxonomy.",
+    "Rectangular crops can include neighbouring ornament; they do not constitute expert object segmentation.",
+    "No botanical identity, model training or production approval is claimed.",
+    "Zero pixel error measures preservation of a colour-selected mask, not correct individual flower segmentation.",
+    "Serrated leaf is supporting geometry, not a fourth flower family."
+  ]
+}

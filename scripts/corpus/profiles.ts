@@ -32,7 +32,12 @@ const QUERY_GROUPS = new Set<string>([...SELECTABLE, "Global"]);
  */
 export function traditionOf(r: AnalyzedRow): string {
   const label = typeof r.tradition === "string" ? r.tradition : "";
-  const parts = [r.culture, r.region, r.title, QUERY_GROUPS.has(label) ? undefined : label].filter((v) => typeof v === "string" && v.trim());
+  // Legacy Commons imports injected the search group's country into both
+  // fields. Do not treat those known injected values as catalogue evidence.
+  const queryCountry:Record<string,string>={Ukrainian:'Ukraine',Belarusian:'Belarus',Lithuanian:'Lithuania'};
+  const metadata=(v:unknown)=>r.source==='commons'&&QUERY_GROUPS.has(label)
+    &&(v===label||v===queryCountry[label])?undefined:v;
+  const parts = [metadata(r.culture), metadata(r.region), r.title, QUERY_GROUPS.has(label) ? undefined : label].filter((v) => typeof v === "string" && v.trim());
   const t = parts.join(" ");
   if (INDIGENOUS.test(t)) return "Native American (structure only)";
   for (const [re, name] of CULTURE_RULES) if (re.test(t)) return name;

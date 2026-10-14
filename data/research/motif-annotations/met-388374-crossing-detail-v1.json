@@ -1,0 +1,81 @@
+{
+  "schema": "ascend.observed-motif-annotations.v1",
+  "id": "met-388374-crossing-detail-v1",
+  "image": {
+    "width": 2907,
+    "height": 3683
+  },
+  "provenance": {
+    "schema": "ascend.motif-provenance.v1",
+    "id": "met-388374-original",
+    "source": "https://www.metmuseum.org/art/collection/search/388374",
+    "creator": "Albrecht D\u00fcrer",
+    "community": null,
+    "culturalContext": "Embroidery Pattern with Round Medallion in its Center; printed embroidery pattern, not an Arabic or Ukrainian attribution.",
+    "retrievedAt": "2026-10-12T21:40:41.919119+00:00",
+    "originalSha256": "beda3a3b189590b95ef273c6f610dca17cd489dc721ad5e8022e95f2854fc93b",
+    "permission": {
+      "status": "verified",
+      "evidence": "Retained official Met API object 388374 isPublicDomain=true; Met Open Access CC0 policy https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+      "purposes": [
+        "analysis",
+        "reconstruction"
+      ]
+    },
+    "access": "documented-public",
+    "confidence": 0.7,
+    "transformations": [],
+    "regionalAttribution": {
+      "status": "unassigned"
+    }
+  },
+  "review": {
+    "status": "draft",
+    "method": "Manual review of one lower central knotwork crossing in source resized to 1408 pixels, crop (500,320,350,400), zoom ROI (60,230,130,110)",
+    "limitations": [
+      "Two short approximate strand centrelines only; not full design tracing or independent expert annotations.",
+      "Under-strand interruption is interpolated as a continuity hypothesis; its hidden pixels are not observed.",
+      "Image geometry is not physically calibrated; no stitch order or machine approval."
+    ]
+  },
+  "elements": [
+    {
+      "id": "visible-over",
+      "hypothesis": "uninterrupted descending light strand",
+      "confidence": 0.55,
+      "paths": [
+        [
+          [
+            1243.93999,
+            1259.42472
+          ],
+          [
+            1313.44922,
+            1296.93217
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "Reviewed source detail: uninterrupted descending light strand; approximate centreline endpoints in sixfold zoom; hidden continuation is explicitly hypothetical."
+    },
+    {
+      "id": "interpolated-under",
+      "hypothesis": "rising light strand interrupted at the descending strand",
+      "confidence": 0.55,
+      "paths": [
+        [
+          [
+            1268.02734,
+            1307.59943
+          ],
+          [
+            1292.80291,
+            1263.55398
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "Reviewed source detail: rising light strand interrupted at the descending strand; approximate centreline endpoints in sixfold zoom; hidden continuation is explicitly hypothetical."
+    }
+  ]
+}

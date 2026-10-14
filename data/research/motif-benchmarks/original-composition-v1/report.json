@@ -1,0 +1,109 @@
+{
+  "schema": "ascend.original-composition-benchmark.v1",
+  "method": "Authored procedural vector assembly through existing Tesseract components",
+  "noveltyAgainstFullCorpusVerified": false,
+  "reports": [
+    {
+      "id": "floral-seed-0",
+      "input": {
+        "widthMm": 250,
+        "heightMm": 80,
+        "complexity": 0.8,
+        "family": "floral",
+        "seed": 0
+      },
+      "svgSha256": "13bd77416bc90e8f0b66b27048bac1e2b90eac364f1d9dd81907d052085839cf",
+      "structure": {
+        "junctionCount": 36,
+        "brokenJunctions": 0,
+        "repeatCount": 4,
+        "brokenRepeats": 0,
+        "nestedRelations": 174,
+        "negativeSpaceViolations": 0
+      },
+      "clearance": {
+        "basis": "observed-polyline-centrelines",
+        "minimumCenterlineGapMm": 0.0000013310129872763363,
+        "junctionExclusionRadiusMm": 0.000001,
+        "clearanceViolations": [],
+        "portsOffPath": [],
+        "outsideEnvelope": []
+      },
+      "elementCount": 271,
+      "sourceImagesEmbedded": false,
+      "learnedModelApplied": false,
+      "canonicalGeometryChanged": false,
+      "physicalCalibration": null,
+      "stitchCount": null,
+      "productionApproved": false
+    },
+    {
+      "id": "floral-seed-1",
+      "input": {
+        "widthMm": 250,
+        "heightMm": 80,
+        "complexity": 0.8,
+        "family": "floral",
+        "seed": 1
+      },
+      "svgSha256": "3e8d0f7bfe110573977872bb821c5caaa5491a11e335aa867aac98e58fc47c17",
+      "structure": {
+        "junctionCount": 36,
+        "brokenJunctions": 0,
+        "repeatCount": 4,
+        "brokenRepeats": 0,
+        "nestedRelations": 177,
+        "negativeSpaceViolations": 0
+      },
+      "clearance": {
+        "basis": "observed-polyline-centrelines",
+        "minimumCenterlineGapMm": 0.0000013404200614490993,
+        "junctionExclusionRadiusMm": 0.000001,
+        "clearanceViolations": [],
+        "portsOffPath": [],
+        "outsideEnvelope": []
+      },
+      "elementCount": 274,
+      "sourceImagesEmbedded": false,
+      "learnedModelApplied": false,
+      "canonicalGeometryChanged": false,
+      "physicalCalibration": null,
+      "stitchCount": null,
+      "productionApproved": false
+    },
+    {
+      "id": "geometric-seed-0",
+      "input": {
+        "widthMm": 250,
+        "heightMm": 80,
+        "complexity": 0.8,
+        "family": "geometric",
+        "seed": 0
+      },
+      "svgSha256": "5960692e35161578489825fc15390d186a4c670fccaf16eabb18fc4b1002e251",
+      "structure": {
+        "junctionCount": 0,
+        "brokenJunctions": 0,
+        "repeatCount": 4,
+        "brokenRepeats": 0,
+        "nestedRelations": 132,
+        "negativeSpaceViolations": 0
+      },
+      "clearance": {
+        "basis": "observed-polyline-centrelines",
+        "minimumCenterlineGapMm": 0.2099463428996178,
+        "junctionExclusionRadiusMm": 0.000001,
+        "clearanceViolations": [],
+        "portsOffPath": [],
+        "outsideEnvelope": []
+      },
+      "elementCount": 198,
+      "sourceImagesEmbedded": false,
+      "learnedModelApplied": false,
+      "canonicalGeometryChanged": false,
+      "physicalCalibration": null,
+      "stitchCount": null,
+      "productionApproved": false
+    }
+  ]
+}

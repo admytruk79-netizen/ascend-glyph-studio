@@ -1,0 +1,24 @@
+{
+  "schema": "ascend.motif-provenance.v1",
+  "id": "met-239343-original",
+  "source": "https://www.metmuseum.org/art/collection/search/239343",
+  "creator": null,
+  "community": null,
+  "culturalContext": "Blackwork embroidery, ca. 1590. Met record has an empty culture field; regional and national attribution are unassigned. Linen embroidered with silk and gilded silver metal-wrapped threads.",
+  "retrievedAt": "2026-10-12T15:27:54.517789+00:00",
+  "originalSha256": "b0ea1b05bc3ef138b2168b264f19a9f62067c45b21780040d1b51b59c7bc5fb6",
+  "permission": {
+    "status": "verified",
+    "evidence": "Retained Met object API 239343 isPublicDomain=true; image supplied by Met Open Access. CC0 policy https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+    "purposes": [
+      "analysis",
+      "reconstruction"
+    ]
+  },
+  "access": "documented-public",
+  "confidence": 0.8,
+  "transformations": [],
+  "regionalAttribution": {
+    "status": "unassigned"
+  }
+}

@@ -25,9 +25,15 @@ import { createInterface } from "node:readline";
 import sharp from "sharp";
 import { STRUCTURE_ONLY, traditionOf } from "../corpus/profiles.ts";
 import { USER_AGENT } from "../corpus/sources.ts";
-import { featureOf, hex, kmeans, learnImage, prototypeShape, type Element } from "./learn.ts";
+// Direct implementation import avoids ESM named-export discovery failure on the
+// CommonJS compatibility re-export when this .mts entrypoint runs under tsx.
+import { featureOf, hex, kmeans, learnImage, prototypeShape, type Element } from "../../packages/tesseract-engine/src/raster-features.ts";
 import { assemble, brickSignatures, grammarOf, scalesOf, type Assembly } from "./lego.ts";
 import { CLIP_MODEL as MODEL, MOTIF_TYPES, NOT_ORNAMENT, ORNAMENT, regionOf } from "./labels.ts";
+import {trainingPermissions,requireTrainingSource,trainingRecordEligible,type TrainingPermissionManifest} from './training-permission.ts';
+const permissionPath=process.env.TRAIN_PERMISSION_MANIFEST;
+if(!permissionPath)throw new Error('TRAIN_PERMISSION_MANIFEST required: image metadata alone does not authorize training');
+const permissions=trainingPermissions(JSON.parse(readFileSync(permissionPath,'utf8')) as TrainingPermissionManifest);
 
 const per = Number(process.env.TRAIN_PER_TRADITION ?? 600);
 const maxImages = Number(process.env.TRAIN_MAX_IMAGES ?? 25000);
@@ -39,7 +45,7 @@ const softmax = (xs: number[]) => { const m = Math.max(...xs), e = xs.map((x) =>
 const FOCUS = new Set(["Ukrainian", "Belarusian", "Lithuanian", "Western / cowboy material culture", "English (16th–19th c.)"]);
 const MODE = process.env.TRAIN_MODE ?? "all", SHARDS = Number(process.env.TRAIN_SHARDS ?? 1), SHARD = Number(process.env.TRAIN_SHARD ?? 0);
 const shardOf = (id: string) => createHash("md5").update(id).digest().readUInt32BE(0) % SHARDS;
-type Kept = { id: string; tradition: string; region?: string; ornamentP: number; tags: Record<string, number>; palette: { hex: string; share: number }[]; ground: string; density: number; elements: Element[]; lego?: Assembly };
+type Kept = { id: string; imageSha256:string; tradition: string; region?: string; ornamentP: number; tags: Record<string, number>; palette: { hex: string; share: number }[]; ground: string; density: number; elements: Element[]; lego?: Assembly };
 type Stats = { seen: number; kept: number; notOrnament: number; failed: number; perTradition: Record<string, number> };
 
 async function pool() {
@@ -68,6 +74,7 @@ async function main() {
     const files = readdirSync(dir, { recursive: true }).map(String).filter((f) => f.endsWith(".json.gz"));
     for (const f of files) {
       const d = JSON.parse(gunzipSync(readFileSync(`${dir}/${f}`)).toString());
+      for(const k of d.kept){if(!k.imageSha256)throw new Error('training:unverifiable-shard');requireTrainingSource(permissions,k.id,k.imageSha256);}
       kept.push(...d.kept);
       for (const k of ["seen", "kept", "notOrnament", "failed"] as const) stats[k] += d.stats[k];
       for (const [t, n] of Object.entries(d.stats.perTradition as Record<string, number>)) stats.perTradition[t] = (stats.perTradition[t] ?? 0) + n;
@@ -89,9 +96,11 @@ async function main() {
 async function* records(): AsyncGenerator<any> {
   if (process.env.TRAIN_SOURCE === "neon") {
     const db = await pool();
-    const { rows } = await db.query(`select o.id, o.image_url as image, coalesce(o.cultural_access, 'open') as "culturalAccess", o.tradition, o.title, o.region,
-      o.raw->>'culture' as culture, o.raw->>'institution' as institution, coalesce(a.split,'train') as split
-      from research_corpus_object o left join research_corpus_analysis a on a.id=o.id where o.image_url is not null`);
+    const { rows } = await db.query(`select o.id, o.source_key as source, o.source_url as "objectURL", o.rights,
+      o.image_url as image, o.cultural_access as "culturalAccess", o.tradition, o.title, o.region,
+      o.raw->>'culture' as culture, o.raw->>'institution' as institution, coalesce(a.split,'unassigned') as split
+      from research_corpus_object o left join research_corpus_analysis a on a.id=o.id
+      where o.image_url is not null and o.id=any($1::text[])`,[[...permissions.keys()]]);
     await db.end();
     console.log(JSON.stringify({ source: "neon", objects: rows.length }));
     yield* rows;
@@ -105,7 +114,7 @@ async function extract(): Promise<{ kept: Kept[]; stats: Stats }> {
   // 1. select: per focus tradition (sampled) or, in a shard, every open-access image whose id hashes to it
   const groups = new Map<string, any[]>();
   for await (const r of records()) {
-    if (!r.image || (r.culturalAccess ?? "open") !== "open" || (r.split && r.split !== "train")) continue;
+    if (!r.image || !trainingRecordEligible(r,permissions)) continue;
     const t = traditionOf(r).replace(/ \(by query\)$/, "");
     if (STRUCTURE_ONLY.has(t)) continue;
     if (MODE === "extract" && shardOf(r.id) !== SHARD) continue;
@@ -174,18 +183,19 @@ async function extract(): Promise<{ kept: Kept[]; stats: Stats }> {
     stats.seen++;
     try {
       const buf = await get(r.image);
+      const imageSha256=createHash('sha256').update(buf).digest('hex');requireTrainingSource(permissions,r.id,imageSha256);
       const png = await sharp(buf).rotate().resize(224, 224, { fit: "inside" }).png().toBuffer();
       const e = await embedImage(png);
       const p = softmax(pe.map((v) => cos(e, v) * 100));
       const ornamentP = p.slice(0, ORNAMENT.length).reduce((a, b) => a + b, 0);
       if (ornamentP < 0.6) { stats.notOrnament++; continue; }
       const tp = softmax(te.map((v) => cos(e, v) * 100));
-      const raw = await sharp(buf).rotate().resize(384, 384, { fit: "inside" }).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+      const raw = await sharp(buf).rotate().resize(384, 384, { fit: "inside" }).removeAlpha().toColourspace('srgb').raw().toBuffer({ resolveWithObject: true });
       const img = { data: raw.data, width: raw.info.width, height: raw.info.height };
       const L = learnImage(img);
       const A = assemble(img, sigs, sigScale, 40, L);
       kept.push({
-        id: r.id, tradition: t, region: t === "Ukrainian" ? regionOf(r) : undefined, ornamentP: +ornamentP.toFixed(3),
+        id: r.id, imageSha256, tradition: t, region: t === "Ukrainian" ? regionOf(r) : undefined, ornamentP: +ornamentP.toFixed(3),
         tags: Object.fromEntries(types.map((k, i) => [k, +tp[i]!.toFixed(3)])),
         palette: L.palette.slice(0, 5).map((s) => ({ hex: hex(s.rgb), share: +s.share.toFixed(3) })), ground: hex(L.ground), density: +L.density.toFixed(3),
         // motif elements are only clustered for the focus traditions; keep the shard files small otherwise
@@ -273,7 +283,9 @@ async function aggregate(kept: Kept[], stats: Stats) {
     const traditionPass=!active || traditionCount>=Math.floor(Number(active.tradition_count||0)*.9);
     const priorPairs=Number(active?.metrics?.pairCount||0);
     const grammarPass=!active || pairCount>=Math.floor(priorPairs*.75);
-    const promote=coveragePass&&traditionPass&&grammarPass;
+    // Counts measure coverage, not independent model quality. Keep new runs as
+    // candidates until a separate reviewed held-out evaluation supports promotion.
+    const promote=false;
     const metrics={imageCount,traditionCount,pairCount,brickCount,novelShare:model.lego.all.novelShare,coveragePass,traditionPass,grammarPass};
     const cp=await db.query(`insert into tesseract_model_checkpoint(kind,version,parent_id,status,corpus_count,image_count,tradition_count,holdout_fingerprint,metrics,body,promoted_at)
       values('image-learning',$1,$2,$3,$4,$5,$6,$7,$8::jsonb,$9::jsonb,$10)

@@ -1,0 +1,156 @@
+{
+  "schema": "ascend.shirt-image-source-review.v1",
+  "reviewedAt": "2026-10-13T02:26:10.304231+00:00",
+  "sources": [
+    {
+      "id": "cleveland-108812",
+      "source": "https://clevelandart.org/art/1926.490",
+      "sourceGroup": "cleveland-108812",
+      "imagePath": "data/research/shirt-image-sources/cleveland-108812/source-print.jpg",
+      "imageSha256": "a7f2ce143dd7877b491a9c4bd11c24f8f1bebdd9d4d7a8f6c444db928914bb31",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "CC0",
+        "evidence": "Retained Cleveland API share_license_status=CC0 and https://www.clevelandart.org/open-access; visually reviewed print image. Local shape-only statistical experiment; catalogue culture retained in shirt-image-sources/review.json; no semantic or physical approval."
+      },
+      "title": "Shirt",
+      "culture": [
+        "Western India, Gujarat, Kachchh"
+      ],
+      "date": "early 1900s",
+      "technique": "silk thread on silk ground, embroidery",
+      "imageUrl": "https://openaccess-cdn.clevelandart.org/1926.490/1926.490_print.jpg",
+      "declaredPixels": {
+        "width": 1666,
+        "height": 3400
+      },
+      "fullImageUrl": "https://openaccess-cdn.clevelandart.org/1926.490/1926.490_full.tif",
+      "reviewStatus": "visual-source-review",
+      "semanticAnnotationStatus": "not-decomposed",
+      "verifiedPixels": {
+        "width": 1666,
+        "height": 3400
+      }
+    },
+    {
+      "id": "cleveland-100232",
+      "source": "https://clevelandart.org/art/1919.729",
+      "sourceGroup": "cleveland-100232",
+      "imagePath": "data/research/shirt-image-sources/cleveland-100232/source-print.jpg",
+      "imageSha256": "8481ce6b9cbd345268fb5a21cd39cbaecd60662265dd512e6fb00bc4a92d953d",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "CC0",
+        "evidence": "Retained Cleveland API share_license_status=CC0 and https://www.clevelandart.org/open-access; visually reviewed print image. Local shape-only statistical experiment; catalogue culture retained in shirt-image-sources/review.json; no semantic or physical approval."
+      },
+      "title": "Blouse",
+      "culture": [
+        "Spain"
+      ],
+      "date": "1600s",
+      "technique": "plain weave cotton(?) or linen(?) with embroidery",
+      "imageUrl": "https://openaccess-cdn.clevelandart.org/1919.729/1919.729_print.jpg",
+      "declaredPixels": {
+        "width": 3400,
+        "height": 1195
+      },
+      "fullImageUrl": "https://openaccess-cdn.clevelandart.org/1919.729/1919.729_full.tif",
+      "reviewStatus": "visual-source-review",
+      "semanticAnnotationStatus": "not-decomposed",
+      "verifiedPixels": {
+        "width": 3400,
+        "height": 1195
+      }
+    },
+    {
+      "id": "cleveland-106581",
+      "source": "https://clevelandart.org/art/1924.629",
+      "sourceGroup": "cleveland-106581",
+      "imagePath": "data/research/shirt-image-sources/cleveland-106581/source-print.jpg",
+      "imageSha256": "b6c879248d99e54ccf78201b09924af4cc7f20e00f10edc0edfb520529986da1",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "CC0",
+        "evidence": "Retained Cleveland API share_license_status=CC0 and https://www.clevelandart.org/open-access; visually reviewed print image. Local shape-only statistical experiment; catalogue culture retained in shirt-image-sources/review.json; no semantic or physical approval."
+      },
+      "title": "Peasant Blouse",
+      "culture": [
+        "Norway, Hardanger, 19th century"
+      ],
+      "date": "19th century",
+      "technique": "plain weave linen? with embroidery",
+      "imageUrl": "https://openaccess-cdn.clevelandart.org/1924.629/1924.629_print.jpg",
+      "declaredPixels": {
+        "width": 3400,
+        "height": 1191
+      },
+      "fullImageUrl": "https://openaccess-cdn.clevelandart.org/1924.629/1924.629_full.tif",
+      "reviewStatus": "visual-source-review",
+      "semanticAnnotationStatus": "not-decomposed",
+      "verifiedPixels": {
+        "width": 3400,
+        "height": 1191
+      }
+    },
+    {
+      "id": "cleveland-132989",
+      "source": "https://clevelandart.org/art/1955.419",
+      "sourceGroup": "cleveland-132989",
+      "imagePath": "data/research/shirt-image-sources/cleveland-132989/source-print.jpg",
+      "imageSha256": "d883ca19c9a0849d3dcca23f88e133fc25df5111433c001db8ef6b8bb25e064c",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "CC0",
+        "evidence": "Retained Cleveland API share_license_status=CC0 and https://www.clevelandart.org/open-access; visually reviewed print image. Local shape-only statistical experiment; catalogue culture retained in shirt-image-sources/review.json; no semantic or physical approval."
+      },
+      "title": "Blouse front",
+      "culture": [
+        "Philippines"
+      ],
+      "date": "c. 1875–1900",
+      "technique": "Plain weave piña: needle lace (drawnwork) and embroidery",
+      "imageUrl": "https://openaccess-cdn.clevelandart.org/1955.419/1955.419_print.jpg",
+      "declaredPixels": {
+        "width": 3400,
+        "height": 1741
+      },
+      "fullImageUrl": "https://openaccess-cdn.clevelandart.org/1955.419/1955.419_full.tif",
+      "reviewStatus": "visual-source-review",
+      "semanticAnnotationStatus": "not-decomposed",
+      "verifiedPixels": {
+        "width": 3400,
+        "height": 1741
+      }
+    }
+  ],
+  "searchRequests": [
+    {
+      "id": "cleveland-shirt",
+      "url": "https://openaccess-api.clevelandart.org/api/artworks/?q=shirt&has_image=1&limit=50",
+      "status": 200,
+      "bytes": 319554
+    },
+    {
+      "id": "cleveland-blouse",
+      "url": "https://openaccess-api.clevelandart.org/api/artworks/?q=blouse&has_image=1&limit=30",
+      "status": 200,
+      "bytes": 176498
+    },
+    {
+      "id": "aic-shirt",
+      "url": "https://api.artic.edu/api/v1/artworks/search?q=embroidered%20shirt&limit=30&fields=id,title,date_display,artist_display,image_id,is_public_domain,medium_display,place_of_origin",
+      "status": 200,
+      "bytes": 13727
+    },
+    {
+      "id": "va-ukrainian-shirt",
+      "url": "https://api.vam.ac.uk/v2/objects/search?q=Ukraine%20shirt&page_size=20",
+      "status": 200,
+      "bytes": 2671
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "@context" : "http://iiif.io/api/image/2/context.json",
+  "@id" : "https://framemark.vam.ac.uk/collections/2019MD9521",
+  "protocol" : "http://iiif.io/api/image",
+  "width" : 2500,
+  "height" : 2292,
+  "sizes" : [
+     { "width" : 156, "height" : 143 },
+     { "width" : 312, "height" : 286 },
+     { "width" : 625, "height" : 573 },
+     { "width" : 1250, "height" : 1146 }
+  ],
+  "tiles" : [
+     { "width" : 256, "height" : 256, "scaleFactors" : [ 1, 2, 4, 8, 16 ] }
+  ],
+  "profile" : [
+     "http://iiif.io/api/image/2/level1.json",
+     { "formats" : [ "jpg" ],
+       "qualities" : [ "native","color","gray","bitonal" ],
+       "supports" : ["regionByPct","regionSquare","sizeByForcedWh","sizeByWh","sizeAboveFull","rotationBy90s","mirroring"],
+       "maxWidth" : 2500,
+       "maxHeight" : 2500
+     }
+  ]
+}

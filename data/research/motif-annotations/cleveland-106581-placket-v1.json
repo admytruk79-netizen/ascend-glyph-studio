@@ -1,0 +1,425 @@
+{
+  "schema": "ascend.observed-motif-annotations.v1",
+  "id": "cleveland-106581-placket-v1",
+  "image": {
+    "width": 3400,
+    "height": 1191
+  },
+  "provenance": {
+    "schema": "ascend.motif-provenance.v1",
+    "id": "cleveland-106581-print",
+    "source": "https://clevelandart.org/art/1924.629",
+    "creator": null,
+    "community": null,
+    "culturalContext": "Norwegian peasant blouse, Hardanger, 19th century. Museum catalogue attribution retained; no transfer to Ukrainian attribution or inferred symbolism.",
+    "retrievedAt": "2026-10-13T02:42:18.962278+00:00",
+    "originalSha256": "b6c879248d99e54ccf78201b09924af4cc7f20e00f10edc0edfb520529986da1",
+    "permission": {
+      "status": "verified",
+      "evidence": "Retained Cleveland API share_license_status=CC0 and https://www.clevelandart.org/open-access; visually reviewed print image. Local shape-only statistical experiment; catalogue culture retained in shirt-image-sources/review.json; no semantic or physical approval.",
+      "purposes": [
+        "analysis",
+        "reconstruction"
+      ]
+    },
+    "access": "documented-public",
+    "confidence": 0.7,
+    "transformations": [],
+    "regionalAttribution": {
+      "status": "documented",
+      "region": "Hardanger",
+      "evidence": {
+        "source": "https://clevelandart.org/art/1924.629",
+        "locator": "official Cleveland object API culture field",
+        "quotation": "Norway, Hardanger, 19th century"
+      }
+    }
+  },
+  "review": {
+    "status": "draft",
+    "method": "Manual full-resolution source-crop and overlay review of three left-placket units",
+    "limitations": [
+      "Approximate outer diamond envelopes and inner red lobed motifs; not individual stitches or complete cell contours.",
+      "Image deformation is preserved; units are not exact translated copies.",
+      "Collar and cuff windows identify source regions only; their internal motifs remain untraced.",
+      "No independent expert ground truth, calibrated fabric grid or manufacturing approval."
+    ]
+  },
+  "elements": [
+    {
+      "id": "diamond-1",
+      "parentElementId": null,
+      "hypothesis": "angular diamond envelope",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            1608,
+            457
+          ],
+          [
+            1636,
+            493
+          ],
+          [
+            1604,
+            528
+          ],
+          [
+            1575,
+            500
+          ],
+          [
+            1608,
+            457
+          ]
+        ]
+      ],
+      "evidence": "Manually reviewed separate image-space diamond envelope, approximate polygon."
+    },
+    {
+      "id": "diamond-1-lobe-1",
+      "parentElementId": "diamond-1",
+      "hypothesis": "red lobed interior form",
+      "confidence": 0.45,
+      "paths": [
+        [
+          [
+            1605,
+            471
+          ],
+          [
+            1612,
+            475
+          ],
+          [
+            1616,
+            480
+          ],
+          [
+            1611,
+            485
+          ],
+          [
+            1605,
+            489
+          ],
+          [
+            1599,
+            485
+          ],
+          [
+            1594,
+            480
+          ],
+          [
+            1598,
+            475
+          ],
+          [
+            1605,
+            471
+          ]
+        ]
+      ],
+      "evidence": "Approximate visible red interior envelope; no botanical or symbolic identity inferred."
+    },
+    {
+      "id": "diamond-1-lobe-2",
+      "parentElementId": "diamond-1",
+      "hypothesis": "red lobed interior form",
+      "confidence": 0.45,
+      "paths": [
+        [
+          [
+            1604,
+            503
+          ],
+          [
+            1611,
+            507
+          ],
+          [
+            1615,
+            512
+          ],
+          [
+            1610,
+            517
+          ],
+          [
+            1604,
+            521
+          ],
+          [
+            1598,
+            517
+          ],
+          [
+            1593,
+            512
+          ],
+          [
+            1597,
+            507
+          ],
+          [
+            1604,
+            503
+          ]
+        ]
+      ],
+      "evidence": "Approximate visible red interior envelope; no botanical or symbolic identity inferred."
+    },
+    {
+      "id": "diamond-2",
+      "parentElementId": null,
+      "hypothesis": "angular diamond envelope",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            1605,
+            549
+          ],
+          [
+            1637,
+            589
+          ],
+          [
+            1602,
+            639
+          ],
+          [
+            1567,
+            600
+          ],
+          [
+            1605,
+            549
+          ]
+        ]
+      ],
+      "evidence": "Manually reviewed separate image-space diamond envelope, approximate polygon."
+    },
+    {
+      "id": "diamond-2-lobe-1",
+      "parentElementId": "diamond-2",
+      "hypothesis": "red lobed interior form",
+      "confidence": 0.45,
+      "paths": [
+        [
+          [
+            1604,
+            568
+          ],
+          [
+            1611,
+            572
+          ],
+          [
+            1615,
+            577
+          ],
+          [
+            1610,
+            582
+          ],
+          [
+            1604,
+            586
+          ],
+          [
+            1598,
+            582
+          ],
+          [
+            1593,
+            577
+          ],
+          [
+            1597,
+            572
+          ],
+          [
+            1604,
+            568
+          ]
+        ]
+      ],
+      "evidence": "Approximate visible red interior envelope; no botanical or symbolic identity inferred."
+    },
+    {
+      "id": "diamond-2-lobe-2",
+      "parentElementId": "diamond-2",
+      "hypothesis": "red lobed interior form",
+      "confidence": 0.45,
+      "paths": [
+        [
+          [
+            1603,
+            607
+          ],
+          [
+            1610,
+            611
+          ],
+          [
+            1614,
+            616
+          ],
+          [
+            1609,
+            621
+          ],
+          [
+            1603,
+            625
+          ],
+          [
+            1597,
+            621
+          ],
+          [
+            1592,
+            616
+          ],
+          [
+            1596,
+            611
+          ],
+          [
+            1603,
+            607
+          ]
+        ]
+      ],
+      "evidence": "Approximate visible red interior envelope; no botanical or symbolic identity inferred."
+    },
+    {
+      "id": "diamond-3",
+      "parentElementId": null,
+      "hypothesis": "angular diamond envelope",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            1604,
+            663
+          ],
+          [
+            1636,
+            693
+          ],
+          [
+            1601,
+            732
+          ],
+          [
+            1568,
+            692
+          ],
+          [
+            1604,
+            663
+          ]
+        ]
+      ],
+      "evidence": "Manually reviewed separate image-space diamond envelope, approximate polygon."
+    },
+    {
+      "id": "diamond-3-lobe-1",
+      "parentElementId": "diamond-3",
+      "hypothesis": "red lobed interior form",
+      "confidence": 0.45,
+      "paths": [
+        [
+          [
+            1604,
+            669
+          ],
+          [
+            1611,
+            673
+          ],
+          [
+            1615,
+            678
+          ],
+          [
+            1610,
+            683
+          ],
+          [
+            1604,
+            687
+          ],
+          [
+            1598,
+            683
+          ],
+          [
+            1593,
+            678
+          ],
+          [
+            1597,
+            673
+          ],
+          [
+            1604,
+            669
+          ]
+        ]
+      ],
+      "evidence": "Approximate visible red interior envelope; no botanical or symbolic identity inferred."
+    },
+    {
+      "id": "diamond-3-lobe-2",
+      "parentElementId": "diamond-3",
+      "hypothesis": "red lobed interior form",
+      "confidence": 0.45,
+      "paths": [
+        [
+          [
+            1602,
+            701
+          ],
+          [
+            1609,
+            705
+          ],
+          [
+            1613,
+            710
+          ],
+          [
+            1608,
+            715
+          ],
+          [
+            1602,
+            719
+          ],
+          [
+            1596,
+            715
+          ],
+          [
+            1591,
+            710
+          ],
+          [
+            1595,
+            705
+          ],
+          [
+            1602,
+            701
+          ]
+        ]
+      ],
+      "evidence": "Approximate visible red interior envelope; no botanical or symbolic identity inferred."
+    }
+  ]
+}

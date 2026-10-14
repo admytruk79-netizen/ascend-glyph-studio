@@ -1,0 +1,86 @@
+{
+  "schema": "ascend.observed-motif-fields.v1",
+  "fields": [
+    {
+      "id": "left-upper-bands",
+      "boxPx": {
+        "x": 35,
+        "y": 325,
+        "width": 225,
+        "height": 220
+      },
+      "elementIds": [],
+      "evidence": "Manual separated crop window for left-upper-bands; not a complete pattern-cell or exact garment boundary."
+    },
+    {
+      "id": "right-upper-bands",
+      "boxPx": {
+        "x": 353,
+        "y": 325,
+        "width": 230,
+        "height": 220
+      },
+      "elementIds": [],
+      "evidence": "Manual separated crop window for right-upper-bands; not a complete pattern-cell or exact garment boundary."
+    },
+    {
+      "id": "central-placket",
+      "boxPx": {
+        "x": 278,
+        "y": 325,
+        "width": 55,
+        "height": 225
+      },
+      "elementIds": [],
+      "evidence": "Manual separated crop window for central-placket; not a complete pattern-cell or exact garment boundary."
+    },
+    {
+      "id": "left-transition",
+      "boxPx": {
+        "x": 35,
+        "y": 568,
+        "width": 240,
+        "height": 65
+      },
+      "elementIds": [],
+      "evidence": "Manual separated crop window for left-transition; not a complete pattern-cell or exact garment boundary."
+    },
+    {
+      "id": "right-transition",
+      "boxPx": {
+        "x": 345,
+        "y": 568,
+        "width": 238,
+        "height": 65
+      },
+      "elementIds": [],
+      "evidence": "Manual separated crop window for right-transition; not a complete pattern-cell or exact garment boundary."
+    },
+    {
+      "id": "lower-geometric-field",
+      "boxPx": {
+        "x": 35,
+        "y": 650,
+        "width": 550,
+        "height": 210
+      },
+      "elementIds": [
+        "outer-diamond",
+        "inner-diamond",
+        "centre-diamond"
+      ],
+      "evidence": "Manual separated crop window for lower-geometric-field; not a complete pattern-cell or exact garment boundary."
+    }
+  ],
+  "protectedSpaces": [
+    {
+      "boxPx": {
+        "x": 244,
+        "y": 183,
+        "width": 100,
+        "height": 80
+      },
+      "evidence": "Visible interior subset of neck opening kept free of reconstructed geometry; irregular boundary untraced."
+    }
+  ]
+}

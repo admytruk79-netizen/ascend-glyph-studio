@@ -1,0 +1,451 @@
+{
+  "schema": "ascend.observed-motif-annotations.v1",
+  "id": "met-239343-connected-leaf-v2",
+  "image": {
+    "width": 3957,
+    "height": 2626
+  },
+  "provenance": {
+    "schema": "ascend.motif-provenance.v1",
+    "id": "met-239343-original",
+    "source": "https://www.metmuseum.org/art/collection/search/239343",
+    "creator": null,
+    "community": null,
+    "culturalContext": "Blackwork embroidery, ca. 1590. Met record has an empty culture field; regional and national attribution are unassigned. Linen embroidered with silk and gilded silver metal-wrapped threads.",
+    "retrievedAt": "2026-10-12T15:27:54.517789+00:00",
+    "originalSha256": "b0ea1b05bc3ef138b2168b264f19a9f62067c45b21780040d1b51b59c7bc5fb6",
+    "permission": {
+      "status": "verified",
+      "evidence": "Retained Met object API 239343 isPublicDomain=true; image supplied by Met Open Access. CC0 policy https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+      "purposes": [
+        "analysis",
+        "reconstruction"
+      ]
+    },
+    "access": "documented-public",
+    "confidence": 0.8,
+    "transformations": [],
+    "regionalAttribution": {
+      "status": "unassigned"
+    }
+  },
+  "review": {
+    "status": "draft",
+    "method": "Manual source-image and overlay review of leaf, interior vein and one attached stem",
+    "limitations": [
+      "Only one leaf, approximate interior vein and partial attached stem are annotated.",
+      "Draft geometry, not exact tracing or independent expert review.",
+      "Micro-fill and other branches/flowers are not integrated.",
+      "Physical dimensions do not calibrate the unrectified photograph."
+    ]
+  },
+  "elements": [
+    {
+      "id": "serrated-leaf",
+      "hypothesis": "serrated leaf-like envelope",
+      "confidence": 0.5,
+      "paths": [
+        [
+          [
+            2928.755,
+            504.887
+          ],
+          [
+            2914.388,
+            576.72
+          ],
+          [
+            2934.912,
+            578.773
+          ],
+          [
+            2893.864,
+            630.082
+          ],
+          [
+            2924.65,
+            632.135
+          ],
+          [
+            2873.34,
+            685.497
+          ],
+          [
+            2889.759,
+            701.916
+          ],
+          [
+            2840.502,
+            751.173
+          ],
+          [
+            2881.55,
+            759.383
+          ],
+          [
+            2807.664,
+            825.059
+          ],
+          [
+            2875.393,
+            841.478
+          ],
+          [
+            2895.916,
+            864.054
+          ],
+          [
+            2969.802,
+            878.421
+          ],
+          [
+            2996.483,
+            896.893
+          ],
+          [
+            2914.388,
+            921.521
+          ],
+          [
+            2889.759,
+            954.359
+          ],
+          [
+            2945.174,
+            1003.617
+          ],
+          [
+            2846.659,
+            1017.983
+          ],
+          [
+            2873.34,
+            1079.555
+          ],
+          [
+            2838.45,
+            1145.231
+          ],
+          [
+            2795.35,
+            1102.131
+          ],
+          [
+            2748.145,
+            1104.184
+          ],
+          [
+            2772.773,
+            1182.174
+          ],
+          [
+            2787.14,
+            1247.851
+          ],
+          [
+            2852.816,
+            1307.37
+          ],
+          [
+            2772.773,
+            1278.636
+          ],
+          [
+            2676.311,
+            1278.636
+          ],
+          [
+            2627.054,
+            1227.327
+          ],
+          [
+            2532.644,
+            1176.017
+          ],
+          [
+            2483.387,
+            1192.436
+          ],
+          [
+            2411.553,
+            1134.969
+          ],
+          [
+            2370.506,
+            1155.493
+          ],
+          [
+            2341.772,
+            1093.922
+          ],
+          [
+            2261.729,
+            1118.55
+          ],
+          [
+            2257.624,
+            1067.241
+          ],
+          [
+            2189.896,
+            1098.026
+          ],
+          [
+            2189.896,
+            1038.507
+          ],
+          [
+            2128.324,
+            1061.084
+          ],
+          [
+            2128.324,
+            1005.669
+          ],
+          [
+            2062.648,
+            1011.826
+          ],
+          [
+            2085.224,
+            972.831
+          ],
+          [
+            2042.124,
+            968.726
+          ],
+          [
+            2062.648,
+            927.678
+          ],
+          [
+            2011.338,
+            898.945
+          ],
+          [
+            2089.329,
+            872.264
+          ],
+          [
+            2011.338,
+            843.531
+          ],
+          [
+            2066.753,
+            820.954
+          ],
+          [
+            2109.853,
+            823.007
+          ],
+          [
+            2142.691,
+            790.169
+          ],
+          [
+            2220.682,
+            786.064
+          ],
+          [
+            2278.148,
+            806.588
+          ],
+          [
+            2232.996,
+            757.33
+          ],
+          [
+            2269.939,
+            742.964
+          ],
+          [
+            2224.786,
+            699.864
+          ],
+          [
+            2247.363,
+            683.445
+          ],
+          [
+            2224.786,
+            642.397
+          ],
+          [
+            2274.044,
+            658.816
+          ],
+          [
+            2278.148,
+            603.401
+          ],
+          [
+            2317.144,
+            636.24
+          ],
+          [
+            2315.091,
+            574.668
+          ],
+          [
+            2376.663,
+            617.768
+          ],
+          [
+            2411.553,
+            591.087
+          ],
+          [
+            2456.706,
+            646.502
+          ],
+          [
+            2503.911,
+            632.135
+          ],
+          [
+            2555.22,
+            679.34
+          ],
+          [
+            2606.53,
+            736.807
+          ],
+          [
+            2663.997,
+            687.549
+          ],
+          [
+            2668.102,
+            630.082
+          ],
+          [
+            2698.887,
+            648.554
+          ],
+          [
+            2737.883,
+            578.773
+          ],
+          [
+            2766.616,
+            611.611
+          ],
+          [
+            2811.769,
+            533.62
+          ],
+          [
+            2840.502,
+            560.301
+          ],
+          [
+            2928.755,
+            504.887
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "Large central serrated leaf-like form visible in original image.",
+      "ports": {
+        "base": [
+          2852.816,
+          1307.37
+        ]
+      }
+    },
+    {
+      "id": "interior-vein",
+      "hypothesis": "interior curved vein-like line",
+      "confidence": 0.4,
+      "paths": [
+        [
+          [
+            2534.697,
+            913.312
+          ],
+          [
+            2586.006,
+            862.002
+          ],
+          [
+            2668.102,
+            769.645
+          ],
+          [
+            2750.197,
+            683.445
+          ],
+          [
+            2852.816,
+            586.982
+          ]
+        ]
+      ],
+      "parentElementId": "serrated-leaf",
+      "evidence": "Approximate landmarks along the dark diagonal interior vein toward the upper-right tip, checked against the source overlay; spatial nesting, not a declared stitch attachment."
+    },
+    {
+      "id": "attached-stem",
+      "hypothesis": "curved stem attached to serrated leaf base",
+      "confidence": 0.4,
+      "paths": [
+        [
+          [
+            2852.816,
+            1307.37
+          ],
+          [
+            2887.707,
+            1280.689
+          ],
+          [
+            2920.545,
+            1256.06
+          ],
+          [
+            2963.645,
+            1225.274
+          ],
+          [
+            3019.06,
+            1188.331
+          ],
+          [
+            3082.684,
+            1155.493
+          ],
+          [
+            3125.784,
+            1132.917
+          ],
+          [
+            3162.727,
+            1114.446
+          ],
+          [
+            3199.67,
+            1102.131
+          ]
+        ]
+      ],
+      "parentElementId": null,
+      "evidence": "Manual landmarks refined against the rendered source overlay to follow the actual dark curved stem leaving the leaf toward the right; approximate reference centreline.",
+      "ports": {
+        "leaf": [
+          2852.816,
+          1307.37
+        ]
+      }
+    }
+  ],
+  "connections": [
+    {
+      "from": "serrated-leaf",
+      "fromPort": "base",
+      "to": "attached-stem",
+      "toPort": "leaf",
+      "tolerancePx": 0,
+      "evidence": "Manual shared leaf-base/stem coordinate, visually checked against the source image; not machine stitching."
+    }
+  ]
+}

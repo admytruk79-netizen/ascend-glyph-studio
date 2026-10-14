@@ -1,0 +1,30 @@
+{
+  "schema": "ascend.observed-motif-benchmark.v1",
+  "annotationId": "met-445264-coarse-v1",
+  "review": {
+    "status": "draft",
+    "method": "manual visual inspection of the hash-identified museum photograph",
+    "limitations": [
+      "Sparse approximate outer landmarks, not pixel-accurate tracing.",
+      "Names are visual hypotheses, not historical iconographic identifications.",
+      "No expert review, rectification, repeat or physical calibration."
+    ]
+  },
+  "elementCount": 7,
+  "landmarkCount": 55,
+  "annotationCoordinateRmse": 0,
+  "structure": {
+    "junctionCount": 0,
+    "brokenJunctions": 0,
+    "repeatCount": 0,
+    "brokenRepeats": 0,
+    "nestedRelations": 1,
+    "negativeSpaceViolations": 0
+  },
+  "imageTracingAccuracy": null,
+  "semanticAccuracy": null,
+  "physicalCalibration": null,
+  "productionApproved": false,
+  "modelTrainingPerformed": false,
+  "limitation": "Coordinate preservation against supplied draft landmarks; not an independent measure of image tracing or historical identification."
+}

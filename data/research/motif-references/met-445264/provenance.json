@@ -1,0 +1,21 @@
+{
+  "schema": "ascend.motif-provenance.v1",
+  "id": "met-445264",
+  "source": "https://www.metmuseum.org/art/collection/search/445264",
+  "creator": null,
+  "community": null,
+  "culturalContext": "Ottoman textile fragment, attributed to Bursa, Turkey, 16th century. Not attributed as Arabic or Ukrainian.",
+  "retrievedAt": "2026-10-10T00:00:00Z",
+  "originalSha256": "3d8dfc1726ee344d769c20d78006cf6adeb638a588527905e824a7945f20d27d",
+  "permission": {
+    "status": "verified",
+    "evidence": "Met object API 445264 explicitly isPublicDomain=true; Met Open Access CC0 policy https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+    "purposes": [
+      "analysis",
+      "reconstruction"
+    ]
+  },
+  "access": "documented-public",
+  "confidence": 0.8,
+  "transformations": []
+}

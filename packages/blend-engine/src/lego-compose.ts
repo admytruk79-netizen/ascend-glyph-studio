@@ -15,6 +15,7 @@ export type LegoGrammar = {
   pairs: Record<string, { n: number; dx: number; dy: number; ratio: number }>;
   mirrorV: number;
 };
+export type BandInstance={id:string;brick:BrickId|null;role:'hero'|'companion'|'filler'|'frame'|'connections';objectIds:string[]};
 export type BandPlan = { hero: BrickId; companions: BrickId[]; filler: BrickId | null; units: number; mirrored: boolean; novelPairs: string[] };
 
 const isBrick = (id: string): id is BrickId => id in BRICKS;
@@ -46,37 +47,69 @@ export function planBand(g: LegoGrammar, seed: string, explore = 0.3): Omit<Band
 }
 
 /** Lay the plan out as a band `length` × `height` mm. */
-export function composeBand(g: LegoGrammar, o: { seed: string; length?: number; height?: number; roles: Roles; explore?: number }): { kit: Kit; plan: BandPlan } {
+export function composeBand(g: LegoGrammar, o: { seed: string; length?: number; height?: number; roles: Roles; explore?: number; connectHeroes?: boolean }): { kit: Kit; plan: BandPlan; instances:BandInstance[]; connections: {fromId:string;fromPoint:{x:number;y:number};toId:string;toPoint:{x:number;y:number}}[] } {
   const L = o.length ?? 250, H = o.height ?? 60, CY = H / 2, c = o.roles;
   const p = planBand(g, o.seed, o.explore);
   const k = new Kit();
   // frame: border lines and a row of small rhombs, as the corpus bands carry them
-  for (const y of [1.8, H - 1.8]) k.satin("border", c.dark, [{ x: 0, y }, { x: L, y }], 1.2);
-  for (const y of [4.9, H - 4.9]) for (let i = 0; i < L / 5; i++) k.rhomb(i % 2 ? c.main : c.dark, 2.5 + i * 5, y, 1.4, 1.4, "frame");
-  const inner = H - 16, S = inner * 0.9, GAP = 3;
+  for (const y of [1.8, H - 1.8]) k.satin("border", c.dark, [{ x: 2, y }, { x: L-2, y }], 1.2);
+  for (const y of [4.9, H - 4.9]) for (let i = 0; i < Math.floor(L / 5); i++) k.rhomb(i % 2 ? c.main : c.dark, 2.5 + i * 5, y, 1.4, 1.4, "frame");
+  const inner = H - 16, GAP = 3; let S = inner * 0.9;
   const comp = p.companions[0];
   const pair = comp ? g.pairs[`${p.hero}|${comp}`] : undefined;
+  const companionRatio=Math.max(0.38,Math.min(0.62,pair?.ratio??0.5)),companionCount=comp?(p.mirrored?2:1):0;
+  S=Math.min(S,(L-8-companionCount*GAP)/(widthOf(p.hero,1)+(comp?companionCount*widthOf(comp,companionRatio):0)));
   const Sc = comp ? S * Math.max(0.38, Math.min(0.62, pair?.ratio ?? 0.5)) : 0;
   const Sf = Math.min(12, inner * 0.3);
   // slots: [companion] hero [companion] side by side with GAP between, the filler in what is left at the unit edge
   const wH = widthOf(p.hero, S), wC = comp ? widthOf(comp, Sc) : 0, wF = p.filler ? widthOf(p.filler, Sf) : 0;
   const group = wH + (comp ? (p.mirrored ? 2 : 1) * (wC + GAP) : 0);
-  const units = Math.max(2, Math.floor(L / (group + (p.filler ? wF + 2 * GAP : GAP)))), U = L / units;
-  const filler = p.filler && U - group >= wF + 2 * GAP ? p.filler : null;
+  const units = Math.max(1, Math.floor(L / (group + (p.filler ? wF + 2 * GAP : GAP)))), U = L / units;
+  const filler = units>1 && p.filler && U - group >= wF + 2 * GAP ? p.filler : null;
   const lift = (dy: number | undefined, size: number) => Math.max(-(inner - size) / 2, Math.min((inner - size) / 2, (dy ?? 0) * S * 0.5));
+  const heroObjects: string[][] = [];
+  const instances:BandInstance[]=[{id:'frame',brick:null,role:'frame',objectIds:k.objs.map(o=>o.id)}];
   for (let u = 0; u < units; u++) {
     const left = u * U + (U - group) / 2;
     const hx = left + (comp && p.mirrored ? wC + GAP : 0) + wH / 2;
+    const firstObject=k.objs.length;
     BRICKS[p.hero].draw(k, hx, CY, S, c);
+    const heroIds=k.objs.slice(firstObject).map(o=>o.id);heroObjects.push(heroIds);
+    instances.push({id:`unit-${u}-hero`,brick:p.hero,role:'hero',objectIds:heroIds});
     if (comp) {
       const off = wH / 2 + GAP + wC / 2, y = CY + lift(pair?.dy, Sc);
-      if (p.mirrored) for (const s of [-1, 1] as const) BRICKS[comp].draw(k, hx + s * off, y, Sc, c, undefined, (-s) as 1 | -1);
-      else BRICKS[comp].draw(k, hx + off, y, Sc, c);
+      const drawCompanion=(x:number,flip:1|-1,label:string)=>{const start=k.objs.length;BRICKS[comp].draw(k,x,y,Sc,c,undefined,flip);instances.push({id:`unit-${u}-companion-${label}`,brick:comp,role:'companion',objectIds:k.objs.slice(start).map(o=>o.id)});};
+      if (p.mirrored) for (const side of [-1, 1] as const)drawCompanion(hx+side*off,(-side) as 1|-1,side<0?'left':'right');
+      else drawCompanion(hx+off,1,'right');
     }
-    if (filler) BRICKS[filler].draw(k, u * U, CY, Sf, c);
+    if (filler && u<units-1){const start=k.objs.length;BRICKS[filler].draw(k,(u+1)*U,CY,Sf,c);instances.push({id:`unit-${u}-filler`,brick:filler,role:'filler',objectIds:k.objs.slice(start).map(o=>o.id)});}
   }
   k.resolveGaps();
-  return { kit: k, plan: { ...p, filler, units } };
+  const connections:{fromId:string;fromPoint:{x:number;y:number};toId:string;toPoint:{x:number;y:number}}[]=[];
+  if(o.connectHeroes){
+    const roots=heroObjects.map(ids=>{
+      const objects=k.objs.filter(o=>ids.includes(o.id));
+      const stem=objects.find(o=>o.kind==='satin'&&/^(trunk|stalk|stem)-/.test(o.id));
+      const candidate=stem??objects.filter(o=>o.kind==='fill').sort((a,b)=>{
+        return Math.max(...b.polygon.map(p=>p.y))-Math.max(...a.polygon.map(p=>p.y));
+      })[0];
+      if(!candidate)throw new Error('connected-band:missing-hero-root');
+      const points=candidate.kind==='fill'?candidate.polygon:candidate.path;
+      return {id:candidate.id,point:points.reduce((a,b)=>a.y>b.y?a:b)};
+    });
+    const connectionStart=k.objs.length;
+    const baseline=H-8.5,ports=roots.map(r=>({x:r.point.x,y:baseline}));
+    const vine=ports.flatMap((p,i)=>i?[{x:(ports[i-1]!.x+p.x)/2,y:baseline-.3},p]:[p]);
+    if(vine.length===1)vine.unshift({x:Math.max(2,vine[0]!.x-8),y:baseline});
+    k.satin('connected-vine',c.leaf,vine,1.2);const vineId=k.objs.at(-1)!.id;
+    roots.forEach((root,i)=>{
+      k.satin('root-connection',c.leaf,[{...root.point},ports[i]!],1.2);const connector=k.objs.at(-1)!;
+      connections.push({fromId:root.id,fromPoint:{...root.point},toId:connector.id,toPoint:{...root.point}},
+        {fromId:connector.id,fromPoint:{...ports[i]!},toId:vineId,toPoint:{...ports[i]!}});
+    });
+    instances.push({id:'connections',brick:null,role:'connections',objectIds:k.objs.slice(connectionStart).map(o=>o.id)});
+  }
+  return { kit: k, plan: { ...p, filler, units }, instances, connections };
 }
 
 /**

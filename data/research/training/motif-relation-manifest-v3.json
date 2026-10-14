@@ -1,0 +1,75 @@
+{
+  "schema": "ascend.training-permission-manifest.v1",
+  "entries": [
+    {
+      "id": "met-445264",
+      "source": "https://www.metmuseum.org/art/collection/search/445264",
+      "sourceGroup": "met-bursa-445264",
+      "imageSha256": "3d8dfc1726ee344d769c20d78006cf6adeb638a588527905e824a7945f20d27d",
+      "imagePath": "data/research/motif-references/met-445264/source.jpg",
+      "annotationPath": "data/research/motif-annotations/met-445264-coarse-v1.json",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "CC0",
+        "evidence": "Met object API 445264 explicitly isPublicDomain=true; Met Open Access CC0 policy https://www.metmuseum.org/about-the-met/policies-and-documents/open-access CC0/public-domain image is admitted for local experimental statistical relationship training; source-specific attribution retained."
+      }
+    },
+    {
+      "id": "met-239343",
+      "source": "https://www.metmuseum.org/art/collection/search/239343",
+      "sourceGroup": "met-blackwork-239343",
+      "imageSha256": "b0ea1b05bc3ef138b2168b264f19a9f62067c45b21780040d1b51b59c7bc5fb6",
+      "imagePath": "data/research/motif-references/met-239343/source-original.jpg",
+      "annotationPath": "data/research/motif-annotations/met-239343-connected-leaf-v2.json",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "CC0",
+        "evidence": "Retained Met object API 239343 isPublicDomain=true; image supplied by Met Open Access. CC0 policy https://www.metmuseum.org/about-the-met/policies-and-documents/open-access CC0/public-domain image is admitted for local experimental statistical relationship training; source-specific attribution retained."
+      }
+    },
+    {
+      "id": "commons-96737753",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9637._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "e4b85cfafc845616091a8e03276ea7dc83d7ec9eb0498da692d3bc804c5b32b0",
+      "imagePath": "data/research/motif-references/commons-96737753/source.jpg",
+      "annotationPath": "data/research/motif-annotations/neon-plate37-connected-floral-v2.json",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Reference-use review of retained Neon per-item Commons rights declaration: Public domain; catalogue publication date 1902 (pre-1931 publication, public domain in the US). This is a historical reference-use assessment, not a fresh Commons licence-page verification; live requests returned HTTP 403. No manufacturing approval. Local experimental statistical training assessment: retained per-item public-domain declaration and 1902 publication; US scope only, no newly verified worldwide licence, source image redistribution, regional attribution or manufacturing approval."
+      }
+    },
+    {
+      "id": "commons-96737731",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9627._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "074104c967c8f7cf68fb92ea52e9dd560ddc0bc6c9f54198b47e67a245e48839",
+      "imagePath": "data/research/motif-references/commons-96737731/source.jpg",
+      "annotationPath": "data/research/motif-annotations/neon-plate27-bouquet-v1.json",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Reference-use review of retained Neon Commons item commons-96737731: Public domain; catalogue publication 1902 (pre-1931 publication, public domain in the US). No successful fresh Commons licence-page check or global commercial/manufacturing approval claimed. Local experimental statistical training assessment: retained per-item public-domain declaration and 1902 publication; US scope only, no newly verified worldwide licence, source image redistribution, regional attribution or manufacturing approval."
+      }
+    },
+    {
+      "id": "cleveland-106581",
+      "source": "https://clevelandart.org/art/1924.629",
+      "sourceGroup": "cleveland-106581",
+      "imagePath": "data/research/shirt-image-sources/cleveland-106581/source-print.jpg",
+      "imageSha256": "b6c879248d99e54ccf78201b09924af4cc7f20e00f10edc0edfb520529986da1",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "CC0",
+        "evidence": "Retained Cleveland API share_license_status=CC0 and https://www.clevelandart.org/open-access; visually reviewed print image. Local shape-only statistical experiment; catalogue culture retained in shirt-image-sources/review.json; no semantic or physical approval."
+      },
+      "annotationPath": "data/research/motif-annotations/cleveland-106581-placket-v1.json"
+    }
+  ]
+}

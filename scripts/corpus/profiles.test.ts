@@ -40,3 +40,12 @@ test("profiles and blend: distributions, medians, dominant symmetry, fail closed
   assert.throws(() => blend(ps, { Navajo: 1 } as any), /not a selectable/); // no nation-specific selection
   assert.throws(() => blend(ps, { Belarusian: 1 }), /no profile/);
 });
+
+test('legacy Commons query countries are not cultural attribution',()=>{
+ const legacy=(title:string)=>({...row('commons-control',{tradition:'Ukrainian',culture:'Ukraine',title}),source:'commons',region:'Ukraine'});
+ assert.equal(traditionOf(legacy('Rose Wreath (Cooper Hewitt), William Morris')),'Other');
+ assert.equal(traditionOf(legacy('Detail from Chinese embroidered screen')),'Other');
+ assert.equal(traditionOf(legacy('Мотиви українського орнаменту. 1902. №37')),'Ukrainian');
+ assert.equal(traditionOf({...legacy(''),title:undefined}),'Ukrainian (by query)');
+ assert.equal(traditionOf({...legacy(''),culture:'Ukraine, Hutsul region',region:undefined}),'Ukrainian');
+});

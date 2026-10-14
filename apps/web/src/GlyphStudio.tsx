@@ -6,6 +6,7 @@ import {synthesizeUniversal} from "../../../packages/glyph-engine/src/universal"
 import {DEFAULT_GRAMMAR} from "../../../packages/glyph-engine/src/grammar";
 import {CanonReview} from "./CanonReview";
 import {RunReview} from "./RunReview";
+import {ReferenceConstruction} from "./ReferenceConstruction";
 
 type ProductId="mens-shirt"|"womens-shirt"|"diary";
 type SizeId="XS"|"S"|"M"|"L"|"XL"|"XXL";
@@ -46,6 +47,7 @@ export default function GlyphStudio(){
  const [cart,setCart]=useState(false);
  const [canonReview,setCanonReview]=useState(false);
  const [runReview,setRunReview]=useState(false);
+ const [constructionLab,setConstructionLab]=useState(true);
 
  const patterns=useMemo(()=>generatePatterns({seed:seed+":"+revision,concepts,paletteId,mode,complexity,medium,placement:mode,variations:12,width:960,height:260}),[seed,revision,concepts,paletteId,mode,complexity,medium]);
  const active=patterns[Math.min(selected,Math.max(0,patterns.length-1))];
@@ -58,14 +60,15 @@ export default function GlyphStudio(){
 
  return <main className="studioApp">
   <header className="topbar">
-   <div><div className="eyebrow">ASCEND</div><h1>Glyph Studio</h1><small>Universal engine · {universal.id}</small></div>
-   <div className="topActions"><span className="liveBadge">LIVE GENERATOR</span>
-<button className="cartBtn" onClick={()=>{setRunReview(false);setCanonReview(v=>!v)}}>{canonReview?"Studio":"Canon Review"}</button>
-<button className="cartBtn" onClick={()=>{setCanonReview(false);setRunReview(v=>!v)}}>{runReview?"Studio":"Run Review"}</button>
-<button className="cartBtn" onClick={()=>setCart(v=>!v)}>Cart {cart?"1":"0"}</button></div>
+   <div><div className="eyebrow">ASCEND</div><h1>Glyph Studio</h1><small>{constructionLab?"Embroidery imagery and construction":`Universal engine · ${universal.id}`}</small></div>
+   <div className="topActions"><span className="liveBadge">{constructionLab?"REFERENCE STUDY":"LIVE GENERATOR"}</span>
+<button className="cartBtn" onClick={()=>{setConstructionLab(false);setRunReview(false);setCanonReview(v=>!v)}}>{canonReview?"Studio":"Canon Review"}</button>
+<button className="cartBtn" onClick={()=>{setConstructionLab(false);setCanonReview(false);setRunReview(v=>!v)}}>{runReview?"Studio":"Run Review"}</button>
+<button className="cartBtn" onClick={()=>{setCanonReview(false);setRunReview(false);setConstructionLab(v=>!v)}}>{constructionLab?"Studio":"Construction lab"}</button>
+<button className="cartBtn" disabled={constructionLab} onClick={()=>setCart(v=>!v)}>Cart {cart?"1":"0"}</button></div>
   </header>
 
-  {canonReview?<CanonReview/>:runReview?<RunReview/>:<>
+  {constructionLab?<ReferenceConstruction/>:canonReview?<CanonReview/>:runReview?<RunReview/>:<>
   <div className="stepper">
    {(["Choose","Fit","Material","Pattern","Review"] as const).map((label,i)=><button key={label} onClick={()=>setStep((i+1) as Step)} className={step===i+1?"step active":step>i+1?"step done":"step"}><b>{String(i+1).padStart(2,"0")}</b><span>{label}</span></button>)}
   </div>
@@ -97,6 +100,6 @@ export default function GlyphStudio(){
   </section>
 
   </>}
-  {cart&&<div className="cartDrawer"><button className="close" onClick={()=>setCart(false)}>×</button><div className="eyebrow">CONFIGURED PIECE</div><h2>{products.find(p=>p.id===product)?.name}</h2><p>{size} · {activeFabric.name} · {mode}</p><div className="cartPreview" dangerouslySetInnerHTML={{__html:active?.svg??""}}/><p className="hint">Checkout/payment connection is the next commerce layer; configuration is preserved in this session.</p></div>}
+  {cart&&!constructionLab&&<div className="cartDrawer"><button className="close" onClick={()=>setCart(false)}>×</button><div className="eyebrow">CONFIGURED PIECE</div><h2>{products.find(p=>p.id===product)?.name}</h2><p>{size} · {activeFabric.name} · {mode}</p><div className="cartPreview" dangerouslySetInnerHTML={{__html:active?.svg??""}}/><p className="hint">Checkout/payment connection is the next commerce layer; configuration is preserved in this session.</p></div>}
  </main>
 }

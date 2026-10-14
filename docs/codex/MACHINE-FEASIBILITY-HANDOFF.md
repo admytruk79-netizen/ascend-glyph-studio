@@ -1,6 +1,6 @@
 # Codex handoff: machine feasibility integration
 
-Status: proposed integration assets committed as references, NOT integrated into runtime or verified by CI.
+Status: integrated and locally verified on development branch `codex/motif-graph-reconstruction`; see [integration results](MACHINE-FEASIBILITY-INTEGRATION-RESULTS.md). The patch and test files below remain the original handoff references. Physical production approval is not established.
 
 ## Read these files
 - docs/codex/machine-feasibility-integration.patch

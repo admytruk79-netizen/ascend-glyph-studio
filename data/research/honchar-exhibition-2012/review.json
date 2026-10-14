@@ -1,0 +1,121 @@
+{
+  "schema": "ascend.honchar-article-source-review.v1",
+  "source": "https://old.honchar.org.ua/p/yakymy-buly-vyshyvanky-naprykintsi-hih-pochatku-hh-stolittya/",
+  "title": "Якими були вишиванки наприкінці ХІХ – початку ХХ століття",
+  "publishedAt": "2012-08-30",
+  "articleAuthor": "Катерина Качур",
+  "retrievedAt": "2026-10-13T20:08:11.030265+00:00",
+  "htmlSha256": "6a90e3ad0fcb623d5ecf99e113891378fcc6fcd6c38e25e1ca4078103d02a195",
+  "scope": "Historical exhibition report; not a current event or item-level training catalogue",
+  "exhibitionCountClaim": {
+    "approximately": 100,
+    "meaning": "Museum article description of authentic shirts in the 2012 exhibition; not count of downloaded licensed training images"
+  },
+  "fullPhotoLinks": [
+    "https://old.honchar.org.ua/wp-content/uploads/2012/08/MG_5591.jpg",
+    "https://old.honchar.org.ua/wp-content/uploads/2012/08/MG_60011.jpg",
+    "https://old.honchar.org.ua/wp-content/uploads/2012/08/MG_5588.jpg",
+    "https://old.honchar.org.ua/wp-content/uploads/2012/08/MG_6015.jpg",
+    "https://old.honchar.org.ua/wp-content/uploads/2012/08/MG_5925.jpg",
+    "https://old.honchar.org.ua/wp-content/uploads/2012/08/MG_5954.jpg",
+    "https://old.honchar.org.ua/wp-content/uploads/2012/08/MG_6019.jpg",
+    "https://old.honchar.org.ua/wp-content/uploads/2012/08/MG_5930.jpg",
+    "https://old.honchar.org.ua/wp-content/uploads/2012/08/MG_6009.jpg",
+    "https://old.honchar.org.ua/wp-content/uploads/2012/08/MG_5935.jpg",
+    "https://old.honchar.org.ua/wp-content/uploads/2012/08/MG_5612.jpg"
+  ],
+  "downloadChecks": [
+    {
+      "url": "https://old.honchar.org.ua/wp-content/uploads/2012/08/MG_5591.jpg",
+      "status": 200,
+      "bytes": 130110,
+      "path": "/workspace/honchar-article-review/MG_5591.jpg"
+    },
+    {
+      "url": "https://old.honchar.org.ua/wp-content/uploads/2012/08/MG_60011.jpg",
+      "status": 200,
+      "bytes": 120287,
+      "path": "/workspace/honchar-article-review/MG_60011.jpg"
+    },
+    {
+      "url": "https://old.honchar.org.ua/wp-content/uploads/2012/08/MG_5588.jpg",
+      "status": 200,
+      "bytes": 116743,
+      "path": "/workspace/honchar-article-review/MG_5588.jpg"
+    },
+    {
+      "url": "https://old.honchar.org.ua/wp-content/uploads/2012/08/MG_6015.jpg",
+      "status": 200,
+      "bytes": 144211,
+      "path": "/workspace/honchar-article-review/MG_6015.jpg"
+    }
+  ],
+  "checkedDimensions": [
+    {
+      "file": "MG_5591.jpg",
+      "width": 800,
+      "height": 533
+    },
+    {
+      "file": "MG_60011.jpg",
+      "width": 800,
+      "height": 533
+    },
+    {
+      "file": "MG_5588.jpg",
+      "width": 800,
+      "height": 533
+    },
+    {
+      "file": "MG_6015.jpg",
+      "width": 800,
+      "height": 533
+    }
+  ],
+  "visualReview": [
+    {
+      "file": "MG_5591.jpg",
+      "observation": "Exhibition room and visitors; does not isolate a garment motif."
+    },
+    {
+      "file": "MG_60011.jpg",
+      "observation": "Close-up of red/black compound angular sleeve cells and separator bands; watermark identifies museum and photographer BOHDAN POSHYVAILO."
+    },
+    {
+      "file": "MG_5588.jpg",
+      "observation": "Garments displayed with archival portraits; context view, not calibrated fabric grid."
+    },
+    {
+      "file": "MG_6015.jpg",
+      "observation": "Dark embroidered floral clusters on pale fabric, with scattered smaller units and connecting geometry."
+    }
+  ],
+  "constructionStudyLeads": [
+    {
+      "principle": "Treat sleeve/inset/hem, neck/chest and cuff decoration as distinct placement fields.",
+      "evidence": "Article interview with Yurii Melnychuk contrasts Poltava sleeve/inset/hem emphasis with neck/chest/cuff emphasis elsewhere.",
+      "status": "attributed interview observation, not verified universal rule or source-image region assignment"
+    },
+    {
+      "principle": "Retain fabric ground as part of colour and negative-space design.",
+      "evidence": "Article discussion explicitly includes the white cloth ground.",
+      "status": "source-based construction-study lead"
+    },
+    {
+      "principle": "Keep period, garment use and locality attached to palette and placement observations.",
+      "evidence": "Article discusses regional and age/use differences rather than one invariant red/black Ukrainian style.",
+      "status": "contextual lead; not demographic prediction"
+    }
+  ],
+  "excludedClaims": [
+    "Embroidery does not shield thyroid glands from ionizing radiation; the interview claim is not accepted as medical or engineering evidence.",
+    "Racial essentialist and speculative esoteric explanations are not encoded as facts or generation constraints.",
+    "Specific motifs are not assigned sacred meanings or regions solely from their visual appearance."
+  ],
+  "permission": {
+    "status": "not-approved-for-training",
+    "reason": "Article/photos have no verified open training licence; visible photo watermark credits retained. Museum chart restrictions from other sources do not establish this photo licence."
+  },
+  "modelTrainingPerformed": false,
+  "productionApproved": false
+}
