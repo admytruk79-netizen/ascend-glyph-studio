@@ -1,6 +1,7 @@
 /**
  *   tsx src/cli.ts train [records.json …]           fit + held-out evaluation → out/motif-learner/{model,evaluation}.json
  *   tsx src/cli.ts generate [--fractal] [--tradition Ukrainian] [--region R] [--count 12] [--seed 1] [--group d4] [--size 15]
+ *                           [--blend Ukrainian=0.6,English=0.4 [--mode mix|common] [--colour-from English]]   amalgamate traditions
  *                                                    → out/motif-learner/{candidates.json,sheet.svg}
  *   tsx src/cli.ts extract <image> --id ID --tradition T --group G
  *                                                    → a record to review; its licence stays "unreviewed" (excluded) until a person sets it
@@ -9,6 +10,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { composeBand } from "./band.ts";
+import { blend, type BlendMode } from "./blend.ts";
 import { leaveOneGroupOut } from "./evaluate.ts";
 import { extractGrid } from "./extract.ts";
 import { generate } from "./generate.ts";
@@ -46,7 +48,10 @@ if (cmd === "train") {
   }, null, 1));
 } else if (cmd === "generate") {
   const model = JSON.parse(readFileSync(join(outDir, "model.json"), "utf8")) as Model;
-  const sub = select(model, flag("tradition", "Ukrainian")!, flag("region") ?? null);
+  const mix = flag("blend");
+  const sub = mix
+    ? blend(mix.split(",").map((p) => { const [t, w] = p.split("="); return { sub: select(model, t!), weight: +(w ?? 1) }; }), { mode: (flag("mode", "mix") as BlendMode), colourFrom: flag("colour-from") })
+    : select(model, flag("tradition", "Ukrainian")!, flag("region") ?? null);
   const size = flag("size"), group = flag("group");
   if (rest.includes("--fractal")) {
     const n = +flag("count", "6")!, seed0 = +flag("seed", "1")!, cell = 5, cols = 3;

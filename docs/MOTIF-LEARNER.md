@@ -52,6 +52,23 @@ npm --workspace @ascend/motif-learner run generate -- --fractal --count 6 --seed
 
 Sample: `docs/images/motif-learner-fractal-sample.svg`. Fractal motifs are large: 37–63 cells across, which is 74–126 mm at 2 mm pitch. They suit chest, yoke and towel-end fields, not cuffs.
 
+## Amalgamating traditions (`src/blend.ts`)
+
+Each tradition is fitted on its own and never pooled. A blend is built at request time from several fitted traditions, so the generator can make motifs that carry more than one, for example Ukrainian with English samplers or Palestinian tatreez.
+
+- **`mix` mode:** the local construction model is a weighted mixture. A motif may use any parent's ways of building, such as Ukrainian diagonals beside English stepped borders.
+- **`common` mode:** a weighted geometric mean. Only constructions that are plausible in every parent survive, which is the ground the traditions share.
+- **Colour:** taken from one named parent (structure from one tradition, palette from another) or mixed by weight.
+- **Gates:** every parent's references stay in the near-copy check, so a blend copies none of them. Each candidate can be scored against each parent (`parentFit`) to show how much of each tradition it carries.
+
+In the test, a 50/50 blend of the Ukrainian seed charts and a lattice tradition produces motifs whose fit sits between the two pure traditions, as intended.
+
+```bash
+npm --workspace @ascend/motif-learner run generate -- --blend Ukrainian=0.6,English=0.4 [--mode mix|common] [--colour-from English]
+```
+
+A blend needs a second trained tradition. Only Ukrainian has reviewed records so far; English samplers and tatreez are the next collections. Generated blends should be labelled as fusions inspired by each tradition, not as authentic work of either.
+
 ## Results now (honest scope)
 
 On the 10 bundled seed charts (`data/motifs/ua-seed-motifs.v1.json`):

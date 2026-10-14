@@ -158,3 +158,25 @@ test("generated motifs are complete: nothing touches the frame", () => {
     assert.ok(grid.cells.some(Boolean));
   }
 });
+
+test("blend: a mix of two traditions generates motifs that sit between them, copying neither", async () => {
+  const { blend, parentFit } = await import("./blend.ts");
+  // a second, deliberately different tradition: open lattices of separate crosses
+  const lattice: MotifRecord[] = [5, 7, 9, 11].map((k, j) => ({ ...seed[0]!, id: `lat${j}`, sourceGroup: `lat${j}`, tradition: "Lattice",
+    chart: Array.from({ length: k + 4 }, (_, y) => Array.from({ length: k + 4 }, (_, x) => (y % 4 === 1 && x % 4 === 2) || (y % 4 === 2 && x % 4 >= 1 && x % 4 <= 3) || (y % 4 === 3 && x % 4 === 2) ? "K" : ".").join("")) }));
+  const both = fit([...seed, ...lattice]).model, U = select(both, "Ukrainian"), L = select(both, "Lattice");
+  assert.throws(() => blend([{ sub: U, weight: 1 }]), /blend-needs-two-traditions/);
+  const B = blend([{ sub: U, weight: 1 }, { sub: L, weight: 1 }]);
+  assert.equal(B.references.length, U.references.length + L.references.length);
+  assert.deepEqual(B.parents, [{ key: "Ukrainian", weight: 0.5 }, { key: "Lattice", weight: 0.5 }]);
+  const lean = (sub: typeof U) => {
+    const g = generate(sub, both.dataset, { count: 4, seed: 31, size: 13, group: "d4" }).accepted;
+    assert.ok(g.length > 0, sub.key);
+    for (const c of g) assert.ok(c.nearest.iou < 0.8);
+    return g.map((c) => { const [u, l] = parentFit(c.grid, [U, L]); return u!.logLikelihood - l!.logLikelihood; }).reduce((a, b) => a + b, 0) / g.length;
+  };
+  const [pureU, mixed, pureL] = [lean(U), lean(B), lean(L)];
+  assert.ok(pureU > mixed && mixed > pureL, `ukrainian ${pureU.toFixed(2)} > blend ${mixed.toFixed(2)} > lattice ${pureL.toFixed(2)}`);
+  // structure from one, palette from the other
+  assert.equal(blend([{ sub: U, weight: 1 }, { sub: L, weight: 1 }], { colourFrom: "Lattice" }).colour, L.colour);
+});

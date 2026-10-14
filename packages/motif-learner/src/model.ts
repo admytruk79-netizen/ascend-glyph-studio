@@ -65,6 +65,8 @@ export interface SubModel {
   islands: { mean: number };
   plausibilityFloor: number;
   references: { id: string; chart: string[] }[];
+  /** Set on a blend: the traditions it amalgamates, with their weights. */
+  parents?: { key: string; weight: number }[];
 }
 export interface Model { schema: "ascend.motif-learner.v1"; dataset: string; augment: boolean; traditions: Record<string, SubModel>; regions: Record<string, SubModel> }
 
