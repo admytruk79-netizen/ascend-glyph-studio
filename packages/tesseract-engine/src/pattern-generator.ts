@@ -18,10 +18,10 @@ import {deriveZoneConstructionEnvelope,type ConstructionIntent} from "./construc
 import {machineTemplate,assertUsableMachineTemplate} from "./machine-template";
 import {expandRecursiveGrammar,grammarComplexity} from "./recursive-grammar";
 import {productionObjectsFromTopology,assertProductionRelations,placeProductionObjects,type ProductionGlyphObject} from "./production-object";
-import {compileProductionObjectsToStitchIr,applyMasterCompositionToStitchIr,type StitchIrObject} from "./production-stitch-ir";
+import {compileProductionObjectsToStitchIr,applyMasterCompositionToStitchIr,stitchIrFootprints,type StitchIrObject} from "./production-stitch-ir";
 import {solveRelationalLayout} from "./relational-layout";
 import {refineOrnamentalLayout} from "./ornament-optimizer";
-import {evaluateSurfaceLayout,type SurfaceFootprint} from "./garment-surface-math";
+import {evaluateSurfaceLayout,circumferenceAt,type SurfaceFootprint} from "./garment-surface-math";
 import {buildMasterCompositionPlan} from "./master-composition-plan";
 import {stitchIrToSvg} from "./canonical-preview";
 import {optimizeStitchTravel} from "./stitch-travel-optimizer";
@@ -213,23 +213,56 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const adapted=adaptForProduction(enriched,medium,niche);
   let productionObjects=productionObjectsFromTopology(adapted.topology,constructionEnvelope,{zoneId:productionZone.id,seamPolicy:constructionEnvelope.seamPolicy,wrapAllowed:productionZone.wrapAllowed});
   assertProductionRelations(adapted.topology,productionObjects);
-  const initialLayout=solveRelationalLayout(adapted.topology,physicalSize.width,physicalSize.height,`${input.seed}:physical:${i}:${compact}`,productionZone,{minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy});
-  const physicalLayout=refineOrnamentalLayout(adapted.topology,initialLayout,physicalSize.width,physicalSize.height,`${input.seed}:ornament:${i}:${compact}`,productionZone,{minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy,symmetry:mode==="emblem"?"mirror-y":"none",physicalFootprints:Object.fromEntries(productionObjects.map(o=>[o.id,{widthMm:o.physical.widthMm,heightMm:o.physical.heightMm,originalScale:initialLayout.points[o.id]?.scale??1}]))});
-  productionObjects=placeProductionObjects(productionObjects,physicalLayout.points,initialLayout.points);
-  const baseStitchObjects=compileProductionObjectsToStitchIr(productionObjects);
-  const compositionPlan=buildMasterCompositionPlan({mode,medium,complexity,sashGrammar,structuralFeedback:input.structuralFeedback});
-  const stitchObjects=optimizeStitchTravel(applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height)).objects;
+  const compositionPlan=buildMasterCompositionPlan({mode,medium,complexity,sashGrammar,structuralFeedback:input.structuralFeedback,targetOccupancy:constructionEnvelope.targetOccupancy});
+  const sashMode=mode==="band"||mode==="sleeve"||mode==="cuff"||mode==="collar";
+  const footprintById=Object.fromEntries(productionObjects.map(o=>[o.id,{widthMm:o.physical.widthMm,heightMm:o.physical.heightMm,clearanceMm:o.physical.clearanceMm}]));
+  let baseStitchObjects:StitchIrObject[];
+  if(sashMode){
+   // Solve directly in the final framed band. On tapered sleeves this means X
+   // is constrained against the circumference at the SAME final Y where the
+   // object will be stitched, so no later transform can move it across a seam.
+   const bandY=compositionPlan.primary.offsetY*physicalSize.height;
+   const bandHeight=Math.max(20,compositionPlan.primary.scaleY*physicalSize.height);
+   const layoutZone:GarmentZone=productionZone.surface==="tapered-cylinder"
+    ?{...productionZone,heightMm:bandHeight,circumferenceMm:circumferenceAt(productionZone,bandY),circumferenceEndMm:circumferenceAt(productionZone,bandY+bandHeight)}
+    :{...productionZone,heightMm:bandHeight};
+   const localLayout=solveRelationalLayout(adapted.topology,physicalSize.width,bandHeight,`${input.seed}:physical:${i}:${compact}`,layoutZone,{
+    minGapMm:constructionEnvelope.minGapMm,
+    seamPolicy:constructionEnvelope.seamPolicy,
+    footprintById
+   });
+   const finalPoints=Object.fromEntries(Object.entries(localLayout.points).map(([id,p])=>[id,{...p,y:p.y+bandY}]));
+   productionObjects=placeProductionObjects(productionObjects,finalPoints);
+   baseStitchObjects=compileProductionObjectsToStitchIr(productionObjects);
+  }else{
+   const initialLayout=solveRelationalLayout(adapted.topology,physicalSize.width,physicalSize.height,`${input.seed}:physical:${i}:${compact}`,productionZone,{
+    minGapMm:constructionEnvelope.minGapMm,
+    seamPolicy:constructionEnvelope.seamPolicy,
+    footprintById
+   });
+   const physicalLayout=refineOrnamentalLayout(adapted.topology,initialLayout,physicalSize.width,physicalSize.height,`${input.seed}:ornament:${i}:${compact}`,productionZone,{minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy,symmetry:mode==="emblem"?"mirror-y":"none",physicalFootprints:Object.fromEntries(productionObjects.map(o=>[o.id,{widthMm:o.physical.widthMm,heightMm:o.physical.heightMm,originalScale:initialLayout.points[o.id]?.scale??1}]))});
+   productionObjects=placeProductionObjects(productionObjects,physicalLayout.points,initialLayout.points);
+   baseStitchObjects=compileProductionObjectsToStitchIr(productionObjects);
+  }
+  const stitchObjects=optimizeStitchTravel(applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height,"#111111",{
+   applyPrimaryTransform:!sashMode,
+   surfaceZone:productionZone,
+   seamPolicy:constructionEnvelope.seamPolicy,
+   seamGapMm:constructionEnvelope.minGapMm
+  })).objects;
   const manufacturingJob=planEmbroideryJob(stitchObjects,{widthMm:physicalSize.width,heightMm:physicalSize.height});
   let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
   if(productionZone.wrapAllowed&&(productionZone.surface==="cylinder"||productionZone.surface==="tapered-cylinder")){
-   const byId=new Map(productionObjects.map(o=>[o.id,o]));
-   const items:SurfaceFootprint[]=adapted.topology.nodes.map(n=>{const p=physicalLayout.points[n.id]!,o=byId.get(n.id)!;return{id:n.id,u:p.x,v:p.y,widthMm:o.physical.widthMm,heightMm:o.physical.heightMm,rotationDeg:p.angleDeg,clearanceMm:o.physical.clearanceMm};});
-   surfaceMath=evaluateSurfaceLayout(productionZone,items);
+   const items:SurfaceFootprint[]=stitchIrFootprints(stitchObjects,constructionEnvelope.minGapMm);
+   const allowedOverlapPairs=adapted.topology.edges
+    .filter(e=>e.relation==="nest"||e.relation==="enclose")
+    .map(e=>e.from<e.to?`${e.from}|${e.to}`:`${e.to}|${e.from}`);
+   surfaceMath=evaluateSurfaceLayout(productionZone,items,{allowedOverlapPairs});
   }
   const g=genomeFromTopology(`pattern:${input.seed}:${i}`,adapted.topology);
   const relationStride=medium==="embroidery"?((input.structuralFeedback?.crossingReduction??0)>.5?0:3):1;
   const projected=projectSemanticGeometry(g,width,height,zone,{relationStride,minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy});
-  const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`,sashGrammar,structuralFeedback:input.structuralFeedback});
+  const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`,sashGrammar,structuralFeedback:input.structuralFeedback,targetOccupancy:constructionEnvelope.targetOccupancy});
   const conceptSvg=colorize(master,input.paletteId??"underdog-heritage");
   const svg=stitchIrToSvg(stitchObjects,physicalSize.width,physicalSize.height);
   const finalCritique=critiqueFinalSvg(conceptSvg,medium,input.visualCorpus??[]);
@@ -244,7 +277,12 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   }
  })).sort((a,b)=>b.score-a.score);
  if(!rendered.length)throw new Error(`pattern-no-manufacturable-candidates mode=${mode} searched=${renderCandidates.length} failures=${candidateFailures.slice(0,12).join("|")}`);
- const survivors=rendered.filter(x=>x.finalCritique.survive);
- const pool=survivors.length>=Math.min(4,variations)?survivors:rendered;
+ // Compact variants are recovery fallbacks, not peers. A compact 3-node
+ // construction must never outrank a valid full octave merely because its
+ // simplified final-critic score is numerically higher.
+ const fullRendered=rendered.filter(x=>!x.id.endsWith("-compact"));
+ const eligible=fullRendered.length>=variations?fullRendered:rendered;
+ const survivors=eligible.filter(x=>x.finalCritique.survive);
+ const pool=survivors.length>=Math.min(4,variations)?survivors:eligible;
  return selectVisuallyDiverse(pool,variations,.11);
 }
