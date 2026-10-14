@@ -7,12 +7,15 @@
  *
  * Learning only ever uses frozen rounds (data/motifs/reviewed/review-round-*.json), never a match by id against a newer
  * queue: a re-read can give an old id a different shape. Each queue gets its own decision store on the review page.
+ * MOTIF_DIR / MOTIF_STORE rank another tradition's queue (e.g. data/motifs/samplers, samplers-decisions-r1) by the same
+ * learned preference until that tradition has review rounds of its own; the preference file is then left alone.
  */
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fitPreference, groupCv, prefFeatures, prefScore, PREF_FEATURES } from "../../packages/motif-learner/src/review-preference.ts";
 
-const reviewed = "data/motifs/reviewed", queuePath = "data/motifs/public/review-queue.json";
+const reviewed = "data/motifs/reviewed", other = !!process.env.MOTIF_DIR && process.env.MOTIF_DIR !== "data/motifs/public";
+const queuePath = `${process.env.MOTIF_DIR ?? "data/motifs/public"}/review-queue.json`;
 const queue = JSON.parse(readFileSync(queuePath, "utf8"));
 const motifs: any[] = queue.motifs;
 const rounds = () => readdirSync(reviewed).filter((f) => /^review-round-\d+\.json$/.test(f)).sort();
@@ -35,9 +38,9 @@ const cvAuc = groupCv(x, y, groups, 5), model = fitPreference(x, y);
 // completeness is the reviewer's stated criterion: a motif cut off at the edge of its photograph sinks
 motifs.forEach((m) => (m.pref = +(prefScore(model, feat(m)) * (m.complete === false ? 0.35 : 1)).toFixed(4)));
 motifs.sort((a, b) => b.pref - a.pref || a.id.localeCompare(b.id));
-queue.decisionStore = `decisions-r${rounds().length + 1}`;
+queue.decisionStore = process.env.MOTIF_STORE ?? `decisions-r${rounds().length + 1}`;
 queue.summary.ordering = { by: "reviewer preference", rounds: rounds().length, positives: y.filter(Boolean).length, negatives: y.filter((v) => !v).length, heldOutAucByImage: +cvAuc.toFixed(3) };
 writeFileSync(queuePath, JSON.stringify(queue) + "\n");
 const weights = Object.fromEntries(PREF_FEATURES.map((k, j) => [k, +model.weights[j]!.toFixed(2)]).sort((a, b) => Math.abs(b[1] as number) - Math.abs(a[1] as number)));
-writeFileSync(join(reviewed, "review-preference.json"), JSON.stringify({ schema: "ascend.motif-review-preference.v1", ...queue.summary.ordering, weights, model }, null, 1) + "\n");
+if (!other) writeFileSync(join(reviewed, "review-preference.json"), JSON.stringify({ schema: "ascend.motif-review-preference.v1", ...queue.summary.ordering, weights, model }, null, 1) + "\n");
 console.log(JSON.stringify({ ...queue.summary.ordering, decisionStore: queue.decisionStore, weights }, null, 1));

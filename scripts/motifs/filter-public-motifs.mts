@@ -9,7 +9,7 @@ import { parseChart } from "../../packages/motif-learner/src/grid.ts";
 import { motifQuality } from "../../packages/motif-learner/src/quality.ts";
 import type { MotifRecord } from "../../packages/motif-learner/src/model.ts";
 
-const dir = "data/motifs/public";
+const dir = process.env.MOTIF_DIR ?? "data/motifs/public"; // data/motifs/samplers for the English samplers
 const records = (JSON.parse(readFileSync(`${dir}/public-motifs.unreviewed.json`, "utf8")) as { records: (MotifRecord & { quality?: number; complete?: boolean })[] }).records;
 const objects = new Map((JSON.parse(readFileSync(`${dir}/candidates.json`, "utf8")).objects as any[]).map((o) => [o.id, o]));
 const reasons: Record<string, number> = {};

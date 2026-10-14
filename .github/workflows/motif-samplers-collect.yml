@@ -1,0 +1,54 @@
+name: Motif learner — collect English samplers
+# Public-use English samplers (public domain, CC0, CC BY, CC BY-SA) from the Met, Art Institute of Chicago, Cleveland,
+# Wikimedia Commons, Openverse, Europeana and the Smithsonian: the second tradition for blends. Images are read in
+# memory and never stored; review-only records are committed to data/motifs/samplers/.
+on:
+  push:
+    branches: [claude/tesseract-glyph-training-t298iv]
+    paths:
+      - "scripts/motifs/collect-samplers.mts"
+      - ".github/workflows/motif-samplers-collect.yml"
+  workflow_dispatch:
+    inputs:
+      max_minutes:
+        description: Reading budget in minutes
+        default: "120"
+concurrency:
+  group: motif-samplers-collect-${{ github.ref }}
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install runtime
+        run: npm install --no-save --no-audit --no-fund sharp tsx
+      - name: Collect and read
+        env:
+          EUROPEANA_API_KEY: ${{ secrets.EUROPEANA_API_KEY }}
+          SI_API_KEY: ${{ secrets.SI_API_KEY }}
+          COLLECT_MAX_MINUTES: ${{ inputs.max_minutes || '120' }}
+        run: npx tsx scripts/motifs/collect-samplers.mts
+      - name: Filter and rank the review queue
+        env:
+          MOTIF_DIR: data/motifs/samplers
+          MOTIF_STORE: samplers-decisions-r1
+        run: npx tsx scripts/motifs/filter-public-motifs.mts && npx tsx scripts/motifs/rerank-queue.mts
+      - name: Commit review records
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/motifs/samplers || true
+          if git diff --cached --quiet; then echo "no changes"; exit 0; fi
+          git commit -m "Collect English sampler candidates for review (run ${{ github.run_id }})"
+          git pull --rebase origin ${{ github.ref_name }}
+          git push origin HEAD:${{ github.ref_name }}
