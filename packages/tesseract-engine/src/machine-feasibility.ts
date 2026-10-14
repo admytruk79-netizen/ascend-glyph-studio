@@ -24,7 +24,7 @@ export function assessSingleFieldMachine(
     "Machine dimensions and capabilities are reference data until verified on the selected manufacturer's actual equipment.",
     "Single-field fit does not verify hoop clearance, fixture access, material recipe, stitch density, or physical sew-out."
   ];
-  const x=machine.fieldX?.value,y=machine.fieldY?.value;
+  const x=machine.fieldX.value,y=machine.fieldY.value;
   const validField=Number.isFinite(x)&&Number.isFinite(y)&&x>0&&y>0&&
     machine.fieldX.unit==="mm"&&machine.fieldY.unit==="mm"&&
     !!machine.fieldX.sourceId&&!!machine.fieldY.sourceId;
