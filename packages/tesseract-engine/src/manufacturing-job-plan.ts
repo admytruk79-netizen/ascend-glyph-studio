@@ -1,4 +1,6 @@
 import type {StitchIrObject,StitchIrPoint} from "./production-stitch-ir";
+import type {MachineTemplate} from "./machine-template";
+import {assessSingleFieldMachine} from "./machine-feasibility";
 import {routingMetrics} from "./stitch-travel-optimizer";
 import {compileLoomPlan,type LoomPlan} from "./loom-program";
 import {liftPlanToShaftDraft,type ShaftDraft} from "./historical-shaft-draft";
@@ -39,9 +41,11 @@ function geometryErrors(objects:readonly StitchIrObject[],w:number,h:number){
  }
  return errors;
 }
-export function planEmbroideryJob(objects:readonly StitchIrObject[],opts:{widthMm:number;heightMm:number;trimJumpMm?:number}):ManufacturingJobPlan{
+export function planEmbroideryJob(objects:readonly StitchIrObject[],opts:{widthMm:number;heightMm:number;trimJumpMm?:number;machine?:MachineTemplate}):ManufacturingJobPlan{
  const {widthMm,heightMm}=opts,trimJumpMm=opts.trimJumpMm??7;
  const errors=geometryErrors(objects,widthMm,heightMm);
+ const feasibility=opts.machine?assessSingleFieldMachine(opts.machine,objects,widthMm,heightMm):undefined;
+ if(feasibility)errors.push(...feasibility.errors);
  const operations:ManufacturingOperation[]=[];
  let previous:StitchIrObject|undefined;
  for(const o of objects){
@@ -59,7 +63,7 @@ export function planEmbroideryJob(objects:readonly StitchIrObject[],opts:{widthM
   previous=o;
  }
  const m=routingMetrics(objects);
- return {schema:"ascend.manufacturing.job.v1",process:"embroidery",widthMm,heightMm,operations,sourceObjectIds:objects.map(o=>o.id),metrics:{travelMm:m.travelMm,colorChanges:m.colorChanges,longJumps:operations.filter(o=>o.kind==="trim").length,operationCount:operations.length},validation:{valid:errors.length===0,errors,warnings:["Reference plan only: material calibration, machine-specific postprocessing and sew-out are required."]}};
+ return {schema:"ascend.manufacturing.job.v1",process:"embroidery",widthMm,heightMm,operations,sourceObjectIds:objects.map(o=>o.id),metrics:{travelMm:m.travelMm,colorChanges:m.colorChanges,longJumps:operations.filter(o=>o.kind==="trim").length,operationCount:operations.length},validation:{valid:errors.length===0,errors,warnings:["Reference plan only: material calibration, machine-specific postprocessing and sew-out are required.",...(feasibility?.warnings??["No machine template selected: single-field feasibility unverified."])]}};
 }
 export function planWeavingJob(objects:readonly StitchIrObject[],opts:{widthMm:number;heightMm:number;endsPerCm:number;picksPerCm:number;maxShafts?:number;maxTreadles?:number}):ManufacturingJobPlan{
  const errors=geometryErrors(objects,opts.widthMm,opts.heightMm);
