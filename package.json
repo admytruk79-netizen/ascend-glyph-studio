@@ -34,7 +34,9 @@
     "benchmark:motif:original": "tsx scripts/benchmark-original-ornament.ts",
     "motif:fragments:extract": "tsx scripts/extract-jigsaw-fragments.ts",
     "benchmark:motif:jigsaw": "tsx scripts/benchmark-motif-jigsaw.ts",
-    "benchmark:motif:learned": "tsx scripts/benchmark-learned-runtime.ts"
+    "benchmark:motif:learned": "tsx scripts/benchmark-learned-runtime.ts",
+    "motif:parts:extract": "tsx scripts/extract-motif-parts.ts",
+    "benchmark:motif:parts": "tsx scripts/benchmark-motif-parts.ts"
   },
   "devDependencies": {
     "tsx": "^4.19.2",

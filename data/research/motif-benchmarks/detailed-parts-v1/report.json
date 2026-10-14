@@ -1,0 +1,2656 @@
+{
+  "schema": "ascend.detailed-parts-benchmark.v1",
+  "librarySha256": "c90d05a4e4439f94feb0fd7ae90e9d96f58ba614f30feb15a7d84072cf75db4b",
+  "segmentationReview": "draft",
+  "modelTrainingPerformed": false,
+  "cases": [
+    {
+      "seed": 0,
+      "parts": 72,
+      "input": {
+        "widthMm": 250,
+        "heightMm": 80,
+        "complexity": 0.8,
+        "family": "floral",
+        "seed": 0
+      },
+      "placements": [
+        {
+          "id": "main-0",
+          "partId": "flower-brown",
+          "kind": "flower",
+          "xMm": 34.25,
+          "yMm": 24.8,
+          "widthMm": 19.93846153846154,
+          "heightMm": 21.6,
+          "rotationDeg": 0,
+          "scale": 0.13846153846153847,
+          "reflected": false,
+          "bounds": {
+            "minX": 24.28076923076923,
+            "minY": 14,
+            "maxX": 44.21923076923077,
+            "maxY": 35.6
+          }
+        },
+        {
+          "id": "bud-0-l",
+          "partId": "flower-ring",
+          "kind": "flower",
+          "xMm": 14.285,
+          "yMm": 41.6,
+          "widthMm": 14.399999999999999,
+          "heightMm": 14.399999999999999,
+          "rotationDeg": -5,
+          "scale": 0.09999999999999999,
+          "reflected": false,
+          "bounds": {
+            "minX": 6.484876825956294,
+            "minY": 33.7998768259563,
+            "maxX": 22.085123174043705,
+            "maxY": 49.400123174043706
+          }
+        },
+        {
+          "id": "leaf-0-l",
+          "partId": "leaf-olive",
+          "kind": "leaf",
+          "xMm": 23.36,
+          "yMm": 58.4,
+          "widthMm": 7.5718309859154935,
+          "heightMm": 11.200000000000001,
+          "rotationDeg": -40,
+          "scale": 0.05258215962441315,
+          "reflected": true,
+          "bounds": {
+            "minX": 16.86020986025705,
+            "minY": 51.676611548340176,
+            "maxX": 29.859790139742948,
+            "maxY": 65.12338845165982
+          }
+        },
+        {
+          "id": "small-leaf-0-l",
+          "partId": "leaf-veined",
+          "kind": "leaf",
+          "xMm": 31.5275,
+          "yMm": 64,
+          "widthMm": 3.9325,
+          "heightMm": 3.604791666666667,
+          "rotationDeg": -45,
+          "scale": 0.02730902777777778,
+          "reflected": true,
+          "bounds": {
+            "minX": 28.86266497535957,
+            "minY": 61.335164975359575,
+            "maxX": 34.19233502464042,
+            "maxY": 66.66483502464042
+          }
+        },
+        {
+          "id": "bud-0-r",
+          "partId": "flower-blue",
+          "kind": "flower",
+          "xMm": 54.215,
+          "yMm": 41.6,
+          "widthMm": 12.87950310559006,
+          "heightMm": 14.399999999999999,
+          "rotationDeg": 5,
+          "scale": 0.08944099378881987,
+          "reflected": false,
+          "bounds": {
+            "minX": 47.17223229829437,
+            "minY": 33.8661368440452,
+            "maxX": 61.25776770170564,
+            "maxY": 49.3338631559548
+          }
+        },
+        {
+          "id": "leaf-0-r",
+          "partId": "leaf-veined",
+          "kind": "leaf",
+          "xMm": 45.14,
+          "yMm": 58.4,
+          "widthMm": 7.865,
+          "heightMm": 7.209583333333334,
+          "rotationDeg": 40,
+          "scale": 0.05461805555555556,
+          "reflected": false,
+          "bounds": {
+            "minX": 39.810414808599994,
+            "minY": 53.110807100056086,
+            "maxX": 50.46958519140001,
+            "maxY": 63.68919289994391
+          }
+        },
+        {
+          "id": "small-leaf-0-r",
+          "partId": "leaf-olive",
+          "kind": "leaf",
+          "xMm": 36.9725,
+          "yMm": 64,
+          "widthMm": 3.7859154929577468,
+          "heightMm": 5.6000000000000005,
+          "rotationDeg": 45,
+          "scale": 0.026291079812206575,
+          "reflected": false,
+          "bounds": {
+            "minX": 33.654077753642845,
+            "minY": 60.68157775364285,
+            "maxX": 40.29092224635715,
+            "maxY": 67.31842224635714
+          }
+        },
+        {
+          "id": "main-1",
+          "partId": "flower-red",
+          "kind": "flower",
+          "xMm": 94.75,
+          "yMm": 24.8,
+          "widthMm": 16.54468085106383,
+          "heightMm": 21.6,
+          "rotationDeg": 0,
+          "scale": 0.11489361702127661,
+          "reflected": false,
+          "bounds": {
+            "minX": 86.47765957446808,
+            "minY": 14,
+            "maxX": 103.02234042553192,
+            "maxY": 35.6
+          }
+        },
+        {
+          "id": "bud-1-l",
+          "partId": "flower-lower-blue",
+          "kind": "flower",
+          "xMm": 74.785,
+          "yMm": 41.6,
+          "widthMm": 13.642105263157893,
+          "heightMm": 14.399999999999999,
+          "rotationDeg": -5,
+          "scale": 0.09473684210526315,
+          "reflected": false,
+          "bounds": {
+            "minX": 67.36238218523316,
+            "minY": 33.8329042653133,
+            "maxX": 82.20761781476683,
+            "maxY": 49.3670957346867
+          }
+        },
+        {
+          "id": "leaf-1-l",
+          "partId": "leaf-olive",
+          "kind": "leaf",
+          "xMm": 83.86,
+          "yMm": 58.4,
+          "widthMm": 7.5718309859154935,
+          "heightMm": 11.200000000000001,
+          "rotationDeg": -40,
+          "scale": 0.05258215962441315,
+          "reflected": true,
+          "bounds": {
+            "minX": 77.36020986025704,
+            "minY": 51.676611548340176,
+            "maxX": 90.35979013974296,
+            "maxY": 65.12338845165982
+          }
+        },
+        {
+          "id": "small-leaf-1-l",
+          "partId": "leaf-veined",
+          "kind": "leaf",
+          "xMm": 92.0275,
+          "yMm": 64,
+          "widthMm": 3.9325,
+          "heightMm": 3.604791666666667,
+          "rotationDeg": -45,
+          "scale": 0.02730902777777778,
+          "reflected": true,
+          "bounds": {
+            "minX": 89.36266497535958,
+            "minY": 61.335164975359575,
+            "maxX": 94.69233502464043,
+            "maxY": 66.66483502464042
+          }
+        },
+        {
+          "id": "bud-1-r",
+          "partId": "flower-gold",
+          "kind": "flower",
+          "xMm": 114.715,
+          "yMm": 41.6,
+          "widthMm": 15.125,
+          "heightMm": 13.444444444444445,
+          "rotationDeg": 5,
+          "scale": 0.10503472222222222,
+          "reflected": false,
+          "bounds": {
+            "minX": 106.5953973249886,
+            "minY": 34.244242558298545,
+            "maxX": 122.83460267501141,
+            "maxY": 48.95575744170146
+          }
+        },
+        {
+          "id": "leaf-1-r",
+          "partId": "leaf-veined",
+          "kind": "leaf",
+          "xMm": 105.64,
+          "yMm": 58.4,
+          "widthMm": 7.865,
+          "heightMm": 7.209583333333334,
+          "rotationDeg": 40,
+          "scale": 0.05461805555555556,
+          "reflected": false,
+          "bounds": {
+            "minX": 100.3104148086,
+            "minY": 53.110807100056086,
+            "maxX": 110.9695851914,
+            "maxY": 63.68919289994391
+          }
+        },
+        {
+          "id": "small-leaf-1-r",
+          "partId": "leaf-olive",
+          "kind": "leaf",
+          "xMm": 97.4725,
+          "yMm": 64,
+          "widthMm": 3.7859154929577468,
+          "heightMm": 5.6000000000000005,
+          "rotationDeg": 45,
+          "scale": 0.026291079812206575,
+          "reflected": false,
+          "bounds": {
+            "minX": 94.15407775364285,
+            "minY": 60.68157775364285,
+            "maxX": 100.79092224635714,
+            "maxY": 67.31842224635714
+          }
+        },
+        {
+          "id": "main-2",
+          "partId": "flower-russet",
+          "kind": "flower",
+          "xMm": 155.25,
+          "yMm": 24.8,
+          "widthMm": 18.965853658536588,
+          "heightMm": 21.6,
+          "rotationDeg": 0,
+          "scale": 0.13170731707317074,
+          "reflected": false,
+          "bounds": {
+            "minX": 145.7670731707317,
+            "minY": 14,
+            "maxX": 164.7329268292683,
+            "maxY": 35.6
+          }
+        },
+        {
+          "id": "bud-2-l",
+          "partId": "flower-sage",
+          "kind": "flower",
+          "xMm": 135.285,
+          "yMm": 41.6,
+          "widthMm": 14.202739726027396,
+          "heightMm": 14.399999999999997,
+          "rotationDeg": -5,
+          "scale": 0.09863013698630135,
+          "reflected": false,
+          "bounds": {
+            "minX": 127.5831316454941,
+            "minY": 33.808473008802636,
+            "maxX": 142.98686835450587,
+            "maxY": 49.39152699119737
+          }
+        },
+        {
+          "id": "leaf-2-l",
+          "partId": "leaf-olive",
+          "kind": "leaf",
+          "xMm": 144.36,
+          "yMm": 58.4,
+          "widthMm": 7.5718309859154935,
+          "heightMm": 11.200000000000001,
+          "rotationDeg": -40,
+          "scale": 0.05258215962441315,
+          "reflected": true,
+          "bounds": {
+            "minX": 137.86020986025707,
+            "minY": 51.676611548340176,
+            "maxX": 150.85979013974296,
+            "maxY": 65.12338845165982
+          }
+        },
+        {
+          "id": "small-leaf-2-l",
+          "partId": "leaf-olive",
+          "kind": "leaf",
+          "xMm": 152.5275,
+          "yMm": 64,
+          "widthMm": 3.7859154929577468,
+          "heightMm": 5.6000000000000005,
+          "rotationDeg": -45,
+          "scale": 0.026291079812206575,
+          "reflected": true,
+          "bounds": {
+            "minX": 149.20907775364284,
+            "minY": 60.68157775364285,
+            "maxX": 155.84592224635716,
+            "maxY": 67.31842224635714
+          }
+        },
+        {
+          "id": "bud-2-r",
+          "partId": "flower-lobed",
+          "kind": "flower",
+          "xMm": 175.215,
+          "yMm": 41.6,
+          "widthMm": 14.602816901408449,
+          "heightMm": 14.399999999999999,
+          "rotationDeg": 5,
+          "scale": 0.10140845070422534,
+          "reflected": false,
+          "bounds": {
+            "minX": 167.31385426502305,
+            "minY": 33.79103849711428,
+            "maxX": 183.11614573497695,
+            "maxY": 49.408961502885724
+          }
+        },
+        {
+          "id": "leaf-2-r",
+          "partId": "leaf-veined",
+          "kind": "leaf",
+          "xMm": 166.14,
+          "yMm": 58.4,
+          "widthMm": 7.865,
+          "heightMm": 7.209583333333334,
+          "rotationDeg": 40,
+          "scale": 0.05461805555555556,
+          "reflected": false,
+          "bounds": {
+            "minX": 160.8104148086,
+            "minY": 53.110807100056086,
+            "maxX": 171.46958519139997,
+            "maxY": 63.68919289994391
+          }
+        },
+        {
+          "id": "small-leaf-2-r",
+          "partId": "leaf-olive",
+          "kind": "leaf",
+          "xMm": 157.9725,
+          "yMm": 64,
+          "widthMm": 3.7859154929577468,
+          "heightMm": 5.6000000000000005,
+          "rotationDeg": 45,
+          "scale": 0.026291079812206575,
+          "reflected": false,
+          "bounds": {
+            "minX": 154.65407775364284,
+            "minY": 60.68157775364285,
+            "maxX": 161.29092224635716,
+            "maxY": 67.31842224635714
+          }
+        },
+        {
+          "id": "main-3",
+          "partId": "flower-brown",
+          "kind": "flower",
+          "xMm": 215.75,
+          "yMm": 24.8,
+          "widthMm": 19.93846153846154,
+          "heightMm": 21.6,
+          "rotationDeg": 0,
+          "scale": 0.13846153846153847,
+          "reflected": false,
+          "bounds": {
+            "minX": 205.78076923076924,
+            "minY": 14,
+            "maxX": 225.71923076923076,
+            "maxY": 35.6
+          }
+        },
+        {
+          "id": "bud-3-l",
+          "partId": "flower-ring",
+          "kind": "flower",
+          "xMm": 195.785,
+          "yMm": 41.6,
+          "widthMm": 14.399999999999999,
+          "heightMm": 14.399999999999999,
+          "rotationDeg": -5,
+          "scale": 0.09999999999999999,
+          "reflected": false,
+          "bounds": {
+            "minX": 187.9848768259563,
+            "minY": 33.7998768259563,
+            "maxX": 203.5851231740437,
+            "maxY": 49.400123174043706
+          }
+        },
+        {
+          "id": "leaf-3-l",
+          "partId": "leaf-veined",
+          "kind": "leaf",
+          "xMm": 204.86,
+          "yMm": 58.4,
+          "widthMm": 7.865,
+          "heightMm": 7.209583333333334,
+          "rotationDeg": -40,
+          "scale": 0.05461805555555556,
+          "reflected": true,
+          "bounds": {
+            "minX": 199.53041480860003,
+            "minY": 53.110807100056086,
+            "maxX": 210.1895851914,
+            "maxY": 63.68919289994391
+          }
+        },
+        {
+          "id": "small-leaf-3-l",
+          "partId": "leaf-veined",
+          "kind": "leaf",
+          "xMm": 213.0275,
+          "yMm": 64,
+          "widthMm": 3.9325,
+          "heightMm": 3.604791666666667,
+          "rotationDeg": -45,
+          "scale": 0.02730902777777778,
+          "reflected": true,
+          "bounds": {
+            "minX": 210.3626649753596,
+            "minY": 61.335164975359575,
+            "maxX": 215.6923350246404,
+            "maxY": 66.66483502464042
+          }
+        },
+        {
+          "id": "bud-3-r",
+          "partId": "flower-blue",
+          "kind": "flower",
+          "xMm": 235.715,
+          "yMm": 41.6,
+          "widthMm": 12.87950310559006,
+          "heightMm": 14.399999999999999,
+          "rotationDeg": 5,
+          "scale": 0.08944099378881987,
+          "reflected": false,
+          "bounds": {
+            "minX": 228.67223229829438,
+            "minY": 33.8661368440452,
+            "maxX": 242.75776770170563,
+            "maxY": 49.3338631559548
+          }
+        },
+        {
+          "id": "leaf-3-r",
+          "partId": "leaf-veined",
+          "kind": "leaf",
+          "xMm": 226.64,
+          "yMm": 58.4,
+          "widthMm": 7.865,
+          "heightMm": 7.209583333333334,
+          "rotationDeg": 40,
+          "scale": 0.05461805555555556,
+          "reflected": false,
+          "bounds": {
+            "minX": 221.3104148086,
+            "minY": 53.110807100056086,
+            "maxX": 231.96958519139997,
+            "maxY": 63.68919289994391
+          }
+        },
+        {
+          "id": "small-leaf-3-r",
+          "partId": "leaf-veined",
+          "kind": "leaf",
+          "xMm": 218.4725,
+          "yMm": 64,
+          "widthMm": 3.9325,
+          "heightMm": 3.604791666666667,
+          "rotationDeg": 45,
+          "scale": 0.02730902777777778,
+          "reflected": false,
+          "bounds": {
+            "minX": 215.8076649753596,
+            "minY": 61.335164975359575,
+            "maxX": 221.1373350246404,
+            "maxY": 66.66483502464042
+          }
+        },
+        {
+          "id": "upper-0",
+          "partId": "scroll-a",
+          "kind": "border",
+          "xMm": 15.2,
+          "yMm": 9.200000000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 3.5,
+            "minY": 5.868750000000002,
+            "maxX": 26.9,
+            "maxY": 12.53125
+          }
+        },
+        {
+          "id": "upper-1",
+          "partId": "scroll-b",
+          "kind": "border",
+          "xMm": 39.599999999999994,
+          "yMm": 9.200000000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 27.899999999999995,
+            "minY": 5.950000000000001,
+            "maxX": 51.3,
+            "maxY": 12.450000000000001
+          }
+        },
+        {
+          "id": "upper-2",
+          "partId": "scroll-a",
+          "kind": "border",
+          "xMm": 64,
+          "yMm": 9.200000000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 52.3,
+            "minY": 5.868750000000002,
+            "maxX": 75.7,
+            "maxY": 12.53125
+          }
+        },
+        {
+          "id": "upper-3",
+          "partId": "scroll-b",
+          "kind": "border",
+          "xMm": 88.39999999999999,
+          "yMm": 9.200000000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 76.69999999999999,
+            "minY": 5.950000000000001,
+            "maxX": 100.1,
+            "maxY": 12.450000000000001
+          }
+        },
+        {
+          "id": "upper-4",
+          "partId": "scroll-a",
+          "kind": "border",
+          "xMm": 112.8,
+          "yMm": 9.200000000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 101.1,
+            "minY": 5.868750000000002,
+            "maxX": 124.5,
+            "maxY": 12.53125
+          }
+        },
+        {
+          "id": "upper-5",
+          "partId": "scroll-b",
+          "kind": "border",
+          "xMm": 137.2,
+          "yMm": 9.200000000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 125.49999999999999,
+            "minY": 5.950000000000001,
+            "maxX": 148.89999999999998,
+            "maxY": 12.450000000000001
+          }
+        },
+        {
+          "id": "upper-6",
+          "partId": "scroll-a",
+          "kind": "border",
+          "xMm": 161.6,
+          "yMm": 9.200000000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 149.9,
+            "minY": 5.868750000000002,
+            "maxX": 173.29999999999998,
+            "maxY": 12.53125
+          }
+        },
+        {
+          "id": "upper-7",
+          "partId": "scroll-b",
+          "kind": "border",
+          "xMm": 186,
+          "yMm": 9.200000000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 174.3,
+            "minY": 5.950000000000001,
+            "maxX": 197.7,
+            "maxY": 12.450000000000001
+          }
+        },
+        {
+          "id": "upper-8",
+          "partId": "scroll-a",
+          "kind": "border",
+          "xMm": 210.39999999999998,
+          "yMm": 9.200000000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 198.7,
+            "minY": 5.868750000000002,
+            "maxX": 222.09999999999997,
+            "maxY": 12.53125
+          }
+        },
+        {
+          "id": "upper-9",
+          "partId": "scroll-b",
+          "kind": "border",
+          "xMm": 234.79999999999998,
+          "yMm": 9.200000000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 223.1,
+            "minY": 5.950000000000001,
+            "maxX": 246.49999999999997,
+            "maxY": 12.450000000000001
+          }
+        },
+        {
+          "id": "lower-0",
+          "partId": "scroll-a",
+          "kind": "border",
+          "xMm": 15.2,
+          "yMm": 76,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 3.5,
+            "minY": 72.66875,
+            "maxX": 26.9,
+            "maxY": 79.33125
+          }
+        },
+        {
+          "id": "lower-1",
+          "partId": "scroll-b",
+          "kind": "border",
+          "xMm": 39.599999999999994,
+          "yMm": 76,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 27.899999999999995,
+            "minY": 72.75,
+            "maxX": 51.3,
+            "maxY": 79.25
+          }
+        },
+        {
+          "id": "lower-2",
+          "partId": "scroll-a",
+          "kind": "border",
+          "xMm": 64,
+          "yMm": 76,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 52.3,
+            "minY": 72.66875,
+            "maxX": 75.7,
+            "maxY": 79.33125
+          }
+        },
+        {
+          "id": "lower-3",
+          "partId": "scroll-b",
+          "kind": "border",
+          "xMm": 88.39999999999999,
+          "yMm": 76,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 76.69999999999999,
+            "minY": 72.75,
+            "maxX": 100.1,
+            "maxY": 79.25
+          }
+        },
+        {
+          "id": "lower-4",
+          "partId": "scroll-a",
+          "kind": "border",
+          "xMm": 112.8,
+          "yMm": 76,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 101.1,
+            "minY": 72.66875,
+            "maxX": 124.5,
+            "maxY": 79.33125
+          }
+        },
+        {
+          "id": "lower-5",
+          "partId": "scroll-b",
+          "kind": "border",
+          "xMm": 137.2,
+          "yMm": 76,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 125.49999999999999,
+            "minY": 72.75,
+            "maxX": 148.89999999999998,
+            "maxY": 79.25
+          }
+        },
+        {
+          "id": "lower-6",
+          "partId": "scroll-a",
+          "kind": "border",
+          "xMm": 161.6,
+          "yMm": 76,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 149.9,
+            "minY": 72.66875,
+            "maxX": 173.29999999999998,
+            "maxY": 79.33125
+          }
+        },
+        {
+          "id": "lower-7",
+          "partId": "scroll-b",
+          "kind": "border",
+          "xMm": 186,
+          "yMm": 76,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 174.3,
+            "minY": 72.75,
+            "maxX": 197.7,
+            "maxY": 79.25
+          }
+        },
+        {
+          "id": "lower-8",
+          "partId": "scroll-a",
+          "kind": "border",
+          "xMm": 210.39999999999998,
+          "yMm": 76,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 198.7,
+            "minY": 72.66875,
+            "maxX": 222.09999999999997,
+            "maxY": 79.33125
+          }
+        },
+        {
+          "id": "lower-9",
+          "partId": "scroll-b",
+          "kind": "border",
+          "xMm": 234.79999999999998,
+          "yMm": 76,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 223.1,
+            "minY": 72.75,
+            "maxX": 246.49999999999997,
+            "maxY": 79.25
+          }
+        },
+        {
+          "id": "upper-seeds-0",
+          "partId": "flower-gold",
+          "kind": "flower",
+          "xMm": 13.166666666666666,
+          "yMm": 2.56,
+          "widthMm": 3.42,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.02375,
+          "reflected": false,
+          "bounds": {
+            "minX": 11.456666666666667,
+            "minY": 1.04,
+            "maxX": 14.876666666666665,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-1",
+          "partId": "flower-sage",
+          "kind": "flower",
+          "xMm": 33.5,
+          "yMm": 2.56,
+          "widthMm": 2.9983561643835617,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.020821917808219178,
+          "reflected": false,
+          "bounds": {
+            "minX": 32.00082191780822,
+            "minY": 1.04,
+            "maxX": 34.99917808219178,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-2",
+          "partId": "flower-lobed",
+          "kind": "flower",
+          "xMm": 53.83333333333333,
+          "yMm": 2.56,
+          "widthMm": 3.0828169014084503,
+          "heightMm": 3.0399999999999996,
+          "rotationDeg": 0,
+          "scale": 0.02140845070422535,
+          "reflected": false,
+          "bounds": {
+            "minX": 52.291924882629104,
+            "minY": 1.0400000000000003,
+            "maxX": 55.37474178403755,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-3",
+          "partId": "flower-blue",
+          "kind": "flower",
+          "xMm": 74.16666666666666,
+          "yMm": 2.56,
+          "widthMm": 2.7190062111801243,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.01888198757763975,
+          "reflected": false,
+          "bounds": {
+            "minX": 72.80716356107659,
+            "minY": 1.04,
+            "maxX": 75.52616977225672,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-4",
+          "partId": "flower-brown",
+          "kind": "flower",
+          "xMm": 94.5,
+          "yMm": 2.56,
+          "widthMm": 2.806153846153846,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.019487179487179488,
+          "reflected": false,
+          "bounds": {
+            "minX": 93.09692307692308,
+            "minY": 1.04,
+            "maxX": 95.90307692307692,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-5",
+          "partId": "flower-russet",
+          "kind": "flower",
+          "xMm": 114.83333333333333,
+          "yMm": 2.56,
+          "widthMm": 2.6692682926829265,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.018536585365853658,
+          "reflected": false,
+          "bounds": {
+            "minX": 113.49869918699187,
+            "minY": 1.04,
+            "maxX": 116.16796747967479,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-6",
+          "partId": "flower-red",
+          "kind": "flower",
+          "xMm": 135.16666666666666,
+          "yMm": 2.56,
+          "widthMm": 2.3285106382978724,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.016170212765957447,
+          "reflected": false,
+          "bounds": {
+            "minX": 134.00241134751772,
+            "minY": 1.04,
+            "maxX": 136.3309219858156,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-7",
+          "partId": "flower-ring",
+          "kind": "flower",
+          "xMm": 155.5,
+          "yMm": 2.56,
+          "widthMm": 3.04,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.021111111111111112,
+          "reflected": false,
+          "bounds": {
+            "minX": 153.98,
+            "minY": 1.04,
+            "maxX": 157.02,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-8",
+          "partId": "flower-lower-blue",
+          "kind": "flower",
+          "xMm": 175.83333333333331,
+          "yMm": 2.56,
+          "widthMm": 2.88,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.02,
+          "reflected": false,
+          "bounds": {
+            "minX": 174.39333333333332,
+            "minY": 1.04,
+            "maxX": 177.2733333333333,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-9",
+          "partId": "flower-gold",
+          "kind": "flower",
+          "xMm": 196.16666666666666,
+          "yMm": 2.56,
+          "widthMm": 3.42,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.02375,
+          "reflected": false,
+          "bounds": {
+            "minX": 194.45666666666665,
+            "minY": 1.04,
+            "maxX": 197.87666666666667,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-10",
+          "partId": "flower-sage",
+          "kind": "flower",
+          "xMm": 216.5,
+          "yMm": 2.56,
+          "widthMm": 2.9983561643835617,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.020821917808219178,
+          "reflected": false,
+          "bounds": {
+            "minX": 215.00082191780822,
+            "minY": 1.04,
+            "maxX": 217.99917808219178,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-11",
+          "partId": "flower-lobed",
+          "kind": "flower",
+          "xMm": 236.83333333333331,
+          "yMm": 2.56,
+          "widthMm": 3.0828169014084503,
+          "heightMm": 3.0399999999999996,
+          "rotationDeg": 0,
+          "scale": 0.02140845070422535,
+          "reflected": false,
+          "bounds": {
+            "minX": 235.29192488262908,
+            "minY": 1.0400000000000003,
+            "maxX": 238.37474178403755,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "lower-seeds-0",
+          "partId": "flower-gold",
+          "kind": "flower",
+          "xMm": 13.166666666666666,
+          "yMm": 70.4,
+          "widthMm": 3.42,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.02375,
+          "reflected": false,
+          "bounds": {
+            "minX": 11.456666666666667,
+            "minY": 68.88000000000001,
+            "maxX": 14.876666666666665,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-1",
+          "partId": "flower-sage",
+          "kind": "flower",
+          "xMm": 33.5,
+          "yMm": 70.4,
+          "widthMm": 2.9983561643835617,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.020821917808219178,
+          "reflected": false,
+          "bounds": {
+            "minX": 32.00082191780822,
+            "minY": 68.88000000000001,
+            "maxX": 34.99917808219178,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-2",
+          "partId": "flower-lobed",
+          "kind": "flower",
+          "xMm": 53.83333333333333,
+          "yMm": 70.4,
+          "widthMm": 3.0828169014084503,
+          "heightMm": 3.0399999999999996,
+          "rotationDeg": 0,
+          "scale": 0.02140845070422535,
+          "reflected": false,
+          "bounds": {
+            "minX": 52.291924882629104,
+            "minY": 68.88000000000001,
+            "maxX": 55.37474178403755,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-3",
+          "partId": "flower-blue",
+          "kind": "flower",
+          "xMm": 74.16666666666666,
+          "yMm": 70.4,
+          "widthMm": 2.7190062111801243,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.01888198757763975,
+          "reflected": false,
+          "bounds": {
+            "minX": 72.80716356107659,
+            "minY": 68.88000000000001,
+            "maxX": 75.52616977225672,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-4",
+          "partId": "flower-brown",
+          "kind": "flower",
+          "xMm": 94.5,
+          "yMm": 70.4,
+          "widthMm": 2.806153846153846,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.019487179487179488,
+          "reflected": false,
+          "bounds": {
+            "minX": 93.09692307692308,
+            "minY": 68.88000000000001,
+            "maxX": 95.90307692307692,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-5",
+          "partId": "flower-russet",
+          "kind": "flower",
+          "xMm": 114.83333333333333,
+          "yMm": 70.4,
+          "widthMm": 2.6692682926829265,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.018536585365853658,
+          "reflected": false,
+          "bounds": {
+            "minX": 113.49869918699187,
+            "minY": 68.88000000000001,
+            "maxX": 116.16796747967479,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-6",
+          "partId": "flower-red",
+          "kind": "flower",
+          "xMm": 135.16666666666666,
+          "yMm": 70.4,
+          "widthMm": 2.3285106382978724,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.016170212765957447,
+          "reflected": false,
+          "bounds": {
+            "minX": 134.00241134751772,
+            "minY": 68.88000000000001,
+            "maxX": 136.3309219858156,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-7",
+          "partId": "flower-ring",
+          "kind": "flower",
+          "xMm": 155.5,
+          "yMm": 70.4,
+          "widthMm": 3.04,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.021111111111111112,
+          "reflected": false,
+          "bounds": {
+            "minX": 153.98,
+            "minY": 68.88000000000001,
+            "maxX": 157.02,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-8",
+          "partId": "flower-lower-blue",
+          "kind": "flower",
+          "xMm": 175.83333333333331,
+          "yMm": 70.4,
+          "widthMm": 2.88,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.02,
+          "reflected": false,
+          "bounds": {
+            "minX": 174.39333333333332,
+            "minY": 68.88000000000001,
+            "maxX": 177.2733333333333,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-9",
+          "partId": "flower-gold",
+          "kind": "flower",
+          "xMm": 196.16666666666666,
+          "yMm": 70.4,
+          "widthMm": 3.42,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.02375,
+          "reflected": false,
+          "bounds": {
+            "minX": 194.45666666666665,
+            "minY": 68.88000000000001,
+            "maxX": 197.87666666666667,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-10",
+          "partId": "flower-sage",
+          "kind": "flower",
+          "xMm": 216.5,
+          "yMm": 70.4,
+          "widthMm": 2.9983561643835617,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.020821917808219178,
+          "reflected": false,
+          "bounds": {
+            "minX": 215.00082191780822,
+            "minY": 68.88000000000001,
+            "maxX": 217.99917808219178,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-11",
+          "partId": "flower-lobed",
+          "kind": "flower",
+          "xMm": 236.83333333333331,
+          "yMm": 70.4,
+          "widthMm": 3.0828169014084503,
+          "heightMm": 3.0399999999999996,
+          "rotationDeg": 0,
+          "scale": 0.02140845070422535,
+          "reflected": false,
+          "bounds": {
+            "minX": 235.29192488262908,
+            "minY": 68.88000000000001,
+            "maxX": 238.37474178403755,
+            "maxY": 71.92
+          }
+        }
+      ],
+      "structure": {
+        "junctionCount": 92,
+        "brokenJunctions": 0,
+        "repeatCount": 0,
+        "brokenRepeats": 0,
+        "nestedRelations": 0,
+        "negativeSpaceViolations": 0
+      },
+      "checks": {
+        "leafFlowerOverlaps": [],
+        "outsideEnvelope": 0
+      },
+      "stitchCount": null,
+      "physicalCalibration": null,
+      "productionApproved": false
+    },
+    {
+      "seed": 1,
+      "parts": 72,
+      "input": {
+        "widthMm": 250,
+        "heightMm": 80,
+        "complexity": 0.8,
+        "family": "floral",
+        "seed": 1
+      },
+      "placements": [
+        {
+          "id": "main-0",
+          "partId": "flower-sage",
+          "kind": "flower",
+          "xMm": 34.25,
+          "yMm": 24.8,
+          "widthMm": 21.304109589041097,
+          "heightMm": 21.6,
+          "rotationDeg": 0,
+          "scale": 0.14794520547945206,
+          "reflected": false,
+          "bounds": {
+            "minX": 23.59794520547945,
+            "minY": 14,
+            "maxX": 44.90205479452055,
+            "maxY": 35.6
+          }
+        },
+        {
+          "id": "bud-0-l",
+          "partId": "flower-ring",
+          "kind": "flower",
+          "xMm": 14.285,
+          "yMm": 41.6,
+          "widthMm": 14.399999999999999,
+          "heightMm": 14.399999999999999,
+          "rotationDeg": -5,
+          "scale": 0.09999999999999999,
+          "reflected": false,
+          "bounds": {
+            "minX": 6.484876825956294,
+            "minY": 33.7998768259563,
+            "maxX": 22.085123174043705,
+            "maxY": 49.400123174043706
+          }
+        },
+        {
+          "id": "leaf-0-l",
+          "partId": "leaf-veined",
+          "kind": "leaf",
+          "xMm": 23.36,
+          "yMm": 58.4,
+          "widthMm": 7.865,
+          "heightMm": 7.209583333333334,
+          "rotationDeg": -40,
+          "scale": 0.05461805555555556,
+          "reflected": true,
+          "bounds": {
+            "minX": 18.030414808599996,
+            "minY": 53.110807100056086,
+            "maxX": 28.689585191400003,
+            "maxY": 63.68919289994391
+          }
+        },
+        {
+          "id": "small-leaf-0-l",
+          "partId": "leaf-olive",
+          "kind": "leaf",
+          "xMm": 31.5275,
+          "yMm": 64,
+          "widthMm": 3.7859154929577468,
+          "heightMm": 5.6000000000000005,
+          "rotationDeg": -45,
+          "scale": 0.026291079812206575,
+          "reflected": true,
+          "bounds": {
+            "minX": 28.209077753642852,
+            "minY": 60.68157775364285,
+            "maxX": 34.845922246357155,
+            "maxY": 67.31842224635714
+          }
+        },
+        {
+          "id": "bud-0-r",
+          "partId": "flower-brown",
+          "kind": "flower",
+          "xMm": 54.215,
+          "yMm": 41.6,
+          "widthMm": 13.292307692307691,
+          "heightMm": 14.399999999999999,
+          "rotationDeg": 5,
+          "scale": 0.0923076923076923,
+          "reflected": false,
+          "bounds": {
+            "minX": 46.96661542797634,
+            "minY": 33.84814769886269,
+            "maxX": 61.463384572023664,
+            "maxY": 49.35185230113731
+          }
+        },
+        {
+          "id": "leaf-0-r",
+          "partId": "leaf-veined",
+          "kind": "leaf",
+          "xMm": 45.14,
+          "yMm": 58.4,
+          "widthMm": 7.865,
+          "heightMm": 7.209583333333334,
+          "rotationDeg": 40,
+          "scale": 0.05461805555555556,
+          "reflected": false,
+          "bounds": {
+            "minX": 39.810414808599994,
+            "minY": 53.110807100056086,
+            "maxX": 50.46958519140001,
+            "maxY": 63.68919289994391
+          }
+        },
+        {
+          "id": "small-leaf-0-r",
+          "partId": "leaf-olive",
+          "kind": "leaf",
+          "xMm": 36.9725,
+          "yMm": 64,
+          "widthMm": 3.7859154929577468,
+          "heightMm": 5.6000000000000005,
+          "rotationDeg": 45,
+          "scale": 0.026291079812206575,
+          "reflected": false,
+          "bounds": {
+            "minX": 33.654077753642845,
+            "minY": 60.68157775364285,
+            "maxX": 40.29092224635715,
+            "maxY": 67.31842224635714
+          }
+        },
+        {
+          "id": "main-1",
+          "partId": "flower-red",
+          "kind": "flower",
+          "xMm": 94.75,
+          "yMm": 24.8,
+          "widthMm": 16.54468085106383,
+          "heightMm": 21.6,
+          "rotationDeg": 0,
+          "scale": 0.11489361702127661,
+          "reflected": false,
+          "bounds": {
+            "minX": 86.47765957446808,
+            "minY": 14,
+            "maxX": 103.02234042553192,
+            "maxY": 35.6
+          }
+        },
+        {
+          "id": "bud-1-l",
+          "partId": "flower-blue",
+          "kind": "flower",
+          "xMm": 74.785,
+          "yMm": 41.6,
+          "widthMm": 12.87950310559006,
+          "heightMm": 14.399999999999999,
+          "rotationDeg": -5,
+          "scale": 0.08944099378881987,
+          "reflected": false,
+          "bounds": {
+            "minX": 67.74223229829435,
+            "minY": 33.8661368440452,
+            "maxX": 81.82776770170564,
+            "maxY": 49.3338631559548
+          }
+        },
+        {
+          "id": "leaf-1-l",
+          "partId": "leaf-olive",
+          "kind": "leaf",
+          "xMm": 83.86,
+          "yMm": 58.4,
+          "widthMm": 7.5718309859154935,
+          "heightMm": 11.200000000000001,
+          "rotationDeg": -40,
+          "scale": 0.05258215962441315,
+          "reflected": true,
+          "bounds": {
+            "minX": 77.36020986025704,
+            "minY": 51.676611548340176,
+            "maxX": 90.35979013974296,
+            "maxY": 65.12338845165982
+          }
+        },
+        {
+          "id": "small-leaf-1-l",
+          "partId": "leaf-olive",
+          "kind": "leaf",
+          "xMm": 92.0275,
+          "yMm": 64,
+          "widthMm": 3.7859154929577468,
+          "heightMm": 5.6000000000000005,
+          "rotationDeg": -45,
+          "scale": 0.026291079812206575,
+          "reflected": true,
+          "bounds": {
+            "minX": 88.70907775364286,
+            "minY": 60.68157775364285,
+            "maxX": 95.34592224635715,
+            "maxY": 67.31842224635714
+          }
+        },
+        {
+          "id": "bud-1-r",
+          "partId": "flower-lower-blue",
+          "kind": "flower",
+          "xMm": 114.715,
+          "yMm": 41.6,
+          "widthMm": 13.642105263157893,
+          "heightMm": 14.399999999999999,
+          "rotationDeg": 5,
+          "scale": 0.09473684210526315,
+          "reflected": false,
+          "bounds": {
+            "minX": 107.29238218523317,
+            "minY": 33.8329042653133,
+            "maxX": 122.13761781476684,
+            "maxY": 49.3670957346867
+          }
+        },
+        {
+          "id": "leaf-1-r",
+          "partId": "leaf-veined",
+          "kind": "leaf",
+          "xMm": 105.64,
+          "yMm": 58.4,
+          "widthMm": 7.865,
+          "heightMm": 7.209583333333334,
+          "rotationDeg": 40,
+          "scale": 0.05461805555555556,
+          "reflected": false,
+          "bounds": {
+            "minX": 100.3104148086,
+            "minY": 53.110807100056086,
+            "maxX": 110.9695851914,
+            "maxY": 63.68919289994391
+          }
+        },
+        {
+          "id": "small-leaf-1-r",
+          "partId": "leaf-veined",
+          "kind": "leaf",
+          "xMm": 97.4725,
+          "yMm": 64,
+          "widthMm": 3.9325,
+          "heightMm": 3.604791666666667,
+          "rotationDeg": 45,
+          "scale": 0.02730902777777778,
+          "reflected": false,
+          "bounds": {
+            "minX": 94.80766497535957,
+            "minY": 61.335164975359575,
+            "maxX": 100.13733502464042,
+            "maxY": 66.66483502464042
+          }
+        },
+        {
+          "id": "main-2",
+          "partId": "flower-russet",
+          "kind": "flower",
+          "xMm": 155.25,
+          "yMm": 24.8,
+          "widthMm": 18.965853658536588,
+          "heightMm": 21.6,
+          "rotationDeg": 0,
+          "scale": 0.13170731707317074,
+          "reflected": false,
+          "bounds": {
+            "minX": 145.7670731707317,
+            "minY": 14,
+            "maxX": 164.7329268292683,
+            "maxY": 35.6
+          }
+        },
+        {
+          "id": "bud-2-l",
+          "partId": "flower-gold",
+          "kind": "flower",
+          "xMm": 135.285,
+          "yMm": 41.6,
+          "widthMm": 15.125,
+          "heightMm": 13.444444444444445,
+          "rotationDeg": -5,
+          "scale": 0.10503472222222222,
+          "reflected": false,
+          "bounds": {
+            "minX": 127.16539732498859,
+            "minY": 34.244242558298545,
+            "maxX": 143.40460267501143,
+            "maxY": 48.95575744170146
+          }
+        },
+        {
+          "id": "leaf-2-l",
+          "partId": "leaf-olive",
+          "kind": "leaf",
+          "xMm": 144.36,
+          "yMm": 58.4,
+          "widthMm": 7.5718309859154935,
+          "heightMm": 11.200000000000001,
+          "rotationDeg": -40,
+          "scale": 0.05258215962441315,
+          "reflected": true,
+          "bounds": {
+            "minX": 137.86020986025707,
+            "minY": 51.676611548340176,
+            "maxX": 150.85979013974296,
+            "maxY": 65.12338845165982
+          }
+        },
+        {
+          "id": "small-leaf-2-l",
+          "partId": "leaf-veined",
+          "kind": "leaf",
+          "xMm": 152.5275,
+          "yMm": 64,
+          "widthMm": 3.9325,
+          "heightMm": 3.604791666666667,
+          "rotationDeg": -45,
+          "scale": 0.02730902777777778,
+          "reflected": true,
+          "bounds": {
+            "minX": 149.8626649753596,
+            "minY": 61.335164975359575,
+            "maxX": 155.1923350246404,
+            "maxY": 66.66483502464042
+          }
+        },
+        {
+          "id": "bud-2-r",
+          "partId": "flower-lobed",
+          "kind": "flower",
+          "xMm": 175.215,
+          "yMm": 41.6,
+          "widthMm": 14.602816901408449,
+          "heightMm": 14.399999999999999,
+          "rotationDeg": 5,
+          "scale": 0.10140845070422534,
+          "reflected": false,
+          "bounds": {
+            "minX": 167.31385426502305,
+            "minY": 33.79103849711428,
+            "maxX": 183.11614573497695,
+            "maxY": 49.408961502885724
+          }
+        },
+        {
+          "id": "leaf-2-r",
+          "partId": "leaf-olive",
+          "kind": "leaf",
+          "xMm": 166.14,
+          "yMm": 58.4,
+          "widthMm": 7.5718309859154935,
+          "heightMm": 11.200000000000001,
+          "rotationDeg": 40,
+          "scale": 0.05258215962441315,
+          "reflected": false,
+          "bounds": {
+            "minX": 159.64020986025704,
+            "minY": 51.676611548340176,
+            "maxX": 172.63979013974293,
+            "maxY": 65.12338845165982
+          }
+        },
+        {
+          "id": "small-leaf-2-r",
+          "partId": "leaf-veined",
+          "kind": "leaf",
+          "xMm": 157.9725,
+          "yMm": 64,
+          "widthMm": 3.9325,
+          "heightMm": 3.604791666666667,
+          "rotationDeg": 45,
+          "scale": 0.02730902777777778,
+          "reflected": false,
+          "bounds": {
+            "minX": 155.3076649753596,
+            "minY": 61.335164975359575,
+            "maxX": 160.6373350246404,
+            "maxY": 66.66483502464042
+          }
+        },
+        {
+          "id": "main-3",
+          "partId": "flower-sage",
+          "kind": "flower",
+          "xMm": 215.75,
+          "yMm": 24.8,
+          "widthMm": 21.304109589041097,
+          "heightMm": 21.6,
+          "rotationDeg": 0,
+          "scale": 0.14794520547945206,
+          "reflected": false,
+          "bounds": {
+            "minX": 205.09794520547945,
+            "minY": 14,
+            "maxX": 226.40205479452055,
+            "maxY": 35.6
+          }
+        },
+        {
+          "id": "bud-3-l",
+          "partId": "flower-ring",
+          "kind": "flower",
+          "xMm": 195.785,
+          "yMm": 41.6,
+          "widthMm": 14.399999999999999,
+          "heightMm": 14.399999999999999,
+          "rotationDeg": -5,
+          "scale": 0.09999999999999999,
+          "reflected": false,
+          "bounds": {
+            "minX": 187.9848768259563,
+            "minY": 33.7998768259563,
+            "maxX": 203.5851231740437,
+            "maxY": 49.400123174043706
+          }
+        },
+        {
+          "id": "leaf-3-l",
+          "partId": "leaf-olive",
+          "kind": "leaf",
+          "xMm": 204.86,
+          "yMm": 58.4,
+          "widthMm": 7.5718309859154935,
+          "heightMm": 11.200000000000001,
+          "rotationDeg": -40,
+          "scale": 0.05258215962441315,
+          "reflected": true,
+          "bounds": {
+            "minX": 198.36020986025707,
+            "minY": 51.676611548340176,
+            "maxX": 211.35979013974296,
+            "maxY": 65.12338845165982
+          }
+        },
+        {
+          "id": "small-leaf-3-l",
+          "partId": "leaf-veined",
+          "kind": "leaf",
+          "xMm": 213.0275,
+          "yMm": 64,
+          "widthMm": 3.9325,
+          "heightMm": 3.604791666666667,
+          "rotationDeg": -45,
+          "scale": 0.02730902777777778,
+          "reflected": true,
+          "bounds": {
+            "minX": 210.3626649753596,
+            "minY": 61.335164975359575,
+            "maxX": 215.6923350246404,
+            "maxY": 66.66483502464042
+          }
+        },
+        {
+          "id": "bud-3-r",
+          "partId": "flower-brown",
+          "kind": "flower",
+          "xMm": 235.715,
+          "yMm": 41.6,
+          "widthMm": 13.292307692307691,
+          "heightMm": 14.399999999999999,
+          "rotationDeg": 5,
+          "scale": 0.0923076923076923,
+          "reflected": false,
+          "bounds": {
+            "minX": 228.46661542797634,
+            "minY": 33.84814769886269,
+            "maxX": 242.96338457202367,
+            "maxY": 49.35185230113731
+          }
+        },
+        {
+          "id": "leaf-3-r",
+          "partId": "leaf-veined",
+          "kind": "leaf",
+          "xMm": 226.64,
+          "yMm": 58.4,
+          "widthMm": 7.865,
+          "heightMm": 7.209583333333334,
+          "rotationDeg": 40,
+          "scale": 0.05461805555555556,
+          "reflected": false,
+          "bounds": {
+            "minX": 221.3104148086,
+            "minY": 53.110807100056086,
+            "maxX": 231.96958519139997,
+            "maxY": 63.68919289994391
+          }
+        },
+        {
+          "id": "small-leaf-3-r",
+          "partId": "leaf-veined",
+          "kind": "leaf",
+          "xMm": 218.4725,
+          "yMm": 64,
+          "widthMm": 3.9325,
+          "heightMm": 3.604791666666667,
+          "rotationDeg": 45,
+          "scale": 0.02730902777777778,
+          "reflected": false,
+          "bounds": {
+            "minX": 215.8076649753596,
+            "minY": 61.335164975359575,
+            "maxX": 221.1373350246404,
+            "maxY": 66.66483502464042
+          }
+        },
+        {
+          "id": "upper-0",
+          "partId": "scroll-b",
+          "kind": "border",
+          "xMm": 15.2,
+          "yMm": 9.200000000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 3.5,
+            "minY": 5.950000000000001,
+            "maxX": 26.9,
+            "maxY": 12.450000000000001
+          }
+        },
+        {
+          "id": "upper-1",
+          "partId": "scroll-a",
+          "kind": "border",
+          "xMm": 39.599999999999994,
+          "yMm": 9.200000000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 27.899999999999995,
+            "minY": 5.868750000000002,
+            "maxX": 51.3,
+            "maxY": 12.53125
+          }
+        },
+        {
+          "id": "upper-2",
+          "partId": "scroll-b",
+          "kind": "border",
+          "xMm": 64,
+          "yMm": 9.200000000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 52.3,
+            "minY": 5.950000000000001,
+            "maxX": 75.7,
+            "maxY": 12.450000000000001
+          }
+        },
+        {
+          "id": "upper-3",
+          "partId": "scroll-a",
+          "kind": "border",
+          "xMm": 88.39999999999999,
+          "yMm": 9.200000000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 76.69999999999999,
+            "minY": 5.868750000000002,
+            "maxX": 100.1,
+            "maxY": 12.53125
+          }
+        },
+        {
+          "id": "upper-4",
+          "partId": "scroll-b",
+          "kind": "border",
+          "xMm": 112.8,
+          "yMm": 9.200000000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 101.1,
+            "minY": 5.950000000000001,
+            "maxX": 124.5,
+            "maxY": 12.450000000000001
+          }
+        },
+        {
+          "id": "upper-5",
+          "partId": "scroll-a",
+          "kind": "border",
+          "xMm": 137.2,
+          "yMm": 9.200000000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 125.49999999999999,
+            "minY": 5.868750000000002,
+            "maxX": 148.89999999999998,
+            "maxY": 12.53125
+          }
+        },
+        {
+          "id": "upper-6",
+          "partId": "scroll-b",
+          "kind": "border",
+          "xMm": 161.6,
+          "yMm": 9.200000000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 149.9,
+            "minY": 5.950000000000001,
+            "maxX": 173.29999999999998,
+            "maxY": 12.450000000000001
+          }
+        },
+        {
+          "id": "upper-7",
+          "partId": "scroll-a",
+          "kind": "border",
+          "xMm": 186,
+          "yMm": 9.200000000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 174.3,
+            "minY": 5.868750000000002,
+            "maxX": 197.7,
+            "maxY": 12.53125
+          }
+        },
+        {
+          "id": "upper-8",
+          "partId": "scroll-b",
+          "kind": "border",
+          "xMm": 210.39999999999998,
+          "yMm": 9.200000000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 198.7,
+            "minY": 5.950000000000001,
+            "maxX": 222.09999999999997,
+            "maxY": 12.450000000000001
+          }
+        },
+        {
+          "id": "upper-9",
+          "partId": "scroll-a",
+          "kind": "border",
+          "xMm": 234.79999999999998,
+          "yMm": 9.200000000000001,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 223.1,
+            "minY": 5.868750000000002,
+            "maxX": 246.49999999999997,
+            "maxY": 12.53125
+          }
+        },
+        {
+          "id": "lower-0",
+          "partId": "scroll-b",
+          "kind": "border",
+          "xMm": 15.2,
+          "yMm": 76,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 3.5,
+            "minY": 72.75,
+            "maxX": 26.9,
+            "maxY": 79.25
+          }
+        },
+        {
+          "id": "lower-1",
+          "partId": "scroll-a",
+          "kind": "border",
+          "xMm": 39.599999999999994,
+          "yMm": 76,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 27.899999999999995,
+            "minY": 72.66875,
+            "maxX": 51.3,
+            "maxY": 79.33125
+          }
+        },
+        {
+          "id": "lower-2",
+          "partId": "scroll-b",
+          "kind": "border",
+          "xMm": 64,
+          "yMm": 76,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 52.3,
+            "minY": 72.75,
+            "maxX": 75.7,
+            "maxY": 79.25
+          }
+        },
+        {
+          "id": "lower-3",
+          "partId": "scroll-a",
+          "kind": "border",
+          "xMm": 88.39999999999999,
+          "yMm": 76,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 76.69999999999999,
+            "minY": 72.66875,
+            "maxX": 100.1,
+            "maxY": 79.33125
+          }
+        },
+        {
+          "id": "lower-4",
+          "partId": "scroll-b",
+          "kind": "border",
+          "xMm": 112.8,
+          "yMm": 76,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 101.1,
+            "minY": 72.75,
+            "maxX": 124.5,
+            "maxY": 79.25
+          }
+        },
+        {
+          "id": "lower-5",
+          "partId": "scroll-a",
+          "kind": "border",
+          "xMm": 137.2,
+          "yMm": 76,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 125.49999999999999,
+            "minY": 72.66875,
+            "maxX": 148.89999999999998,
+            "maxY": 79.33125
+          }
+        },
+        {
+          "id": "lower-6",
+          "partId": "scroll-b",
+          "kind": "border",
+          "xMm": 161.6,
+          "yMm": 76,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 149.9,
+            "minY": 72.75,
+            "maxX": 173.29999999999998,
+            "maxY": 79.25
+          }
+        },
+        {
+          "id": "lower-7",
+          "partId": "scroll-a",
+          "kind": "border",
+          "xMm": 186,
+          "yMm": 76,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 174.3,
+            "minY": 72.66875,
+            "maxX": 197.7,
+            "maxY": 79.33125
+          }
+        },
+        {
+          "id": "lower-8",
+          "partId": "scroll-b",
+          "kind": "border",
+          "xMm": 210.39999999999998,
+          "yMm": 76,
+          "widthMm": 23.4,
+          "heightMm": 6.499999999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 198.7,
+            "minY": 72.75,
+            "maxX": 222.09999999999997,
+            "maxY": 79.25
+          }
+        },
+        {
+          "id": "lower-9",
+          "partId": "scroll-a",
+          "kind": "border",
+          "xMm": 234.79999999999998,
+          "yMm": 76,
+          "widthMm": 23.4,
+          "heightMm": 6.662499999999999,
+          "rotationDeg": 0,
+          "scale": 0.16249999999999998,
+          "reflected": false,
+          "bounds": {
+            "minX": 223.1,
+            "minY": 72.66875,
+            "maxX": 246.49999999999997,
+            "maxY": 79.33125
+          }
+        },
+        {
+          "id": "upper-seeds-0",
+          "partId": "flower-sage",
+          "kind": "flower",
+          "xMm": 13.166666666666666,
+          "yMm": 2.56,
+          "widthMm": 2.9983561643835617,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.020821917808219178,
+          "reflected": false,
+          "bounds": {
+            "minX": 11.667488584474885,
+            "minY": 1.04,
+            "maxX": 14.665844748858447,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-1",
+          "partId": "flower-lobed",
+          "kind": "flower",
+          "xMm": 33.5,
+          "yMm": 2.56,
+          "widthMm": 3.0828169014084503,
+          "heightMm": 3.0399999999999996,
+          "rotationDeg": 0,
+          "scale": 0.02140845070422535,
+          "reflected": false,
+          "bounds": {
+            "minX": 31.958591549295775,
+            "minY": 1.0400000000000003,
+            "maxX": 35.041408450704225,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-2",
+          "partId": "flower-blue",
+          "kind": "flower",
+          "xMm": 53.83333333333333,
+          "yMm": 2.56,
+          "widthMm": 2.7190062111801243,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.01888198757763975,
+          "reflected": false,
+          "bounds": {
+            "minX": 52.473830227743264,
+            "minY": 1.04,
+            "maxX": 55.19283643892339,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-3",
+          "partId": "flower-brown",
+          "kind": "flower",
+          "xMm": 74.16666666666666,
+          "yMm": 2.56,
+          "widthMm": 2.806153846153846,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.019487179487179488,
+          "reflected": false,
+          "bounds": {
+            "minX": 72.76358974358973,
+            "minY": 1.04,
+            "maxX": 75.56974358974358,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-4",
+          "partId": "flower-russet",
+          "kind": "flower",
+          "xMm": 94.5,
+          "yMm": 2.56,
+          "widthMm": 2.6692682926829265,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.018536585365853658,
+          "reflected": false,
+          "bounds": {
+            "minX": 93.16536585365854,
+            "minY": 1.04,
+            "maxX": 95.83463414634146,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-5",
+          "partId": "flower-red",
+          "kind": "flower",
+          "xMm": 114.83333333333333,
+          "yMm": 2.56,
+          "widthMm": 2.3285106382978724,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.016170212765957447,
+          "reflected": false,
+          "bounds": {
+            "minX": 113.6690780141844,
+            "minY": 1.04,
+            "maxX": 115.99758865248226,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-6",
+          "partId": "flower-ring",
+          "kind": "flower",
+          "xMm": 135.16666666666666,
+          "yMm": 2.56,
+          "widthMm": 3.04,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.021111111111111112,
+          "reflected": false,
+          "bounds": {
+            "minX": 133.64666666666665,
+            "minY": 1.04,
+            "maxX": 136.68666666666667,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-7",
+          "partId": "flower-lower-blue",
+          "kind": "flower",
+          "xMm": 155.5,
+          "yMm": 2.56,
+          "widthMm": 2.88,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.02,
+          "reflected": false,
+          "bounds": {
+            "minX": 154.06,
+            "minY": 1.04,
+            "maxX": 156.94,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-8",
+          "partId": "flower-gold",
+          "kind": "flower",
+          "xMm": 175.83333333333331,
+          "yMm": 2.56,
+          "widthMm": 3.42,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.02375,
+          "reflected": false,
+          "bounds": {
+            "minX": 174.1233333333333,
+            "minY": 1.04,
+            "maxX": 177.54333333333332,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-9",
+          "partId": "flower-sage",
+          "kind": "flower",
+          "xMm": 196.16666666666666,
+          "yMm": 2.56,
+          "widthMm": 2.9983561643835617,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.020821917808219178,
+          "reflected": false,
+          "bounds": {
+            "minX": 194.66748858447488,
+            "minY": 1.04,
+            "maxX": 197.66584474885843,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-10",
+          "partId": "flower-lobed",
+          "kind": "flower",
+          "xMm": 216.5,
+          "yMm": 2.56,
+          "widthMm": 3.0828169014084503,
+          "heightMm": 3.0399999999999996,
+          "rotationDeg": 0,
+          "scale": 0.02140845070422535,
+          "reflected": false,
+          "bounds": {
+            "minX": 214.95859154929576,
+            "minY": 1.0400000000000003,
+            "maxX": 218.04140845070424,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "upper-seeds-11",
+          "partId": "flower-blue",
+          "kind": "flower",
+          "xMm": 236.83333333333331,
+          "yMm": 2.56,
+          "widthMm": 2.7190062111801243,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.01888198757763975,
+          "reflected": false,
+          "bounds": {
+            "minX": 235.47383022774326,
+            "minY": 1.04,
+            "maxX": 238.19283643892336,
+            "maxY": 4.08
+          }
+        },
+        {
+          "id": "lower-seeds-0",
+          "partId": "flower-sage",
+          "kind": "flower",
+          "xMm": 13.166666666666666,
+          "yMm": 70.4,
+          "widthMm": 2.9983561643835617,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.020821917808219178,
+          "reflected": false,
+          "bounds": {
+            "minX": 11.667488584474885,
+            "minY": 68.88000000000001,
+            "maxX": 14.665844748858447,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-1",
+          "partId": "flower-lobed",
+          "kind": "flower",
+          "xMm": 33.5,
+          "yMm": 70.4,
+          "widthMm": 3.0828169014084503,
+          "heightMm": 3.0399999999999996,
+          "rotationDeg": 0,
+          "scale": 0.02140845070422535,
+          "reflected": false,
+          "bounds": {
+            "minX": 31.958591549295775,
+            "minY": 68.88000000000001,
+            "maxX": 35.041408450704225,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-2",
+          "partId": "flower-blue",
+          "kind": "flower",
+          "xMm": 53.83333333333333,
+          "yMm": 70.4,
+          "widthMm": 2.7190062111801243,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.01888198757763975,
+          "reflected": false,
+          "bounds": {
+            "minX": 52.473830227743264,
+            "minY": 68.88000000000001,
+            "maxX": 55.19283643892339,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-3",
+          "partId": "flower-brown",
+          "kind": "flower",
+          "xMm": 74.16666666666666,
+          "yMm": 70.4,
+          "widthMm": 2.806153846153846,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.019487179487179488,
+          "reflected": false,
+          "bounds": {
+            "minX": 72.76358974358973,
+            "minY": 68.88000000000001,
+            "maxX": 75.56974358974358,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-4",
+          "partId": "flower-russet",
+          "kind": "flower",
+          "xMm": 94.5,
+          "yMm": 70.4,
+          "widthMm": 2.6692682926829265,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.018536585365853658,
+          "reflected": false,
+          "bounds": {
+            "minX": 93.16536585365854,
+            "minY": 68.88000000000001,
+            "maxX": 95.83463414634146,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-5",
+          "partId": "flower-red",
+          "kind": "flower",
+          "xMm": 114.83333333333333,
+          "yMm": 70.4,
+          "widthMm": 2.3285106382978724,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.016170212765957447,
+          "reflected": false,
+          "bounds": {
+            "minX": 113.6690780141844,
+            "minY": 68.88000000000001,
+            "maxX": 115.99758865248226,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-6",
+          "partId": "flower-ring",
+          "kind": "flower",
+          "xMm": 135.16666666666666,
+          "yMm": 70.4,
+          "widthMm": 3.04,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.021111111111111112,
+          "reflected": false,
+          "bounds": {
+            "minX": 133.64666666666665,
+            "minY": 68.88000000000001,
+            "maxX": 136.68666666666667,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-7",
+          "partId": "flower-lower-blue",
+          "kind": "flower",
+          "xMm": 155.5,
+          "yMm": 70.4,
+          "widthMm": 2.88,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.02,
+          "reflected": false,
+          "bounds": {
+            "minX": 154.06,
+            "minY": 68.88000000000001,
+            "maxX": 156.94,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-8",
+          "partId": "flower-gold",
+          "kind": "flower",
+          "xMm": 175.83333333333331,
+          "yMm": 70.4,
+          "widthMm": 3.42,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.02375,
+          "reflected": false,
+          "bounds": {
+            "minX": 174.1233333333333,
+            "minY": 68.88000000000001,
+            "maxX": 177.54333333333332,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-9",
+          "partId": "flower-sage",
+          "kind": "flower",
+          "xMm": 196.16666666666666,
+          "yMm": 70.4,
+          "widthMm": 2.9983561643835617,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.020821917808219178,
+          "reflected": false,
+          "bounds": {
+            "minX": 194.66748858447488,
+            "minY": 68.88000000000001,
+            "maxX": 197.66584474885843,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-10",
+          "partId": "flower-lobed",
+          "kind": "flower",
+          "xMm": 216.5,
+          "yMm": 70.4,
+          "widthMm": 3.0828169014084503,
+          "heightMm": 3.0399999999999996,
+          "rotationDeg": 0,
+          "scale": 0.02140845070422535,
+          "reflected": false,
+          "bounds": {
+            "minX": 214.95859154929576,
+            "minY": 68.88000000000001,
+            "maxX": 218.04140845070424,
+            "maxY": 71.92
+          }
+        },
+        {
+          "id": "lower-seeds-11",
+          "partId": "flower-blue",
+          "kind": "flower",
+          "xMm": 236.83333333333331,
+          "yMm": 70.4,
+          "widthMm": 2.7190062111801243,
+          "heightMm": 3.04,
+          "rotationDeg": 0,
+          "scale": 0.01888198757763975,
+          "reflected": false,
+          "bounds": {
+            "minX": 235.47383022774326,
+            "minY": 68.88000000000001,
+            "maxX": 238.19283643892336,
+            "maxY": 71.92
+          }
+        }
+      ],
+      "structure": {
+        "junctionCount": 92,
+        "brokenJunctions": 0,
+        "repeatCount": 0,
+        "brokenRepeats": 0,
+        "nestedRelations": 0,
+        "negativeSpaceViolations": 0
+      },
+      "checks": {
+        "leafFlowerOverlaps": [],
+        "outsideEnvelope": 0
+      },
+      "stitchCount": null,
+      "physicalCalibration": null,
+      "productionApproved": false
+    }
+  ]
+}
