@@ -29,8 +29,9 @@ export function assessSingleFieldMachine(
     machine.fieldX.unit==="mm"&&machine.fieldY.unit==="mm"&&
     !!machine.fieldX.sourceId&&!!machine.fieldY.sourceId;
   if(!validField)errors.push("machine-field-unverified");
+  // Orientation is fixed: a 90-degree rotation must be an explicit, geometry-preserving operation.
   else if(Number.isFinite(widthMm)&&Number.isFinite(heightMm)&&widthMm>0&&heightMm>0&&
-    !((widthMm<=x&&heightMm<=y)||(widthMm<=y&&heightMm<=x)))
+    !(widthMm<=x&&heightMm<=y))
     errors.push("machine-field-exceeded:segmentation-required");
 
   if(!Number.isInteger(machine.heads)||machine.heads<1||
