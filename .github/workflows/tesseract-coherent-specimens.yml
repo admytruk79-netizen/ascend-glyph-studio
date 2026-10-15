@@ -1,0 +1,34 @@
+name: Tesseract coherent specimen validation
+on:
+  push:
+    branches:
+      - feature/coherent-band-foundation
+    paths:
+      - "packages/tesseract-engine/src/coherent-band*.ts"
+      - "packages/tesseract-engine/test/coherent-band*.test.ts"
+      - "scripts/render-coherent-specimens.ts"
+      - ".github/workflows/tesseract-coherent-specimens.yml"
+  workflow_dispatch:
+jobs:
+  specimens:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          package-manager-cache: false
+      - run: npm install --no-audit --no-fund
+      - name: Engine typecheck
+        run: npm run typecheck --workspace=@ascend/tesseract-engine
+      - name: Coherent renderer tests
+        run: npm test --workspace=@ascend/tesseract-engine
+      - name: Render five actual SVG specimens
+        run: npx tsx scripts/render-coherent-specimens.ts
+      - name: Publish specimens for visual review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coherent-specimen-set
+          path: out/tesseract-specimens/
+          if-no-files-found: warn

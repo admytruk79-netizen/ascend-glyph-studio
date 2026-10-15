@@ -1,4 +1,6 @@
 import {searchDesignSpace} from "./search";
+import {type BandGrammar} from "./coherent-band";
+import {generateAndAssessCoherentBand,type CompositionAssessment} from "./coherent-band-quality";
 import {genomeFromTopology} from "./genome";
 import {projectSemanticGeometry} from "./semantic-projector";
 import {ASCEND_PALETTES,ASCEND_COLORS} from "./color-system";
@@ -12,6 +14,7 @@ import {critiqueFinalSvg,type FinalSvgCritique} from "./final-svg-critic";
 import {compileMasterComposition} from "./master-composition";
 import {selectVisuallyDiverse} from "./design-fingerprint";
 import type {LearnedRelationPrior} from "./learned-relation-prior";
+import {fitCompositionPrior} from "./composition-prior-fit";
 import {mergeSashEvidencePrior,sashGrammarFor} from "./sash-evidence-grammar";
 import type {StructuralFeedback} from "./structural-feedback";
 import {deriveZoneConstructionEnvelope,type ConstructionIntent} from "./construction-envelope";
@@ -40,11 +43,13 @@ export type PatternGeneratorInput={
  constructionIntent?:ConstructionIntent;
  physicalWidthMm?:number;
  physicalHeightMm?:number;
+ conceptBandGrammar?:BandGrammar;
 };
 export type GeneratedPattern={
  id:string;lineageId:string;score:number;novelty:number;svg:string;
  objectives:ReturnType<typeof searchDesignSpace>[number]["objectives"];
  finalCritique:FinalSvgCritique;
+ compositionAssessment?:CompositionAssessment;
  conceptSvg?:string;
  productionObjects?:ProductionGlyphObject[];
  stitchObjects?:StitchIrObject[];
@@ -170,7 +175,8 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  const placementTypes=input.placement?[input.placement,"garment","shirt","tunic","textile","textile-family","design-cloth","wrapper","sash","leather"]:undefined;
  const cultural=culturalSignals(cultureIds,placementTypes);
  const sashGrammar=sashGrammarFor(cultureIds);
- const relationPrior=mergeSashEvidencePrior(input.learnedGuidance?.relationPrior,sashGrammar);
+ const evidencePrior=input.learnedGuidance?.relationPrior??fitCompositionPrior(input.visualCorpus??[]);
+ const relationPrior=mergeSashEvidencePrior(evidencePrior,sashGrammar);
  const culturalConcepts=cultural.features.map(([id,w])=>({id:`structure:${id}`,weight:Math.min(1,.3+w/4)}));
  const corpusConcepts=(input.corpusSignals??[]).slice(0,96).map(s=>({id:`corpus:${s.id}`,weight:Math.max(.15,Math.min(1,s.weight))}));
  const learnedConcepts=(input.learnedGuidance?.tags??[]).map(x=>({id:`learned-structure:${x.id}`,weight:Math.max(.15,Math.min(1,x.weight))}));
@@ -229,12 +235,19 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const g=genomeFromTopology(`pattern:${input.seed}:${i}`,adapted.topology);
   const relationStride=medium==="embroidery"?((input.structuralFeedback?.crossingReduction??0)>.5?0:3):1;
   const projected=projectSemanticGeometry(g,width,height,zone,{relationStride,minGapMm:constructionEnvelope.minGapMm,seamPolicy:constructionEnvelope.seamPolicy});
-  const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`,sashGrammar,structuralFeedback:input.structuralFeedback});
+  const bandPreview=(mode==="band"&&input.conceptBandGrammar)
+   ?generateAndAssessCoherentBand(adapted.topology,{width,height,seed:i+input.seed.length,grammar:input.conceptBandGrammar})
+   :undefined;
+  const conceptFoundation=bandPreview?.svg??projected.svg;
+  const master=compileMasterComposition({svg:conceptFoundation,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`,sashGrammar,structuralFeedback:input.structuralFeedback});
   const conceptSvg=colorize(master,input.paletteId??"underdog-heritage");
   const svg=stitchIrToSvg(stitchObjects,physicalSize.width,physicalSize.height);
   const finalCritique=critiqueFinalSvg(conceptSvg,medium,input.visualCorpus??[]);
-  const combinedScore=candidate.score+finalCritique.score*.45-(compact?.15:0);
-  return [{id:`pat-${input.seed}-${i+1}${compact?"-compact":""}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,conceptSvg,finalCritique,productionObjects,stitchObjects,manufacturingJob,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave}];
+  const compositionAssessment=bandPreview?.assessment;
+  const combinedScore=candidate.score+finalCritique.score*.45-(compact?.15:0)
+   +(compositionAssessment?compositionAssessment.score/100*.15:0)
+   -(compositionAssessment&&!compositionAssessment.accepted?2:0);
+  return [{id:`pat-${input.seed}-${i+1}${compact?"-compact":""}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,conceptSvg,finalCritique,compositionAssessment,productionObjects,stitchObjects,manufacturingJob,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave}];
   } catch (error) {
    if(error instanceof Error && /^(ornament-|scaled satin width out of machine-safe range)/.test(error.message)){
     candidateFailures.push(`${i}:${compact?"compact":"full"}:${error.message}`);
@@ -244,7 +257,11 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   }
  })).sort((a,b)=>b.score-a.score);
  if(!rendered.length)throw new Error(`pattern-no-manufacturable-candidates mode=${mode} searched=${renderCandidates.length} failures=${candidateFailures.slice(0,12).join("|")}`);
- const survivors=rendered.filter(x=>x.finalCritique.survive);
- const pool=survivors.length>=Math.min(4,variations)?survivors:rendered;
+ const qualityEligible=rendered.filter(x=>x.compositionAssessment?.accepted!==false);
+ if(input.conceptBandGrammar&&mode==="band"&&qualityEligible.length===0)
+  throw new Error("pattern-no-structurally-acceptable-band-candidates");
+ const rankedPool=input.conceptBandGrammar&&mode==="band"?qualityEligible:rendered;
+ const survivors=rankedPool.filter(x=>x.finalCritique.survive);
+ const pool=survivors.length>=Math.min(4,variations)?survivors:rankedPool;
  return selectVisuallyDiverse(pool,variations,.11);
 }
