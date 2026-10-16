@@ -180,3 +180,14 @@ test("blend: a mix of two traditions generates motifs that sit between them, cop
   // structure from one, palette from the other
   assert.equal(blend([{ sub: U, weight: 1 }, { sub: L, weight: 1 }], { colourFrom: "Lattice" }).colour, L.colour);
 });
+
+test("invented styles need no training data and keep exact symmetry", async () => {
+  const { inventStyle } = await import("./invent.ts");
+  const a = inventStyle(7), b = inventStyle(7), c = inventStyle(8);
+  assert.deepEqual(a.patch.counts, b.patch.counts);
+  assert.notDeepEqual(a.patch.counts, c.patch.counts);
+  assert.equal(a.references.length, 0);
+  const g = generate(a, "invented", { count: 3, seed: 5, size: 17, group: "d4" });
+  assert.equal(g.accepted.length, 3);
+  for (const m of g.accepted) { assert.equal(detectSymmetry(m.grid, 1), "d4"); assert.ok(m.grid.cells.some(Boolean)); }
+});
