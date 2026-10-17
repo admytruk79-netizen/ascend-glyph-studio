@@ -22,6 +22,7 @@ import {compileProductionObjectsToStitchIr,applyMasterCompositionToStitchIr,stit
 import {solveRelationalLayout} from "./relational-layout";
 import {refineOrnamentalLayout} from "./ornament-optimizer";
 import {evaluateSurfaceLayout,circumferenceAt,type SurfaceFootprint} from "./garment-surface-math";
+import {assessCandidateSurface} from "./surface-candidate-gate";
 import {buildMasterCompositionPlan} from "./master-composition-plan";
 import {stitchIrToSvg} from "./canonical-preview";
 import {optimizeStitchTravel} from "./stitch-travel-optimizer";
@@ -258,6 +259,13 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
     .filter(e=>e.relation==="nest"||e.relation==="enclose")
     .map(e=>e.from<e.to?`${e.from}|${e.to}`:`${e.to}|${e.from}`);
    surfaceMath=evaluateSurfaceLayout(productionZone,items,{allowedOverlapPairs});
+   if(medium==="embroidery"){
+    const gate=assessCandidateSurface(surfaceMath,constructionEnvelope.seamPolicy);
+    if(!gate.valid){
+     candidateFailures.push(`${i}:${compact?"compact":"full"}:surface-invalid:${gate.errors.join(",")}`);
+     return [];
+    }
+   }
   }
   const g=genomeFromTopology(`pattern:${input.seed}:${i}`,adapted.topology);
   const relationStride=medium==="embroidery"?((input.structuralFeedback?.crossingReduction??0)>.5?0:3):1;
