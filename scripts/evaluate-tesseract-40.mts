@@ -41,7 +41,18 @@ for(const suite of suites){
   writeFileSync(join(folder,`design-${String(i+1).padStart(2,"0")}.concept.svg`),d.svg);
   writeFileSync(join(folder,`design-${String(i+1).padStart(2,"0")}.stitch-ir.json`),JSON.stringify(d.stitchObjects,null,2));
  }
- const summary={suite:suite.name,requested:10,produced:accepted.length,failures,diagnostics,designs:accepted.map((d,i)=>({file:`design-${String(i+1).padStart(2,"0")}.svg`,id:d.id,score:d.score,novelty:d.novelty,manufacturingStatus:"stitch-ir-preview-not-machine-validated",stitchObjectCount:d.stitchObjects?.length??0,physicalSizeMm:d.physicalSizeMm}))};
+ const summary={suite:suite.name,requested:10,produced:accepted.length,failures,diagnostics,designs:accepted.map((d,i)=>({
+ file:`design-${String(i+1).padStart(2,"0")}.svg`,
+ id:d.id,
+ score:d.score,
+ novelty:d.novelty,
+ manufacturingStatus:"stitch-ir-preview-not-machine-validated",
+ stitchObjectCount:d.stitchObjects?.length??0,
+ physicalSizeMm:d.physicalSizeMm,
+ motifFamilies:d.motifProgram?.families??[],
+ motifInstances:d.motifProgram?.instances.map(m=>({familyId:m.familyId,conceptId:m.conceptId,transform:m.transform,nodeCount:m.nodeIds.length}))??[],
+ octaveDepth:d.octave?.octaveDepth??0
+}))};
  writeFileSync(join(folder,"manifest.json"),JSON.stringify(summary,null,2));
  results.push(summary);
  if(accepted.length<10)failureCount++;
