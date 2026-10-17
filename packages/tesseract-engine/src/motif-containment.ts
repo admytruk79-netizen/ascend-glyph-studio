@@ -6,13 +6,13 @@ import type {StitchIrPoint as Point} from './production-stitch-ir';
 export function assertObservedContainment(parent:Point[][],child:Point[][]):void{
  const fail=():never=>{throw new Error('motif-observed:unsupported-containment');};
  if(parent.length!==1)fail();
- const contour=parent[0];
- if(contour.length<4||contour[0].x!==contour.at(-1)!.x||contour[0].y!==contour.at(-1)!.y)fail();
- const edges=contour.slice(1).map((p,i)=>[contour[i],p] as [Point,Point]);
+ const contour=parent[0]!;
+ if(contour.length<4||contour[0]!.x!==contour.at(-1)!.x||contour[0]!.y!==contour.at(-1)!.y)fail();
+ const edges=contour.slice(1).map((p,i)=>[contour[i]!,p] as [Point,Point]);
  if(edges.some(([a,b])=>Math.hypot(a.x-b.x,a.y-b.y)<1e-9))fail();
  for(let i=0;i<edges.length;i++)for(let j=i+1;j<edges.length;j++){
   if(j===i+1||i===0&&j===edges.length-1)continue;
-  if(segmentDistance(edges[i],edges[j])<1e-9)fail();
+  if(segmentDistance(edges[i]!,edges[j]!)<1e-9)fail();
  }
  const inside=(p:Point)=>{
   if(edges.some(e=>pointSegmentDistance(p,e)<1e-9))return false;
@@ -24,6 +24,6 @@ export function assertObservedContainment(parent:Point[][],child:Point[][]):void
  for(const path of child){
   if(path.length<2||!path.every(inside))fail();
   // Vertex-only tests miss straight segments escaping concave outer contours.
-  for(let i=1;i<path.length;i++)if(edges.some(edge=>segmentDistance([path[i-1],path[i]],edge)<1e-9))fail();
+  for(let i=1;i<path.length;i++)if(edges.some(edge=>segmentDistance([path[i-1]!,path[i]!],edge)<1e-9))fail();
  }
 }

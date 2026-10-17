@@ -44,21 +44,47 @@ export function stitchObject(o: DesignObject, r: StitchRecipe): Stitch[][] {
   return runs.map(run=>enforceMinimumNeedleSpacing(run,r.minStitch));
 }
 
-export function plan(objects: DesignObject[], r: StitchRecipe): Plan {
+/** Group independent shapes while retaining paint order wherever conservative stroke-expanded boxes meet.
+ * Returns original objects without mutating them; compensation margin keeps nearby stitching dependent.
+ */
+export function orderIndependentLayers(objects: DesignObject[], marginMm = .5): DesignObject[] {
+  if(!Number.isFinite(marginMm)||marginMm<0)throw Error('invalid-layer-margin');
+  const boxes=objects.map(o=>{const pts=o.kind==='fill'?o.polygon:o.path,half=(o.kind==='satin'?o.width/2:o.kind==='run'?.25:0)+marginMm;
+    return {x0:Math.min(...pts.map(p=>p.x))-half,x1:Math.max(...pts.map(p=>p.x))+half,y0:Math.min(...pts.map(p=>p.y))-half,y1:Math.max(...pts.map(p=>p.y))+half};});
+  const next=objects.map(()=>[] as number[]),degree=objects.map(()=>0);
+  for(let i=0;i<objects.length;i++)for(let j=i+1;j<objects.length;j++){
+    const a=boxes[i]!,b=boxes[j]!;
+    if(a.x0<=b.x1&&b.x0<=a.x1&&a.y0<=b.y1&&b.y0<=a.y1){next[i]!.push(j);degree[j]!++;}
+  }
+  const ready=degree.flatMap((d,i)=>d===0?[i]:[]),ordered:DesignObject[]=[];
+  let color:string|undefined;
+  while(ready.length){let at=ready.findIndex(i=>objects[i]!.color===color);if(at<0)at=0;const i=ready.splice(at,1)[0]!,o=objects[i]!;ordered.push(o);color=o.color;
+    for(const j of next[i]!){degree[j]=degree[j]!-1;if(degree[j]===0)ready.push(j);}
+  }
+  if(ordered.length!==objects.length)throw Error('layer-order-cycle');
+  return ordered;
+}
+
+export function plan(objects: DesignObject[], r: StitchRecipe, options: {preserveObjectOrder?: boolean} = {}): Plan {
   const colors: string[] = [];
-  for (const o of objects) if (!colors.includes(o.color)) colors.push(o.color);
+  const groups: {color: string; objects: DesignObject[]}[] = [];
+  for (const o of objects) {
+    let group = options.preserveObjectOrder ? groups.at(-1) : groups.find(g => g.color === o.color);
+    if (!group || group.color !== o.color) { group = {color:o.color,objects:[]};groups.push(group);colors.push(o.color); }
+    group.objects.push(o);
+  }
   const commands: Command[] = [];
   const blocks: PlannedBlock[] = [];
   let pos: Pt = { x: 0, y: 0 };
   let trims = 0, jumps = 0;
 
-  colors.forEach((color, ci) => {
+  groups.forEach(({color,objects:groupObjects}, ci) => {
     if (ci > 0) { commands.push({ cmd: "trim", ...pos }, { cmd: "color", ...pos }); }
-    const pending = objects.filter((o) => o.color === color).map((o) => ({ o, runs: stitchObject(o, r) }));
+    const pending = groupObjects.map((o) => ({ o, runs: stitchObject(o, r) }));
     while (pending.length) {
       // nearest object start
       let bi = 0, bd = Infinity;
-      pending.forEach((p, i) => { const s = p.runs[0]?.[0]; if (s) { const d = dist(pos, s); if (d < bd) { bd = d; bi = i; } } });
+      if (!options.preserveObjectOrder) pending.forEach((p, i) => { const s = p.runs[0]?.[0]; if (s) { const d = dist(pos, s); if (d < bd) { bd = d; bi = i; } } });
       const { o, runs } = pending.splice(bi, 1)[0]!;
       blocks.push({ objectId: o.id, color, runs });
       for (const run of runs) {

@@ -1,0 +1,210 @@
+{
+  "method": "Original procedural compound motifs; existing Kit, MotifGraph, containment, machine gate and stitch planner. Layer order preserved; no image-model training.",
+  "productionApproved": false,
+  "cases": [
+    {
+      "seed": 0,
+      "units": 5,
+      "objectCount": 867,
+      "structure": {
+        "junctionCount": 93,
+        "brokenJunctions": 0,
+        "repeatCount": 0,
+        "brokenRepeats": 0,
+        "nestedRelations": 15,
+        "negativeSpaceViolations": 0
+      },
+      "minLeafFlowerClearanceMm": 1.4356318045886,
+      "stitchCount": 23652,
+      "colorPasses": 27,
+      "trims": 862,
+      "estimatedMinutes": 109.9552380952381,
+      "job": {
+        "valid": true,
+        "errors": [],
+        "warnings": [
+          "Reference plan only: material calibration, machine-specific postprocessing and sew-out are required."
+        ]
+      },
+      "gate": {
+        "release": false,
+        "checks": [
+          {
+            "id": "satin-width",
+            "pass": true,
+            "detail": "53 columns within 1–8 mm"
+          },
+          {
+            "id": "fill-density",
+            "pass": true,
+            "detail": "row spacing 0.43 mm (min 0.4)"
+          },
+          {
+            "id": "min-stitch",
+            "pass": true,
+            "detail": "0 stitches shorter than 1 mm"
+          },
+          {
+            "id": "max-stitch",
+            "pass": true,
+            "detail": "0 stitches longer than 12.1 mm"
+          },
+          {
+            "id": "hoop-fit",
+            "pass": true,
+            "detail": "design 244.0×74.0 mm, hoop brother-pr1055x-reference 356×203 mm"
+          },
+          {
+            "id": "min-gap",
+            "pass": true,
+            "detail": "closest objects botanical-outer-petal-142/botanical-bud-stalk-198 0.82 mm (min 0.8)"
+          },
+          {
+            "id": "recipe-validated",
+            "pass": false,
+            "detail": "recipe linen-180-prewashed has no sew-out yet: prototype only"
+          }
+        ]
+      },
+      "blockers": [
+        "recipe-validated"
+      ]
+    },
+    {
+      "seed": 1,
+      "units": 5,
+      "objectCount": 855,
+      "structure": {
+        "junctionCount": 93,
+        "brokenJunctions": 0,
+        "repeatCount": 0,
+        "brokenRepeats": 0,
+        "nestedRelations": 15,
+        "negativeSpaceViolations": 0
+      },
+      "minLeafFlowerClearanceMm": 1.4356318045886,
+      "stitchCount": 23299,
+      "colorPasses": 27,
+      "trims": 847,
+      "estimatedMinutes": 108.20095238095239,
+      "job": {
+        "valid": true,
+        "errors": [],
+        "warnings": [
+          "Reference plan only: material calibration, machine-specific postprocessing and sew-out are required."
+        ]
+      },
+      "gate": {
+        "release": false,
+        "checks": [
+          {
+            "id": "satin-width",
+            "pass": true,
+            "detail": "53 columns within 1–8 mm"
+          },
+          {
+            "id": "fill-density",
+            "pass": true,
+            "detail": "row spacing 0.43 mm (min 0.4)"
+          },
+          {
+            "id": "min-stitch",
+            "pass": true,
+            "detail": "0 stitches shorter than 1 mm"
+          },
+          {
+            "id": "max-stitch",
+            "pass": true,
+            "detail": "0 stitches longer than 12.1 mm"
+          },
+          {
+            "id": "hoop-fit",
+            "pass": true,
+            "detail": "design 244.0×74.0 mm, hoop brother-pr1055x-reference 356×203 mm"
+          },
+          {
+            "id": "min-gap",
+            "pass": true,
+            "detail": "closest objects botanical-outer-petal-45/botanical-bud-stalk-101 0.82 mm (min 0.8)"
+          },
+          {
+            "id": "recipe-validated",
+            "pass": false,
+            "detail": "recipe linen-180-prewashed has no sew-out yet: prototype only"
+          }
+        ]
+      },
+      "blockers": [
+        "recipe-validated"
+      ]
+    },
+    {
+      "seed": 3,
+      "units": 5,
+      "objectCount": 867,
+      "structure": {
+        "junctionCount": 93,
+        "brokenJunctions": 0,
+        "repeatCount": 0,
+        "brokenRepeats": 0,
+        "nestedRelations": 15,
+        "negativeSpaceViolations": 0
+      },
+      "minLeafFlowerClearanceMm": 1.4356318045886,
+      "stitchCount": 23698,
+      "colorPasses": 27,
+      "trims": 862,
+      "estimatedMinutes": 110.0209523809524,
+      "job": {
+        "valid": true,
+        "errors": [],
+        "warnings": [
+          "Reference plan only: material calibration, machine-specific postprocessing and sew-out are required."
+        ]
+      },
+      "gate": {
+        "release": false,
+        "checks": [
+          {
+            "id": "satin-width",
+            "pass": true,
+            "detail": "53 columns within 1–8 mm"
+          },
+          {
+            "id": "fill-density",
+            "pass": true,
+            "detail": "row spacing 0.43 mm (min 0.4)"
+          },
+          {
+            "id": "min-stitch",
+            "pass": true,
+            "detail": "0 stitches shorter than 1 mm"
+          },
+          {
+            "id": "max-stitch",
+            "pass": true,
+            "detail": "0 stitches longer than 12.1 mm"
+          },
+          {
+            "id": "hoop-fit",
+            "pass": true,
+            "detail": "design 244.0×74.0 mm, hoop brother-pr1055x-reference 356×203 mm"
+          },
+          {
+            "id": "min-gap",
+            "pass": true,
+            "detail": "closest objects botanical-outer-petal-142/botanical-bud-stalk-198 0.82 mm (min 0.8)"
+          },
+          {
+            "id": "recipe-validated",
+            "pass": false,
+            "detail": "recipe linen-180-prewashed has no sew-out yet: prototype only"
+          }
+        ]
+      },
+      "blockers": [
+        "recipe-validated"
+      ]
+    }
+  ]
+}

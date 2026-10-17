@@ -14,10 +14,9 @@ export function assertLearnedMotifSnapshot(s:LearnedMotifSnapshot){
 }
 /** Bridge existing blend vocabulary and stitch objects to Tesseract graph and
  * machine gates. Learned aggregate statistics do not establish source rights. */
-export function inspectLearnedMotifAssembly(snapshot:LearnedMotifSnapshot,objects:StitchIrObject[],connections:{fromId:string;fromPoint:StitchIrPoint;toId:string;toPoint:StitchIrPoint}[],
+export function inspectAuthoredMotifAssembly(objects:StitchIrObject[],connections:{fromId:string;fromPoint:StitchIrPoint;toId:string;toPoint:StitchIrPoint}[],
  input:{widthMm:number;heightMm:number;seed:string},authoredProvenance:MotifProvenance,machine?:MachineTemplate,assemblies?:{id:string;brick:string|null;role:string;objectIds:string[]}[]){
- assertLearnedMotifSnapshot(snapshot);
- const base={provenanceId:authoredProvenance.id,confidence:authoredProvenance.confidence,evidence:['existing authored blend-engine vocabulary; learned statistics select motif families'],transform:identityMotifTransform()};
+ const base={provenanceId:authoredProvenance.id,confidence:authoredProvenance.confidence,evidence:authoredProvenance.transformations.map(t=>t.evidence),transform:identityMotifTransform()};
  const graph:MotifGraph={schema:'ascend.motif-graph.v1',state:'REFERENCE',units:'mm',seed:input.seed,widthMm:input.widthMm,heightMm:input.heightMm,minGapMm:0,provenance:[structuredClone(authoredProvenance)],relations:[],negativeSpace:[],nodes:[
   {...structuredClone(base),id:'composition',kind:'composition'},{...structuredClone(base),id:'field',kind:'region',parentId:'composition'}]};
  const owner=new Map<string,string>();
@@ -43,7 +42,12 @@ export function inspectLearnedMotifAssembly(snapshot:LearnedMotifSnapshot,object
  assertMotifGraph(graph);const structure=measureMotifStructure(graph);
  if(structure.brokenJunctions)throw Error('learned-motif:broken-junction');
  const job=planEmbroideryJob(objects,{widthMm:input.widthMm,heightMm:input.heightMm,machine});
- return {graph,structure,job,modelApplied:{id:snapshot.source.modelId,version:snapshot.source.modelVersion,builtAt:snapshot.source.modelBuiltAt,scope:snapshot.source.traditionScope,
-  grammarImages:snapshot.grammar.images,interpretation:'stored model statistic, not audited training-image count',reviewState:snapshot.source.reviewState},
-  learnedModelApplied:true,modelTrainingPerformed:false,canonicalGeometryChanged:false,physicalCalibration:null,productionApproved:false as const};
+ return {graph,structure,job,learnedModelApplied:false,modelTrainingPerformed:false,canonicalGeometryChanged:false,physicalCalibration:null,productionApproved:false as const};
+}
+export function inspectLearnedMotifAssembly(snapshot:LearnedMotifSnapshot,objects:StitchIrObject[],connections:{fromId:string;fromPoint:StitchIrPoint;toId:string;toPoint:StitchIrPoint}[],
+ input:{widthMm:number;heightMm:number;seed:string},authoredProvenance:MotifProvenance,machine?:MachineTemplate,assemblies?:{id:string;brick:string|null;role:string;objectIds:string[]}[]){
+ assertLearnedMotifSnapshot(snapshot);
+ const checked=inspectAuthoredMotifAssembly(objects,connections,input,authoredProvenance,machine,assemblies);
+ return {...checked,modelApplied:{id:snapshot.source.modelId,version:snapshot.source.modelVersion,builtAt:snapshot.source.modelBuiltAt,scope:snapshot.source.traditionScope,
+ grammarImages:snapshot.grammar.images,interpretation:'stored model statistic, not audited training-image count',reviewState:snapshot.source.reviewState},learnedModelApplied:true};
 }
