@@ -1,6 +1,9 @@
 import {primitiveForForm} from "./ascend-primitives";
+import type {PrimitiveGeometry} from "./ascend-primitives";
 import type {ProductionGlyphObject} from "./production-object";
 import type {MasterCompositionPlan} from "./master-composition-plan";
+import type {GarmentZone} from "./garment";
+import {circumferenceAt} from "./garment-surface-math";
 
 export type StitchIrPoint={x:number;y:number};
 export type StitchIrObject=
@@ -59,11 +62,14 @@ export function sampleSvgPath(d:string,curveSteps=10):StitchIrPoint[]{
  return out;
 }
 
-function transform(points:StitchIrPoint[],o:ProductionGlyphObject):StitchIrPoint[]{
+function transform(points:StitchIrPoint[],o:ProductionGlyphObject,primitive:PrimitiveGeometry):StitchIrPoint[]{
  const cx=o.placement.xMm??0,cy=o.placement.yMm??0,w=o.physical.widthMm,h=o.physical.heightMm;
+ const bounds=primitive.viewBox.trim().split(/\s*,\s*|\s+/).map(Number);
+ if(bounds.length!==4||bounds.some(n=>!Number.isFinite(n))||bounds[2]!<=0||bounds[3]!<=0)throw new Error("invalid source viewBox: "+primitive.viewBox);
+ const [minX,minY,sourceW,sourceH]=bounds as [number,number,number,number];
  const ang=((o.placement.rotationDeg??o.physical.rotationDeg??0)*Math.PI)/180,co=Math.cos(ang),si=Math.sin(ang);
  return points.map(p=>{
-  const x=(p.x-50)*(w/100),y=(p.y-50)*(h/100);
+  const x=((p.x-minX)/sourceW-.5)*w,y=((p.y-minY)/sourceH-.5)*h;
   return {x:cx+x*co-y*si,y:cy+x*si+y*co};
  });
 }
@@ -80,7 +86,7 @@ export function compileProductionObjectsToStitchIr(objects:ProductionGlyphObject
   if(!primitive?.paths.length)throw new Error("missing ASCEND source geometry: "+o.id+" ("+o.form+")");
   const geometry=primitive.paths.map(d=>sampleSvgPath(d));
   geometry.forEach((raw,j)=>{
-   const pts=transform(raw,o);
+   const pts=transform(raw,o,primitive);
    const id=`${o.id}:p${j}`;
    const e=o.embroidery;
    if(e.stitchFamily==="satin"){
@@ -106,21 +112,67 @@ export function applyMasterCompositionToStitchIr(
  plan:MasterCompositionPlan,
  widthMm:number,
  heightMm:number,
- color="#111111"
+ color="#111111",
+ options:{applyPrimaryTransform?:boolean;surfaceZone?:GarmentZone;seamPolicy?:"avoid"|"continuous"|"resolve";seamGapMm?:number}={}
 ):StitchIrObject[]{
- const p=plan.primary;
- const mapPoint=(q:StitchIrPoint):StitchIrPoint=>({
+ const p=plan.primary,applyPrimary=options.applyPrimaryTransform??true;
+ const surfaceZone=options.surfaceZone;
+ const mapPoint=(q:StitchIrPoint):StitchIrPoint=>applyPrimary?({
   x:p.offsetX*widthMm+q.x*p.scaleX,
   y:p.offsetY*heightMm+q.y*p.scaleY
- });
+ }):q;
+ const mapAuxPoint=(x01:number,y01:number):StitchIrPoint=>{
+  const y=y01*heightMm;
+  const C=surfaceZone?.wrapAllowed?circumferenceAt(surfaceZone,y):widthMm;
+  let x=x01*C;
+  if(surfaceZone?.wrapAllowed&&options.seamPolicy==="avoid"){
+   const gap=Math.max(options.seamGapMm??0,0);
+   x=Math.max(gap,Math.min(C-gap,x));
+  }
+  return {x,y};
+ };
  const primary=objects.map(o=>{
   if(o.kind==="fill")return {...o,polygon:o.polygon.map(mapPoint)};
   return {...o,path:o.path.map(mapPoint)};
  });
  const auxiliary:StitchIrObject[]=plan.auxiliaryLines.map(x=>({
   kind:"run" as const,id:`composition:${x.id}`,color,
-  path:[{x:x.x1*widthMm,y:x.y1*heightMm},{x:x.x2*widthMm,y:x.y2*heightMm}],
+  path:[mapAuxPoint(x.x1,x.y1),mapAuxPoint(x.x2,x.y2)],
   length:2.5
  }));
  return [...primary,...auxiliary];
+}
+
+
+export type StitchIrFootprint={
+ id:string;u:number;v:number;widthMm:number;heightMm:number;rotationDeg:number;clearanceMm:number;
+};
+
+/**
+ * Derive physical surface footprints from the FINAL stitch IR after master
+ * composition. This keeps surface validation aligned with what will actually
+ * be digitized instead of measuring the pre-composition semantic skeleton.
+ */
+export function stitchIrFootprints(objects:StitchIrObject[],clearanceMm:number):StitchIrFootprint[]{
+ const groups=new Map<string,StitchIrObject[]>();
+ for(const o of objects){
+  // Primitive paths are emitted as <glyph-id>:pN. Group them back into the
+  // authoritative production glyph. Composition helpers intentionally remain
+  // separate because their IDs do not use the :pN suffix.
+  const id=o.id.replace(/:p\d+$/,"");
+  const row=groups.get(id)??[];row.push(o);groups.set(id,row);
+ }
+ const out:StitchIrFootprint[]=[];
+ for(const [id,group] of groups){
+  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity,stroke=0;
+  for(const o of group){
+   const pts=o.kind==="fill"?o.polygon:o.path;
+   if(!pts.length)throw new Error("stitch IR object has no geometry: "+o.id);
+   stroke=Math.max(stroke,o.kind==="satin"?o.width:o.kind==="run"?.5:0);
+   for(const p of pts){minX=Math.min(minX,p.x);minY=Math.min(minY,p.y);maxX=Math.max(maxX,p.x);maxY=Math.max(maxY,p.y);}
+  }
+  const widthMm=Math.max(.1,maxX-minX+stroke),heightMm=Math.max(.1,maxY-minY+stroke);
+  out.push({id,u:(minX+maxX)/2,v:(minY+maxY)/2,widthMm,heightMm,rotationDeg:0,clearanceMm:id.startsWith("composition:")?0:clearanceMm});
+ }
+ return out;
 }

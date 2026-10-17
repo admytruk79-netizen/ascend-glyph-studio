@@ -4,7 +4,7 @@ import type {StructuralFeedback} from "./structural-feedback";
 import {buildMasterCompositionPlan} from "./master-composition-plan";
 
 export type MasterCompositionMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
-export type MasterCompositionInput={svg:string;mode:MasterCompositionMode;complexity:number;medium:MediumId;width:number;height:number;seed:string;sashGrammar?:SashEvidenceGrammar;structuralFeedback?:StructuralFeedback};
+export type MasterCompositionInput={svg:string;mode:MasterCompositionMode;complexity:number;medium:MediumId;width:number;height:number;seed:string;sashGrammar?:SashEvidenceGrammar;structuralFeedback?:StructuralFeedback;targetOccupancy?:number};
 
 const hash=(s:string)=>{let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
 const unit=(n:number,min:number,max:number)=>min+(n/0xffffffff)*(max-min);
@@ -16,7 +16,7 @@ function body(svg:string){
 function strokeFor(m:MediumId){return m==="print"?1.8:m==="embroidery"?2.65:m==="emboss"?3.15:3.35}
 function scholarlySashComposition(input:MasterCompositionInput,b:string){
  const g=input.sashGrammar!;const {width,height,medium,mode}=input;
- const plan=buildMasterCompositionPlan({mode,medium,complexity:input.complexity,sashGrammar:g,structuralFeedback:input.structuralFeedback});
+ const plan=buildMasterCompositionPlan({mode,medium,complexity:input.complexity,sashGrammar:g,structuralFeedback:input.structuralFeedback,targetOccupancy:input.targetOccupancy});
  const p=plan.primary;
  const primary=`<g data-sash-layer="primary-focal" transform="translate(${(p.offsetX*width).toFixed(2)} ${(p.offsetY*height).toFixed(2)}) scale(${p.scaleX.toFixed(4)} ${p.scaleY.toFixed(4)})">${b}</g>`;
  const line=(x:typeof plan.auxiliaryLines[number])=>`<path data-composition-line="${x.id}" opacity="${x.opacity}" d="M${(x.x1*width).toFixed(2)} ${(x.y1*height).toFixed(2)} L${(x.x2*width).toFixed(2)} ${(x.y2*height).toFixed(2)}"/>`;
