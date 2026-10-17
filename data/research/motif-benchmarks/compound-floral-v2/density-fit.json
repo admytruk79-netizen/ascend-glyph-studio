@@ -1,0 +1,315 @@
+{
+  "schema": "ascend.floral-density-fit.v1",
+  "method": "Finite-grid fit of original generator parameters to mean foreground density; k-means ground estimate, threshold 48, existing foreground closing and raster measurements at 512px width.",
+  "sources": [
+    {
+      "id": "commons-96737731",
+      "sha256": "074104c967c8f7cf68fb92ea52e9dd560ddc0bc6c9f54198b47e67a245e48839",
+      "creator": "Nikolai Samokysh",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9627._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg",
+      "permission": {
+        "status": "verified",
+        "evidence": "Reference-use review of retained Neon Commons item commons-96737731: Public domain; catalogue publication 1902 (pre-1931 publication, public domain in the US). No successful fresh Commons licence-page check or global commercial/manufacturing approval claimed.",
+        "purposes": [
+          "analysis",
+          "reconstruction"
+        ]
+      },
+      "metrics": {
+        "coverage": 0.5593045812074829,
+        "clutter": 0.0016628855815942322,
+        "emptyColumns": 0.038461538461538464,
+        "balance": 0.8274848985845712,
+        "quality": 0.8026372224486097,
+        "survive": false,
+        "flags": [
+          "raster-overfilled"
+        ]
+      }
+    },
+    {
+      "id": "commons-96737753",
+      "sha256": "e4b85cfafc845616091a8e03276ea7dc83d7ec9eb0498da692d3bc804c5b32b0",
+      "creator": "Nikolai Samokysh",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9637._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg",
+      "permission": {
+        "status": "verified",
+        "evidence": "Reference-use review of retained Neon per-item Commons rights declaration: Public domain; catalogue publication date 1902 (pre-1931 publication, public domain in the US). This is a historical reference-use assessment, not a fresh Commons licence-page verification; live requests returned HTTP 403. No manufacturing approval.",
+        "purposes": [
+          "analysis",
+          "reconstruction"
+        ]
+      },
+      "metrics": {
+        "coverage": 0.5141654065860215,
+        "clutter": 0.013131828857347084,
+        "emptyColumns": 0,
+        "balance": 0.8315077489483972,
+        "quality": 0.8015282423251641,
+        "survive": false,
+        "flags": [
+          "raster-overfilled"
+        ]
+      }
+    }
+  ],
+  "targetDensity": 0.5367349938967523,
+  "objective": "Absolute mean foreground-density error among candidates passing evaluated geometric stitch checks. Raster artistic quality is not optimized.",
+  "candidates": [
+    {
+      "calibration": {
+        "crownRadius": 10,
+        "sideRadius": 6.5,
+        "repeatAspect": 0.55
+      },
+      "valid": false,
+      "density": 0.2695828569613821,
+      "loss": 0.26715213693537015,
+      "samples": [
+        {
+          "seed": 0,
+          "coverage": 0.2691144245426829,
+          "clutter": 0.29981855998583884,
+          "rasterFlags": [
+            "raster-tangle"
+          ],
+          "stitches": 21799,
+          "failedGeometryChecks": [
+            {
+              "id": "min-gap",
+              "pass": false,
+              "detail": "closest objects botanical-branch-56/botanical-petiole-66 0.78 mm (min 0.8)"
+            }
+          ]
+        },
+        {
+          "seed": 1,
+          "coverage": 0.26938833841463417,
+          "clutter": 0.29588859416445623,
+          "rasterFlags": [
+            "raster-tangle"
+          ],
+          "stitches": 21451,
+          "failedGeometryChecks": [
+            {
+              "id": "min-gap",
+              "pass": false,
+              "detail": "closest objects botanical-branch-60/botanical-petiole-70 0.78 mm (min 0.8)"
+            }
+          ]
+        },
+        {
+          "seed": 3,
+          "coverage": 0.2702458079268293,
+          "clutter": 0.2973294553146483,
+          "rasterFlags": [
+            "raster-tangle"
+          ],
+          "stitches": 21853,
+          "failedGeometryChecks": [
+            {
+              "id": "min-gap",
+              "pass": false,
+              "detail": "closest objects botanical-branch-56/botanical-petiole-66 0.78 mm (min 0.8)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calibration": {
+        "crownRadius": 12,
+        "sideRadius": 8,
+        "repeatAspect": 0.64
+      },
+      "valid": true,
+      "density": 0.2971727324695122,
+      "loss": 0.23956226142724008,
+      "samples": [
+        {
+          "seed": 0,
+          "coverage": 0.2960056211890244,
+          "clutter": 0.24711325688996177,
+          "rasterFlags": [
+            "raster-tangle"
+          ],
+          "stitches": 24829,
+          "failedGeometryChecks": []
+        },
+        {
+          "seed": 1,
+          "coverage": 0.29742282774390244,
+          "clutter": 0.24397373268198927,
+          "rasterFlags": [
+            "raster-tangle"
+          ],
+          "stitches": 25319,
+          "failedGeometryChecks": []
+        },
+        {
+          "seed": 3,
+          "coverage": 0.29808974847560976,
+          "clutter": 0.2453855373551738,
+          "rasterFlags": [
+            "raster-tangle"
+          ],
+          "stitches": 25011,
+          "failedGeometryChecks": []
+        }
+      ]
+    },
+    {
+      "calibration": {
+        "crownRadius": 13,
+        "sideRadius": 8.5,
+        "repeatAspect": 0.67
+      },
+      "valid": true,
+      "density": 0.30899469639227645,
+      "loss": 0.22774029750447583,
+      "samples": [
+        {
+          "seed": 0,
+          "coverage": 0.3075814596036585,
+          "clutter": 0.23754210709722384,
+          "rasterFlags": [
+            "raster-tangle"
+          ],
+          "stitches": 25877,
+          "failedGeometryChecks": []
+        },
+        {
+          "seed": 1,
+          "coverage": 0.3091653963414634,
+          "clutter": 0.23570878274268106,
+          "rasterFlags": [
+            "raster-tangle"
+          ],
+          "stitches": 26298,
+          "failedGeometryChecks": []
+        },
+        {
+          "seed": 3,
+          "coverage": 0.3102372332317073,
+          "clutter": 0.23550863723608445,
+          "rasterFlags": [
+            "raster-tangle"
+          ],
+          "stitches": 25992,
+          "failedGeometryChecks": []
+        }
+      ]
+    },
+    {
+      "calibration": {
+        "crownRadius": 14,
+        "sideRadius": 9,
+        "repeatAspect": 0.67
+      },
+      "valid": true,
+      "density": 0.324024231453252,
+      "loss": 0.2127107624435003,
+      "samples": [
+        {
+          "seed": 0,
+          "coverage": 0.3224442644817073,
+          "clutter": 0.2250046168051708,
+          "rasterFlags": [
+            "raster-tangle"
+          ],
+          "stitches": 27084,
+          "failedGeometryChecks": []
+        },
+        {
+          "seed": 1,
+          "coverage": 0.32434975228658536,
+          "clutter": 0.2215898659812741,
+          "rasterFlags": [
+            "raster-tangle"
+          ],
+          "stitches": 27643,
+          "failedGeometryChecks": []
+        },
+        {
+          "seed": 3,
+          "coverage": 0.3252786775914634,
+          "clutter": 0.2230439717350712,
+          "rasterFlags": [
+            "raster-tangle"
+          ],
+          "stitches": 27678,
+          "failedGeometryChecks": []
+        }
+      ]
+    },
+    {
+      "calibration": {
+        "crownRadius": 14,
+        "sideRadius": 9,
+        "repeatAspect": 0.74
+      },
+      "valid": true,
+      "density": 0.324024231453252,
+      "loss": 0.2127107624435003,
+      "samples": [
+        {
+          "seed": 0,
+          "coverage": 0.3224442644817073,
+          "clutter": 0.2250046168051708,
+          "rasterFlags": [
+            "raster-tangle"
+          ],
+          "stitches": 27084,
+          "failedGeometryChecks": []
+        },
+        {
+          "seed": 1,
+          "coverage": 0.32434975228658536,
+          "clutter": 0.2215898659812741,
+          "rasterFlags": [
+            "raster-tangle"
+          ],
+          "stitches": 27643,
+          "failedGeometryChecks": []
+        },
+        {
+          "seed": 3,
+          "coverage": 0.3252786775914634,
+          "clutter": 0.2230439717350712,
+          "rasterFlags": [
+            "raster-tangle"
+          ],
+          "stitches": 27678,
+          "failedGeometryChecks": []
+        }
+      ]
+    }
+  ],
+  "selected": {
+    "crownRadius": 14,
+    "sideRadius": 9,
+    "repeatAspect": 0.67
+  },
+  "beforeDensity": 0.2732112233231707,
+  "beforeMetrics": {
+    "coverage": 0.2732112233231707,
+    "clutter": 0.24318905017218082,
+    "emptyColumns": 0.019230769230769232,
+    "balance": 0.8406731349563294,
+    "quality": 0.689052440053057,
+    "survive": false,
+    "flags": [
+      "raster-tangle"
+    ]
+  },
+  "neuralTrainingPerformed": false,
+  "artisticQualityModelTrained": false,
+  "artistCount": 1,
+  "heldOutSources": 0,
+  "limitations": [
+    "Two plates by one artist; no artist-separated validation or generalisation claim.",
+    "Full-plate masks include print, scan texture and non-floral fields; foreground density is a proxy, not embroidery quality.",
+    "Candidate geometry and parameter ranges are authored. Fit only chooses numerical settings; no source paths copied.",
+    "No physical calibration, expert aesthetic approval or manufacturing release."
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "method": "Original procedural compound motifs; existing Kit, MotifGraph, containment, machine gate and stitch planner. Layer order preserved; no image-model training.",
+  "productionApproved": false,
+  "cases": [
+    {
+      "seed": 0,
+      "units": 4,
+      "objectCount": 821,
+      "structure": {
+        "junctionCount": 82,
+        "brokenJunctions": 0,
+        "repeatCount": 0,
+        "brokenRepeats": 0,
+        "nestedRelations": 12,
+        "negativeSpaceViolations": 0
+      },
+      "minLeafFlowerClearanceMm": 1.7933312513010717,
+      "stitchCount": 27084,
+      "colorPasses": 30,
+      "trims": 820,
+      "estimatedMinutes": 111.85809523809525,
+      "job": {
+        "valid": true,
+        "errors": [],
+        "warnings": [
+          "Reference plan only: material calibration, machine-specific postprocessing and sew-out are required."
+        ]
+      },
+      "gate": {
+        "release": false,
+        "checks": [
+          {
+            "id": "satin-width",
+            "pass": true,
+            "detail": "51 columns within 1–8 mm"
+          },
+          {
+            "id": "fill-density",
+            "pass": true,
+            "detail": "row spacing 0.43 mm (min 0.4)"
+          },
+          {
+            "id": "min-stitch",
+            "pass": true,
+            "detail": "0 stitches shorter than 1 mm"
+          },
+          {
+            "id": "max-stitch",
+            "pass": true,
+            "detail": "0 stitches longer than 12.1 mm"
+          },
+          {
+            "id": "hoop-fit",
+            "pass": true,
+            "detail": "design 244.0×74.0 mm, hoop brother-pr1055x-reference 356×203 mm"
+          },
+          {
+            "id": "min-gap",
+            "pass": true,
+            "detail": "closest objects botanical-branch-315/botanical-petiole-325 1.27 mm (min 0.8)"
+          },
+          {
+            "id": "recipe-validated",
+            "pass": false,
+            "detail": "recipe linen-180-prewashed has no sew-out yet: prototype only"
+          }
+        ]
+      },
+      "blockers": [
+        "recipe-validated"
+      ]
+    },
+    {
+      "seed": 1,
+      "units": 4,
+      "objectCount": 833,
+      "structure": {
+        "junctionCount": 82,
+        "brokenJunctions": 0,
+        "repeatCount": 0,
+        "brokenRepeats": 0,
+        "nestedRelations": 12,
+        "negativeSpaceViolations": 0
+      },
+      "minLeafFlowerClearanceMm": 1.7933312513010717,
+      "stitchCount": 27643,
+      "colorPasses": 30,
+      "trims": 827,
+      "estimatedMinutes": 113.24000000000001,
+      "job": {
+        "valid": true,
+        "errors": [],
+        "warnings": [
+          "Reference plan only: material calibration, machine-specific postprocessing and sew-out are required."
+        ]
+      },
+      "gate": {
+        "release": false,
+        "checks": [
+          {
+            "id": "satin-width",
+            "pass": true,
+            "detail": "51 columns within 1–8 mm"
+          },
+          {
+            "id": "fill-density",
+            "pass": true,
+            "detail": "row spacing 0.43 mm (min 0.4)"
+          },
+          {
+            "id": "min-stitch",
+            "pass": true,
+            "detail": "0 stitches shorter than 1 mm"
+          },
+          {
+            "id": "max-stitch",
+            "pass": true,
+            "detail": "0 stitches longer than 12.1 mm"
+          },
+          {
+            "id": "hoop-fit",
+            "pass": true,
+            "detail": "design 244.0×74.0 mm, hoop brother-pr1055x-reference 356×203 mm"
+          },
+          {
+            "id": "min-gap",
+            "pass": true,
+            "detail": "closest objects botanical-branch-315/botanical-petiole-325 1.27 mm (min 0.8)"
+          },
+          {
+            "id": "recipe-validated",
+            "pass": false,
+            "detail": "recipe linen-180-prewashed has no sew-out yet: prototype only"
+          }
+        ]
+      },
+      "blockers": [
+        "recipe-validated"
+      ]
+    },
+    {
+      "seed": 3,
+      "units": 4,
+      "objectCount": 821,
+      "structure": {
+        "junctionCount": 82,
+        "brokenJunctions": 0,
+        "repeatCount": 0,
+        "brokenRepeats": 0,
+        "nestedRelations": 12,
+        "negativeSpaceViolations": 0
+      },
+      "minLeafFlowerClearanceMm": 1.7933312513010717,
+      "stitchCount": 27678,
+      "colorPasses": 30,
+      "trims": 828,
+      "estimatedMinutes": 113.37333333333333,
+      "job": {
+        "valid": true,
+        "errors": [],
+        "warnings": [
+          "Reference plan only: material calibration, machine-specific postprocessing and sew-out are required."
+        ]
+      },
+      "gate": {
+        "release": false,
+        "checks": [
+          {
+            "id": "satin-width",
+            "pass": true,
+            "detail": "51 columns within 1–8 mm"
+          },
+          {
+            "id": "fill-density",
+            "pass": true,
+            "detail": "row spacing 0.43 mm (min 0.4)"
+          },
+          {
+            "id": "min-stitch",
+            "pass": true,
+            "detail": "0 stitches shorter than 1 mm"
+          },
+          {
+            "id": "max-stitch",
+            "pass": true,
+            "detail": "0 stitches longer than 12.1 mm"
+          },
+          {
+            "id": "hoop-fit",
+            "pass": true,
+            "detail": "design 244.0×74.0 mm, hoop brother-pr1055x-reference 356×203 mm"
+          },
+          {
+            "id": "min-gap",
+            "pass": true,
+            "detail": "closest objects botanical-branch-315/botanical-petiole-325 1.27 mm (min 0.8)"
+          },
+          {
+            "id": "recipe-validated",
+            "pass": false,
+            "detail": "recipe linen-180-prewashed has no sew-out yet: prototype only"
+          }
+        ]
+      },
+      "blockers": [
+        "recipe-validated"
+      ]
+    }
+  ]
+}

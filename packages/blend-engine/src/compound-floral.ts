@@ -7,16 +7,20 @@ import {assertObservedContainment} from '../../tesseract-engine/src/motif-contai
 import {assertMotifGraph} from '../../tesseract-engine/src/motif-graph.ts';
 import {measureMotifStructure} from '../../tesseract-engine/src/motif-reconstruction.ts';
 import {orderIndependentLayers} from '../../stitch-engine/src/plan.ts';
+import {FITTED_FLORAL_CALIBRATION,FLORAL_FIT_EVIDENCE} from './floral-calibration.ts';
 const red='#a32235',dark='#252020',coral='#cf665c',gold='#b48145';
+export type FloralCalibration={crownRadius:number;sideRadius:number;repeatAspect:number};
+export const DEFAULT_FLORAL_CALIBRATION:FloralCalibration=FITTED_FLORAL_CALIBRATION;
 type Input={widthMm:number;heightMm:number;complexity:number;family:'floral'|'geometric';seed:number};
 type Box={id:string;x:number;y:number;r:number};
 /** Original compound motifs; source-study construction principles, no traced source paths. */
-export function generateCompoundFloral(input:Input,machine?:MachineTemplate){
+export function generateCompoundFloral(input:Input,machine?:MachineTemplate,calibration:FloralCalibration=DEFAULT_FLORAL_CALIBRATION){
  const {widthMm:w,heightMm:h,complexity:c,seed}=input;
  if(![w,h,c].every(Number.isFinite)||w<80||w>600||h<40||h>160||c<0||c>1||input.family!=='floral'||!Number.isSafeInteger(seed)||seed<0||seed>1000000)throw Error('compound-floral:invalid-input');
+ if(![calibration.crownRadius,calibration.sideRadius,calibration.repeatAspect].every(Number.isFinite)||calibration.crownRadius<9||calibration.crownRadius>14||calibration.sideRadius<6||calibration.sideRadius>9||calibration.repeatAspect<.53||calibration.repeatAspect>.8)throw Error('compound-floral:invalid-calibration');
  const k=new Kit('botanical-'),connections:{fromId:string;fromPoint:Pt;toId:string;toPoint:Pt}[]=[],assemblies:{id:string;brick:null;role:string;objectIds:string[]}[]=[];
- const flowerBoxes:Box[]=[],leafBoxes:Box[]=[],nestedCores:{parentId:string;outerId:string;innerIds:string[]}[]=[];
- const unitCount=Math.max(1,Math.floor((w-8)/(h*(.63-c*.10)))),cell=(w-8)/unitCount,scale=Math.min((cell-3)/62,(h*.64)/64);
+ const flowerBoxes:Box[]=[],leafBoxes:(Box&{base:Pt;tip:Pt;half:number})[]=[],nestedCores:{parentId:string;outerId:string;innerIds:string[]}[]=[];
+ const unitCount=Math.max(1,Math.floor((w-8)/(h*(calibration.repeatAspect+.08-c*.10)))),cell=(w-8)/unitCount,scale=Math.min((cell-3)/67,(h*.64)/64);
  const group=(id:string,role:string,draw:()=>void)=>{const start=k.objs.length;draw();assemblies.push({id,brick:null,role,objectIds:k.objs.slice(start).map(o=>o.id)});};
  const path=(kind:string,points:Pt[],width=1)=>{k.satin(kind,dark,k.curve(points),width);return k.objs.at(-1)!;};
  const join=(fromId:string,a:Pt,toId:string,b:Pt)=>connections.push({fromId,fromPoint:a,toId,toPoint:b});
@@ -47,7 +51,7 @@ export function generateCompoundFloral(input:Input,machine?:MachineTemplate){
    flowerBoxes.push({id:`${u}-${id}`,x:centre.x,y:centre.y,r:R});
    return {id:baseId,p:p(x,y+r)};
   };
-  const hero=flower('crown',0,12,9.4+((Math.imul(seed+u+1,1103515245)>>>16)%61)/100,(seed+u)%3),left=flower('left-flower',-21,31,6.5,(seed+u+1)%3),right=flower('right-flower',21,31,6.5,(seed+u+2)%3);
+  const hero=flower('crown',0,12,calibration.crownRadius-.6+((Math.imul(seed+u+1,1103515245)>>>16)%61)/100,(seed+u)%3),left=flower('left-flower',-21,31,calibration.sideRadius,(seed+u+1)%3),right=flower('right-flower',21,31,calibration.sideRadius,(seed+u+2)%3);
   let trunkId='';const root=p(0,61),fork=p(0,50);
   group(`${u}-branches`,'branch-network',()=>{
    const trunk=path('trunk',[root,fork,p(0,34),hero.p]);trunkId=trunk.id;join(trunk.id,hero.p,hero.id,hero.p);
@@ -58,15 +62,20 @@ export function generateCompoundFloral(input:Input,machine?:MachineTemplate){
    const y=55-row*9,base=p(side*6,y),tip=p(side*(16+row*2),y-2),a=Math.atan2(tip.y-base.y,tip.x-base.x),len=Math.hypot(tip.x-base.x,tip.y-base.y),attach=p(0,y);
    group(`${u}-leaf-${side}-${row}`,'leaf-and-petiole',()=>{
     const petiole=path('petiole',[attach,base],1);join(trunkId,attach,petiole.id,attach);
-    k.leaf(dark,base,a,len,2.1*scale,0,.48,'foliage');const leaf=k.objs.at(-1)!;join(petiole.id,base,leaf.id,base);
+    const nx=-Math.sin(a),ny=Math.cos(a),dx=Math.cos(a),dy=Math.sin(a),sideEdge=(sign:number)=>Array.from({length:25},(_,i)=>{const t=i/24,half=1.8*scale*Math.pow(Math.sin(Math.PI*t),.8)*(1+.16*Math.cos(8*Math.PI*t));return {x:base.x+dx*len*t+nx*half*sign,y:base.y+dy*len*t+ny*half*sign};});
+    const edge=sideEdge(1);k.fill('lobed-foliage',dark,[...edge,...sideEdge(-1).slice(1,-1).reverse()]);const leaf=k.objs.at(-1)!;join(petiole.id,base,leaf.id,base);
     if(scale>.6)k.run('leaf-vein',gold,[base,{x:base.x+(tip.x-base.x)*.8,y:base.y+(tip.y-base.y)*.8}]);
    });
-   leafBoxes.push({id:`${u}-leaf-${side}-${row}`,x:(base.x+tip.x)/2,y:(base.y+tip.y)/2,r:len/2+2.1*scale});
+   leafBoxes.push({id:`${u}-leaf-${side}-${row}`,x:(base.x+tip.x)/2,y:(base.y+tip.y)/2,r:len/2+2.1*scale,base,tip,half:2.1*scale});
   }
+  for(const side of [-1,1])group(`${u}-scroll-${side}`,'secondary-scroll',()=>{
+   const attach=p(0,34),end=p(side*5,31),scroll=path('secondary-scroll',[attach,p(side*7,37),p(side*10,31),p(side*8,28),end],1);
+   join(trunkId,attach,scroll.id,attach);k.disc(red,end.x,end.y,1.2*scale,'scroll-berry');
+  });
   for(const side of [-1,1]){
-   const base=p(side*23,17),tip=p(side*26,8),a=Math.atan2(tip.y-base.y,tip.x-base.x),size=7*scale,attach=p(side*21,37.5);
+   const base=p(side*23,17),tip=p(side*26,8),a=Math.atan2(tip.y-base.y,tip.x-base.x),size=7*scale,attach=p(side*21,31+calibration.sideRadius);
    group(`${u}-bud-${side}`,'bud-and-stalk',()=>{
-    const stalk=path('bud-stalk',[attach,p(side*30,41),p(side*30,20),base],1);const head=side<0?left:right;join(stalk.id,attach,head.id,attach);
+    const stalk=path('bud-stalk',[attach,p(side*32,46),p(side*32,19),base],1);const head=side<0?left:right;join(stalk.id,attach,head.id,attach);
     k.leaf(red,base,a,size,size*.23,0,.62,'bud');join(stalk.id,base,k.objs.at(-1)!.id,base);
     for(const sign of [-1,1])k.leaf(dark,base,a+sign*.48,size*.48,size*.10,0,.45,'bud-sepal');
    });
@@ -86,10 +95,11 @@ export function generateCompoundFloral(input:Input,machine?:MachineTemplate){
    for(const side of [-1,1]){const base={x:x+side*step*.31,y};k.leaf(dark,base,side<0?Math.PI+.4:-.4,Math.min(step*.22,2.8),band*.22,0,.5,'border-leaf');}
   }
  });
- const minLeafFlowerClearanceMm=Math.min(...leafBoxes.flatMap(l=>flowerBoxes.map(f=>Math.hypot(l.x-f.x,l.y-f.y)-l.r-f.r)));
- const leafFlowerOverlaps=leafBoxes.flatMap(l=>flowerBoxes.filter(f=>Math.hypot(l.x-f.x,l.y-f.y)<l.r+f.r).map(f=>`${l.id}:${f.id}`));
+ const clearance=(l:typeof leafBoxes[number],f:Box)=>{const dx=l.tip.x-l.base.x,dy=l.tip.y-l.base.y,t=Math.max(0,Math.min(1,((f.x-l.base.x)*dx+(f.y-l.base.y)*dy)/(dx*dx+dy*dy)));return Math.hypot(f.x-l.base.x-t*dx,f.y-l.base.y-t*dy)-l.half-f.r;};
+ const minLeafFlowerClearanceMm=Math.min(...leafBoxes.flatMap(l=>flowerBoxes.map(f=>clearance(l,f))));
+ const leafFlowerOverlaps=leafBoxes.flatMap(l=>flowerBoxes.filter(f=>clearance(l,f)<0).map(f=>`${l.id}:${f.id}`));
  if(leafFlowerOverlaps.length)throw Error('compound-floral:leaf-flower-clearance');
- const provenance:MotifProvenance={schema:'ascend.motif-provenance.v1',id:'original-compound-floral-v1',source:'urn:ascend:authored:compound-floral:v1',creator:'ASCEND authored compound floral grammar',community:null,culturalContext:'Contemporary original floral construction informed by Ukrainian embroidery layout studies; not an authenticated historical motif or a canonical ASCEND glyph.',retrievedAt:'2026-10-17T00:00:00Z',originalSha256:'d33b1ca8fe13d63732f9e5ca41985ed293b611fb2327263ad1d71e3888546764',permission:{status:'verified',evidence:'Original procedural geometry authored under user instruction; no source-image paths used. originalSha256 hashes the UTF-8 construction specification: ASCEND compound floral v1: scalloped flower foundations, alternating outer petals, nested inner petals and pollen; three connected heads, two terminal buds, four lower leaves per unit; two paired-rail diamond borders.',purposes:['analysis','reconstruction']},access:'structural-public',confidence:1,transformations:[{operation:'original compound floral construction',evidence:'Layered flowers, distinct buds, connected petioles and separate border fields; no model inference or traced historical paths.'}],regionalAttribution:{status:'unassigned'}};
+ const provenance:MotifProvenance={schema:'ascend.motif-provenance.v1',id:'original-compound-floral-v2',source:'urn:ascend:authored:compound-floral:v2',creator:'ASCEND authored compound floral grammar',community:null,culturalContext:'Contemporary original floral construction informed by Ukrainian embroidery layout studies; not an authenticated historical motif or a canonical ASCEND glyph.',retrievedAt:'2026-10-17T00:00:00Z',originalSha256:'24731592457399dd8d30340a78b7a4178284706d99cb32a439f4bcfce2ce5aae',permission:{status:'verified',evidence:'Original procedural geometry authored under user instruction; no source-image paths used. originalSha256 hashes the UTF-8 construction specification: ASCEND compound floral v2: source-density-fitted head radii and repeat aspect; original scalloped foundations, nested petals, rose whorls and pollen; secondary scrolling branches, terminal buds, lobed veined leaves and flowering-vine borders.',purposes:['analysis','reconstruction']},access:'structural-public',confidence:1,transformations:[{operation:'original compound floral construction',evidence:'Layered flowers, distinct buds, connected petioles and separate border fields; no model inference or traced historical paths.'}],regionalAttribution:{status:'unassigned'}};
  const checked=inspectAuthoredMotifAssembly(k.objs,connections,{widthMm:w,heightMm:h,seed:`compound-${seed}`},provenance,machine,assemblies.filter(a=>a.objectIds.length));
  for(const core of nestedCores){
   const parent=checked.graph.nodes.find(n=>n.id===core.parentId)!,outer=checked.graph.nodes.find(n=>n.id===core.outerId)!;
@@ -102,6 +112,6 @@ export function generateCompoundFloral(input:Input,machine?:MachineTemplate){
  const recipe=recipes['linen-180-prewashed']!,stitchPlan=plan(orderIndependentLayers(k.objs),recipe,{preserveObjectOrder:true}),minutes=estimateMinutes(stitchPlan,recipe.speedSpm);
  const gate=runGate(k.objs,stitchPlan.commands,recipe,{hoop:{name:machine?.id??'unselected machine',width:machine?.fieldX.value??w,height:machine?.fieldY.value??h}},minutes);
  const body=k.objs.map(o=>o.kind==='fill'?`<polygon points="${o.polygon.map(p=>`${p.x},${p.y}`).join(' ')}" fill="${o.color}"/>`:`<polyline points="${o.path.map(p=>`${p.x},${p.y}`).join(' ')}" fill="none" stroke="${o.color}" stroke-width="${o.kind==='satin'?o.width:.35}" stroke-linecap="round"/>`).join('');
- const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}mm" height="${h}mm" viewBox="0 0 ${w} ${h}" data-design-state="compound-floral-reference"><metadata>Original compound floral grammar v1. Contemporary authored interpretation; no trained model applied; production approval false.</metadata><rect width="${w}" height="${h}" fill="#f5efe3"/>${body}</svg>`;
- return {...checked,input:{...input},svg,objects:k.objs,assemblies,columns:unitCount,leafFlowerOverlaps,minLeafFlowerClearanceMm,stitchPlan,stitchCount:stitchPlan.commands.filter(c=>c.cmd==='stitch').length,estimatedMinutes:minutes,stitchSvg:previewSvg(stitchPlan.commands,stitchPlan.colors),gate,blockers:[...checked.job.validation.errors,...gate.checks.filter(c=>!c.pass).map(c=>c.id),...(!machine?['machine-not-selected']:[])],sourceImagesEmbedded:false};
+ const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}mm" height="${h}mm" viewBox="0 0 ${w} ${h}" data-design-state="compound-floral-reference"><metadata>Original compound floral grammar v2; two-reference foreground-density fit. Contemporary authored interpretation; no trained model applied; production approval false.</metadata><rect width="${w}" height="${h}" fill="#f5efe3"/>${body}</svg>`;
+ return {...checked,input:{...input},calibration:{...calibration},fitEvidence:FLORAL_FIT_EVIDENCE,svg,objects:k.objs,assemblies,columns:unitCount,leafFlowerOverlaps,minLeafFlowerClearanceMm,stitchPlan,stitchCount:stitchPlan.commands.filter(c=>c.cmd==='stitch').length,estimatedMinutes:minutes,stitchSvg:previewSvg(stitchPlan.commands,stitchPlan.colors),gate,blockers:[...checked.job.validation.errors,...gate.checks.filter(c=>!c.pass).map(c=>c.id),...(!machine?['machine-not-selected']:[])],sourceImagesEmbedded:false};
 }
