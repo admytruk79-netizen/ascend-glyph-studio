@@ -1,0 +1,11 @@
+# Increment 32: preserve petal openings during reference cleanup
+
+Replaces the radial-envelope backing introduced in increment 31 with a union of the retained pigment contours. The radial envelope could bridge petal notches and other boundary-connected gaps. The new backing fills only enclosed paper specks of at most 24 source pixels; larger holes and exterior-connected openings remain. Earlier loop filtering and smoothing still alter the source, so this is interpreted cleanup, not exact reconstruction.
+
+Implementation reuses the engine's exact mask-to-contour graph constructor. A scanline rasterizer creates the union efficiently and rejects transformed source nodes, including transformed ancestors. Four-connected background traversal distinguishes exterior gaps from bounded holes. Raw source libraries and canonical ASCEND primitives remain unchanged. Provenance identifies the new operation and its filled-hole count.
+
+The reproducible benchmark (`npx tsx scripts/benchmark-pigment-refinement.ts`) measures 22 flower/leaf parts against their draft segmented source masks. Mean intersection-over-union is 0.873964; a simple ellipse baseline scores 0.714032. This is neither original-photograph accuracy nor an aesthetic score, and is not a direct comparison with the previous radial method. The report records per-part additions/removals and the source library SHA-256.
+
+Verification: 56 engine test files / 199 tests pass, including equality with the existing even-odd rasterizer on fan/cup/leaf source contours, an open notch, a small bounded hole, a larger hole, input immutability and transformed-ancestor rejection. Engine typecheck and web production build pass (existing bundle-size warning). Regenerated three vine benchmark seeds retain zero broken junctions, zero leaf/flower footprint overlaps and zero out-of-envelope parts. Browser verification covers seeded generation, SVG download, exact saved-project restoration, construction comparison, the retained stitch-preview mode and mobile layout.
+
+No new model training, semantic petal segmentation, machine stitch count, machine file, sew-out or production approval is claimed. Source scan noise, manual macro annotations and incomplete semantic anatomy remain limitations. Output stays REFERENCE.

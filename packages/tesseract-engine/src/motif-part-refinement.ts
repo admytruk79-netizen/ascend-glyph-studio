@@ -1,3 +1,5 @@
+import {pigmentUnionMask,fillPigmentPinholes} from './motif-pigment-backing';
+import {graphFromMotifMaskContours} from './motif-mask-contours';
 import {assertMotifGraph} from './motif-graph';
 import type {MotifPartLibrary} from './motif-part-composer';
 type Point={x:number;y:number};
@@ -21,14 +23,10 @@ export function refineMotifPartLibrary(input:MotifPartLibrary){
    layer.graph.provenance.forEach(p=>p.transformations.push({operation:'draft contour refinement',evidence:'Drop loops under 24 source-pixel square area (retain largest per layer); two corner-cutting passes and approximately 0.8-pixel sampling. Changes contours and small holes; exact mask roundtrip no longer claimed.'}));assertMotifGraph(layer.graph);
   }
   if(piece.kind==='flower'||piece.kind==='leaf'){
-   const cx=piece.width/2,cy=piece.height/2,bins=Array.from({length:96},()=>[] as number[]);
-   for(const layer of piece.layers)for(const node of layer.graph.nodes)for(const path of node.geometry?.paths??[])for(const p of path){const a=(Math.atan2(p.y-cy,p.x-cx)+2*Math.PI)%(2*Math.PI),index=Math.floor(a/(2*Math.PI)*96)%96;bins[index]!.push(Math.hypot(p.x-cx,p.y-cy));}
-   const radii=bins.map(v=>v.length?Math.max(...v):0);
-   for(let i=0;i<96;i++)if(!radii[i]){let distance=1;while(distance<96&&!radii[(i+distance)%96]&&!radii[(i-distance+96)%96])distance++;radii[i]=radii[(i+distance)%96]||radii[(i-distance+96)%96]!;}
-   const silhouette=radii.map((r,i)=>{const radius=(r*2+radii[(i+95)%96]!+radii[(i+1)%96]!)/4,a=i*2*Math.PI/96;return {x:Math.max(0,Math.min(piece.width,cx+radius*Math.cos(a))),y:Math.max(0,Math.min(piece.height,cy+radius*Math.sin(a)))};});silhouette.push({...silhouette[0]!});
-   const dominant=[...piece.layers].sort((a,b)=>b.foregroundPixels-a.foregroundPixels)[0]!,graph=structuredClone(dominant.graph),element=graph.nodes.find(n=>n.geometry)!;
-   graph.nodes=graph.nodes.filter(n=>!n.geometry||n.id===element.id);element.geometry!.paths=[silhouette];element.geometry!.ports={};
-   graph.provenance.forEach(p=>p.transformations.push({operation:'authored silhouette backing',evidence:'Smoothed radial envelope of retained pigment contours in dominant layer colour; fills scan-paper voids. This changes holes and is an interpreted redraw, not an exact historical reconstruction.'}));
+   const union=pigmentUnionMask(piece.layers.map(l=>l.graph),piece.width,piece.height),filled=fillPigmentPinholes(union,piece.width,piece.height);
+   const dominant=[...piece.layers].sort((a,b)=>b.foregroundPixels-a.foregroundPixels)[0]!;
+   const graph=graphFromMotifMaskContours(filled.mask,piece.width,piece.height,dominant.graph.provenance[0]!,piece.width).graph;
+   graph.provenance.forEach(p=>p.transformations.push({operation:'contour-preserving pigment backing',evidence:`Union of retained pigment at source pixel centres; fill only bounded holes of at most 24 pixels (${filled.filledHoles} holes, ${filled.filledPixels} pixels). Boundary-connected petal gaps and larger holes retained. Interpreted cleanup, not exact source reconstruction.`}));
    piece.layers.unshift({color:piece.kind==='leaf'?'#332027':'#9d2437',graph,foregroundPixels:0});Object.values(piece.ports).forEach(p=>p.ownerId=`layer-${Number(p.ownerId.slice(6))+1}`);
   }
   for(const port of Object.values(piece.ports)){
@@ -41,5 +39,5 @@ export function refineMotifPartLibrary(input:MotifPartLibrary){
   for(const layer of piece.layers){layer.color=piece.kind==='leaf'?'#332027':palette[layer.color]??layer.color;layer.graph.provenance.forEach(p=>p.transformations.push({operation:'contemporary red-black palette',evidence:JSON.stringify(palette)}));}
   piece.maskRoundtripExact=false;piece.segmentationReview+='; reference contour cleanup changes small loops/holes and boundary ports; original mask equality no longer applies';
  }
- return {library,report:{method:'draft-loop-filter-corner-cut-and-backed-silhouette-v1',removedLoops,beforePoints,afterPoints,maskRoundtripExact:false,productionApproved:false}};
+ return {library,report:{method:'draft-loop-filter-corner-cut-and-pigment-backing-v2',removedLoops,beforePoints,afterPoints,maskRoundtripExact:false,productionApproved:false}};
 }

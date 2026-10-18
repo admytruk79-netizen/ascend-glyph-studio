@@ -49,7 +49,7 @@
         "vine-leaf-17"
       ],
       "contourRefinement": {
-        "method": "draft-loop-filter-corner-cut-and-backed-silhouette-v1",
+        "method": "draft-loop-filter-corner-cut-and-pigment-backing-v2",
         "removedLoops": 22176,
         "beforePoints": 221572,
         "afterPoints": 108432,
@@ -82,7 +82,7 @@
         "vine-leaf-17"
       ],
       "contourRefinement": {
-        "method": "draft-loop-filter-corner-cut-and-backed-silhouette-v1",
+        "method": "draft-loop-filter-corner-cut-and-pigment-backing-v2",
         "removedLoops": 22176,
         "beforePoints": 221572,
         "afterPoints": 108432,
@@ -115,7 +115,7 @@
         "vine-leaf-17"
       ],
       "contourRefinement": {
-        "method": "draft-loop-filter-corner-cut-and-backed-silhouette-v1",
+        "method": "draft-loop-filter-corner-cut-and-pigment-backing-v2",
         "removedLoops": 22176,
         "beforePoints": 221572,
         "afterPoints": 108432,

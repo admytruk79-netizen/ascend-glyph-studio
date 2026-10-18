@@ -1,0 +1,169 @@
+{
+  "schema": "ascend.pigment-refinement-benchmark.v1",
+  "librarySha256": "34aa56778b5dc52fddfa9cbc39ac75076b00966be613f5b38350f130c579673e",
+  "method": "draft-loop-filter-corner-cut-and-pigment-backing-v2",
+  "parts": [
+    {
+      "id": "flower-gold",
+      "sourceMaskIoU": 0.7634788555796193,
+      "ellipseBaselineIoU": 0.5915424944812362,
+      "addedPixels": 198,
+      "removedPixels": 1877
+    },
+    {
+      "id": "flower-sage",
+      "sourceMaskIoU": 0.8043589743589744,
+      "ellipseBaselineIoU": 0.6964415395787945,
+      "addedPixels": 192,
+      "removedPixels": 2097
+    },
+    {
+      "id": "flower-lobed",
+      "sourceMaskIoU": 0.8494081893793985,
+      "ellipseBaselineIoU": 0.7629482071713147,
+      "addedPixels": 248,
+      "removedPixels": 1635
+    },
+    {
+      "id": "flower-blue",
+      "sourceMaskIoU": 0.8185576792734174,
+      "ellipseBaselineIoU": 0.8085328354930815,
+      "addedPixels": 29,
+      "removedPixels": 2648
+    },
+    {
+      "id": "flower-brown",
+      "sourceMaskIoU": 0.8616962085684763,
+      "ellipseBaselineIoU": 0.6990142760027193,
+      "addedPixels": 242,
+      "removedPixels": 1498
+    },
+    {
+      "id": "flower-russet",
+      "sourceMaskIoU": 0.8720958870371891,
+      "ellipseBaselineIoU": 0.6554083171730231,
+      "addedPixels": 14,
+      "removedPixels": 1544
+    },
+    {
+      "id": "flower-red",
+      "sourceMaskIoU": 0.8757902049322681,
+      "ellipseBaselineIoU": 0.6735144791274915,
+      "addedPixels": 68,
+      "removedPixels": 1720
+    },
+    {
+      "id": "flower-ring",
+      "sourceMaskIoU": 0.8265953067105805,
+      "ellipseBaselineIoU": 0.7346550454210655,
+      "addedPixels": 176,
+      "removedPixels": 1930
+    },
+    {
+      "id": "flower-lower-blue",
+      "sourceMaskIoU": 0.8376321040573498,
+      "ellipseBaselineIoU": 0.7755291928355431,
+      "addedPixels": 195,
+      "removedPixels": 2002
+    },
+    {
+      "id": "leaf-veined",
+      "sourceMaskIoU": 0.9070294784580499,
+      "ellipseBaselineIoU": 0.2118365738307935,
+      "addedPixels": 3,
+      "removedPixels": 325
+    },
+    {
+      "id": "leaf-olive",
+      "sourceMaskIoU": 0.9705466344953824,
+      "ellipseBaselineIoU": 0.4983817427385892,
+      "addedPixels": 8,
+      "removedPixels": 346
+    },
+    {
+      "id": "flower-radial37",
+      "sourceMaskIoU": 0.8926125244618396,
+      "ellipseBaselineIoU": 0.790363318437925,
+      "addedPixels": 80,
+      "removedPixels": 1676
+    },
+    {
+      "id": "flower-hanging37",
+      "sourceMaskIoU": 0.9485514058627468,
+      "ellipseBaselineIoU": 0.8484959112149533,
+      "addedPixels": 80,
+      "removedPixels": 522
+    },
+    {
+      "id": "flower-bell37",
+      "sourceMaskIoU": 0.9182633151696256,
+      "ellipseBaselineIoU": 0.7953971372438956,
+      "addedPixels": 42,
+      "removedPixels": 888
+    },
+    {
+      "id": "flower-cup37",
+      "sourceMaskIoU": 0.9681692948003986,
+      "ellipseBaselineIoU": 0.8056448562783661,
+      "addedPixels": 18,
+      "removedPixels": 525
+    },
+    {
+      "id": "flower-button37",
+      "sourceMaskIoU": 0.9600837303305905,
+      "ellipseBaselineIoU": 0.9800509337860781,
+      "addedPixels": 0,
+      "removedPixels": 553
+    },
+    {
+      "id": "flower-fan31",
+      "sourceMaskIoU": 0.8501618122977346,
+      "ellipseBaselineIoU": 0.7466426465771372,
+      "addedPixels": 152,
+      "removedPixels": 1237
+    },
+    {
+      "id": "flower-cup31",
+      "sourceMaskIoU": 0.8166650867380795,
+      "ellipseBaselineIoU": 0.7037661987041036,
+      "addedPixels": 122,
+      "removedPixels": 1812
+    },
+    {
+      "id": "flower-blue31",
+      "sourceMaskIoU": 0.9074112807641358,
+      "ellipseBaselineIoU": 0.8168452245270116,
+      "addedPixels": 9,
+      "removedPixels": 1319
+    },
+    {
+      "id": "flower-gold-fan31",
+      "sourceMaskIoU": 0.7449712643678161,
+      "ellipseBaselineIoU": 0.5617425483131346,
+      "addedPixels": 100,
+      "removedPixels": 1675
+    },
+    {
+      "id": "flower-red-cup31",
+      "sourceMaskIoU": 0.8607728337236534,
+      "ellipseBaselineIoU": 0.6988279960382965,
+      "addedPixels": 73,
+      "removedPixels": 1116
+    },
+    {
+      "id": "leaf-lobed31",
+      "sourceMaskIoU": 0.972362953264644,
+      "ellipseBaselineIoU": 0.8531274356975838,
+      "addedPixels": 108,
+      "removedPixels": 863
+    }
+  ],
+  "meanSourceMaskIoU": 0.8739643193014532,
+  "meanEllipseBaselineIoU": 0.7140322232123699,
+  "limitations": [
+    "Mask similarity measures retention of draft segmentation, not fidelity to the original photograph or aesthetic quality.",
+    "Loop filtering and smoothing still change holes and edges before backing.",
+    "Backing preserves gaps in retained pigment; no semantic petal segmentation, neural training or manufacturing validation."
+  ],
+  "productionApproved": false
+}
