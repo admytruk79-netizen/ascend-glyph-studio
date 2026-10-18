@@ -53,7 +53,7 @@ export function projectSemanticGeometry(g:DesignGenome,width=800,height=240,zone
   if(stride===0||i%stride!==0)return [];
   const a=pos.get(e.from),b=pos.get(e.to);if(!a||!b)return [];
   const bend=(i%2?1:-1)*Math.min(38,height*.14)*(1-e.weight*.35);
-  const segments=splitWrappedQuadratic(a,b,width,bend);
+  const segments=splitWrappedQuadratic(a,b,zone?.wrapAllowed?width:0,bend);
   return segments.map((segment,j)=>{
    const {from,control,to}=segment;
    const attributes=j===0
