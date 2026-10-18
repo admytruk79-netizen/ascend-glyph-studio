@@ -5,7 +5,7 @@ import {graphFromMotifMaskContours} from '../packages/tesseract-engine/src/motif
 import {rasterizeObservedContours} from '../packages/tesseract-engine/src/motif-contour-rasterization';
 import {components} from '../packages/tesseract-engine/src/raster-features';
 import type {MotifProvenance} from '../packages/tesseract-engine/src/motif-graph';
-const out='data/research/motif-parts-v1';mkdirSync(out,{recursive:true});
+const out=process.argv[2]??'data/research/motif-parts-v1';mkdirSync(out,{recursive:true});
 const crops=[
  {id:'flower-gold',source:'commons-96737731',role:'flower',box:{left:256,top:80,width:198,height:176}},
  {id:'flower-sage',source:'commons-96737731',role:'flower',box:{left:77,top:121,width:166,height:168}},
@@ -25,7 +25,8 @@ const palette=[{color:'#37392b',rgb:[55,57,43]},{color:'#657248',rgb:[101,114,72
  {color:'#a07452',rgb:[160,116,82]},{color:'#748786',rgb:[116,135,134]},{color:'#c7b176',rgb:[199,177,118]}];
 async function main(){
  const pieces=[];
- for(const crop of crops){
+ const extra=process.argv[3]?JSON.parse(readFileSync(process.argv[3],'utf8')):[];
+ for(const crop of [...crops,...extra]){
   const base=`data/research/motif-references/${crop.source}`,original=readFileSync(`${base}/source.jpg`),provenance:MotifProvenance=JSON.parse(readFileSync(`${base}/provenance.json`,'utf8'));
   if(createHash('sha256').update(original).digest('hex')!==provenance.originalSha256||provenance.permission.status!=='verified'||!provenance.permission.purposes.includes('reconstruction'))throw Error('jigsaw:source-not-verified');
   const {data,info}=await sharp(original).extract(crop.box).resize({width:144}).removeAlpha().raw().toBuffer({resolveWithObject:true});
@@ -41,7 +42,7 @@ async function main(){
    if(paper)return -1;
    let best=Infinity,label=-1;palette.forEach((p,j)=>{const d=rgb.reduce((n,v,k)=>n+(v-p.rgb[k])**2,0);if(d<best){best=d;label=j;}});return label;
   });
-  provenance.transformations.push({operation:'source-fragment extraction',evidence:JSON.stringify({crop:crop.box,maskPolygon:'maskPolygon' in crop?crop.maskPolygon:null,resized:info,palette,segmentation:'paper iff plate37 R>165 G>150 B>90; plate27 R>190 G>175 B>110; nearest RGB palette otherwise; ellipse ROI for flower/leaf parts; explicit narrow polygon for veined leaf; draft, not expert segmentation'})});
+  provenance.transformations.push({operation:'source-fragment extraction',evidence:JSON.stringify({crop:crop.box,attachment:crop.attachment??null,structuralRole:crop.structuralRole??null,maskPolygon:'maskPolygon' in crop?crop.maskPolygon:null,resized:info,palette,segmentation:'paper iff plate37 R>165 G>150 B>90; plate27 R>190 G>175 B>110; nearest RGB palette otherwise; ellipse ROI for flower/leaf parts; explicit narrow polygon for veined leaf; draft, not expert segmentation'})});
   const layers=palette.map((p,j)=>{
    const mask=Uint8Array.from(labels,v=>v===j?1:0),r=graphFromMotifMaskContours(mask,info.width,info.height,provenance,info.width),decoded=rasterizeObservedContours(r.graph,info.width,info.height);
    if(mask.some((v,i)=>v!==decoded[i]))throw Error('jigsaw:mask-roundtrip-failed');
@@ -59,11 +60,11 @@ async function main(){
   const main=new Set(components(Uint8Array.from(labels,v=>v>=0?1:0),info.width,info.height,0,1).sort((a,b)=>b.length-a.length)[0]);
   const connected=candidates.filter(c=>[-1,0].some(dx=>[-1,0].some(dy=>{const x=c.point.x+dx,y=c.point.y+dy;return x>=0&&y>=0&&x<info.width&&y<info.height&&main.has(y*info.width+x);})));
   const nearest=(side:'base'|'left'|'right')=>[...connected].sort((a,b)=>{
-   const score=(p:typeof a)=>side==='base'?-p.point.y+Math.abs(p.point.x-info.width/2)*.04:side==='left'?p.point.x+Math.abs(p.point.y-info.height/2)*.1:-p.point.x+Math.abs(p.point.y-info.height/2)*.1;
+   const score=(p:typeof a)=>side==='base'&&crop.attachment?Math.hypot(p.point.x-crop.attachment[0]*info.width/crop.box.width,p.point.y-crop.attachment[1]*info.height/crop.box.height):side==='base'?-p.point.y+Math.abs(p.point.x-info.width/2)*.04:side==='left'?p.point.x+Math.abs(p.point.y-info.height/2)*.1:-p.point.x+Math.abs(p.point.y-info.height/2)*.1;
    return score(a)-score(b);
   })[0];
   if(!connected.length)throw Error('motif-parts:empty');
-  const piece={id:crop.id,kind:crop.role,sourceId:provenance.id,width:info.width,height:info.height,crop:crop.box,layers,
+  const piece={id:crop.id,kind:crop.role,structuralRole:crop.structuralRole??(extra.length&&crop.role==='flower'?'satellite':null),sourceId:provenance.id,width:info.width,height:info.height,crop:crop.box,layers,
    ports:{base:nearest('base'),left:nearest('left'),right:nearest('right')},segmentationReview:'draft',maskRoundtripExact:true};
   pieces.push(piece);await sharp(original).extract(crop.box).png().toFile(`${out}/${crop.id}-source.png`);
  }

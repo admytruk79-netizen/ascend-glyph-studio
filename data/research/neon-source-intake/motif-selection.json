@@ -1,0 +1,174 @@
+{
+  "model": {
+    "schema": "ascend.source-motif-selection.v1",
+    "status": "candidate",
+    "sourceCount": 53,
+    "sourceGroupCount": 14,
+    "descriptorCount": 604,
+    "centroidCount": 8,
+    "weights": {
+      "flower-gold": 0.7431615071840921,
+      "flower-sage": 0.8323910470229193,
+      "flower-lobed": 0.57126083332307,
+      "flower-blue": 0.5759447117959432,
+      "flower-brown": 0.6174985722084474,
+      "flower-russet": 0.6791482471924062,
+      "flower-red": 0.5250902146541778,
+      "flower-ring": 0.6218302631957421,
+      "flower-lower-blue": 0.501512062895169,
+      "flower-radial37": 0.6461961804606526,
+      "flower-hanging37": 0.5362564148842734,
+      "flower-bell37": 0.6976107962359521,
+      "flower-cup37": 0.5240144670746486,
+      "flower-button37": 0.665393007298572,
+      "flower-fan31": 0.4717895343001012,
+      "flower-cup31": 0.6968919448924052,
+      "flower-blue31": 0.5966308021475178,
+      "flower-gold-fan31": 0.5137937512425059,
+      "flower-red-cup31": 0.48656153310920597
+    },
+    "trainingReportSha256": "fe50dbdae351bbb271279bd740433ba8ac9f56b4ebf962f2c98cfbb2fc2b30fb",
+    "scope": "descriptor-similarity-part-selection",
+    "artisticQualityModelTrained": false
+  },
+  "fits": [
+    {
+      "partId": "flower-gold",
+      "descriptorCount": 1,
+      "extraction": "whole-image-components",
+      "meanSquaredDistance": 0.3456025242602953,
+      "weight": 0.7431615071840921
+    },
+    {
+      "partId": "flower-sage",
+      "descriptorCount": 1,
+      "extraction": "whole-image-components",
+      "meanSquaredDistance": 0.20135842832108897,
+      "weight": 0.8323910470229193
+    },
+    {
+      "partId": "flower-lobed",
+      "descriptorCount": 5,
+      "extraction": "whole-image-components",
+      "meanSquaredDistance": 0.7505138487841362,
+      "weight": 0.57126083332307
+    },
+    {
+      "partId": "flower-blue",
+      "descriptorCount": 1,
+      "extraction": "whole-image-components",
+      "meanSquaredDistance": 0.7362777702771918,
+      "weight": 0.5759447117959432
+    },
+    {
+      "partId": "flower-brown",
+      "descriptorCount": 1,
+      "extraction": "whole-image-components",
+      "meanSquaredDistance": 0.6194369428637845,
+      "weight": 0.6174985722084474
+    },
+    {
+      "partId": "flower-russet",
+      "descriptorCount": 2,
+      "extraction": "whole-image-components",
+      "meanSquaredDistance": 0.4724325714363434,
+      "weight": 0.6791482471924062
+    },
+    {
+      "partId": "flower-red",
+      "descriptorCount": 31,
+      "extraction": "4x4-tile-fragments",
+      "meanSquaredDistance": 0.9044346515933378,
+      "weight": 0.5250902146541778
+    },
+    {
+      "partId": "flower-ring",
+      "descriptorCount": 3,
+      "extraction": "whole-image-components",
+      "meanSquaredDistance": 0.608155889455667,
+      "weight": 0.6218302631957421
+    },
+    {
+      "partId": "flower-lower-blue",
+      "descriptorCount": 1,
+      "extraction": "whole-image-components",
+      "meanSquaredDistance": 0.9939699839463877,
+      "weight": 0.501512062895169
+    },
+    {
+      "partId": "flower-radial37",
+      "descriptorCount": 14,
+      "extraction": "whole-image-components",
+      "meanSquaredDistance": 0.5475176583172187,
+      "weight": 0.6461961804606526
+    },
+    {
+      "partId": "flower-hanging37",
+      "descriptorCount": 7,
+      "extraction": "whole-image-components",
+      "meanSquaredDistance": 0.8647795573984967,
+      "weight": 0.5362564148842734
+    },
+    {
+      "partId": "flower-bell37",
+      "descriptorCount": 11,
+      "extraction": "whole-image-components",
+      "meanSquaredDistance": 0.4334640538759254,
+      "weight": 0.6976107962359521
+    },
+    {
+      "partId": "flower-cup37",
+      "descriptorCount": 38,
+      "extraction": "4x4-tile-fragments",
+      "meanSquaredDistance": 0.908344259238829,
+      "weight": 0.5240144670746486
+    },
+    {
+      "partId": "flower-button37",
+      "descriptorCount": 20,
+      "extraction": "whole-image-components",
+      "meanSquaredDistance": 0.5028712190106993,
+      "weight": 0.665393007298572
+    },
+    {
+      "partId": "flower-fan31",
+      "descriptorCount": 34,
+      "extraction": "4x4-tile-fragments",
+      "meanSquaredDistance": 1.119589196660536,
+      "weight": 0.4717895343001012
+    },
+    {
+      "partId": "flower-cup31",
+      "descriptorCount": 5,
+      "extraction": "whole-image-components",
+      "meanSquaredDistance": 0.43494268706806827,
+      "weight": 0.6968919448924052
+    },
+    {
+      "partId": "flower-blue31",
+      "descriptorCount": 4,
+      "extraction": "whole-image-components",
+      "meanSquaredDistance": 0.6760783995740611,
+      "weight": 0.5966308021475178
+    },
+    {
+      "partId": "flower-gold-fan31",
+      "descriptorCount": 42,
+      "extraction": "4x4-tile-fragments",
+      "meanSquaredDistance": 0.9463062709145509,
+      "weight": 0.5137937512425059
+    },
+    {
+      "partId": "flower-red-cup31",
+      "descriptorCount": 15,
+      "extraction": "4x4-tile-fragments",
+      "meanSquaredDistance": 1.0552385093203738,
+      "weight": 0.48656153310920597
+    }
+  ],
+  "limitations": [
+    "Descriptor similarity is not aesthetic quality or source authenticity.",
+    "Local experimental model; shape silhouettes remain attributed historical parts.",
+    "This does not train a neural image model or a stitch digitizer."
+  ]
+}

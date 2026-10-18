@@ -1,0 +1,694 @@
+{
+  "schema": "ascend.training-permission-manifest.v1",
+  "entries": [
+    {
+      "id": "met-445264",
+      "source": "https://www.metmuseum.org/art/collection/search/445264",
+      "sourceGroup": "met-bursa-445264",
+      "imageSha256": "3d8dfc1726ee344d769c20d78006cf6adeb638a588527905e824a7945f20d27d",
+      "imagePath": "data/research/motif-references/met-445264/source.jpg",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "CC0",
+        "evidence": "Met object API 445264 explicitly isPublicDomain=true; Met Open Access CC0 policy https://www.metmuseum.org/about-the-met/policies-and-documents/open-access CC0/public-domain image is admitted for local experimental statistical relationship training; source-specific attribution retained."
+      }
+    },
+    {
+      "id": "met-239343",
+      "source": "https://www.metmuseum.org/art/collection/search/239343",
+      "sourceGroup": "met-blackwork-239343",
+      "imageSha256": "b0ea1b05bc3ef138b2168b264f19a9f62067c45b21780040d1b51b59c7bc5fb6",
+      "imagePath": "data/research/motif-references/met-239343/source-original.jpg",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "CC0",
+        "evidence": "Retained Met object API 239343 isPublicDomain=true; image supplied by Met Open Access. CC0 policy https://www.metmuseum.org/about-the-met/policies-and-documents/open-access CC0/public-domain image is admitted for local experimental statistical relationship training; source-specific attribution retained."
+      }
+    },
+    {
+      "id": "commons-96737753",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9637._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "e4b85cfafc845616091a8e03276ea7dc83d7ec9eb0498da692d3bc804c5b32b0",
+      "imagePath": "data/research/motif-references/commons-96737753/source.jpg",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Reference-use review of retained Neon per-item Commons rights declaration: Public domain; catalogue publication date 1902 (pre-1931 publication, public domain in the US). This is a historical reference-use assessment, not a fresh Commons licence-page verification; live requests returned HTTP 403. No manufacturing approval. Local experimental statistical training assessment: retained per-item public-domain declaration and 1902 publication; US scope only, no newly verified worldwide licence, source image redistribution, regional attribution or manufacturing approval."
+      }
+    },
+    {
+      "id": "commons-96737731",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9627._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "074104c967c8f7cf68fb92ea52e9dd560ddc0bc6c9f54198b47e67a245e48839",
+      "imagePath": "data/research/motif-references/commons-96737731/source.jpg",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Reference-use review of retained Neon Commons item commons-96737731: Public domain; catalogue publication 1902 (pre-1931 publication, public domain in the US). No successful fresh Commons licence-page check or global commercial/manufacturing approval claimed. Local experimental statistical training assessment: retained per-item public-domain declaration and 1902 publication; US scope only, no newly verified worldwide licence, source image redistribution, regional attribution or manufacturing approval."
+      }
+    },
+    {
+      "id": "met-388374",
+      "source": "https://www.metmuseum.org/art/collection/search/388374",
+      "sourceGroup": "durer-embroidery-388374",
+      "imagePath": "data/research/motif-references/met-388374/source-original.jpg",
+      "imageSha256": "beda3a3b189590b95ef273c6f610dca17cd489dc721ad5e8022e95f2854fc93b",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "CC0",
+        "evidence": "Retained official Met API object 388374 isPublicDomain=true; Met Open Access CC0 policy https://www.metmuseum.org/about-the-met/policies-and-documents/open-access. Reviewed concentric knotwork, radial loops and corner ornaments; not Arabic attribution."
+      }
+    },
+    {
+      "id": "cleveland-157565",
+      "source": "https://clevelandart.org/art/1994.96",
+      "sourceGroup": "cleveland-157565",
+      "imagePath": "data/research/museum-embroidery-sources/cleveland-157565/source-web.jpg",
+      "imageSha256": "d172f257af72c83bf90d5daefec9df0f6298a328ddddedd70331a97e56c50489",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "CC0",
+        "evidence": "Museum object API share_license_status=CC0; https://www.clevelandart.org/open-access; catalogue attribution retained in data/research/museum-embroidery-sources/review.json; local shape-only statistical experiment, no production approval."
+      }
+    },
+    {
+      "id": "cleveland-126139",
+      "source": "https://clevelandart.org/art/1948.352",
+      "sourceGroup": "cleveland-126139",
+      "imagePath": "data/research/museum-embroidery-sources/cleveland-126139/source-web.jpg",
+      "imageSha256": "0ec33ff80a39bc058b96310097d1843aab310e8168f2fc1d2904b0424aeca7ff",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "CC0",
+        "evidence": "Museum object API share_license_status=CC0; https://www.clevelandart.org/open-access; catalogue attribution retained in data/research/museum-embroidery-sources/review.json; local shape-only statistical experiment, no production approval."
+      }
+    },
+    {
+      "id": "cleveland-111325",
+      "source": "https://clevelandart.org/art/1929.831",
+      "sourceGroup": "cleveland-111325",
+      "imagePath": "data/research/museum-embroidery-sources/cleveland-111325/source-web.jpg",
+      "imageSha256": "f75ff6f3ff2ef1142ec28cd7a69f27d74eecb0e169e1bd459cef8b845c753dc7",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "CC0",
+        "evidence": "Museum object API share_license_status=CC0; https://www.clevelandart.org/open-access; catalogue attribution retained in data/research/museum-embroidery-sources/review.json; local shape-only statistical experiment, no production approval."
+      }
+    },
+    {
+      "id": "cleveland-159635",
+      "source": "https://clevelandart.org/art/1996.349",
+      "sourceGroup": "cleveland-159635",
+      "imagePath": "data/research/museum-embroidery-sources/cleveland-159635/source-web.jpg",
+      "imageSha256": "7ec2d2fa6d5c735f02b0fc695d52d4fed55c45b95454482a1360169d71425a81",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "CC0",
+        "evidence": "Museum object API share_license_status=CC0; https://www.clevelandart.org/open-access; catalogue attribution retained in data/research/museum-embroidery-sources/review.json; local shape-only statistical experiment, no production approval."
+      }
+    },
+    {
+      "id": "cleveland-156897",
+      "source": "https://clevelandart.org/art/1993.10",
+      "sourceGroup": "cleveland-156897",
+      "imagePath": "data/research/museum-embroidery-sources/cleveland-156897/source-web.jpg",
+      "imageSha256": "c08e0745137929a8e9ae80070df43dfe1dca651443a35a9760940aa96bac3279",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "CC0",
+        "evidence": "Museum object API share_license_status=CC0; https://www.clevelandart.org/open-access; catalogue attribution retained in data/research/museum-embroidery-sources/review.json; local shape-only statistical experiment, no production approval."
+      }
+    },
+    {
+      "id": "cleveland-117038",
+      "source": "https://clevelandart.org/art/1937.582",
+      "sourceGroup": "cleveland-117038",
+      "imagePath": "data/research/museum-embroidery-sources/cleveland-117038/source-web.jpg",
+      "imageSha256": "e8cb4239b5373aba3326b2bcfd0d9a7c2e63ec7583591eee088bc5d4dbf3c0b0",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "CC0",
+        "evidence": "Museum object API share_license_status=CC0; https://www.clevelandart.org/open-access; catalogue attribution retained in data/research/museum-embroidery-sources/review.json; local shape-only statistical experiment, no production approval."
+      }
+    },
+    {
+      "id": "cleveland-108812",
+      "source": "https://clevelandart.org/art/1926.490",
+      "sourceGroup": "cleveland-108812",
+      "imagePath": "data/research/shirt-image-sources/cleveland-108812/source-print.jpg",
+      "imageSha256": "a7f2ce143dd7877b491a9c4bd11c24f8f1bebdd9d4d7a8f6c444db928914bb31",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "CC0",
+        "evidence": "Retained Cleveland API share_license_status=CC0 and https://www.clevelandart.org/open-access; visually reviewed print image. Local shape-only statistical experiment; catalogue culture retained in shirt-image-sources/review.json; no semantic or physical approval."
+      }
+    },
+    {
+      "id": "cleveland-100232",
+      "source": "https://clevelandart.org/art/1919.729",
+      "sourceGroup": "cleveland-100232",
+      "imagePath": "data/research/shirt-image-sources/cleveland-100232/source-print.jpg",
+      "imageSha256": "8481ce6b9cbd345268fb5a21cd39cbaecd60662265dd512e6fb00bc4a92d953d",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "CC0",
+        "evidence": "Retained Cleveland API share_license_status=CC0 and https://www.clevelandart.org/open-access; visually reviewed print image. Local shape-only statistical experiment; catalogue culture retained in shirt-image-sources/review.json; no semantic or physical approval."
+      }
+    },
+    {
+      "id": "cleveland-106581",
+      "source": "https://clevelandart.org/art/1924.629",
+      "sourceGroup": "cleveland-106581",
+      "imagePath": "data/research/shirt-image-sources/cleveland-106581/source-print.jpg",
+      "imageSha256": "b6c879248d99e54ccf78201b09924af4cc7f20e00f10edc0edfb520529986da1",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "CC0",
+        "evidence": "Retained Cleveland API share_license_status=CC0 and https://www.clevelandart.org/open-access; visually reviewed print image. Local shape-only statistical experiment; catalogue culture retained in shirt-image-sources/review.json; no semantic or physical approval."
+      }
+    },
+    {
+      "id": "cleveland-132989",
+      "source": "https://clevelandart.org/art/1955.419",
+      "sourceGroup": "cleveland-132989",
+      "imagePath": "data/research/shirt-image-sources/cleveland-132989/source-print.jpg",
+      "imageSha256": "d883ca19c9a0849d3dcca23f88e133fc25df5111433c001db8ef6b8bb25e064c",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "CC0",
+        "evidence": "Retained Cleveland API share_license_status=CC0 and https://www.clevelandart.org/open-access; visually reviewed print image. Local shape-only statistical experiment; catalogue culture retained in shirt-image-sources/review.json; no semantic or physical approval."
+      }
+    },
+    {
+      "id": "commons-96737638",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9603._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC%D0%B8_%D0%BD%D0%B8%D1%82%D0%BA%D0%B0%D0%BC%D0%B8.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "2b95d10c8cbeab64fe572b62e16c13c6f88c1132ec66f7b7ecfb2f44e5c6c71e",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737638/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9603._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC%D0%B8_%D0%BD%D0%B8%D1%82%D0%BA%D0%B0%D0%BC%D0%B8.jpg"
+      }
+    },
+    {
+      "id": "commons-96737639",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9601._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "daf46aff33ee9056a8b4b0beef685378780821142a63cd3eb9e4bf2f8c019de4",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737639/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9601._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737640",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9602._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "80416c69f8cdc6d8ca9bc6b67b9e1972a4036d614887364afb32ecfd1e4a532f",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737640/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9602._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737644",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9604._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "f1d463b4dc4f28dce625fcc85a5b508a8c4d3f0b57d9d738b4f00a71831ae46f",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737644/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9604._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737645",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9605._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "7bdb66b0e19631218a5d5ea34031bd97d10268b06343c4d5b42f9c256bc177dd",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737645/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9605._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737646",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9606._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC_XVII_%D1%81%D1%82%D0%BE%D0%BB%D1%96%D1%82%D1%82%D1%8F.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "0eac5a4b1c4f043ae1ec0aa4c088572c4b83d3fbb590f35b7e2369c6bffb35a1",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737646/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9606._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC_XVII_%D1%81%D1%82%D0%BE%D0%BB%D1%96%D1%82%D1%82%D1%8F.jpg"
+      }
+    },
+    {
+      "id": "commons-96737650",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9607._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "3f4c593f439aca867dbc1647c7e6ed531be3b2c946f84670ea6383ac6beee9d8",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737650/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9607._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737651",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9608._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC_%D0%BF%D0%B0%D0%BF%D0%B5%D1%80%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "3e4436f138c2c808fe933a19c0b5df8238c17b36aaa613fa657baed5715a0bc8",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737651/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9608._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC_%D0%BF%D0%B0%D0%BF%D0%B5%D1%80%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737654",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9609._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "637b63fe997d2fb20a48f7eb6aba175e92779bcad20ed8d75566b6e9b738a4f0",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737654/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9609._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737659",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9612._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "66418f6d6a5af2ec3693ac0d2eb786423471bb84a1925bce6397483f37f40644",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737659/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9612._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737660",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9610._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC%D0%B8_%D0%BD%D0%B8%D1%82%D0%BA%D0%B0%D0%BC%D0%B8.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "2ddd2fe556ad678a300013f6eab9a0f5406ae54bb7748115214878beb2fc59eb",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737660/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9610._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC%D0%B8_%D0%BD%D0%B8%D1%82%D0%BA%D0%B0%D0%BC%D0%B8.jpg"
+      }
+    },
+    {
+      "id": "commons-96737664",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9611._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "7305f626370e0d2a624795864f9800cb5eddda57fb07a675725d6207c3eb5052",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737664/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9611._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737668",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9614._%D0%96%D0%B8%D0%B2%D0%BE%D0%BF%D0%B8%D1%81_%D0%BD%D0%B0_%D1%81%D0%BA%D1%80%D0%B8%D0%BD%D1%96.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "1d493cbac11c6b933b50a63625cf15f787af28128c3addcd69166c8b83ec2cd5",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737668/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9614._%D0%96%D0%B8%D0%B2%D0%BE%D0%BF%D0%B8%D1%81_%D0%BD%D0%B0_%D1%81%D0%BA%D1%80%D0%B8%D0%BD%D1%96.jpg"
+      }
+    },
+    {
+      "id": "commons-96737676",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9613._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "647d5258e9f311c0ce27d1d2ab51124b549887c8fa3555cd7a2cd200f60dfe5b",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737676/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9613._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737679",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9615._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC%D0%B8_%D0%BD%D0%B8%D1%82%D0%BA%D0%B0%D0%BC%D0%B8_%D1%82%D0%B0_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "b5838d6d73ed07de0788f55258e745d2c83680cea6d629fc41f516dfc5f738b2",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737679/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9615._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC%D0%B8_%D0%BD%D0%B8%D1%82%D0%BA%D0%B0%D0%BC%D0%B8_%D1%82%D0%B0_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737684",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9616._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "f2b01c6c4e4ded8331c0c47fd7f4813792ee02ab910e37569c703c6acf2e10d7",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737684/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9616._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737691",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9618._%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "6d3e762466b6a2d505d48fda534aecdb2e432fb78a224be29b5eb6c5d7fb1e40",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737691/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9618._%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82.jpg"
+      }
+    },
+    {
+      "id": "commons-96737692",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9617._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "1fd921527e6a672c42966977f6cbba2b58304c7d60da41e37f57b124a6f52298",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737692/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9617._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737697",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9619._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "bd3eeb8fe40a255893c62d922c663cacfaa24a8617b7e9ca1883e9577dfa4c72",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737697/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9619._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737704",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9621._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "a6a2831073074d69925c4c3376d3268f14d3d2fa9db88a3df9b539c08e783d1c",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737704/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9621._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737705",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9620._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC%D0%B8_%D0%BD%D0%B8%D1%82%D0%BA%D0%B0%D0%BC%D0%B8.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "85851fa9ae7152da575468fd39fbe3bb2a21be7a6ccff1c385e44dd842c2bc81",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737705/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9620._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC%D0%B8_%D0%BD%D0%B8%D1%82%D0%BA%D0%B0%D0%BC%D0%B8.jpg"
+      }
+    },
+    {
+      "id": "commons-96737708",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9622._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_XVIII_%D1%81%D1%82%D0%BE%D0%BB%D1%96%D1%82%D1%82%D1%8F.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "59d9dd3779d8fdc5170b1a64aa759550b52ec85f5d19bee185e49dfcde319db5",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737708/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9622._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_XVIII_%D1%81%D1%82%D0%BE%D0%BB%D1%96%D1%82%D1%82%D1%8F.jpg"
+      }
+    },
+    {
+      "id": "commons-96737716",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9623._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC_XVIII.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "58bae17b0867cc575b413d2c0ac7b74784fe76a0b8af0c38fb7cb671618507ec",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737716/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9623._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC_XVIII.jpg"
+      }
+    },
+    {
+      "id": "commons-96737719",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9624._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "c85fff07731734c4e87fe6acc72901dfbca66e26cddd2b6cfc1ef2fbafcdc92d",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737719/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9624._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737722",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9625._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC%D0%B8_%D0%BD%D0%B8%D1%82%D0%BA%D0%B0%D0%BC%D0%B8.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "9ffff6b770bc20c88fc8081d72b8a48740bf9df76ae63541ca56acbb4b18177b",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737722/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9625._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC%D0%B8_%D0%BD%D0%B8%D1%82%D0%BA%D0%B0%D0%BC%D0%B8.jpg"
+      }
+    },
+    {
+      "id": "commons-96737730",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9626._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%BE%D1%8E_%D0%B2%D0%BE%D0%B2%D0%BD%D0%BE%D1%8E,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "aa3cf5e9e586c08b1d41eac934bc2b76505ac3f633446688db6b6c749d0a7024",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737730/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9626._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%BE%D1%8E_%D0%B2%D0%BE%D0%B2%D0%BD%D0%BE%D1%8E,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737735",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9630._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "9cdceb6e024ec83d25bacaf7b983f62ab6b098299ee4f5767501fd3313646c28",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737735/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9630._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737738",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9629._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC%D0%B8_%D0%BD%D0%B8%D1%82%D0%BA%D0%B0%D0%BC%D0%B8.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "7d5e0125c239dfe97cfa9639111e18ff62b30a9f39065fe45bf20d291c40f6cd",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737738/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9629._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC%D0%B8_%D0%BD%D0%B8%D1%82%D0%BA%D0%B0%D0%BC%D0%B8.jpg"
+      }
+    },
+    {
+      "id": "commons-96737740",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9628._%D0%A0%D1%83%D1%88%D0%BD%D0%B8%D0%BA._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC%D0%B8_%D0%BD%D0%B8%D1%82%D0%BA%D0%B0%D0%BC%D0%B8.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "a4fff51116fe88feccd4df549f820c6927bab05ed2b8af114132ac399e420ace",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737740/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9628._%D0%A0%D1%83%D1%88%D0%BD%D0%B8%D0%BA._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC%D0%B8_%D0%BD%D0%B8%D1%82%D0%BA%D0%B0%D0%BC%D0%B8.jpg"
+      }
+    },
+    {
+      "id": "commons-96737741",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9631._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "bdb765d9d973c06c53ca8c75c23f5a0fd1c6ece77ce711bc3a2b5d8be8c9fda1",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737741/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9631._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737743",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9632._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "79d74e237fab9e087f6f23af4bd12ffe9dffb236c86b2a9295ac2d4ee2b53b9c",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737743/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9632._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737745",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9633._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_XVII_%D1%81%D1%82%D0%BE%D0%BB%D1%96%D1%82%D1%82%D1%8F.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "64da4f368e4c1aa9272d10647e46622e325fa0ea6337caaca7305a5831fae7bb",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737745/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9633._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_XVII_%D1%81%D1%82%D0%BE%D0%BB%D1%96%D1%82%D1%82%D1%8F.jpg"
+      }
+    },
+    {
+      "id": "commons-96737747",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9634._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "bd35eca3f7ffc599b0415a7acae2017277fddc504f3502214d391e56cfa79f66",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737747/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9634._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737750",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9636._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "3fb3473058e46424ff204a36d62fbf2f2359e706adc60558e8533efdf546e8bd",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737750/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9636._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC,_%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737751",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9635._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC%D0%B8_%D0%BD%D0%B8%D1%82%D0%BA%D0%B0%D0%BC%D0%B8.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "c219ce6e80263dbc3236e63926d57a77cd95884690cc7f023e9aecb4809ff7cc",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737751/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9635._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC%D0%B8_%D0%BD%D0%B8%D1%82%D0%BA%D0%B0%D0%BC%D0%B8.jpg"
+      }
+    },
+    {
+      "id": "commons-96737757",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9638._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "fdb4817fe6a5f0a0ab0fe38ab1c76221bc1c3fa8d107829faf6a246d426dd5f4",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737757/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9638._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D1%88%D0%BE%D0%B2%D0%BA%D0%BE%D0%BC_%D1%96_%D1%81%D1%80%D1%96%D0%B1%D0%BB%D0%BE%D0%BC.jpg"
+      }
+    },
+    {
+      "id": "commons-96737760",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9639._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC%D0%B8_%D0%BD%D0%B8%D1%82%D0%BA%D0%B0%D0%BC%D0%B8.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "5cda01d7f6bdda1eaabbf6c7ef3e82cf3158c0bae0f188c0a992e8373ee7d875",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737760/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9639._%D0%92%D0%B8%D1%88%D0%B8%D0%B2%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BB%D1%8C%D0%BE%D1%80%D0%BE%D0%B2%D0%B8%D0%BC%D0%B8_%D0%BD%D0%B8%D1%82%D0%BA%D0%B0%D0%BC%D0%B8.jpg"
+      }
+    },
+    {
+      "id": "commons-96737763",
+      "source": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9640._%D0%A1%D1%82%D1%96%D0%BD%D0%BD%D0%B8%D0%B9_%D0%B6%D0%B8%D0%B2%D0%BE%D0%BF%D0%B8%D1%81_%D0%B2_%D0%B1%D1%83%D0%B4%D0%B8%D0%BD%D0%BA%D1%83_%D0%93%D1%83%D0%B1%D0%B5%D1%80%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%97%D0%B5%D0%BC%D1%81%D1%82%D0%B2%D0%B0_%D0%B2_%D0%9F%D0%BE%D0%BB%D1%82%D0%B0%D0%B2%D1%96.jpg",
+      "sourceGroup": "samokysh-ukrainian-ornament-1902",
+      "imageSha256": "9602d3abf3e75069d2a11e6ae3f9107129ebe63b8bd99992a667a293b4e784fb",
+      "imagePath": "data/research/neon-source-intake/images/commons-96737763/source.image",
+      "permission": {
+        "status": "approved",
+        "scope": "local-reference-model-experiment",
+        "basis": "public-domain-us",
+        "evidence": "Local experiment assessment extends the existing Samokysh 1902 source-group admission: this retained Neon item explicitly identifies the 1902 ornament publication and records Public domain. Hash binds the downloaded image. US pre-1931 publication assessment only; no fresh worldwide commercial-rights verification or manufacturing approval. Source: https://commons.wikimedia.org/wiki/File:%D0%9C%D0%BE%D1%82%D0%B8%D0%B2%D0%B8_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%BE%D1%80%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%D1%83._1902._%E2%84%9640._%D0%A1%D1%82%D1%96%D0%BD%D0%BD%D0%B8%D0%B9_%D0%B6%D0%B8%D0%B2%D0%BE%D0%BF%D0%B8%D1%81_%D0%B2_%D0%B1%D1%83%D0%B4%D0%B8%D0%BD%D0%BA%D1%83_%D0%93%D1%83%D0%B1%D0%B5%D1%80%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_%D0%97%D0%B5%D0%BC%D1%81%D1%82%D0%B2%D0%B0_%D0%B2_%D0%9F%D0%BE%D0%BB%D1%82%D0%B0%D0%B2%D1%96.jpg"
+      }
+    }
+  ]
+}

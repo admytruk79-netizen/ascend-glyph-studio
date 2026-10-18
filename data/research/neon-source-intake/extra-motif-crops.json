@@ -1,0 +1,177 @@
+[
+  {
+    "id": "flower-radial37",
+    "source": "commons-96737753",
+    "role": "flower",
+    "structuralRole": "dominant",
+    "box": {
+      "left": 218,
+      "top": 43,
+      "width": 256,
+      "height": 323
+    },
+    "attachment": [
+      177,
+      260
+    ]
+  },
+  {
+    "id": "flower-hanging37",
+    "source": "commons-96737753",
+    "role": "flower",
+    "structuralRole": "hanging",
+    "box": {
+      "left": 521,
+      "top": 99,
+      "width": 189,
+      "height": 159
+    },
+    "attachment": [
+      132,
+      26
+    ]
+  },
+  {
+    "id": "flower-bell37",
+    "source": "commons-96737753",
+    "role": "flower",
+    "structuralRole": "hanging",
+    "box": {
+      "left": 902,
+      "top": 217,
+      "width": 234,
+      "height": 205
+    },
+    "attachment": [
+      123,
+      41
+    ]
+  },
+  {
+    "id": "flower-cup37",
+    "source": "commons-96737753",
+    "role": "flower",
+    "structuralRole": "cup",
+    "box": {
+      "left": 779,
+      "top": 45,
+      "width": 121,
+      "height": 157
+    },
+    "attachment": [
+      54,
+      148
+    ]
+  },
+  {
+    "id": "flower-button37",
+    "source": "commons-96737753",
+    "role": "flower",
+    "structuralRole": "satellite",
+    "box": {
+      "left": 435,
+      "top": 310,
+      "width": 104,
+      "height": 90
+    },
+    "attachment": [
+      99,
+      66
+    ]
+  },
+  {
+    "id": "flower-fan31",
+    "source": "commons-96737741",
+    "role": "flower",
+    "structuralRole": "hanging",
+    "box": {
+      "left": 385,
+      "top": 285,
+      "width": 252,
+      "height": 189
+    },
+    "attachment": [
+      130,
+      15
+    ]
+  },
+  {
+    "id": "flower-cup31",
+    "source": "commons-96737741",
+    "role": "flower",
+    "structuralRole": "cup",
+    "box": {
+      "left": 186,
+      "top": 123,
+      "width": 197,
+      "height": 179
+    },
+    "attachment": [
+      104,
+      170
+    ]
+  },
+  {
+    "id": "flower-blue31",
+    "source": "commons-96737741",
+    "role": "flower",
+    "structuralRole": "dominant",
+    "box": {
+      "left": 754,
+      "top": 186,
+      "width": 187,
+      "height": 201
+    },
+    "attachment": [
+      90,
+      195
+    ]
+  },
+  {
+    "id": "flower-gold-fan31",
+    "source": "commons-96737741",
+    "role": "flower",
+    "structuralRole": "hanging",
+    "box": {
+      "left": 936,
+      "top": 285,
+      "width": 253,
+      "height": 190
+    },
+    "attachment": [
+      130,
+      10
+    ]
+  },
+  {
+    "id": "flower-red-cup31",
+    "source": "commons-96737741",
+    "role": "flower",
+    "structuralRole": "cup",
+    "box": {
+      "left": 654,
+      "top": 439,
+      "width": 204,
+      "height": 152
+    },
+    "attachment": [
+      100,
+      140
+    ]
+  },
+  {
+    "id": "leaf-lobed31",
+    "source": "commons-96737741",
+    "role": "leaf",
+    "box": {
+      "left": 879,
+      "top": 425,
+      "width": 65,
+      "height": 164
+    },
+    "attachment": [
+      18,
+      10
+    ]
+  }
+]

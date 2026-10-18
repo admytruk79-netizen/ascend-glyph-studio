@@ -7,3 +7,6 @@ dist/
 
 # Reproducible motif benchmark artifacts and execution logs
 /artifacts/motif-reconstruction/
+
+# Download cache; replay fetch-neon-source-intake.py from the hashed manifest.
+/data/research/neon-source-intake/images/

@@ -1,0 +1,169 @@
+{
+  "schema": "ascend.source-guided-vine-benchmark.v1",
+  "sourceSha256": "bdb765d9d973c06c53ca8c75c23f5a0fd1c6ece77ce711bc3a2b5d8be8c9fda1",
+  "studyId": "plate31-dense-vine-macro-v1",
+  "review": "draft",
+  "macroReconstruction": {
+    "structure": {
+      "junctionCount": 30,
+      "brokenJunctions": 0,
+      "repeatCount": 0,
+      "brokenRepeats": 0,
+      "nestedRelations": 0,
+      "negativeSpaceViolations": 0
+    },
+    "portsOffPath": [],
+    "outsideEnvelope": [],
+    "negativeControl": {
+      "junctionCount": 30,
+      "brokenJunctions": 2,
+      "repeatCount": 0,
+      "brokenRepeats": 0,
+      "nestedRelations": 0,
+      "negativeSpaceViolations": 0
+    },
+    "independentImageAccuracy": null
+  },
+  "cases": [
+    {
+      "seed": 0,
+      "parts": 51,
+      "structure": {
+        "junctionCount": 110,
+        "brokenJunctions": 0,
+        "repeatCount": 0,
+        "brokenRepeats": 0,
+        "nestedRelations": 0,
+        "negativeSpaceViolations": 0
+      },
+      "checks": {
+        "leafFlowerOverlaps": [],
+        "outsideEnvelope": 0
+      },
+      "skippedLeaves": [
+        "vine-leaf-0",
+        "vine-leaf-3",
+        "vine-leaf-5",
+        "vine-leaf-7",
+        "vine-leaf-14",
+        "vine-leaf-17"
+      ],
+      "contourRefinement": {
+        "method": "draft-loop-filter-corner-cut-and-backed-silhouette-v1",
+        "removedLoops": 22176,
+        "beforePoints": 221572,
+        "afterPoints": 108432,
+        "maskRoundtripExact": false,
+        "productionApproved": false
+      },
+      "productionApproved": false,
+      "stitchCount": null
+    },
+    {
+      "seed": 1,
+      "parts": 52,
+      "structure": {
+        "junctionCount": 113,
+        "brokenJunctions": 0,
+        "repeatCount": 0,
+        "brokenRepeats": 0,
+        "nestedRelations": 0,
+        "negativeSpaceViolations": 0
+      },
+      "checks": {
+        "leafFlowerOverlaps": [],
+        "outsideEnvelope": 0
+      },
+      "skippedLeaves": [
+        "vine-leaf-0",
+        "vine-leaf-3",
+        "vine-leaf-6",
+        "vine-leaf-7",
+        "vine-leaf-17"
+      ],
+      "contourRefinement": {
+        "method": "draft-loop-filter-corner-cut-and-backed-silhouette-v1",
+        "removedLoops": 22176,
+        "beforePoints": 221572,
+        "afterPoints": 108432,
+        "maskRoundtripExact": false,
+        "productionApproved": false
+      },
+      "productionApproved": false,
+      "stitchCount": null
+    },
+    {
+      "seed": 7,
+      "parts": 52,
+      "structure": {
+        "junctionCount": 113,
+        "brokenJunctions": 0,
+        "repeatCount": 0,
+        "brokenRepeats": 0,
+        "nestedRelations": 0,
+        "negativeSpaceViolations": 0
+      },
+      "checks": {
+        "leafFlowerOverlaps": [],
+        "outsideEnvelope": 0
+      },
+      "skippedLeaves": [
+        "vine-leaf-0",
+        "vine-leaf-3",
+        "vine-leaf-5",
+        "vine-leaf-7",
+        "vine-leaf-17"
+      ],
+      "contourRefinement": {
+        "method": "draft-loop-filter-corner-cut-and-backed-silhouette-v1",
+        "removedLoops": 22176,
+        "beforePoints": 221572,
+        "afterPoints": 108432,
+        "maskRoundtripExact": false,
+        "productionApproved": false
+      },
+      "productionApproved": false,
+      "stitchCount": null
+    }
+  ],
+  "modelTrainingPerformed": false,
+  "selectionModelApplied": {
+    "schema": "ascend.source-motif-selection.v1",
+    "status": "candidate",
+    "sourceCount": 53,
+    "sourceGroupCount": 14,
+    "descriptorCount": 604,
+    "centroidCount": 8,
+    "weights": {
+      "flower-gold": 0.7431615071840921,
+      "flower-sage": 0.8323910470229193,
+      "flower-lobed": 0.57126083332307,
+      "flower-blue": 0.5759447117959432,
+      "flower-brown": 0.6174985722084474,
+      "flower-russet": 0.6791482471924062,
+      "flower-red": 0.5250902146541778,
+      "flower-ring": 0.6218302631957421,
+      "flower-lower-blue": 0.501512062895169,
+      "flower-radial37": 0.6461961804606526,
+      "flower-hanging37": 0.5362564148842734,
+      "flower-bell37": 0.6976107962359521,
+      "flower-cup37": 0.5240144670746486,
+      "flower-button37": 0.665393007298572,
+      "flower-fan31": 0.4717895343001012,
+      "flower-cup31": 0.6968919448924052,
+      "flower-blue31": 0.5966308021475178,
+      "flower-gold-fan31": 0.5137937512425059,
+      "flower-red-cup31": 0.48656153310920597
+    },
+    "trainingReportSha256": "fe50dbdae351bbb271279bd740433ba8ac9f56b4ebf962f2c98cfbb2fc2b30fb",
+    "scope": "descriptor-similarity-part-selection",
+    "artisticQualityModelTrained": false
+  },
+  "productionApproved": false,
+  "limitations": [
+    "Macro source reconstruction consists of manual axes, envelopes and relationships, not a full reconstruction of the artwork.",
+    "Generated heads reuse attributed plate 27/31/37 contours in a plate 31-informed layout. Interpreted cleanup, backing and recolouring change those contours.",
+    "Main layout fits horizontal and vertical space independently; each placed source shape uses uniform scale.",
+    "Small or colliding leaves are reduced or omitted explicitly. Detailed contour digitization and physical validation remain incomplete."
+  ]
+}
