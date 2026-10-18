@@ -26,7 +26,7 @@ jobs:
       - name: Full worker verification
         run: npm run verify:tesseract-worker
       - name: Create isolated production-integration benchmark run
-        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration'
+        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration' || github.head_ref == 'tesseract-surface-gate-wired-20261017' || github.ref_name == 'tesseract-surface-gate-wired-20261017'
         id: create_staging
         env:
           DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
@@ -36,7 +36,7 @@ jobs:
           echo "run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
           echo "Created integration run $RUN_ID"
       - name: Execute integration worker once
-        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration'
+        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration' || github.head_ref == 'tesseract-surface-gate-wired-20261017' || github.ref_name == 'tesseract-surface-gate-wired-20261017'
         env:
           DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
           WORKER_RUN_ID: ${{ steps.create_staging.outputs.run_id }}
@@ -44,27 +44,27 @@ jobs:
           PORT: "10001"
         run: npx tsx scripts/run-tesseract-worker.ts
       - name: Print integration benchmark metrics
-        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration'
+        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration' || github.head_ref == 'tesseract-surface-gate-wired-20261017' || github.ref_name == 'tesseract-surface-gate-wired-20261017'
         env:
           DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
         run: npx tsx scripts/benchmark-tesseract.mts "${{ steps.create_staging.outputs.run_id }}"
       - name: Assert integration production metadata
-        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration'
+        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration' || github.head_ref == 'tesseract-surface-gate-wired-20261017' || github.ref_name == 'tesseract-surface-gate-wired-20261017'
         env:
           DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
         run: npx tsx scripts/assert-staging-production-metadata.mts "${{ steps.create_staging.outputs.run_id }}"
       - name: Enforce 3.7 visual baseline
-        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration'
+        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration' || github.head_ref == 'tesseract-surface-gate-wired-20261017' || github.ref_name == 'tesseract-surface-gate-wired-20261017'
         env:
           DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
         run: npx tsx scripts/assert-tesseract-regression.mts "${{ steps.create_staging.outputs.run_id }}"
       - name: Export integration production pack
-        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration'
+        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration' || github.head_ref == 'tesseract-surface-gate-wired-20261017' || github.ref_name == 'tesseract-surface-gate-wired-20261017'
         env:
           DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
         run: npx tsx scripts/export-staging-production-pack.mts "${{ steps.create_staging.outputs.run_id }}" 0 out/staging-production-pack
       - name: Upload integration production pack
-        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration'
+        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration' || github.head_ref == 'tesseract-surface-gate-wired-20261017' || github.ref_name == 'tesseract-surface-gate-wired-20261017'
         uses: actions/upload-artifact@v4
         with:
           name: tesseract-production-integration-pack
