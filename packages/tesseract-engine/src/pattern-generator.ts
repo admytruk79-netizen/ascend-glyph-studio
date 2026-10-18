@@ -273,7 +273,10 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const master=compileMasterComposition({svg:projected.svg,mode,complexity,medium,width,height,seed:`${input.seed}:${i}`,sashGrammar,structuralFeedback:input.structuralFeedback,targetOccupancy:constructionEnvelope.targetOccupancy});
   const conceptSvg=colorize(master,input.paletteId??"underdog-heritage");
   const svg=stitchIrToSvg(stitchObjects,physicalSize.width,physicalSize.height);
-  const finalCritique=critiqueFinalSvg(conceptSvg,medium,input.visualCorpus??[]);
+  // Rank embroidery by the canonical stitched geometry, not illustrative concept art.
+  // Keep conceptSvg for creative review; it can contain connectors not sewn on fabric.
+  const critiqueSvg=medium==="embroidery"?svg:conceptSvg;
+  const finalCritique=critiqueFinalSvg(critiqueSvg,medium,input.visualCorpus??[]);
   const combinedScore=candidate.score+finalCritique.score*.45-(compact?.15:0);
   return [{id:`pat-${input.seed}-${i+1}${compact?"-compact":""}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,conceptSvg,finalCritique,productionObjects,stitchObjects,manufacturingJob,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave}];
   } catch (error) {
