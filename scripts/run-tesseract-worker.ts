@@ -223,7 +223,10 @@ async function execute(run:any){
   let passed=0;
   for(const p of patterns){
    let raster:RasterCritique|null=null;
-   try{raster=await critiqueRaster(p.conceptSvg??p.svg)}catch(e){process.stdout.write(JSON.stringify({runId:run.id,stage:"raster-critic-error",pattern:p.id,message:String((e as Error).message).slice(0,120)})+"\n")}
+   // Production embroidery must be raster-judged on the same canonical stitch-IR
+   // geometry as the final SVG critic. Decorative concept art is not sewn.
+   const rasterSvg=mode==="field"?(p.conceptSvg??p.svg):p.svg;
+   try{raster=await critiqueRaster(rasterSvg)}catch(e){process.stdout.write(JSON.stringify({runId:run.id,stage:"raster-critic-error",pattern:p.id,message:String((e as Error).message).slice(0,120)})+"\n")}
    const base=p.score+(raster?raster.quality*60-(raster.survive?0:80):0);
    judged.push({p,raster,score:base+preferenceAdjustment(preferenceModel,p,raster,base),feedbackPass});
    if(raster?.survive)passed++;
