@@ -1,3 +1,4 @@
+import type {CompositionObjective} from "./composition-evolution";
 import type {MediumId} from "./medium-compiler";
 import type {SashEvidenceGrammar} from "./sash-evidence-grammar";
 import type {StructuralFeedback} from "./structural-feedback";
@@ -16,6 +17,7 @@ export function buildMasterCompositionPlan(input:{
  sashGrammar?:SashEvidenceGrammar;
  structuralFeedback?:StructuralFeedback;
  targetOccupancy?:number;
+ compositionObjective?:CompositionObjective;
 }):MasterCompositionPlan{
  const {mode,medium,sashGrammar:g,structuralFeedback:fb}=input;
  const sash=!!g&&(mode==="band"||mode==="sleeve"||mode==="cuff"||mode==="collar");
@@ -24,7 +26,12 @@ export function buildMasterCompositionPlan(input:{
   // targetOccupancy describes the full framed envelope, not just the central
   // motif field. Reserve the two rail gaps inside that target.
   const baseShare=requested===undefined?g.centralShare:Math.max(.20,Math.min(.75,requested-railGap*2));
-  const centerShare=Math.max(.20,Math.min(.75,baseShare+(fb?.centralHierarchyBoost??0)*.14));
+  // Search archetypes influence the stitchable field envelope without
+  // changing canonical glyphs, provenance, or machine-safe seam geometry.
+  const objective=input.compositionObjective;
+  const negativeSpaceAdjustment=objective?(objective.negativeSpace-.6)*-.12:0;
+  const hierarchyAdjustment=objective?(objective.focalHierarchy-.65)*.08:0;
+  const centerShare=Math.max(.20,Math.min(.75,baseShare+(fb?.centralHierarchyBoost??0)*.14+negativeSpaceAdjustment+hierarchyAdjustment));
   const centerY=(1-centerShare)/2;
   const framing=[
     {id:"rail-top",x1:edge,y1:Math.max(.01,centerY-railGap),x2:1-edge,y2:Math.max(.01,centerY-railGap),opacity:.78},
