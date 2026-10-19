@@ -27,6 +27,7 @@ import {buildMasterCompositionPlan} from "./master-composition-plan";
 import {stitchIrToSvg} from "./canonical-preview";
 import {optimizeStitchTravel} from "./stitch-travel-optimizer";
 import {planEmbroideryJob,type ManufacturingJobPlan} from "./manufacturing-job-plan";
+import {compositionObjectives,type CompositionObjective} from "./composition-evolution";
 
 export type PatternMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
 export type PatternGeneratorInput={
@@ -53,6 +54,7 @@ export type GeneratedPattern={
  surfaceMath?:ReturnType<typeof evaluateSurfaceLayout>;
  machineProfileId?:string;
  physicalSizeMm?:{width:number;height:number};
+ compositionObjective?:CompositionObjective;
  octave?:ReturnType<typeof grammarComplexity>;
 };
 
@@ -200,6 +202,9 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  const minDrawableNodes=(mode==="band"||mode==="sleeve"||mode==="cuff"||mode==="collar")?3:2;
  const drawableCandidates=candidates.filter(c=>c.topology.nodes.length>=minDrawableNodes);
  const renderCandidates=drawableCandidates.length?drawableCandidates:candidates;
+ // Assign balanced composition goals to every searched lineage; these are
+ // descriptive search targets, not inferred cultural or manufacturing approvals.
+ const compositionGoals=compositionObjectives(renderCandidates.length);
  const candidateFailures:string[]=[];
  const rendered=renderCandidates.flatMap((candidate,i)=>[false,true].flatMap(compact=>{
   try {
@@ -278,7 +283,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const critiqueSvg=medium==="embroidery"?svg:conceptSvg;
   const finalCritique=critiqueFinalSvg(critiqueSvg,medium,input.visualCorpus??[]);
   const combinedScore=candidate.score+finalCritique.score*.45-(compact?.15:0);
-  return [{id:`pat-${input.seed}-${i+1}${compact?"-compact":""}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,svg,conceptSvg,finalCritique,productionObjects,stitchObjects,manufacturingJob,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave}];
+  return [{id:`pat-${input.seed}-${i+1}${compact?"-compact":""}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,compositionObjective:compositionGoals[i],svg,conceptSvg,finalCritique,productionObjects,stitchObjects,manufacturingJob,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave}];
   } catch (error) {
    if(error instanceof Error && /^(ornament-|scaled satin width out of machine-safe range)/.test(error.message)){
     candidateFailures.push(`${i}:${compact?"compact":"full"}:${error.message}`);
