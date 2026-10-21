@@ -221,7 +221,7 @@ async function execute(run:any){
   const patterns=generatePatterns({seed:passSeed,concepts,paletteId:intent.paletteId,mode,complexity:passComplexity,variations:candidatePoolSize,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus,learnedGuidance,structuralFeedback,machineProfileId:intent.machineProfileId,physicalWidthMm:intent.physicalWidthMm,physicalHeightMm:intent.physicalHeightMm,constructionIntent:intent.constructionIntent});
   process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-pass",feedbackPass,patterns:patterns.length,targetBatch:batchSize,candidatePoolSize,complexity:passComplexity})+"\n");
   let passed=0;
-  for(const p of patterns){
+  for(const [candidateIndex,p] of patterns.entries()){
    let raster:RasterCritique|null=null;
    // Production embroidery must be raster-judged on the same canonical stitch-IR
    // geometry as the final SVG critic. Decorative concept art is not sewn.
@@ -232,6 +232,19 @@ async function execute(run:any){
     throw new Error(`Raster critique failed for ${p.id}: ${message}`);
    }
    if(!raster||!Number.isFinite(raster.quality))throw new Error(`Missing valid raster verdict for ${p.id}`);
+   // Diagnostic only: compare the same candidate as concept art and actual
+   // stitch geometry. Never substitute concept scores into production ranking.
+   // Bound the extra raster work to three candidates per feedback pass.
+   if(candidateIndex<3&&p.conceptSvg&&p.conceptSvg!==p.svg){
+    try{
+     const conceptRaster=await critiqueRaster(p.conceptSvg);
+     process.stdout.write(JSON.stringify({runId:run.id,stage:"paired-raster-diagnostic",pattern:p.id,mode,
+      stitch:{quality:raster.quality,clutter:raster.clutter,survive:raster.survive},
+      concept:{quality:conceptRaster.quality,clutter:conceptRaster.clutter,survive:conceptRaster.survive}})+"\n");
+    }catch(e){
+     process.stdout.write(JSON.stringify({runId:run.id,stage:"paired-raster-diagnostic-error",pattern:p.id,message:String((e as Error).message).slice(0,160)})+"\n");
+    }
+   }
    const base=p.score+raster.quality*60-(raster.survive?0:80);
    judged.push({p,raster,score:base+preferenceAdjustment(preferenceModel,p,raster,base),feedbackPass});
    if(raster?.survive)passed++;
