@@ -10,7 +10,8 @@ describe("paired raster-view diagnostics",()=>{
   expect(gatingRasterView("sleeve",p)).toBe("canonical-stitch-ir");
   expect(gatingRasterSvg("sleeve",p)).toBe(p.svg);
   const result=await compareRasterViews("sleeve",p,critic);
-  expect(critic).toHaveBeenCalledExactlyOnceWith(p.conceptSvg);
+  expect(critic).toHaveBeenCalledTimes(1);
+  expect(critic).toHaveBeenCalledWith(p.conceptSvg);
   expect(result).toMatchObject({gatingView:"canonical-stitch-ir",alternateView:"concept-preview",status:"ok",alternateRaster:verdict});
  });
  it("gates field artwork on concept and compares stitch view",async()=>{
