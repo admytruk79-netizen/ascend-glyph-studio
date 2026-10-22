@@ -2,6 +2,7 @@ import pg from "pg";
 import http from "node:http";
 import {generatePatterns,type PatternMode} from "../packages/tesseract-engine/src/pattern-generator";
 import {critiqueRaster,type RasterCritique} from "../packages/tesseract-engine/src/raster-critic";
+import {gatingRasterSvg,compareRasterViews} from "../packages/tesseract-engine/src/raster-view-diagnostics";
 import {deriveStructuralFeedback,type StructuralFeedback} from "../packages/tesseract-engine/src/structural-feedback";
 import {deriveCorpusCanon} from "../packages/tesseract-engine/src/corpus-canonical";
 import {installCorpusCanon} from "../packages/tesseract-engine/src/ascend-primitives";
@@ -225,25 +226,26 @@ async function execute(run:any){
    let raster:RasterCritique|null=null;
    // Production embroidery must be raster-judged on the same canonical stitch-IR
    // geometry as the final SVG critic. Decorative concept art is not sewn.
-   const rasterSvg=mode==="field"?(p.conceptSvg??p.svg):p.svg;
+   const rasterSvg=gatingRasterSvg(mode,p);
    try{raster=await critiqueRaster(rasterSvg)}catch(e){
     const message=String((e as Error).message).slice(0,160);
     process.stdout.write(JSON.stringify({runId:run.id,stage:"raster-critic-error",pattern:p.id,message})+"\n");
     throw new Error(`Raster critique failed for ${p.id}: ${message}`);
    }
    if(!raster||!Number.isFinite(raster.quality))throw new Error(`Missing valid raster verdict for ${p.id}`);
-   // Diagnostic only: compare the same candidate as concept art and actual
-   // stitch geometry. Never substitute concept scores into production ranking.
-   // Bound the extra raster work to three candidates per feedback pass.
-   if(candidateIndex<3&&p.conceptSvg&&p.conceptSvg!==p.svg){
-    try{
-     const conceptRaster=await critiqueRaster(p.conceptSvg);
-     process.stdout.write(JSON.stringify({runId:run.id,stage:"paired-raster-diagnostic",pattern:p.id,mode,
-      stitch:{quality:raster.quality,clutter:raster.clutter,survive:raster.survive},
-      concept:{quality:conceptRaster.quality,clutter:conceptRaster.clutter,survive:conceptRaster.survive}})+"\n");
-    }catch(e){
-     process.stdout.write(JSON.stringify({runId:run.id,stage:"paired-raster-diagnostic-error",pattern:p.id,message:String((e as Error).message).slice(0,160)})+"\n");
-    }
+   // Diagnostic only: compare identical candidates as artwork and stitch-IR.
+   // The primary raster remains the sole production survival gate.
+   if(candidateIndex<3){
+    const comparison=await compareRasterViews(mode,p,critiqueRaster);
+    process.stdout.write(JSON.stringify({runId:run.id,stage:"paired-raster-diagnostic",pattern:p.id,mode,
+     physicalSizeMm:p.physicalSizeMm??null,
+     gatingView:comparison.gatingView,
+     gatingRaster:{coverage:raster.coverage,quality:raster.quality,clutter:raster.clutter,
+      emptyColumns:raster.emptyColumns,balance:raster.balance,survive:raster.survive,flags:raster.flags},
+     alternateView:comparison.alternateView,alternateStatus:comparison.status,
+     alternateRaster:comparison.alternateRaster??null,alternateError:comparison.error??null,
+     evidenceStatus:"raster-reference-only-not-manufacturer-validated"
+    })+"\n");
    }
    const base=p.score+raster.quality*60-(raster.survive?0:80);
    judged.push({p,raster,score:base+preferenceAdjustment(preferenceModel,p,raster,base),feedbackPass});
