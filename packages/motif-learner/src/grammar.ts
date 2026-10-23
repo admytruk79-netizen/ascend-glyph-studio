@@ -93,7 +93,7 @@ export function paletteOf(sub: SubModel, structureThread = 1): Palette {
 export interface GrammarStyle { figurative: number; groups: Partial<Record<Group, number>>; cores: Record<string, number>; arms: Record<string, number>; flowers: Record<string, number>; density: number }
 export const GRAMMAR_STYLES: Record<string, GrammarStyle> = {
   Ukrainian: { figurative: 0.25, groups: { d4: 6, c4: 1, d2: 2 }, cores: { octagram: 2, rosette: 1, nested: 3, petals: 3, stepped: 2, cross: 1 }, arms: { diag: 4, fir: 2, none: 2 }, flowers: { petals: 2, tulip: 3, rhomb: 2, carnation: 1 }, density: 0.42 },
-  English: { figurative: 0.7, groups: { d4: 3, d2: 2, c4: 1 }, cores: { octagram: 3, rosette: 2, nested: 1, petals: 2, stepped: 1, cross: 2 }, arms: { diag: 2, fir: 1, none: 3 }, flowers: { carnation: 3, tulip: 2, petals: 2, rhomb: 1 }, density: 0.32 },
+  English: { figurative: 0.55, groups: { d4: 3, d2: 2, c4: 1 }, cores: { octagram: 3, rosette: 2, nested: 1, petals: 2, stepped: 1, cross: 2 }, arms: { diag: 2, fir: 1, none: 3 }, flowers: { carnation: 3, tulip: 2, petals: 2, rhomb: 1 }, density: 0.32 },
 };
 const pickW = <K extends string>(r: () => number, w: Partial<Record<K, number>>): K => {
   const e = Object.entries(w) as [K, number][];
