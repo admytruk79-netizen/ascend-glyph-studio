@@ -35,7 +35,7 @@ export function buildRhythmicProductionRepeats(
  const footprint=(o:ProductionGlyphObject):SurfaceFootprint=>({
   id:o.id,u:o.placement.xMm!,v:o.placement.yMm!,
   widthMm:o.physical.widthMm,heightMm:o.physical.heightMm,
-  rotationDeg:o.placement.rotationDeg??o.physical.rotationDeg,clearanceMm:gap
+  rotationDeg:o.placement.rotationDeg??o.physical.rotationDeg,clearanceMm:Math.max(gap,o.physical.clearanceMm)
  });
  const occupied=originals.filter(o=>Number.isFinite(o.placement.xMm)&&Number.isFinite(o.placement.yMm)).map(footprint);
  const smallestHeight=Math.min(...sources.map(o=>o.physical.heightMm));
@@ -51,7 +51,7 @@ export function buildRhythmicProductionRepeats(
    const x=(c+.5)*C/cols;
    const f:SurfaceFootprint={id:`${source.id}:rhythm:${r}:${c}`,u:x,v:y,
     widthMm:source.physical.widthMm,heightMm:source.physical.heightMm,
-    rotationDeg:source.placement.rotationDeg??source.physical.rotationDeg,clearanceMm:gap};
+    rotationDeg:source.placement.rotationDeg??source.physical.rotationDeg,clearanceMm:Math.max(gap,source.physical.clearanceMm)};
    const e=extent(f);
    // Conservative no-go treatment for the full rotated box, not just center.
    if(x-e.x<gap||x+e.x>C-gap||y-e.y<Math.max(0,band.minYmm)+gap||
