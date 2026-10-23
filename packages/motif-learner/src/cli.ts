@@ -1,8 +1,9 @@
 /**
  *   tsx src/cli.ts train [records.json …]           fit + held-out evaluation → out/motif-learner/{model,evaluation}.json
- *   tsx src/cli.ts generate [--fractal] [--tradition Ukrainian] [--region R] [--count 12] [--seed 1] [--group d4] [--size 15]
+ *   tsx src/cli.ts generate [--anneal | --fractal] [--tradition Ukrainian] [--region R] [--count 12] [--seed 1] [--group d4] [--size 15]
  *                           [--blend Ukrainian=0.6,English=0.4 [--mode mix|common] [--colour-from English]]   amalgamate traditions
  *                           [--invent SEED]   a style invented from nothing (no tradition, no training data)
+ *                           default: shape grammar ranked by the model; --anneal: the cell-by-cell sampler
  *                                                    → out/motif-learner/{candidates.json,sheet.svg}
  *   tsx src/cli.ts extract <image> --id ID --tradition T --group G
  *                                                    → a record to review; its licence stays "unreviewed" (excluded) until a person sets it
@@ -17,6 +18,7 @@ import { leaveOneGroupOut } from "./evaluate.ts";
 import { extractGrid } from "./extract.ts";
 import { generate } from "./generate.ts";
 import { generateFractal } from "./fractal.ts";
+import { generateGrammar } from "./grammar.ts";
 import { toChart, toSvg } from "./grid.ts";
 import { fit, select, type Model, type MotifRecord } from "./model.ts";
 
@@ -67,7 +69,8 @@ if (cmd === "train") {
     console.log(JSON.stringify(cands.map((c) => ({ seed: c.seed, group: c.group, size: `${c.grid.w}x${c.grid.h}`, dimension: +c.dimension.toFixed(2), trainingDimension: c.trainingDimension, nearestIoU: +c.nearest.iou.toFixed(2), decoration: c.decoration }))));
     process.exit(0);
   }
-  const { accepted, rejected } = generate(sub, model.dataset, { count: +flag("count", "12")!, seed: +flag("seed", "1")!, ...(size ? { size: +size } : {}), ...(group ? { group: group as never } : {}) });
+  const run = { count: +flag("count", "12")!, seed: +flag("seed", "1")!, ...(size ? { size: +size } : {}), ...(group ? { group: group as never } : {}) };
+  const { accepted, rejected } = rest.includes("--anneal") ? generate(sub, model.dataset, run) : generateGrammar(sub, model.dataset, run);
   const cell = 7, cols = 4, tile = (Math.max(18, ...accepted.map((c) => Math.max(c.grid.w, c.grid.h))) + 2) * cell, tiles = accepted.map((c, i) => `<g transform="translate(${(i % cols) * tile + (tile - c.grid.w * cell) / 2},${Math.floor(i / cols) * (tile + 16)})">${toSvg(c.grid, cell, `${c.group} ${c.logLikelihood.toFixed(2)} ≈${(c.nearest.iou * 100).toFixed(0)}%`)}</g>`);
   const band = accepted.length >= 2 ? composeBand([accepted[0]!.grid, accepted[1]!.grid], "A A A | B | A A A") : null;
   const bandY = Math.ceil(accepted.length / cols) * (tile + 16) + 10, W = Math.max(cols * tile, (band?.w ?? 0) * 5);

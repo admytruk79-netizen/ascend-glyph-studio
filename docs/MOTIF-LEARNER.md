@@ -69,6 +69,26 @@ npm --workspace @ascend/motif-learner run generate -- --blend Ukrainian=0.6,Engl
 
 A blend needs a second trained tradition. Only Ukrainian has reviewed records so far; English samplers and tatreez are the next collections. Generated blends should be labelled as fusions inspired by each tradition, not as authentic work of either.
 
+## Shape grammar: how motifs are drawn (`src/grammar.ts`)
+
+Drawing cell by cell from 3×3 patch statistics (simulated annealing, still available with `--anneal`) gave ragged blobs with stubs, and an invented style gave noise. Generators whose output looks right work differently. [Hoopla](https://coding-crafter.itch.io/hoopla), a procedural cross-stitch sampler, builds a motif from clean primitives. So do the shape grammars for blackwork ([ICCC 2017](https://computationalcreativity.net/iccc2017/CCW/CCW2017_paper_2.pdf)) and design motifs ([Mazeika & Whitehead](https://www.pcgworkshop.com/archive/mazeika2015motifs.pdf)). Systems built on image models (VyshyvAI, the C²DH VYSH project) cannot be counted or stitched without redrawing. So the generator now runs a small grammar, and the learned model judges what it draws:
+
+- **Primitives:** all built on 45° geometry:
+  - filled, outlined, stepped (2×2) and nested rhombs;
+  - eight-point stars, both as square-over-rhomb and as eight rhomb petals;
+  - toothed rings, diagonal arms with sprouts, ram's horns and hooks, fir arms, satellites, corner rhombs and frames.
+- **Figurative family** (one mirror): a pot or roots, a trunk, and paired branches with leaves, ending in tulips, carnations, rhombs or petal stars, with a crowning flower. These are the tree-of-life and vase motifs of both Ukrainian work and samplers.
+- **Composition:** core, then rings, arms and satellites, scaled to the motif radius. Each part is painted in a colour role (fill, outline, accent, leaf) with a one-cell halo, so parts stay separate. Symmetry is exact, because every part is copied under the group (d4, c4, d2 or one mirror).
+- **Style profiles:**
+  - each tradition has a profile: how often it draws figurative motifs, and which cores, arms and flowers it favours;
+  - the Ukrainian and English profiles are written from the pattern literature, so they are priors, not learned;
+  - a blend mixes its parents' profiles by weight, and an invented style draws a profile of its own.
+- **What the model decides:**
+  - the palette comes from thread use;
+  - for each motif, 10 programs are drawn and ranked by looks (density near the style's, several parts, no big solid blocks, no stray stitches) plus a nudge from the patch log-likelihood;
+  - the near-copy gate (IoU < 0.8 over all 8 rotations and reflections) still applies.
+- **Family choice:** figurative or geometric is chosen before ranking and is stratified. Over a run, the share of figurative motifs matches the style's rate, and the ranking cannot favour one family.
+
 ## Results now (honest scope)
 
 On the 10 bundled seed charts (`data/motifs/ua-seed-motifs.v1.json`):
@@ -82,7 +102,7 @@ On the 10 bundled seed charts (`data/motifs/ua-seed-motifs.v1.json`):
 
 Other limits:
 
-- The 3×3 model has no long-range structure beyond symmetry, density and island count.
+- The 3×3 model has no long-range structure beyond symmetry, density and island count. The grammar now supplies that structure, so its vocabulary limits what can be drawn. Its style profiles are hand-written priors until enough reviewed charts exist to fit them.
 - Bands are composed by a grammar string, not learned.
 - Cross-stitch paths are geometry-checked only. Pitch, pull and coverage need the calibration sew-out.
 - Image extraction works for charts and flat, square-on photos. Worn, curved or angled garments will often fail, and are then excluded.
@@ -91,7 +111,7 @@ Other limits:
 
 ```bash
 npm --workspace @ascend/motif-learner run train                    # fit + held-out evaluation → out/motif-learner/
-npm --workspace @ascend/motif-learner run generate -- --count 12 --seed 11 [--group d4] [--size 15] [--region R]
+npm --workspace @ascend/motif-learner run generate -- --count 12 --seed 11 [--group d4|c4|d2|mirror-v] [--size 27] [--region R] [--anneal]
 npx tsx packages/motif-learner/src/cli.ts extract chart.jpg --id met-12345 --tradition Ukrainian --group met-12345
 ```
 

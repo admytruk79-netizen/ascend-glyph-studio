@@ -23,7 +23,7 @@ export function inventStyle(seed: number): SubModel {
   const counts = Array.from({ length: 512 }, () => gamma(r, 0.06) * 1000);
   counts[0] = 4000 + r() * 6000;
   const palette = [1, 2, 3, 4, 5].sort(() => r() - 0.5).slice(0, 2 + Math.floor(r() * 3));
-  const layers = [0, 1, 2, 3].map((l) => [0, 1, 2, 3, 4, 5].map((c) => { const i = palette.indexOf(c); return i < 0 ? 0 : i === l % palette.length ? 50 : 4; }));
+  const layers = [0, 1, 2, 3].map((l) => [0, 1, 2, 3, 4, 5].map((c) => { const i = palette.indexOf(c); return i < 0 ? 0 : i === l % palette.length ? 50 - i : 4; }));
   return {
     key: `invented-${seed}`, examples: 0, sourceGroups: 0, independentSources: 0,
     patch: { alpha: 0.01, counts, total: counts.reduce((a, b) => a + b, 0) },

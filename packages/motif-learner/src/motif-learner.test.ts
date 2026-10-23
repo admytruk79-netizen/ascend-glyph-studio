@@ -191,3 +191,37 @@ test("invented styles need no training data and keep exact symmetry", async () =
   assert.equal(g.accepted.length, 3);
   for (const m of g.accepted) { assert.equal(detectSymmetry(m.grid, 1), "d4"); assert.ok(m.grid.cells.some(Boolean)); }
 });
+
+test("grammar: clean motifs with exact symmetry, deterministic, ranked by the model, never copies", async () => {
+  const { grammarMotif, generateGrammar, paletteOf, styleOf, GRAMMAR_STYLES } = await import("./grammar.ts");
+  const { flipH } = await import("./grid.ts");
+  const { blend } = await import("./blend.ts");
+  for (const group of ["d4", "c4", "d2", "mirror-v"] as const) for (const s of [1, 2, 3]) {
+    const m = grammarMotif({ seed: s, size: 21, group });
+    assert.ok(same(m.grid, grammarMotif({ seed: s, size: 21, group }).grid), "deterministic");
+    assert.equal(m.grid.w, 21);
+    if (group === "mirror-v") assert.ok(same(m.grid, flipH(m.grid)));
+    else assert.ok((group === "d4" ? ["d4"] : group === "c4" ? ["c4", "d4"] : ["d2", "d4"]).includes(detectSymmetry(m.grid, 1)), `${group} seed ${s} → ${detectSymmetry(m.grid, 1)}`);
+    // no stray single stitches: every stitch touches another
+    const g = m.grid;
+    for (let y = 0; y < g.h; y++) for (let x = 0; x < g.w; x++) if (g.cells[y * g.w + x]) {
+      let n = 0;
+      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if ((dx || dy) && x + dx >= 0 && y + dy >= 0 && x + dx < g.w && y + dy < g.h && g.cells[(y + dy) * g.w + x + dx]) n++;
+      assert.ok(n > 0 || (x === (g.w >> 1) && y === (g.h >> 1)), `lone stitch at ${x},${y} (${group} seed ${s})`);
+    }
+  }
+  const run = generateGrammar(ua, model.dataset, { count: 6, seed: 9, size: 21 });
+  assert.equal(run.accepted.length, 6);
+  const threads = new Set(paletteOf(ua));
+  for (const c of run.accepted) { assert.ok(c.nearest.iou < 0.8); assert.ok(c.grid.cells.every((v) => v === 0 || threads.has(v))); }
+  assert.equal(new Set(run.accepted.map((c) => toChart(c.grid).join("\n"))).size, 6, "a run never repeats a motif");
+  // the near-copy gate still applies
+  assert.equal(generateGrammar(ua, model.dataset, { count: 2, seed: 9, size: 21, maxIoU: 0 }).accepted.length, 0);
+  // styles: known traditions use their profile, a blend sits between its parents, an invented style has its own
+  assert.equal(styleOf(ua), GRAMMAR_STYLES.Ukrainian);
+  const en = { ...ua, key: "English" }, b = styleOf(blend([{ sub: ua, weight: 1 }, { sub: en, weight: 1 }]));
+  assert.ok(b.figurative > GRAMMAR_STYLES.Ukrainian!.figurative && b.figurative < GRAMMAR_STYLES.English!.figurative);
+  const { inventStyle } = await import("./invent.ts");
+  assert.deepEqual(styleOf(inventStyle(3)), styleOf(inventStyle(3)));
+  assert.notDeepEqual(styleOf(inventStyle(3)), styleOf(inventStyle(4)));
+});
