@@ -1,0 +1,411 @@
+{
+ "schema": "ascend.motif-review-decisions.v1",
+ "note": "verdicts from the Motif Review page; reviewer ids omitted",
+ "decisions": {
+  "commons-100779006": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:09:42.816Z"
+  },
+  "commons-109594449-m5": {
+   "verdict": "reject",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:19:26.388Z"
+  },
+  "commons-109950504-m4": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:17:57.333Z"
+  },
+  "commons-113213721-m1": {
+   "verdict": "reject",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:19:21.680Z"
+  },
+  "commons-114045555-m4": {
+   "verdict": "reject",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:19:27.044Z"
+  },
+  "commons-114045555-m5": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:16:50.118Z"
+  },
+  "commons-129469473-m12": {
+   "verdict": "reject",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:19:19.910Z"
+  },
+  "commons-129588741-m2": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:16:00.013Z"
+  },
+  "commons-129588744-m1": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:18:12.714Z"
+  },
+  "commons-129588744-m2": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:16:36.404Z"
+  },
+  "commons-129588744-m3": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:15:54.197Z"
+  },
+  "commons-129672021-m2": {
+   "verdict": "reject",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:19:22.991Z"
+  },
+  "commons-129718191-m4": {
+   "verdict": "reject",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:19:23.618Z"
+  },
+  "commons-129746025": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:16:51.764Z"
+  },
+  "commons-130196268-m2": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:12:59.396Z"
+  },
+  "commons-130196268-m3": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:13:13.935Z"
+  },
+  "commons-130196276-m4": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:12:00.098Z"
+  },
+  "commons-130196276-m7": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:16:23.441Z"
+  },
+  "commons-130196276-m9": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:15:12.683Z"
+  },
+  "commons-130196277-m2": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:10:56.172Z"
+  },
+  "commons-130232279-m5": {
+   "verdict": "reject",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:19:24.310Z"
+  },
+  "commons-130235249-m4": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:09:26.419Z"
+  },
+  "commons-130236805-m11": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:17:19.610Z"
+  },
+  "commons-130236805-m2": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:15:25.145Z"
+  },
+  "commons-130236805-m7": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:13:57.774Z"
+  },
+  "commons-130236805-m8": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:15:38.370Z"
+  },
+  "commons-130236807-m2": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:16:39.269Z"
+  },
+  "commons-130236827-m1": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:16:10.644Z"
+  },
+  "commons-145140964-m2": {
+   "verdict": "reject",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:19:18.268Z"
+  },
+  "commons-153465705-m6": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:16:11.466Z"
+  },
+  "commons-155200811": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:14:26.738Z"
+  },
+  "commons-158684728-m1": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:10:25.471Z"
+  },
+  "commons-158684728-m2": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:11:10.600Z"
+  },
+  "commons-159693418-m5": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:11:03.863Z"
+  },
+  "commons-159693423-m3": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:16:32.722Z"
+  },
+  "commons-159994390-m2": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:18:22.129Z"
+  },
+  "commons-160075782-m12": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:09:47.489Z"
+  },
+  "commons-160079837-m3": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:14:44.237Z"
+  },
+  "commons-160079837-m4": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:10:00.823Z"
+  },
+  "commons-160079837-m5": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:10:22.733Z"
+  },
+  "commons-160079840-m10": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:10:03.069Z"
+  },
+  "commons-160079840-m3": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:10:20.297Z"
+  },
+  "commons-160079840-m5": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:17:44.621Z"
+  },
+  "commons-160079840-m6": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:09:49.247Z"
+  },
+  "commons-160079840-m8": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:15:18.273Z"
+  },
+  "commons-160119493-m1": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:16:41.046Z"
+  },
+  "commons-160119493-m2": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:17:14.436Z"
+  },
+  "commons-162785639-m2": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:14:46.849Z"
+  },
+  "commons-162785639-m3": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:18:17.931Z"
+  },
+  "commons-162995312-m2": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:12:12.482Z"
+  },
+  "commons-162995312-m4": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:11:53.428Z"
+  },
+  "commons-162995312-m5": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:11:16.134Z"
+  },
+  "commons-162995312-m6": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:13:32.605Z"
+  },
+  "commons-176968076-m3": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:16:18.017Z"
+  },
+  "commons-184854930-m7": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:17:17.010Z"
+  },
+  "commons-187156484-m2": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:10:51.108Z"
+  },
+  "commons-187156484-m6": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:10:04.367Z"
+  },
+  "commons-199539741": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:17:24.959Z"
+  },
+  "commons-23697961-m1": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:09:34.420Z"
+  },
+  "commons-26781538-m1": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:13:50.655Z"
+  },
+  "commons-26781538-m2": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:13:18.575Z"
+  },
+  "commons-27783879-m3": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:17:09.123Z"
+  },
+  "commons-27866875-m2": {
+   "verdict": "reject",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:19:18.669Z"
+  },
+  "commons-29507347": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:18:04.957Z"
+  },
+  "commons-38481916": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:10:17.090Z"
+  },
+  "commons-38481917": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:10:34.895Z"
+  },
+  "commons-38481922": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:18:08.414Z"
+  },
+  "commons-38481925": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:10:06.875Z"
+  },
+  "commons-38482172-m1": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:18:25.727Z"
+  },
+  "commons-38482178-m1": {
+   "verdict": "reject",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:19:19.090Z"
+  },
+  "commons-38482200-m10": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:16:46.724Z"
+  },
+  "commons-38981625-m3": {
+   "verdict": "reject",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:19:19.464Z"
+  },
+  "commons-42055569": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:17:54.469Z"
+  },
+  "commons-43653922-m1": {
+   "verdict": "reject",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:19:24.995Z"
+  },
+  "commons-44279438": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:14:34.832Z"
+  },
+  "commons-63872910-m3": {
+   "verdict": "reject",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:19:25.657Z"
+  },
+  "commons-87653096-m1": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:10:10.916Z"
+  },
+  "commons-8962596": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:13:24.389Z"
+  },
+  "commons-96737668-m2": {
+   "verdict": "reject",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:19:14.321Z"
+  },
+  "commons-96737740-m1": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:11:14.478Z"
+  },
+  "commons-96737740-m6": {
+   "verdict": "keep",
+   "coloursWrong": false,
+   "at": "2026-10-13T02:11:29.433Z"
+  }
+ }
+}
