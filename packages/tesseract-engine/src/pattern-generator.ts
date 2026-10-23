@@ -256,6 +256,16 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
    seamPolicy:constructionEnvelope.seamPolicy,
    seamGapMm:constructionEnvelope.minGapMm
   })).objects;
+  // The concept composer is illustrative only. Surface and manufacturing
+  // validation MUST use the canonical stitch objects above, never SVG layers.
+  // Reject near-empty sash layouts instead of treating a high critic score as
+  // evidence of a richly composed design.
+  const drawableGlyphCount=new Set(stitchObjects.filter(o=>!o.id.startsWith("composition:")).map(o=>o.id.replace(/:p\\d+$/,""))).size;
+  const minimumGlyphs=sashMode&&complexity>=.6?5:3;
+  if(drawableGlyphCount<minimumGlyphs){
+   candidateFailures.push(`${i}:${compact?"compact":"full"}:insufficient-production-motifs:${drawableGlyphCount}<${minimumGlyphs}`);
+   return [];
+  }
   const manufacturingJob=planEmbroideryJob(stitchObjects,{widthMm:physicalSize.width,heightMm:physicalSize.height});
   let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
   if(productionZone.wrapAllowed&&(productionZone.surface==="cylinder"||productionZone.surface==="tapered-cylinder")){
