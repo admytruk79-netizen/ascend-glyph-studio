@@ -16,9 +16,19 @@ describe("Tesseract semantic topology budget",()=>{
   });
   expect(out.length).toBeGreaterThan(0);
   for(const p of out){
-   const nodeCount=p.productionObjects?.length??0;
-   expect(nodeCount).toBeGreaterThanOrEqual(3);
-   expect(nodeCount).toBeLessThanOrEqual(12);
+   // Structural topology remains bounded; independently digitizable rhythmic
+   // copies are physical placements, not new semantic nodes or corpus glyphs.
+   const originals=(p.productionObjects??[]).filter(o=>!o.id.includes(":rhythm:"));
+   const repeats=(p.productionObjects??[]).filter(o=>o.id.includes(":rhythm:"));
+   expect(originals.length).toBeGreaterThanOrEqual(3);
+   expect(originals.length).toBeLessThanOrEqual(12);
+   expect((p.productionObjects??[]).length).toBeLessThanOrEqual(48);
+   for(const repeat of repeats){
+    const parentId=repeat.id.split(":rhythm:")[0]!;
+    const parent=originals.find(o=>o.id===parentId);
+    expect(parent).toBeDefined();
+    expect(repeat.geometryRef).toBe(parent?.geometryRef);
+   }
    expect(p.svg).not.toContain("evidence-95");
   }
  });
