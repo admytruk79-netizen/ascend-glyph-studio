@@ -136,3 +136,13 @@ Each template must record:
 Reference values may guide prototypes but cannot become production truth without manufacturer or sew-out validation.
 
 The generator uses the selected template before creating geometry. If a machine cannot execute a requested construction directly, the constructor must choose a legal alternative such as flat-before-assembly, registered segmentation, reduced color plan, or a different machine profile. It must not create an impossible design and leave the factory to discover the problem.
+
+
+## Development checkpoint — 2026-10-23 (PR #31, NOT promoted)
+
+- Implemented seam-aware rhythmic repetition in `rhythmic-production-repeats.ts`. Repeated placements are cloned from already placed ASCEND production glyphs, keep the same `geometryRef`, and are compiled to stitch IR before final surface validation and machine planning. Their IDs retain the original glyph ID plus `:rhythm:` placement lineage. No new reference motifs, cultural claims or canonical paths were introduced.
+- Added deterministic tapered-sleeve/seam/clearance tests and corrected the semantic-node-budget regression to distinguish original semantic topology (maximum 12) from independent physical repeat placements (bounded by the construction envelope).
+- GitHub Actions on commit `fab95a8`: engine TypeScript check/build passed, Tesseract unit suite **101/101 passed**, pilot CLI executed, stitch-engine checks/tests passed, optimizer-validation workflow passed, web and glyph CI passed. Production metadata assertion also passed.
+- **Visual regression still FAILED**: isolated sleeve run `b1f4b441-a10a-4a78-87fd-6d746625f1c7` produced 12 candidates, **0/12 raster survivors**, mean raster quality **0.5704** (3.7 golden threshold **0.82**), mean clutter **0.1471** (maximum **0.10**), and **5** tangled candidates (maximum **0**). The raster coverage remains too sparse; these repeated primitives are not a substitute for hierarchical connected ornament. Do not promote this branch.
+- **Next P0/P3 task**: build a physically constrained macro/meso/micro motif-assembly grammar that increases canonical stitch-IR coverage and connection quality, then rerun the exact same sleeve/full-shirt benchmark without relaxing the 3.7 thresholds. Separately verify stitch-count/hoop limits and a manufacturer-specific sew-out before any production label.
+- Manufacturer machine/recipe parameters remain **REFERENCE**. Digital CI, simulated raster metrics and generated DST are not physical sew-out or production validation.
