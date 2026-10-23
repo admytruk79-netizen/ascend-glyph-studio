@@ -24,6 +24,7 @@ import {refineOrnamentalLayout} from "./ornament-optimizer";
 import {evaluateSurfaceLayout,circumferenceAt,type SurfaceFootprint} from "./garment-surface-math";
 import {assessCandidateSurface} from "./surface-candidate-gate";
 import {buildMasterCompositionPlan} from "./master-composition-plan";
+import {buildRhythmicProductionRepeats} from "./rhythmic-production-repeats";
 import {stitchIrToSvg} from "./canonical-preview";
 import {optimizeStitchTravel} from "./stitch-travel-optimizer";
 import {planEmbroideryJob,type ManufacturingJobPlan} from "./manufacturing-job-plan";
@@ -239,6 +240,15 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
    });
    const finalPoints=Object.fromEntries(Object.entries(localLayout.points).map(([id,p])=>[id,{...p,y:p.y+bandY}]));
    productionObjects=placeProductionObjects(productionObjects,finalPoints);
+   // Materialize rhythmic structure as canonical production objects BEFORE
+   // stitch compilation; concept-only SVG repetition is not stitch geometry.
+   const repeats=buildRhythmicProductionRepeats(productionObjects,productionZone,{
+    minYmm:bandY,maxYmm:bandY+bandHeight
+   },{
+    maxExtra:Math.min(constructionEnvelope.maxNodes-productionObjects.length,Math.round(5+complexity*12)),
+    minGapMm:constructionEnvelope.minGapMm
+   });
+   productionObjects=[...productionObjects,...repeats];
    baseStitchObjects=compileProductionObjectsToStitchIr(productionObjects);
   }else{
    const initialLayout=solveRelationalLayout(adapted.topology,physicalSize.width,physicalSize.height,`${input.seed}:physical:${i}:${compact}`,productionZone,{
