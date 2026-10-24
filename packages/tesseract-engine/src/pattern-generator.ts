@@ -25,6 +25,7 @@ import {evaluateSurfaceLayout,circumferenceAt,type SurfaceFootprint} from "./gar
 import {assessCandidateSurface} from "./surface-candidate-gate";
 import {buildMasterCompositionPlan} from "./master-composition-plan";
 import {buildRhythmicProductionRepeats} from "./rhythmic-production-repeats";
+import {buildHierarchicalProductionAssembly} from "./hierarchical-production-assembly";
 import {stitchIrToSvg} from "./canonical-preview";
 import {optimizeStitchTravel} from "./stitch-travel-optimizer";
 import {planEmbroideryJob,type ManufacturingJobPlan} from "./manufacturing-job-plan";
@@ -240,12 +241,24 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
    });
    const finalPoints=Object.fromEntries(Object.entries(localLayout.points).map(([id,p])=>[id,{...p,y:p.y+bandY}]));
    productionObjects=placeProductionObjects(productionObjects,finalPoints);
-   // Materialize rhythmic structure as canonical production objects BEFORE
-   // stitch compilation; concept-only SVG repetition is not stitch geometry.
-   const repeats=buildRhythmicProductionRepeats(productionObjects,productionZone,{
-    minYmm:bandY,maxYmm:bandY+bandHeight
-   },{
-    maxExtra:Math.min(constructionEnvelope.maxNodes-productionObjects.length,Math.round(5+complexity*12)),
+   // Assemble a focal/meso/micro hierarchy as physical placements before
+   // stitch compilation. All clones retain the original ASCEND geometryRef
+   // and sourceBasis; the existing surface gate still checks final stitch IR.
+   const extraBudget=Math.max(0,Math.min(
+    constructionEnvelope.maxNodes-productionObjects.length,
+    Math.round(5+complexity*12)
+   ));
+   const band={minYmm:bandY,maxYmm:bandY+bandHeight};
+   const assembly=buildHierarchicalProductionAssembly(productionObjects,productionZone,band,{
+    maxExtra:Math.ceil(extraBudget*.65),
+    minGapMm:constructionEnvelope.minGapMm,
+    minFeatureMm:constructionEnvelope.minFeatureMm
+   });
+   productionObjects=[...productionObjects,...assembly];
+   // Keep a limited broad-band cadence around the new focal clusters. The
+   // remaining capacity is shared, never counted twice.
+   const repeats=buildRhythmicProductionRepeats(productionObjects,productionZone,band,{
+    maxExtra:extraBudget-assembly.length,
     minGapMm:constructionEnvelope.minGapMm
    });
    productionObjects=[...productionObjects,...repeats];
@@ -270,7 +283,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   // validation MUST use the canonical stitch objects above, never SVG layers.
   // Reject near-empty sash layouts instead of treating a high critic score as
   // evidence of a richly composed design.
-  const drawableGlyphCount=new Set(stitchObjects.filter(o=>!o.id.startsWith("composition:")).map(o=>o.id.replace(/:p\\d+$/,""))).size;
+  const drawableGlyphCount=new Set(stitchObjects.filter(o=>!o.id.startsWith("composition:")).map(o=>o.id.replace(/:p\d+$/,""))).size;
   const minimumGlyphs=sashMode&&complexity>=.6?5:3;
   if(drawableGlyphCount<minimumGlyphs){
    candidateFailures.push(`${i}:${compact?"compact":"full"}:insufficient-production-motifs:${drawableGlyphCount}<${minimumGlyphs}`);
