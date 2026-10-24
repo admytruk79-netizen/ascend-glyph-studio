@@ -4,7 +4,7 @@ import type {StructuralFeedback} from "./structural-feedback";
 import {buildMasterCompositionPlan} from "./master-composition-plan";
 
 export type MasterCompositionMode="band"|"field"|"emblem"|"sleeve"|"cuff"|"collar";
-export type MasterCompositionInput={svg:string;mode:MasterCompositionMode;complexity:number;medium:MediumId;width:number;height:number;seed:string;sashGrammar?:SashEvidenceGrammar;structuralFeedback?:StructuralFeedback};
+export type MasterCompositionInput={svg:string;mode:MasterCompositionMode;complexity:number;medium:MediumId;width:number;height:number;seed:string;sashGrammar?:SashEvidenceGrammar;structuralFeedback?:StructuralFeedback;targetOccupancy?:number};
 
 const hash=(s:string)=>{let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
 const unit=(n:number,min:number,max:number)=>min+(n/0xffffffff)*(max-min);
@@ -16,12 +16,24 @@ function body(svg:string){
 function strokeFor(m:MediumId){return m==="print"?1.8:m==="embroidery"?2.65:m==="emboss"?3.15:3.35}
 function scholarlySashComposition(input:MasterCompositionInput,b:string){
  const g=input.sashGrammar!;const {width,height,medium,mode}=input;
- const plan=buildMasterCompositionPlan({mode,medium,complexity:input.complexity,sashGrammar:g,structuralFeedback:input.structuralFeedback});
+ const plan=buildMasterCompositionPlan({mode,medium,complexity:input.complexity,sashGrammar:g,structuralFeedback:input.structuralFeedback,targetOccupancy:input.targetOccupancy});
  const p=plan.primary;
+ // Hierarchical rhythm: place the original motif in alternating scales and
+ // mirrored positions across the central sash envelope. This is geometric
+ // composition, not a learned model or a substitute for stitch validation.
+ const rhythmCount=Math.max(3,Math.min(9,Math.round(3+input.complexity*6)));
+ const tileWidth=width/rhythmCount;
+ const secondary=Array.from({length:rhythmCount},(_,i)=>{
+  const scale=i%3===Math.floor(rhythmCount/2)%3?.62:.43;
+  const cx=(i+.5)*tileWidth,cy=(p.offsetY+p.scaleY*.5)*height;
+  const sx=(i%2===0?1:-1)*scale*tileWidth/width;
+  const sy=scale*p.scaleY;
+  return `<g data-sash-layer="rhythmic-motif" data-repeat-index="${i}" transform="translate(${cx.toFixed(2)} ${cy.toFixed(2)}) scale(${sx.toFixed(5)} ${sy.toFixed(5)}) translate(${(-width*.5).toFixed(2)} ${(-height*.5).toFixed(2)})">${b}</g>`;
+ }).join("");
  const primary=`<g data-sash-layer="primary-focal" transform="translate(${(p.offsetX*width).toFixed(2)} ${(p.offsetY*height).toFixed(2)}) scale(${p.scaleX.toFixed(4)} ${p.scaleY.toFixed(4)})">${b}</g>`;
  const line=(x:typeof plan.auxiliaryLines[number])=>`<path data-composition-line="${x.id}" opacity="${x.opacity}" d="M${(x.x1*width).toFixed(2)} ${(x.y1*height).toFixed(2)} L${(x.x2*width).toFixed(2)} ${(x.y2*height).toFixed(2)}"/>`;
  const auxiliaries=`<g data-sash-layer="production-auxiliary">${plan.auxiliaryLines.map(line).join("")}</g>`;
- return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" data-master-composition="${plan.id}" data-mode="${mode}" data-medium="${medium}" data-source-grammar="${g.id}" data-source-doi="${g.source.doi}"><g fill="none" stroke="currentColor" stroke-width="${strokeFor(medium)}" stroke-linecap="round" stroke-linejoin="round">${primary}${auxiliaries}</g></svg>`;
+ return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" data-master-composition="${plan.id}" data-mode="${mode}" data-medium="${medium}" data-source-grammar="${g.id}" data-source-doi="${g.source.doi}"><g fill="none" stroke="currentColor" stroke-width="${strokeFor(medium)}" stroke-linecap="round" stroke-linejoin="round">${primary}${secondary}${auxiliaries}</g></svg>`;
 }
 
 export function compileMasterComposition(input:MasterCompositionInput){

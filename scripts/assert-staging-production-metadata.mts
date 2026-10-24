@@ -4,6 +4,11 @@ const url=process.env.DATABASE_URL;
 const runId=process.argv[2];
 if(!url||!runId)throw new Error("usage: DATABASE_URL=... tsx scripts/assert-staging-production-metadata.mts <run-id>");
 const pool=new Pool({connectionString:url,ssl:{rejectUnauthorized:false}});
+const runQ=await pool.query("select intent from synthesis_run where id=$1",[runId]);
+if(!runQ.rows[0])throw new Error("staging run not found");
+const runIntent=runQ.rows[0].intent??{};
+const requestedOccupancy=Number(runIntent?.constructionIntent?.targetOccupancy);
+const seamPolicy=runIntent?.constructionIntent?.seamPolicy;
 const q=await pool.query(`
  select ordinal,disposition,state
  from synthesis_candidate where run_id=$1 order by ordinal
@@ -18,6 +23,15 @@ for(const r of q.rows){
  if(!(Number(s.physicalSizeMm?.width)>0&&Number(s.physicalSizeMm?.height)>0))failures.push(`${r.ordinal}:missing-physical-size`);
  if(!s.octave||!Number.isFinite(Number(s.octave.nodes)))failures.push(`${r.ordinal}:missing-octave-state`);
  if(!s.surfaceMath||!Number.isFinite(Number(s.surfaceMath.nominalOccupancy)))failures.push(`${r.ordinal}:missing-surface-math`);
+ else{
+  if(!Number.isFinite(Number(s.surfaceMath.layoutOccupancy)))failures.push(`${r.ordinal}:missing-layout-occupancy`);
+  if(Array.isArray(s.surfaceMath.invalidPairs)&&s.surfaceMath.invalidPairs.length)failures.push(`${r.ordinal}:surface-collisions=${s.surfaceMath.invalidPairs.length}`);
+  if(seamPolicy==="avoid"&&Array.isArray(s.surfaceMath.seamCrossings)&&s.surfaceMath.seamCrossings.length)failures.push(`${r.ordinal}:seam-crossings=${s.surfaceMath.seamCrossings.join(",")}`);
+  if(Number.isFinite(requestedOccupancy)&&Number.isFinite(Number(s.surfaceMath.layoutOccupancy))){
+   const delta=Math.abs(Number(s.surfaceMath.layoutOccupancy)-requestedOccupancy);
+   if(delta>.12)failures.push(`${r.ordinal}:layout-occupancy=${Number(s.surfaceMath.layoutOccupancy).toFixed(3)} target=${requestedOccupancy.toFixed(3)}`);
+  }
+ }
  const pc=s.productionCompile;
  if(!pc)failures.push(`${r.ordinal}:missing-production-compile`);
  else{

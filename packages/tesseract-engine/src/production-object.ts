@@ -46,6 +46,8 @@ export interface ProductionGlyphObject{
  embroidery:EmbroideryProductionProperties;
  threadColor:string;
  sourceBasis:readonly ProductionReferenceId[];
+ /** Placement lineage only; not new canonical geometry or manufacturing approval. */
+ assembly?:{tier:"macro"|"meso"|"micro";anchorId:string;scaleFactor:number};
 }
 
 const ALL_RELATIONS:readonly ProductionRelation[]=["anchor","nest","orbit","intersect","bridge","oppose","mirror","radiate","flow","enclose","repeat","branch","transform","terminate","return","ascend"];

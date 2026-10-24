@@ -2,6 +2,7 @@ import pg from "pg";
 import http from "node:http";
 import {generatePatterns,type PatternMode} from "../packages/tesseract-engine/src/pattern-generator";
 import {critiqueRaster,type RasterCritique} from "../packages/tesseract-engine/src/raster-critic";
+import {gatingRasterSvg,compareRasterViews} from "../packages/tesseract-engine/src/raster-view-diagnostics";
 import {deriveStructuralFeedback,type StructuralFeedback} from "../packages/tesseract-engine/src/structural-feedback";
 import {deriveCorpusCanon} from "../packages/tesseract-engine/src/corpus-canonical";
 import {installCorpusCanon} from "../packages/tesseract-engine/src/ascend-primitives";
@@ -58,7 +59,7 @@ const server=http.createServer(async(req,res)=>{
   }
   const svgMatch=req.url?.match(/^\/runs\/([0-9a-f-]{36})\/(\d+)\.svg$/i);
   if(svgMatch){
-   const q=await pool.query("select state->>'svg' svg from synthesis_candidate where run_id=$1 and ordinal=$2",[svgMatch[1],Number(svgMatch[2])]);
+   const q=await pool.query("select coalesce(state->>'conceptSvg',state->>'svg') svg from synthesis_candidate where run_id=$1 and ordinal=$2",[svgMatch[1],Number(svgMatch[2])]);
    if(!q.rows[0]?.svg){res.writeHead(404);res.end("not found");return}
    res.writeHead(200,{"content-type":"image/svg+xml","cache-control":"no-store"});res.end(q.rows[0].svg);return;
   }
@@ -211,19 +212,42 @@ async function execute(run:any){
  installCorpusCanon(approvedCanon);
  process.stdout.write(JSON.stringify({runId:run.id,stage:"canon-loaded",approved:approvedCanon.length})+"\n");
  const batchSize=run.batch_size??12;
+ const candidatePoolSize=Math.min(32,Math.max(batchSize,batchSize*2));
  const judged:{p:any;raster:RasterCritique|null;score:number;feedbackPass:number}[]=[];
  const baseComplexity=Number(intent.complexity??.72);
  let structuralFeedback:StructuralFeedback|undefined;
  for(let feedbackPass=0;feedbackPass<3;feedbackPass++){
   const passComplexity=Math.max(.52,baseComplexity-feedbackPass*.07);
   const passSeed=feedbackPass===0?run.seed:run.seed+":feedback:"+feedbackPass;
-  const patterns=generatePatterns({seed:passSeed,concepts,paletteId:intent.paletteId,mode,complexity:passComplexity,variations:batchSize,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus,learnedGuidance,structuralFeedback,machineProfileId:intent.machineProfileId,physicalWidthMm:intent.physicalWidthMm,physicalHeightMm:intent.physicalHeightMm,constructionIntent:intent.constructionIntent});
-  process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-pass",feedbackPass,patterns:patterns.length,complexity:passComplexity})+"\n");
+  const patterns=generatePatterns({seed:passSeed,concepts,paletteId:intent.paletteId,mode,complexity:passComplexity,variations:candidatePoolSize,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus,learnedGuidance,structuralFeedback,machineProfileId:intent.machineProfileId,physicalWidthMm:intent.physicalWidthMm,physicalHeightMm:intent.physicalHeightMm,constructionIntent:intent.constructionIntent});
+  process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-pass",feedbackPass,patterns:patterns.length,targetBatch:batchSize,candidatePoolSize,complexity:passComplexity})+"\n");
   let passed=0;
-  for(const p of patterns){
+  for(const [candidateIndex,p] of patterns.entries()){
    let raster:RasterCritique|null=null;
-   try{raster=await critiqueRaster(p.svg)}catch(e){process.stdout.write(JSON.stringify({runId:run.id,stage:"raster-critic-error",pattern:p.id,message:String((e as Error).message).slice(0,120)})+"\n")}
-   const base=p.score+(raster?raster.quality*60-(raster.survive?0:80):0);
+   // Production embroidery must be raster-judged on the same canonical stitch-IR
+   // geometry as the final SVG critic. Decorative concept art is not sewn.
+   const rasterSvg=gatingRasterSvg(mode,p);
+   try{raster=await critiqueRaster(rasterSvg)}catch(e){
+    const message=String((e as Error).message).slice(0,160);
+    process.stdout.write(JSON.stringify({runId:run.id,stage:"raster-critic-error",pattern:p.id,message})+"\n");
+    throw new Error(`Raster critique failed for ${p.id}: ${message}`);
+   }
+   if(!raster||!Number.isFinite(raster.quality))throw new Error(`Missing valid raster verdict for ${p.id}`);
+   // Diagnostic only: compare identical candidates as artwork and stitch-IR.
+   // The primary raster remains the sole production survival gate.
+   if(candidateIndex<3){
+    const comparison=await compareRasterViews(mode,p,critiqueRaster);
+    process.stdout.write(JSON.stringify({runId:run.id,stage:"paired-raster-diagnostic",pattern:p.id,mode,
+     physicalSizeMm:p.physicalSizeMm??null,
+     gatingView:comparison.gatingView,
+     gatingRaster:{coverage:raster.coverage,quality:raster.quality,clutter:raster.clutter,
+      emptyColumns:raster.emptyColumns,balance:raster.balance,survive:raster.survive,flags:raster.flags},
+     alternateView:comparison.alternateView,alternateStatus:comparison.status,
+     alternateRaster:comparison.alternateRaster??null,alternateError:comparison.error??null,
+     evidenceStatus:"raster-reference-only-not-manufacturer-validated"
+    })+"\n");
+   }
+   const base=p.score+raster.quality*60-(raster.survive?0:80);
    judged.push({p,raster,score:base+preferenceAdjustment(preferenceModel,p,raster,base),feedbackPass});
    if(raster?.survive)passed++;
   }
@@ -282,7 +306,7 @@ async function persist(run:any,judged:{p:any;raster:RasterCritique|null;score:nu
      };
     }
    }
-   const state={patternId:p.id,lineageId:p.lineageId,svg:p.svg,objectives:p.objectives,finalCritique:p.finalCritique,raster,feedbackPass,mode,concepts,corpusSignals,visualCorpusCount,corpusObjectCount,productionObjects:p.productionObjects,stitchObjects:p.stitchObjects,surfaceMath:p.surfaceMath,machineProfileId:p.machineProfileId,physicalSizeMm:p.physicalSizeMm,octave:p.octave,productionCompile};
+   const state={patternId:p.id,lineageId:p.lineageId,svg:p.svg,conceptSvg:p.conceptSvg,objectives:p.objectives,finalCritique:p.finalCritique,raster,feedbackPass,mode,concepts,corpusSignals,visualCorpusCount,corpusObjectCount,productionObjects:p.productionObjects,stitchObjects:p.stitchObjects,surfaceMath:p.surfaceMath,machineProfileId:p.machineProfileId,physicalSizeMm:p.physicalSizeMm,octave:p.octave,productionCompile};
    const complexity={target:intent.complexity??.72,novelty:p.novelty};
    const disposition=raster&&!raster.survive?"rejected-raster":"candidate";
    await c.query(`insert into synthesis_candidate(id,run_id,ordinal,state,complexity,score,disposition)

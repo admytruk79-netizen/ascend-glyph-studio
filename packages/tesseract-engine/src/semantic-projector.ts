@@ -24,13 +24,43 @@ function geometry(form:string,p:Point,r:number,id:string):string{
  }
 }
 
+/** Split the shortest wrapped quadratic at the garment seam, preserving its curve.
+ * The continuation starts on the opposite edge, not at its own endpoint.
+ * This is preview geometry; stitch-IR seam policy remains independently enforced.
+ */
+export function splitWrappedQuadratic(a:Point,b:Point,width:number,bend:number){
+ const dx=b.x-a.x,wrap=width>0&&Math.abs(dx)>width/2;
+ const tx=wrap?b.x-Math.sign(dx)*width:b.x;
+ const control:Point={x:(a.x+tx)/2,y:(a.y+b.y)/2+bend};
+ const end:Point={x:tx,y:b.y};
+ const first={from:a,control,to:end};
+ if(!wrap)return [first];
+ const seam=dx>0?0:width,t=(seam-a.x)/(tx-a.x);
+ if(!(t>0&&t<1))return [first];
+ const mix=(p:Point,q:Point,k:number):Point=>({x:p.x+(q.x-p.x)*k,y:p.y+(q.y-p.y)*k});
+ const left=mix(a,control,t),right=mix(control,end,t),cut=mix(left,right,t);
+ const shift=dx>0?width:-width;
+ return [
+  {from:a,control:left,to:cut},
+  {from:{x:cut.x+shift,y:cut.y},control:{x:right.x+shift,y:right.y},to:b}
+ ];
+}
+
 export function projectSemanticGeometry(g:DesignGenome,width=800,height=240,zone?:GarmentZone,options?:{relationStride?:number;minGapMm?:number;seamPolicy?:"avoid"|"continuous"|"resolve"}):SvgProjection{
  const nodes=g.topology.nodes,layout=solveRelationalLayout(g.topology,width,height,g.seed,zone,{minGapMm:options?.minGapMm,seamPolicy:options?.seamPolicy}),pos=new Map(nodes.map(v=>[v.id,layout.points[v.id]!]));
  const stride=Math.max(0,Math.floor(options?.relationStride??1));
- const paths=g.topology.edges.flatMap((e,i)=>{if(stride===0||i%stride!==0)return [];const a=pos.get(e.from),b=pos.get(e.to);if(!a||!b)return [];let dx=b.x-a.x;
-  const wrap=!!zone?.wrapAllowed&&Math.abs(dx)>width/2,tx=wrap?b.x-Math.sign(dx)*width:b.x,mid=(a.x+tx)/2,bend=(i%2?1:-1)*Math.min(38,height*.14)*(1-e.weight*.35);
-  const main=`<path id="relation-${i}" data-relation="${esc(e.relation)}" data-weight="${f(e.weight)}" d="M ${f(a.x)} ${f(a.y)} Q ${f(mid)} ${f((a.y+b.y)/2+bend)} ${f(tx)} ${f(b.y)}"/>`;
-  if(!wrap)return [main];const mirror=tx<0?tx+width:tx-width;return [main,`<path data-wrap-continuation="relation-${i}" d="M ${f(mirror)} ${f(b.y)} Q ${f((mirror+b.x)/2)} ${f((a.y+b.y)/2+bend)} ${f(b.x)} ${f(b.y)}"/>`];
+ const paths=g.topology.edges.flatMap((e,i)=>{
+  if(stride===0||i%stride!==0)return [];
+  const a=pos.get(e.from),b=pos.get(e.to);if(!a||!b)return [];
+  const bend=(i%2?1:-1)*Math.min(38,height*.14)*(1-e.weight*.35);
+  const segments=splitWrappedQuadratic(a,b,zone?.wrapAllowed?width:0,bend);
+  return segments.map((segment,j)=>{
+   const {from,control,to}=segment;
+   const attributes=j===0
+    ?`id="relation-${i}" data-relation="${esc(e.relation)}" data-weight="${f(e.weight)}"`
+    :`data-wrap-continuation="relation-${i}"`;
+   return `<path ${attributes} d="M ${f(from.x)} ${f(from.y)} Q ${f(control.x)} ${f(control.y)} ${f(to.x)} ${f(to.y)}"/>`;
+  });
  }).join("");
  const shapes=nodes.map(v=>{const p=pos.get(v.id)!;const shape=geometry(v.form,p,Math.min(24,height*.105)*p.scale,v.id);return `<g transform="rotate(${f(p.angleDeg)} ${f(p.x)} ${f(p.y)})" data-layer="${p.layer}">${shape}</g>`;}).join("");
  const metadata=`<metadata data-layout="constraint-relational" data-iterations="${layout.iterations}" data-energy="${f(layout.energy)}" data-wrap="${zone?.wrapAllowed?"true":"false"}"/>`;
