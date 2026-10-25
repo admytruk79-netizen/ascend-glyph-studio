@@ -26,6 +26,7 @@ import {assessCandidateSurface} from "./surface-candidate-gate";
 import {buildMasterCompositionPlan} from "./master-composition-plan";
 import {buildRhythmicProductionRepeats} from "./rhythmic-production-repeats";
 import {buildHierarchicalProductionAssembly} from "./hierarchical-production-assembly";
+import {buildPortAwareStitchConnectors,type PortConnectionLineage} from "./port-aware-stitch-connectors";
 import {stitchIrToSvg} from "./canonical-preview";
 import {optimizeStitchTravel} from "./stitch-travel-optimizer";
 import {planEmbroideryJob,type ManufacturingJobPlan} from "./manufacturing-job-plan";
@@ -57,6 +58,8 @@ export type GeneratedPattern={
  machineProfileId?:string;
  physicalSizeMm?:{width:number;height:number};
  compositionObjective?:CompositionObjective;
+ /** Source-port connection lineage; digital REFERENCE, never sew-out approval. */
+ portConnections?:PortConnectionLineage[];
  octave?:ReturnType<typeof grammarComplexity>;
 };
 
@@ -273,17 +276,33 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
    productionObjects=placeProductionObjects(productionObjects,physicalLayout.points,initialLayout.points);
    baseStitchObjects=compileProductionObjectsToStitchIr(productionObjects);
   }
-  const stitchObjects=optimizeStitchTravel(applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height,"#111111",{
+  const composedStitches=applyMasterCompositionToStitchIr(baseStitchObjects,compositionPlan,physicalSize.width,physicalSize.height,"#111111",{
    applyPrimaryTransform:!sashMode,
    surfaceZone:productionZone,
    seamPolicy:constructionEnvelope.seamPolicy,
    seamGapMm:constructionEnvelope.minGapMm
-  })).objects;
+  });
+  // Join source-derived ASCEND ports as real RUN objects. These are new
+  // connections between unchanged canonical glyphs, not concept-SVG overlays.
+  // The sampled connector is seam/band/obstacle checked, then the final
+  // stitch-IR surface gate remains authoritative for the complete layout.
+  const portConnections=sashMode&&medium==="embroidery"
+   ?buildPortAwareStitchConnectors(productionObjects,productionZone,{
+    minYmm:compositionPlan.primary.offsetY*physicalSize.height,
+    maxYmm:compositionPlan.primary.offsetY*physicalSize.height+
+     Math.max(20,compositionPlan.primary.scaleY*physicalSize.height)
+   },{
+    maxConnections:Math.min(6,Math.ceil(productionObjects.length/3)),
+    minGapMm:constructionEnvelope.minGapMm,
+    maxSpanMm:28
+   })
+   :{objects:[],allowedOverlapPairs:[],lineage:[]};
+  const stitchObjects=optimizeStitchTravel([...composedStitches,...portConnections.objects]).objects;
   // The concept composer is illustrative only. Surface and manufacturing
   // validation MUST use the canonical stitch objects above, never SVG layers.
   // Reject near-empty sash layouts instead of treating a high critic score as
   // evidence of a richly composed design.
-  const drawableGlyphCount=new Set(stitchObjects.filter(o=>!o.id.startsWith("composition:")).map(o=>o.id.replace(/:p\d+$/,""))).size;
+  const drawableGlyphCount=new Set(stitchObjects.filter(o=>!o.id.startsWith("composition:")&&!o.id.startsWith("connector:")).map(o=>o.id.replace(/:p\d+$/,""))).size;
   const minimumGlyphs=sashMode&&complexity>=.6?5:3;
   if(drawableGlyphCount<minimumGlyphs){
    candidateFailures.push(`${i}:${compact?"compact":"full"}:insufficient-production-motifs:${drawableGlyphCount}<${minimumGlyphs}`);
@@ -295,7 +314,8 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
    const items:SurfaceFootprint[]=stitchIrFootprints(stitchObjects,constructionEnvelope.minGapMm);
    const allowedOverlapPairs=adapted.topology.edges
     .filter(e=>e.relation==="nest"||e.relation==="enclose")
-    .map(e=>e.from<e.to?`${e.from}|${e.to}`:`${e.to}|${e.from}`);
+    .map(e=>e.from<e.to?`${e.from}|${e.to}`:`${e.to}|${e.from}`)
+    .concat(portConnections.allowedOverlapPairs);
    surfaceMath=evaluateSurfaceLayout(productionZone,items,{allowedOverlapPairs});
    if(medium==="embroidery"){
     const gate=assessCandidateSurface(surfaceMath,constructionEnvelope.seamPolicy);
@@ -316,7 +336,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const critiqueSvg=medium==="embroidery"?svg:conceptSvg;
   const finalCritique=critiqueFinalSvg(critiqueSvg,medium,input.visualCorpus??[]);
   const combinedScore=candidate.score+finalCritique.score*.45-(compact?.15:0);
-  return [{id:`pat-${input.seed}-${i+1}${compact?"-compact":""}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,compositionObjective:compositionGoals[i],svg,conceptSvg,finalCritique,productionObjects,stitchObjects,manufacturingJob,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave}];
+  return [{id:`pat-${input.seed}-${i+1}${compact?"-compact":""}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,compositionObjective:compositionGoals[i],svg,conceptSvg,finalCritique,productionObjects,stitchObjects,portConnections:portConnections.lineage,manufacturingJob,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave}];
   } catch (error) {
    if(error instanceof Error && /^(ornament-|scaled satin width out of machine-safe range)/.test(error.message)){
     candidateFailures.push(`${i}:${compact?"compact":"full"}:${error.message}`);
