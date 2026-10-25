@@ -38,6 +38,31 @@ export function buildPortAwareStitchConnectors(
  const maxSpan=Math.max(gap*2,Math.min(40,options.maxSpanMm??28));
  if(!limit||!Number.isFinite(gap)||!Number.isFinite(maxSpan)||
     !Number.isFinite(band.minYmm+band.maxYmm)||band.maxYmm<=band.minYmm)return empty();
+ const obstacles=glyphs.filter(g=>Number.isFinite(g.placement.xMm)&&
+  Number.isFinite(g.placement.yMm)&&g.physical.widthMm>0&&g.physical.heightMm>0)
+  .map(g=>{
+   const r=(g.placement.rotationDeg??g.physical.rotationDeg)*Math.PI/180;
+   const c=Math.abs(Math.cos(r)),si=Math.abs(Math.sin(r));
+   return {id:g.id,x:g.placement.xMm!,y:g.placement.yMm!,
+    ex:(c*g.physical.widthMm+si*g.physical.heightMm)/2,
+    ey:(si*g.physical.widthMm+c*g.physical.heightMm)/2};
+  });
+ // Exact segment-vs-expanded-rectangle test: sparse point sampling alone can
+ // miss a narrow glyph between two adjacent cubic samples.
+ const hitsBox=(a:StitchIrPoint,b:StitchIrPoint,
+  box:{x:number;y:number;ex:number;ey:number}):boolean=>{
+  const xmin=box.x-box.ex-gap,xmax=box.x+box.ex+gap;
+  const ymin=box.y-box.ey-gap,ymax=box.y+box.ey+gap;
+  const dx=b.x-a.x,dy=b.y-a.y;
+  let lo=0,hi=1;
+  for(const [p,q] of [[-dx,a.x-xmin],[dx,xmax-a.x],[-dy,a.y-ymin],[dy,ymax-a.y]]){
+   if(Math.abs(p)<1e-12){if(q<0)return false;continue;}
+   const t=q/p;
+   if(p<0)lo=Math.max(lo,t);else hi=Math.min(hi,t);
+   if(lo>hi)return false;
+  }
+  return true;
+ };
  const entries=glyphs.flatMap(g=>{
   if(g.geometryRef!=="ascend:"+g.form||!Number.isFinite(g.placement.xMm)||
      !Number.isFinite(g.placement.yMm)||!(g.physical.widthMm>0)||!(g.physical.heightMm>0))return [];
@@ -100,13 +125,10 @@ export function buildPortAwareStitchConnectors(
       p.y>Math.min(height,band.maxYmm)-gap)return false;
    const C=circumferenceAt(zone,p.y);
    if(p.x<gap||p.x>C-gap)return false;
-   return entries.every((other,k)=>{
-    if(k===i||k===j)return true;
-    const box=other.box;
-    return Math.abs(p.x-box.x)>box.ex+gap||
-           Math.abs(p.y-box.y)>box.ey+gap;
-   });
-  });
+   return true;
+  })&&path.slice(1).every((p,k)=>obstacles.every(box=>
+   box.id===a.glyph.id||box.id===b.glyph.id||
+   !hitsBox(path[k]!,p,box)));
   if(!valid)continue;
   const id="connector:"+objects.length;
   objects.push({kind:"run",id,color:a.glyph.threadColor,path,length:2.5});
