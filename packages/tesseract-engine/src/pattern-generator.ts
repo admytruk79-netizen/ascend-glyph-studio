@@ -42,6 +42,8 @@ export type PatternGeneratorInput={
  learnedGuidance?:{density:number;tags:{id:string;weight:number}[];palette:{hex:string;weight:number}[];model:string;relationPrior?:LearnedRelationPrior};
  structuralFeedback?:StructuralFeedback;
  machineProfileId?:string;
+ /** Experimental digital port links; OFF unless explicitly requested. */
+ enablePortConnectors?:boolean;
  constructionIntent?:ConstructionIntent;
  physicalWidthMm?:number;
  physicalHeightMm?:number;
@@ -286,7 +288,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   // connections between unchanged canonical glyphs, not concept-SVG overlays.
   // The sampled connector is seam/band/obstacle checked, then the final
   // stitch-IR surface gate remains authoritative for the complete layout.
-  const portConnections=sashMode&&medium==="embroidery"
+  const portConnections=sashMode&&medium==="embroidery"&&input.enablePortConnectors===true
    ?buildPortAwareStitchConnectors(productionObjects,productionZone,{
     minYmm:compositionPlan.primary.offsetY*physicalSize.height,
     maxYmm:compositionPlan.primary.offsetY*physicalSize.height+
