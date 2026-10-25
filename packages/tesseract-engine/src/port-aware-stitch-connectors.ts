@@ -110,6 +110,8 @@ export function buildPortAwareStitchConnectors(
   // or undocumented multi-branch junctions at a provisional source port.
   if(used.has(i)||used.has(j))continue;
   const a=entries[i]!,b=entries[j]!,ap=a.ports[from]!,bp=b.ports[to]!;
+  // Never bridge different thread-color blocks with an implicit single-color run.
+  if(a.glyph.threadColor!==b.glyph.threadColor)continue;
   // A connector cannot legitimize a source glyph that already straddles
   // the seam or construction band. Check both vertical edges on tapered zones.
   const anchorInside=(entry:typeof a)=>{
