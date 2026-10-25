@@ -309,6 +309,10 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
    return [];
   }
   const manufacturingJob=planEmbroideryJob(stitchObjects,{widthMm:physicalSize.width,heightMm:physicalSize.height});
+  if(medium==="embroidery"&&!manufacturingJob.validation.valid){
+   candidateFailures.push(`${i}:${compact?"compact":"full"}:manufacturing-invalid:${manufacturingJob.validation.errors.join(",")}`);
+   return [];
+  }
   let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
   if(productionZone.wrapAllowed&&(productionZone.surface==="cylinder"||productionZone.surface==="tapered-cylinder")){
    const items:SurfaceFootprint[]=stitchIrFootprints(stitchObjects,constructionEnvelope.minGapMm);
