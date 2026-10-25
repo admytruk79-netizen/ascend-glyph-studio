@@ -1,0 +1,122 @@
+import {primitiveForForm} from "./ascend-primitives";
+import type {GarmentZone} from "./garment";
+import {circumferenceAt} from "./garment-surface-math";
+import type {ProductionGlyphObject} from "./production-object";
+import type {StitchIrPoint,StitchIrObject} from "./production-stitch-ir";
+
+export type PortConnectionLineage={
+ fromObjectId:string;toObjectId:string;fromPortId:string;toPortId:string;
+ fromGeometryRef:string;toGeometryRef:string;
+ fromSourceStatus:string;toSourceStatus:string;
+ validationState:"REFERENCE";
+};
+export type PortConnectorResult={
+ objects:StitchIrObject[];
+ allowedOverlapPairs:string[];
+ lineage:PortConnectionLineage[];
+};
+
+/**
+ * Join eligible EXISTING ASCEND primitive ports with run-stitch geometry.
+ * Source glyph paths are never edited. Ports are source-derived/provisional;
+ * connector routing, clearance and stitch-length limits are digital REFERENCE
+ * heuristics, not a manufacturer's digitizing recipe or physical sew-out.
+ *
+ * Fail closed: no connector is emitted unless both endpoints face each other,
+ * the sampled cubic clears third-party glyph footprints and the full path
+ * remains inside the garment band and seam-avoid envelope.
+ */
+export function buildPortAwareStitchConnectors(
+ glyphs:readonly ProductionGlyphObject[],
+ zone:GarmentZone,
+ band:{minYmm:number;maxYmm:number},
+ options:{maxConnections:number;minGapMm:number;maxSpanMm?:number}
+):PortConnectorResult{
+ const empty=():PortConnectorResult=>({objects:[],allowedOverlapPairs:[],lineage:[]});
+ const limit=Math.max(0,Math.min(12,Math.floor(options.maxConnections)));
+ const gap=Math.max(0,options.minGapMm);
+ const maxSpan=Math.max(gap*2,Math.min(40,options.maxSpanMm??28));
+ if(!limit||!Number.isFinite(gap)||!Number.isFinite(maxSpan)||
+    !Number.isFinite(band.minYmm+band.maxYmm)||band.maxYmm<=band.minYmm)return empty();
+ const entries=glyphs.flatMap(g=>{
+  if(g.geometryRef!=="ascend:"+g.form||!Number.isFinite(g.placement.xMm)||
+     !Number.isFinite(g.placement.yMm)||!(g.physical.widthMm>0)||!(g.physical.heightMm>0))return [];
+  const primitive=primitiveForForm(g.form);
+  if(!primitive||primitive.status==="corpus-canonical")return [];
+  const vb=primitive.viewBox.trim().split(/[\s,]+/).map(Number);
+  if(vb.length!==4||vb.some(n=>!Number.isFinite(n))||vb[2]!<=0||vb[3]!<=0)return [];
+  const rotation=(g.placement.rotationDeg??g.physical.rotationDeg)*Math.PI/180;
+  const c=Math.cos(rotation),s=Math.sin(rotation);
+  const ports=primitive.ports.filter(p=>p.role!=="center").map(p=>{
+   const dx=((p.x-vb[0]!)/vb[2]!-.5)*g.physical.widthMm;
+   const dy=((p.y-vb[1]!)/vb[3]!-.5)*g.physical.heightMm;
+   const a=(p.angleDeg*Math.PI/180)+rotation;
+   return {id:p.id,point:{x:g.placement.xMm!+dx*c-dy*s,y:g.placement.yMm!+dx*s+dy*c},
+    direction:{x:Math.cos(a),y:Math.sin(a)}};
+  });
+  const ex=(Math.abs(c)*g.physical.widthMm+Math.abs(s)*g.physical.heightMm)/2;
+  const ey=(Math.abs(s)*g.physical.widthMm+Math.abs(c)*g.physical.heightMm)/2;
+  return [{glyph:g,primitive,ports,box:{x:g.placement.xMm!,y:g.placement.yMm!,ex,ey}}];
+ });
+ const candidates:{i:number;j:number;from:number;to:number;distance:number}[]=[];
+ for(let i=0;i<entries.length;i++)for(let j=i+1;j<entries.length;j++){
+  const a=entries[i]!,b=entries[j]!;
+  for(let p=0;p<a.ports.length;p++)for(let q=0;q<b.ports.length;q++){
+   const ap=a.ports[p]!,bp=b.ports[q]!;
+   const dx=bp.point.x-ap.point.x,dy=bp.point.y-ap.point.y,d=Math.hypot(dx,dy);
+   if(!(d>=Math.max(.8,gap))||d>maxSpan)continue;
+   if((ap.direction.x*dx+ap.direction.y*dy)/d<.35||
+      (-bp.direction.x*dx-bp.direction.y*dy)/d<.35)continue;
+   candidates.push({i,j,from:p,to:q,distance:d});
+  }
+ }
+ candidates.sort((a,b)=>a.distance-b.distance||
+  entries[a.i]!.glyph.id.localeCompare(entries[b.i]!.glyph.id)||
+  entries[a.j]!.glyph.id.localeCompare(entries[b.j]!.glyph.id)||
+  a.from-b.from||a.to-b.to);
+ const used=new Set<number>(),objects:StitchIrObject[]=[],lineage:PortConnectionLineage[]=[];
+ const allowedOverlapPairs:string[]=[];
+ const pair=(a:string,b:string)=>a<b?a+"|"+b:b+"|"+a;
+ const height=zone.heightMm??0;
+ for(const candidate of candidates){
+  if(objects.length>=limit)break;
+  const {i,j,from,to,distance:d}=candidate;
+  // One connector per glyph in this conservative first pass: no tangles
+  // or undocumented multi-branch junctions at a provisional source port.
+  if(used.has(i)||used.has(j))continue;
+  const a=entries[i]!,b=entries[j]!,ap=a.ports[from]!,bp=b.ports[to]!;
+  const handle=Math.min(5,d*.22);
+  const p0=ap.point,p3=bp.point;
+  const p1={x:p0.x+ap.direction.x*handle,y:p0.y+ap.direction.y*handle};
+  const p2={x:p3.x+bp.direction.x*handle,y:p3.y+bp.direction.y*handle};
+  const path:StitchIrPoint[]=[];
+  for(let k=0;k<=12;k++){
+   const t=k/12,u=1-t;
+   path.push({x:u*u*u*p0.x+3*u*u*t*p1.x+3*u*t*t*p2.x+t*t*t*p3.x,
+    y:u*u*u*p0.y+3*u*u*t*p1.y+3*u*t*t*p2.y+t*t*t*p3.y});
+  }
+  const valid=path.every(p=>{
+   if(!Number.isFinite(p.x+p.y)||p.y<Math.max(0,band.minYmm)+gap||
+      p.y>Math.min(height,band.maxYmm)-gap)return false;
+   const C=circumferenceAt(zone,p.y);
+   if(p.x<gap||p.x>C-gap)return false;
+   return entries.every((other,k)=>{
+    if(k===i||k===j)return true;
+    const box=other.box;
+    return Math.abs(p.x-box.x)>box.ex+gap||
+           Math.abs(p.y-box.y)>box.ey+gap;
+   });
+  });
+  if(!valid)continue;
+  const id="connector:"+objects.length;
+  objects.push({kind:"run",id,color:a.glyph.threadColor,path,length:2.5});
+  allowedOverlapPairs.push(pair(id,a.glyph.id),pair(id,b.glyph.id));
+  lineage.push({fromObjectId:a.glyph.id,toObjectId:b.glyph.id,
+   fromPortId:ap.id,toPortId:bp.id,
+   fromGeometryRef:a.glyph.geometryRef,toGeometryRef:b.glyph.geometryRef,
+   fromSourceStatus:a.primitive.status,toSourceStatus:b.primitive.status,
+   validationState:"REFERENCE"});
+  used.add(i);used.add(j);
+ }
+ return {objects,allowedOverlapPairs,lineage};
+}
