@@ -110,6 +110,15 @@ export function buildPortAwareStitchConnectors(
   // or undocumented multi-branch junctions at a provisional source port.
   if(used.has(i)||used.has(j))continue;
   const a=entries[i]!,b=entries[j]!,ap=a.ports[from]!,bp=b.ports[to]!;
+  // A connector cannot legitimize a source glyph that already straddles
+  // the seam or construction band. Check both vertical edges on tapered zones.
+  const anchorInside=(entry:typeof a)=>{
+   const {x,y,ex,ey}=entry.box;
+   const c=Math.min(circumferenceAt(zone,y-ey),circumferenceAt(zone,y+ey));
+   return y-ey>=Math.max(0,band.minYmm)+gap&&
+    y+ey<=Math.min(height,band.maxYmm)-gap&&x-ex>=gap&&x+ex<=c-gap;
+  };
+  if(!anchorInside(a)||!anchorInside(b))continue;
   const handle=Math.min(5,d*.22);
   const p0=ap.point,p3=bp.point;
   const p1={x:p0.x+ap.direction.x*handle,y:p0.y+ap.direction.y*handle};
