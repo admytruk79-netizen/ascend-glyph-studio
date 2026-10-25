@@ -64,6 +64,10 @@ describe("port-aware production stitch connectors",()=>{
   expect(buildPortAwareStitchConnectors([a,b],zone,
    {minYmm:38,maxYmm:45},options).objects).toEqual([]);
  });
+ it("does not silently bridge distinct thread-color blocks",()=>{
+  const contrasting={...b,threadColor:"#aa0000"};
+  expect(buildPortAwareStitchConnectors([a,contrasting],zone,band,options).objects).toEqual([]);
+ });
  it("does not use unreviewed geometry or fabricate links when no compatible ports exist",()=>{
   const invalid={...a,geometryRef:"corpus:axis"};
   expect(buildPortAwareStitchConnectors([invalid,b],zone,band,options).objects).toEqual([]);
