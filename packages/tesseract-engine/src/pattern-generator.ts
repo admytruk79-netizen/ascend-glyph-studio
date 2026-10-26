@@ -27,6 +27,7 @@ import {buildMasterCompositionPlan} from "./master-composition-plan";
 import {buildRhythmicProductionRepeats} from "./rhythmic-production-repeats";
 import {buildHierarchicalProductionAssembly} from "./hierarchical-production-assembly";
 import {buildPortAwareStitchConnectors,type PortConnectionLineage} from "./port-aware-stitch-connectors";
+import {measureStitchCoverageBudget,type StitchCoverageBudget} from "./stitch-coverage-budget";
 import {stitchIrToSvg} from "./canonical-preview";
 import {optimizeStitchTravel} from "./stitch-travel-optimizer";
 import {planEmbroideryJob,type ManufacturingJobPlan} from "./manufacturing-job-plan";
@@ -56,6 +57,8 @@ export type GeneratedPattern={
  productionObjects?:ProductionGlyphObject[];
  stitchObjects?:StitchIrObject[];
  manufacturingJob?:ManufacturingJobPlan;
+ /** Digital preview-mark estimate, NOT thread density or sew-out approval. */
+ coverageBudget?:StitchCoverageBudget;
  surfaceMath?:ReturnType<typeof evaluateSurfaceLayout>;
  machineProfileId?:string;
  physicalSizeMm?:{width:number;height:number};
@@ -342,7 +345,18 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   const critiqueSvg=medium==="embroidery"?svg:conceptSvg;
   const finalCritique=critiqueFinalSvg(critiqueSvg,medium,input.visualCorpus??[]);
   const combinedScore=candidate.score+finalCritique.score*.45-(compact?.15:0);
-  return [{id:`pat-${input.seed}-${i+1}${compact?"-compact":""}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,compositionObjective:compositionGoals[i],svg,conceptSvg,finalCritique,productionObjects,stitchObjects,portConnections:portConnections.lineage,manufacturingJob,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave}];
+  const coverageBand=sashMode?{
+   minYmm:compositionPlan.primary.offsetY*physicalSize.height,
+   maxYmm:Math.min(physicalSize.height,
+    compositionPlan.primary.offsetY*physicalSize.height+
+    Math.max(20,compositionPlan.primary.scaleY*physicalSize.height))
+  }:{minYmm:0,maxYmm:physicalSize.height};
+  // Instrument the real, post-routing stitch geometry. No score or threshold
+  // changes: first compare fixed-seed 3.7 raster results before optimization.
+  const coverageBudget=measureStitchCoverageBudget(
+   stitchObjects,productionZone,coverageBand,constructionEnvelope.minGapMm
+  );
+  return [{id:`pat-${input.seed}-${i+1}${compact?"-compact":""}`,lineageId:candidate.lineageId,score:combinedScore,novelty:candidate.novelty,objectives:candidate.objectives,compositionObjective:compositionGoals[i],svg,conceptSvg,finalCritique,productionObjects,stitchObjects,portConnections:portConnections.lineage,manufacturingJob,coverageBudget,surfaceMath,machineProfileId:machine?.id,physicalSizeMm:physicalSize,octave}];
   } catch (error) {
    if(error instanceof Error && /^(ornament-|scaled satin width out of machine-safe range)/.test(error.message)){
     candidateFailures.push(`${i}:${compact?"compact":"full"}:${error.message}`);
