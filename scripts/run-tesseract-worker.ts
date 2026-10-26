@@ -51,6 +51,7 @@ const server=http.createServer(async(req,res)=>{
      state->>'patternId' pattern_id,state->>'lineageId' lineage_id,
      coalesce((state->>'feedbackPass')::int,0) feedback_pass,
      state->'raster' raster,state->'finalCritique' final_critique,
+     state->'coverageBudget' coverage_budget,
      state->>'visualCorpusCount' visual_corpus_count,state->>'corpusObjectCount' corpus_object_count
      from synthesis_candidate where run_id=$1 order by ordinal`,[runId]);
    const rows=cq.rows.map((x:any)=>({...x,svgUrl:`/runs/${runId}/${x.ordinal}.svg`}));
@@ -239,6 +240,7 @@ async function execute(run:any){
     const comparison=await compareRasterViews(mode,p,critiqueRaster);
     process.stdout.write(JSON.stringify({runId:run.id,stage:"paired-raster-diagnostic",pattern:p.id,mode,
      physicalSizeMm:p.physicalSizeMm??null,
+     digitalCoverageBudget:p.coverageBudget??null,
      gatingView:comparison.gatingView,
      gatingRaster:{coverage:raster.coverage,quality:raster.quality,clutter:raster.clutter,
       emptyColumns:raster.emptyColumns,balance:raster.balance,survive:raster.survive,flags:raster.flags},
@@ -306,7 +308,7 @@ async function persist(run:any,judged:{p:any;raster:RasterCritique|null;score:nu
      };
     }
    }
-   const state={patternId:p.id,lineageId:p.lineageId,svg:p.svg,conceptSvg:p.conceptSvg,objectives:p.objectives,finalCritique:p.finalCritique,raster,feedbackPass,mode,concepts,corpusSignals,visualCorpusCount,corpusObjectCount,productionObjects:p.productionObjects,stitchObjects:p.stitchObjects,surfaceMath:p.surfaceMath,machineProfileId:p.machineProfileId,physicalSizeMm:p.physicalSizeMm,octave:p.octave,productionCompile};
+   const state={patternId:p.id,lineageId:p.lineageId,svg:p.svg,conceptSvg:p.conceptSvg,objectives:p.objectives,finalCritique:p.finalCritique,raster,feedbackPass,mode,concepts,corpusSignals,visualCorpusCount,corpusObjectCount,productionObjects:p.productionObjects,stitchObjects:p.stitchObjects,coverageBudget:p.coverageBudget,surfaceMath:p.surfaceMath,machineProfileId:p.machineProfileId,physicalSizeMm:p.physicalSizeMm,octave:p.octave,productionCompile};
    const complexity={target:intent.complexity??.72,novelty:p.novelty};
    const disposition=raster&&!raster.survive?"rejected-raster":"candidate";
    await c.query(`insert into synthesis_candidate(id,run_id,ordinal,state,complexity,score,disposition)
