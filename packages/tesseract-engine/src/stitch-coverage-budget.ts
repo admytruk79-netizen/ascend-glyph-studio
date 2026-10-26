@@ -48,6 +48,8 @@ export function measureStitchCoverageBudget(
     lo<0||hi>height||hi<=lo||seamGapMm<0)
   throw new Error("invalid digital coverage band");
  const width=Math.max(circumferenceAt(zone,lo),circumferenceAt(zone,hi));
+ if(!Number.isFinite(width)||width<=2*seamGapMm)
+  throw new Error("invalid digital coverage circumference");
  const columns=clamp(Math.ceil(width/2.5),16,192);
  const rows=clamp(Math.ceil((hi-lo)/2.5),8,128);
  const dx=width/columns,dy=(hi-lo)/rows,size=columns*rows;
