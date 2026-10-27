@@ -261,7 +261,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
    ));
    const band={minYmm:bandY,maxYmm:bandY+bandHeight};
    const assembly=buildHierarchicalProductionAssembly(productionObjects,productionZone,band,{
-    maxExtra:Math.ceil(extraBudget*(input.enableCoverageAwareBranchLeaf===true?.35:.65)),
+    maxExtra:Math.ceil(extraBudget*(input.enableCoverageAwareBranchLeaf===true ? 0.35 : 0.65)),
     minGapMm:constructionEnvelope.minGapMm,
     minFeatureMm:constructionEnvelope.minFeatureMm
    });
