@@ -30,7 +30,7 @@ export function buildPortAwareStitchConnectors(
  glyphs:readonly ProductionGlyphObject[],
  zone:GarmentZone,
  band:{minYmm:number;maxYmm:number},
- options:{maxConnections:number;minGapMm:number;maxSpanMm?:number}
+ options:{maxConnections:number;minGapMm:number;maxSpanMm?:number;branchLeafClusterOnly?:boolean}
 ):PortConnectorResult{
  const empty=():PortConnectorResult=>({objects:[],allowedOverlapPairs:[],lineage:[]});
  const limit=Math.max(0,Math.min(12,Math.floor(options.maxConnections)));
@@ -86,6 +86,10 @@ export function buildPortAwareStitchConnectors(
  const candidates:{i:number;j:number;from:number;to:number;distance:number}[]=[];
  for(let i=0;i<entries.length;i++)for(let j=i+1;j<entries.length;j++){
   const a=entries[i]!,b=entries[j]!;
+  if(options.branchLeafClusterOnly&&(
+   !a.glyph.branchLeaf||!b.glyph.branchLeaf||
+   a.glyph.branchLeaf.clusterId!==b.glyph.branchLeaf.clusterId||
+   a.glyph.branchLeaf.role===b.glyph.branchLeaf.role))continue;
   for(let p=0;p<a.ports.length;p++)for(let q=0;q<b.ports.length;q++){
    const ap=a.ports[p]!,bp=b.ports[q]!;
    const dx=bp.point.x-ap.point.x,dy=bp.point.y-ap.point.y,d=Math.hypot(dx,dy);
@@ -99,7 +103,8 @@ export function buildPortAwareStitchConnectors(
   entries[a.i]!.glyph.id.localeCompare(entries[b.i]!.glyph.id)||
   entries[a.j]!.glyph.id.localeCompare(entries[b.j]!.glyph.id)||
   a.from-b.from||a.to-b.to);
- const used=new Set<number>(),objects:StitchIrObject[]=[],lineage:PortConnectionLineage[]=[];
+ const used=new Map<number,number>(),usedPorts=new Set<string>();
+ const objects:StitchIrObject[]=[],lineage:PortConnectionLineage[]=[];
  const allowedOverlapPairs:string[]=[];
  const pair=(a:string,b:string)=>a<b?a+"|"+b:b+"|"+a;
  const height=zone.heightMm??0;
@@ -108,7 +113,10 @@ export function buildPortAwareStitchConnectors(
   const {i,j,from,to,distance:d}=candidate;
   // One connector per glyph in this conservative first pass: no tangles
   // or undocumented multi-branch junctions at a provisional source port.
-  if(used.has(i)||used.has(j))continue;
+  const cap=(index:number)=>options.branchLeafClusterOnly&&entries[index]!.glyph.branchLeaf?.role==="stem"?2:1;
+  if((used.get(i)??0)>=cap(i)||(used.get(j)??0)>=cap(j))continue;
+  const portKeyA=i+":"+from,portKeyB=j+":"+to;
+  if(usedPorts.has(portKeyA)||usedPorts.has(portKeyB))continue;
   const a=entries[i]!,b=entries[j]!,ap=a.ports[from]!,bp=b.ports[to]!;
   // Never bridge different thread-color blocks with an implicit single-color run.
   if(a.glyph.threadColor!==b.glyph.threadColor)continue;
@@ -149,7 +157,8 @@ export function buildPortAwareStitchConnectors(
    fromGeometryRef:a.glyph.geometryRef,toGeometryRef:b.glyph.geometryRef,
    fromSourceStatus:a.primitive.status,toSourceStatus:b.primitive.status,
    validationState:"REFERENCE"});
-  used.add(i);used.add(j);
+  used.set(i,(used.get(i)??0)+1);used.set(j,(used.get(j)??0)+1);
+  usedPorts.add(portKeyA);usedPorts.add(portKeyB);
  }
  return {objects,allowedOverlapPairs,lineage};
 }
