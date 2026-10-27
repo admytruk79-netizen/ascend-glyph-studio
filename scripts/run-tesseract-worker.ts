@@ -253,6 +253,15 @@ async function execute(run:any){
      evidenceStatus:"raster-reference-only-not-manufacturer-validated"
     })+"\n");
    }
+   const branchLeafCount=p.productionObjects?.filter(o=>!!o.branchLeaf).length??0;
+   if(branchLeafCount>0){
+    process.stdout.write(JSON.stringify({runId:run.id,stage:"branch-leaf-raster-diagnostic",
+     pattern:p.id,branchLeafPlacements:branchLeafCount,
+     digitalMotifMarkEstimate:p.coverageBudget?.motifCoverage??null,
+     rasterQuality:raster.quality,rasterClutter:raster.clutter,
+     rasterSurvive:raster.survive,rasterFlags:raster.flags,
+     evidenceStatus:"digital-reference-only-not-manufacturer-validated"})+"\n");
+   }
    const base=p.score+raster.quality*60-(raster.survive?0:80);
    judged.push({p,raster,score:base+preferenceAdjustment(preferenceModel,p,raster,base),feedbackPass});
    if(raster?.survive)passed++;
