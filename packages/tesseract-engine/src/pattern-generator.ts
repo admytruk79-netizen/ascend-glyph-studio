@@ -26,6 +26,7 @@ import {assessCandidateSurface} from "./surface-candidate-gate";
 import {buildMasterCompositionPlan} from "./master-composition-plan";
 import {buildRhythmicProductionRepeats} from "./rhythmic-production-repeats";
 import {buildHierarchicalProductionAssembly} from "./hierarchical-production-assembly";
+import {buildCoverageAwareBranchLeafAssembly} from "./coverage-aware-branch-leaf";
 import {buildPortAwareStitchConnectors,type PortConnectionLineage} from "./port-aware-stitch-connectors";
 import {measureStitchCoverageBudget,type StitchCoverageBudget} from "./stitch-coverage-budget";
 import {stitchIrToSvg} from "./canonical-preview";
@@ -45,6 +46,8 @@ export type PatternGeneratorInput={
  machineProfileId?:string;
  /** Experimental digital port links; OFF unless explicitly requested. */
  enablePortConnectors?:boolean;
+ /** Experimental canonical branch/leaf placement; OFF by default pending 3.7 benchmark. */
+ enableCoverageAwareBranchLeaf?:boolean;
  constructionIntent?:ConstructionIntent;
  physicalWidthMm?:number;
  physicalHeightMm?:number;
@@ -258,15 +261,23 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
    ));
    const band={minYmm:bandY,maxYmm:bandY+bandHeight};
    const assembly=buildHierarchicalProductionAssembly(productionObjects,productionZone,band,{
-    maxExtra:Math.ceil(extraBudget*.65),
+    maxExtra:Math.ceil(extraBudget*(input.enableCoverageAwareBranchLeaf===true?.35:.65)),
     minGapMm:constructionEnvelope.minGapMm,
     minFeatureMm:constructionEnvelope.minFeatureMm
    });
    productionObjects=[...productionObjects,...assembly];
-   // Keep a limited broad-band cadence around the new focal clusters. The
-   // remaining capacity is shared, never counted twice.
+   // Experimental branch/leaf clusters are physical glyph placements, never
+   // SVG overlays. Preserve the unchanged benchmark by keeping this opt-in.
+   const branchLeaf=input.enableCoverageAwareBranchLeaf===true
+    ?buildCoverageAwareBranchLeafAssembly(productionObjects,productionZone,band,{
+     maxExtra:extraBudget-assembly.length,
+     minGapMm:constructionEnvelope.minGapMm,
+     minFeatureMm:constructionEnvelope.minFeatureMm
+    }):[];
+   productionObjects=[...productionObjects,...branchLeaf];
+   // Repeats only consume the remaining physical placement capacity.
    const repeats=buildRhythmicProductionRepeats(productionObjects,productionZone,band,{
-    maxExtra:extraBudget-assembly.length,
+    maxExtra:extraBudget-assembly.length-branchLeaf.length,
     minGapMm:constructionEnvelope.minGapMm
    });
    productionObjects=[...productionObjects,...repeats];
