@@ -50,6 +50,8 @@ export interface ProductionGlyphObject{
  assembly?:{tier:"macro"|"meso"|"micro";anchorId:string;scaleFactor:number};
  /** Experimental placement lineage, NOT a sewn junction or physical approval. */
  branchLeaf?:{clusterId:string;role:"stem"|"leaf";sourcePrimitiveStatus:"source-derived-provisional"|"canonical-verified";validationState:"REFERENCE"};
+ /** Repeat placement lineage, never inherited assembly metadata or new source geometry. */
+ rhythm?:{sourceObjectId:string;sourceGeometryRef:string;validationState:"REFERENCE"};
 }
 
 const ALL_RELATIONS:readonly ProductionRelation[]=["anchor","nest","orbit","intersect","bridge","oppose","mirror","radiate","flow","enclose","repeat","branch","transform","terminate","return","ascend"];
