@@ -111,8 +111,8 @@ export function buildPortAwareStitchConnectors(
  for(const candidate of candidates){
   if(objects.length>=limit)break;
   const {i,j,from,to,distance:d}=candidate;
-  // One connector per glyph in this conservative first pass: no tangles
-  // or undocumented multi-branch junctions at a provisional source port.
+  // Cap each source-port degree; experimental stems may join two leaves,
+  // but a leaf and any individual port remain single-use.
   const cap=(index:number)=>options.branchLeafClusterOnly&&entries[index]!.glyph.branchLeaf?.role==="stem"?2:1;
   if((used.get(i)??0)>=cap(i)||(used.get(j)??0)>=cap(j))continue;
   const portKeyA=i+":"+from,portKeyB=j+":"+to;
@@ -149,6 +149,18 @@ export function buildPortAwareStitchConnectors(
    box.id===a.glyph.id||box.id===b.glyph.id||
    !hitsBox(path[k]!,p,box)));
   if(!valid)continue;
+  // Reject a crossing with any previously accepted connector. Shared
+  // source ports are already forbidden above, so no crossing is intentional.
+  const orient=(a:StitchIrPoint,b:StitchIrPoint,c:StitchIrPoint)=>
+   (b.x-a.x)*(c.y-a.y)-(b.y-a.y)*(c.x-a.x);
+  const intersects=(a:StitchIrPoint,b:StitchIrPoint,c:StitchIrPoint,d:StitchIrPoint)=>{
+   const o1=orient(a,b,c),o2=orient(a,b,d),o3=orient(c,d,a),o4=orient(c,d,b);
+   return o1*o2<0&&o3*o4<0;
+  };
+  const crossing=objects.some(previous=>previous.kind==="run"&&
+   path.slice(1).some((p,k)=>previous.path.slice(1).some((q,j)=>
+    intersects(path[k]!,p,previous.path[j]!,q))));
+  if(crossing)continue;
   const id="connector:"+objects.length;
   objects.push({kind:"run",id,color:a.glyph.threadColor,path,length:2.5});
   allowedOverlapPairs.push(pair(id,a.glyph.id),pair(id,b.glyph.id));
