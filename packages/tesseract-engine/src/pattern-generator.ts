@@ -27,6 +27,7 @@ import {buildMasterCompositionPlan} from "./master-composition-plan";
 import {buildRhythmicProductionRepeats} from "./rhythmic-production-repeats";
 import {buildHierarchicalProductionAssembly} from "./hierarchical-production-assembly";
 import {buildCoverageAwareBranchLeafAssembly} from "./coverage-aware-branch-leaf";
+import {reserveBranchLeafDiagnosticCandidates} from "./experimental-candidate-sampling";
 import {buildPortAwareStitchConnectors,type PortConnectionLineage} from "./port-aware-stitch-connectors";
 import {measureStitchCoverageBudget,type StitchCoverageBudget} from "./stitch-coverage-budget";
 import {stitchIrToSvg} from "./canonical-preview";
@@ -384,5 +385,11 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
  const eligible=fullRendered.length>=variations?fullRendered:rendered;
  const survivors=eligible.filter(x=>x.finalCritique.survive);
  const pool=survivors.length>=Math.min(4,variations)?survivors:eligible;
- return selectVisuallyDiverse(pool,variations,.11);
+ const selected=selectVisuallyDiverse(pool,variations,.11);
+ // In experimental mode only, force a tiny diagnostic sample of REAL
+ // branch/leaf placements through the unchanged downstream raster gate.
+ // This is not a score boost or production approval.
+ return input.enableCoverageAwareBranchLeaf===true
+  ?reserveBranchLeafDiagnosticCandidates(selected,rendered.filter(x=>!x.id.endsWith("-compact")),variations,2)
+  :selected;
 }
