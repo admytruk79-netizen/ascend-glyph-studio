@@ -221,7 +221,10 @@ async function execute(run:any){
   const passComplexity=Math.max(.52,baseComplexity-feedbackPass*.07);
   const passSeed=feedbackPass===0?run.seed:run.seed+":feedback:"+feedbackPass;
   const patterns=generatePatterns({seed:passSeed,concepts,paletteId:intent.paletteId,mode,complexity:passComplexity,variations:candidatePoolSize,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus,learnedGuidance,structuralFeedback,machineProfileId:intent.machineProfileId,physicalWidthMm:intent.physicalWidthMm,physicalHeightMm:intent.physicalHeightMm,enableCoverageAwareBranchLeaf:intent.enableCoverageAwareBranchLeaf===true,constructionIntent:intent.constructionIntent});
-  process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-pass",feedbackPass,patterns:patterns.length,targetBatch:batchSize,candidatePoolSize,complexity:passComplexity,experimentalBranchLeaf:intent.enableCoverageAwareBranchLeaf===true})+"\n");
+  const branchLeafCounts=patterns.map(p=>p.productionObjects?.filter(o=>!!o.branchLeaf).length??0);
+  process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-pass",feedbackPass,patterns:patterns.length,targetBatch:batchSize,candidatePoolSize,complexity:passComplexity,experimentalBranchLeaf:intent.enableCoverageAwareBranchLeaf===true,
+   branchLeafCandidates:branchLeafCounts.filter(n=>n>0).length,
+   branchLeafPlacements:branchLeafCounts.reduce((n,v)=>n+v,0)})+"\n");
   let passed=0;
   for(const [candidateIndex,p] of patterns.entries()){
    let raster:RasterCritique|null=null;
@@ -241,6 +244,7 @@ async function execute(run:any){
     process.stdout.write(JSON.stringify({runId:run.id,stage:"paired-raster-diagnostic",pattern:p.id,mode,
      physicalSizeMm:p.physicalSizeMm??null,
      digitalCoverageBudget:p.coverageBudget??null,
+     branchLeafPlacements:p.productionObjects?.filter(o=>!!o.branchLeaf).length??0,
      gatingView:comparison.gatingView,
      gatingRaster:{coverage:raster.coverage,quality:raster.quality,clutter:raster.clutter,
       emptyColumns:raster.emptyColumns,balance:raster.balance,survive:raster.survive,flags:raster.flags},
