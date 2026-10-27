@@ -22,7 +22,7 @@ export function buildRhythmicProductionRepeats(
  const height=zone.heightMm??0;
  if(!limit||!(height>0)||!(band.maxYmm>band.minYmm))return [];
  const sources=[...originals]
-  .filter(o=>!o.branchLeaf&&Number.isFinite(o.placement.xMm)&&Number.isFinite(o.placement.yMm)&&o.physical.widthMm>0&&o.physical.heightMm>0)
+  .filter(o=>!o.branchLeaf&&!o.rhythm&&Number.isFinite(o.placement.xMm)&&Number.isFinite(o.placement.yMm)&&o.physical.widthMm>0&&o.physical.heightMm>0)
   .sort((a,b)=>a.physical.widthMm*a.physical.heightMm-b.physical.widthMm*b.physical.heightMm||a.id.localeCompare(b.id))
   .filter((o,i,all)=>all.findIndex(x=>x.form===o.form)===i)
   .slice(0,3);
@@ -57,8 +57,15 @@ export function buildRhythmicProductionRepeats(
    if(x-e.x<gap||x+e.x>C-gap||y-e.y<Math.max(0,band.minYmm)+gap||
       y+e.y>Math.min(height,band.maxYmm)-gap)continue;
    if(occupied.some(previous=>!juxtaposition(zone,f,previous).valid))continue;
-   out.push({...source,id:f.id,
-    placement:{...source.placement,xMm:x,yMm:y}});
+   const clone:ProductionGlyphObject={...source,id:f.id,
+    placement:{...source.placement,xMm:x,yMm:y},
+    rhythm:{sourceObjectId:source.id,sourceGeometryRef:source.geometryRef,
+     validationState:"REFERENCE"}};
+   // A rhythmic copy of an assembled glyph is NOT itself an assembly
+   // placement. Preserve source identity via rhythm lineage instead.
+   delete clone.assembly;
+   delete clone.branchLeaf;
+   out.push(clone);
    occupied.push(f);
   }
  }
