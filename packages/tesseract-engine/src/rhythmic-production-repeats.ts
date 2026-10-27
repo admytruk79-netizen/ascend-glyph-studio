@@ -22,7 +22,7 @@ export function buildRhythmicProductionRepeats(
  const height=zone.heightMm??0;
  if(!limit||!(height>0)||!(band.maxYmm>band.minYmm))return [];
  const sources=[...originals]
-  .filter(o=>Number.isFinite(o.placement.xMm)&&Number.isFinite(o.placement.yMm)&&o.physical.widthMm>0&&o.physical.heightMm>0)
+  .filter(o=>!o.branchLeaf&&Number.isFinite(o.placement.xMm)&&Number.isFinite(o.placement.yMm)&&o.physical.widthMm>0&&o.physical.heightMm>0)
   .sort((a,b)=>a.physical.widthMm*a.physical.heightMm-b.physical.widthMm*b.physical.heightMm||a.id.localeCompare(b.id))
   .filter((o,i,all)=>all.findIndex(x=>x.form===o.form)===i)
   .slice(0,3);
