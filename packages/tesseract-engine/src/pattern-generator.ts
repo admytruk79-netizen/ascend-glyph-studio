@@ -303,7 +303,7 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
   // connections between unchanged canonical glyphs, not concept-SVG overlays.
   // The sampled connector is seam/band/obstacle checked, then the final
   // stitch-IR surface gate remains authoritative for the complete layout.
-  const portConnections=sashMode&&medium==="embroidery"&&input.enablePortConnectors===true
+  const portConnections=sashMode&&medium==="embroidery"&&(input.enablePortConnectors===true||input.enableCoverageAwareBranchLeaf===true)
    ?buildPortAwareStitchConnectors(productionObjects,productionZone,{
     minYmm:compositionPlan.primary.offsetY*physicalSize.height,
     maxYmm:compositionPlan.primary.offsetY*physicalSize.height+
@@ -311,7 +311,8 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
    },{
     maxConnections:Math.min(6,Math.ceil(productionObjects.length/3)),
     minGapMm:constructionEnvelope.minGapMm,
-    maxSpanMm:28
+    maxSpanMm:28,
+    branchLeafClusterOnly:input.enablePortConnectors!==true
    })
    :{objects:[],allowedOverlapPairs:[],lineage:[]};
   const stitchObjects=optimizeStitchTravel([...composedStitches,...portConnections.objects]).objects;
