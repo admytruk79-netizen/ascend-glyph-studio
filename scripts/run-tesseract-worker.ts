@@ -69,7 +69,7 @@ const server=http.createServer(async(req,res)=>{
 });
 server.listen(Number(process.env.PORT||10000),"0.0.0.0",()=>process.stdout.write(JSON.stringify({status:"listening",port:Number(process.env.PORT||10000)})+"\n"));
 
-type Intent={concepts?:{id:string;weight:number}[];materialId?:string;recipeId?:string;zoneId?:string;mode?:PatternMode;paletteId?:string;complexity?:number;machineProfileId?:string;physicalWidthMm?:number;physicalHeightMm?:number;constructionIntent?:{targetOccupancy?:number;seamPolicy?:"avoid"|"continuous"|"resolve";maxColors?:number;hierarchyDepth?:number}};
+type Intent={concepts?:{id:string;weight:number}[];materialId?:string;recipeId?:string;zoneId?:string;mode?:PatternMode;paletteId?:string;complexity?:number;machineProfileId?:string;physicalWidthMm?:number;physicalHeightMm?:number;enableCoverageAwareBranchLeaf?:boolean;constructionIntent?:{targetOccupancy?:number;seamPolicy?:"avoid"|"continuous"|"resolve";maxColors?:number;hierarchyDepth?:number}};
 
 async function claim(){
  const c=await pool.connect();
@@ -220,8 +220,8 @@ async function execute(run:any){
  for(let feedbackPass=0;feedbackPass<3;feedbackPass++){
   const passComplexity=Math.max(.52,baseComplexity-feedbackPass*.07);
   const passSeed=feedbackPass===0?run.seed:run.seed+":feedback:"+feedbackPass;
-  const patterns=generatePatterns({seed:passSeed,concepts,paletteId:intent.paletteId,mode,complexity:passComplexity,variations:candidatePoolSize,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus,learnedGuidance,structuralFeedback,machineProfileId:intent.machineProfileId,physicalWidthMm:intent.physicalWidthMm,physicalHeightMm:intent.physicalHeightMm,constructionIntent:intent.constructionIntent});
-  process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-pass",feedbackPass,patterns:patterns.length,targetBatch:batchSize,candidatePoolSize,complexity:passComplexity})+"\n");
+  const patterns=generatePatterns({seed:passSeed,concepts,paletteId:intent.paletteId,mode,complexity:passComplexity,variations:candidatePoolSize,width:960,height:260,population:run.population,generations:run.generations,corpusSignals,visualCorpus,learnedGuidance,structuralFeedback,machineProfileId:intent.machineProfileId,physicalWidthMm:intent.physicalWidthMm,physicalHeightMm:intent.physicalHeightMm,enableCoverageAwareBranchLeaf:intent.enableCoverageAwareBranchLeaf===true,constructionIntent:intent.constructionIntent});
+  process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-pass",feedbackPass,patterns:patterns.length,targetBatch:batchSize,candidatePoolSize,complexity:passComplexity,experimentalBranchLeaf:intent.enableCoverageAwareBranchLeaf===true})+"\n");
   let passed=0;
   for(const [candidateIndex,p] of patterns.entries()){
    let raster:RasterCritique|null=null;
