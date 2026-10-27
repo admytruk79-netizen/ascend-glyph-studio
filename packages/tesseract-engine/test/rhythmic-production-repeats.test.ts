@@ -38,6 +38,7 @@ describe("production-realized rhythmic repeats",()=>{
    expect(clone.geometryRef).toBe("ascend:branch");
    expect(clone.form).toBe("branch");
    expect(clone.sourceBasis).toEqual(source.sourceBasis);
+   expect(clone.rhythm).toEqual({sourceObjectId:source.id,sourceGeometryRef:source.geometryRef,validationState:"REFERENCE"});
   }
  });
  it("keeps every repeat inside the tapered seam-free band and clear of every other motif",()=>{
@@ -52,6 +53,22 @@ describe("production-realized rhythmic repeats",()=>{
   }
   for(let i=1;i<all.length;i++)for(let j=0;j<i;j++)
    expect(juxtaposition(zone,fp(all[i]!),fp(all[j]!)).valid).toBe(true);
+ });
+ it("records rhythmic lineage without falsely inheriting assembly status",()=>{
+  const assembled:ProductionGlyphObject={...source,id:"source-branch:assembly:macro:0",
+   assembly:{tier:"macro",anchorId:source.id,scaleFactor:1}};
+  const before=JSON.stringify(assembled);
+  const copies=buildRhythmicProductionRepeats([assembled],zone,
+   {minYmm:30,maxYmm:70},{maxExtra:6,minGapMm:2});
+  expect(copies.length).toBeGreaterThan(0);
+  expect(JSON.stringify(assembled)).toBe(before);
+  for(const copy of copies){
+   expect(copy.assembly).toBeUndefined();
+   expect(copy.branchLeaf).toBeUndefined();
+   expect(copy.rhythm?.sourceObjectId).toBe(assembled.id);
+   expect(copy.rhythm?.sourceGeometryRef).toBe(assembled.geometryRef);
+   expect(copy.geometryRef).toBe(assembled.geometryRef);
+  }
  });
  it("fails closed when the band cannot fit another motif",()=>{
   const tiny:GarmentZone={...zone,surface:"cylinder",circumferenceMm:40,circumferenceEndMm:40,heightMm:20};
