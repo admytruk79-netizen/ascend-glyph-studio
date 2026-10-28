@@ -117,20 +117,51 @@ export function styleOf(sub: SubModel): GrammarStyle {
   return { figurative: r() * 0.6, groups: w(["d4", "c4", "d2"]), cores: w(["octagram", "rosette", "nested", "petals", "stepped", "cross"]), arms: w(["diag", "fir", "none"]), flowers: w(["petals", "tulip", "rhomb", "carnation"]), density: 0.28 + r() * 0.2 };
 }
 
+/**
+ * A style's profile moved towards what a viewer liked. The base profile counts as `prior` ratings; each like adds one
+ * to every trait of the motif (family, symmetry, core, arm, flowers), each dislike takes half of one away, and no
+ * weight drops below a twentieth of its share so nothing is ruled out for good.
+ */
+export function learnStyle(base: GrammarStyle, ratings: { traits: Traits; liked: boolean }[], prior = 4): GrammarStyle {
+  if (!ratings.length) return base;
+  const shift = (w: Partial<Record<string, number>>, pick: (t: Traits) => string[]) => {
+    const keys = Object.keys(w), tot = keys.reduce((a, k) => a + (w[k] ?? 0), 0) || 1;
+    const o: Record<string, number> = Object.fromEntries(keys.map((k) => [k, (prior * (w[k] ?? 0)) / tot]));
+    for (const { traits, liked } of ratings) for (const k of pick(traits)) if (k in o) o[k] = o[k]! + (liked ? 1 : -0.5);
+    for (const k of keys) o[k] = Math.max(((w[k] ?? 0) / tot) * 0.05 * prior, o[k]!);
+    return o;
+  };
+  const vote = (fam: Traits["family"]) => ratings.reduce((a, r) => a + (r.traits.family === fam ? (r.liked ? 1 : -0.5) : 0), 0);
+  const fig = Math.max(0.05 * base.figurative * prior, prior * base.figurative + vote("figurative")), geo = Math.max(0.05 * (1 - base.figurative) * prior, prior * (1 - base.figurative) + vote("geometric"));
+  return {
+    figurative: Math.min(0.9, fig / (fig + geo)),
+    groups: shift(base.groups, (t) => (t.family === "geometric" ? [t.group] : [])),
+    cores: shift(base.cores, (t) => (t.core ? [t.core] : [])),
+    arms: shift(base.arms, (t) => (t.arm ? [t.arm] : [])),
+    flowers: shift(base.flowers, (t) => t.flowers),
+    density: base.density,
+  };
+}
+
 export interface GrammarOptions { seed: number; size?: number; group?: Group; palette?: Palette; style?: GrammarStyle }
 
 /** One motif program, drawn and symmetrised. */
-export function grammarMotif(o: GrammarOptions): { grid: Grid; group: Group; program: string[] } {
+/** What a motif was built from: the units a viewer's likes and dislikes are learned over. */
+export interface Traits { family: "geometric" | "figurative"; group: Group; core?: string; arm?: string; flowers: string[] }
+
+export function grammarMotif(o: GrammarOptions): { grid: Grid; group: Group; program: string[]; traits: Traits } {
   const r = rng(o.seed), R = Math.max(5, ((o.size ?? 25) - 1) >> 1), N = 2 * R + 1, st = o.style ?? GRAMMAR_STYLES.Ukrainian!;
   const chance = (p: number) => r() < p, int = (a: number, b: number) => a + Math.floor(r() * (b - a + 1));
   const figurative = o.group ? o.group === "mirror-v" : chance(st.figurative);
   const group: Group = o.group ?? (figurative ? "mirror-v" : pickW(r, st.groups));
   const els: Element[] = [], program: string[] = [];
   const add = (name: string, e: Element) => { els.push(e); if (name) program.push(name); };
-  if (figurative) figure(R, r, st, add); else {
+  const traits: Traits = { family: figurative ? "figurative" : "geometric", group, flowers: [] };
+  if (figurative) traits.flowers = figure(R, r, st, add); else {
     // core
     const s = Math.max(2, Math.round(R * (0.28 + r() * 0.2)));
     const coreKind = pickW(r, st.cores);
+    traits.core = coreKind;
     let reach = Math.round(s * 1.5);
     if (coreKind === "nested") {
       const band = int(1, 2), roles = [[3, 1, 0, 2], [1, 0, 2, 1], [3, 0, 1, 2, 0], [1, 2, 0]][int(0, 3)]!, rr = Math.round(s * 1.6), f = nestedRoles(rr, band, roles);
@@ -161,6 +192,7 @@ export function grammarMotif(o: GrammarOptions): { grid: Grid; group: Group; pro
 
     // arms: diagonal with sprouts and horn or hook tips, or fir arms on the axes
     const armKind = pickW(r, st.arms);
+    traits.arm = armKind;
     if (armKind === "diag" && reach < R - 3) {
       const p = Math.max(reach >> 1, Math.min(R - 4, Math.round(R * (0.5 + r() * 0.15))));
       const tip = int(2, Math.max(2, R - p - 1)), curl = int(1, Math.max(1, tip - 1)), thick = chance(0.4);
@@ -210,7 +242,7 @@ export function grammarMotif(o: GrammarOptions): { grid: Grid; group: Group; pro
   const pal = o.palette ?? [1, 2, 4, 5];
   const g = blank(N, N);
   for (let i = 0; i < role.length; i++) g.cells[i] = role[i] ? pal[role[i]! - 1]! : 0;
-  return { grid: g, group, program };
+  return { grid: g, group, program, traits };
 }
 
 
@@ -224,7 +256,7 @@ const flowerMask = (kind: string, cx: number, cy: number, q: number): { mask: Ma
   // carnation: a calyx with a fan opening upwards, fringed on top
   return { mask: (x, y) => { const dx = A(x - cx), up = cy + q - y; if (up < 0 || up > 2 * q) return false; if (up <= 1) return dx <= 1; const w = Math.min(q, up - 1); return dx <= w && !(up === 2 * q && dx % 2 === 1); }, outline: false };
 };
-function figure(R: number, r: () => number, st: GrammarStyle, add: (name: string, e: Element) => void) {
+function figure(R: number, r: () => number, st: GrammarStyle, add: (name: string, e: Element) => void): string[] {
   const chance = (p: number) => r() < p, int = (a: number, b: number) => a + Math.floor(r() * (b - a + 1));
   const bottom = R - 1, potH = chance(0.65) ? int(2, Math.max(2, Math.round(R * 0.3))) : 0;
   if (potH) { // a stepped pot, wider at the top
@@ -236,18 +268,20 @@ function figure(R: number, r: () => number, st: GrammarStyle, add: (name: string
   const thick = chance(0.4);
   add(`trunk${thick ? "-thick" : ""}`, { mask: (x, y) => A(x) <= (thick ? 1 : 0) && y <= trunkBottom && y >= top, fill: thick ? 4 : 2 });
   // paired branches: diagonal up and out, each ending in a flower, with leaves along them
-  const levels = int(1, 3), span = trunkBottom - top, kind = pickW(r, st.flowers);
+  const levels = int(1, 3), span = trunkBottom - top, kind = pickW(r, st.flowers), used = [kind];
   for (let i = 0; i < levels; i++) {
     const q = int(1, R >= 13 ? 3 : 2), y0 = Math.round(trunkBottom - ((i + 0.7) * span) / (levels + 0.6));
     const len = Math.max(2, Math.min(R - 1 - 2 * q, y0 + R - 1 - 2 * q, Math.round(R * (0.35 + r() * 0.3)) - i));
     add(`branch(${y0},${len})`, { mask: (x, y) => x > 0 && x <= len && y0 - y === x, fill: 2 });
     if (chance(0.6)) add("leaves", { mask: (x, y) => x > 0 && x < len && (x % 2 === 0) && (y0 - y === x + 1 || y0 - y === x - 1) && y0 - y !== x, fill: 4 });
-    const f = flowerMask(i === levels - 1 && chance(0.5) ? kind : pickW(r, st.flowers), len + q, y0 - len - q, q);
+    const fk = i === levels - 1 && chance(0.5) ? kind : pickW(r, st.flowers), f = flowerMask(fk, len + q, y0 - len - q, q);
+    if (!used.includes(fk)) used.push(fk);
     add(`flower(${q})`, { mask: f.mask, fill: chance(0.6) ? 1 : 3, outline: f.outline ? 2 : undefined, halo: true });
   }
   const q = crownQ, crown = flowerMask(kind, 0, top - q, q);
   add(`crown:${kind}(${q})`, { mask: crown.mask, fill: 1, outline: crown.outline ? 2 : undefined, halo: true });
   if (chance(0.5)) add("corner-stars", { mask: (x, y) => A(A(x) - (R - 2)) + A(y + R - 2) <= 1, fill: 3, halo: true });
+  return used;
 }
 
 /** Looks: density near the style's, built from several parts, no big solid blocks, few stray stitches. 0–1. */
@@ -294,16 +328,16 @@ export function generateGrammar(sub: SubModel, dataset: string, opts: { count: n
     // stratified: over any run the share of figurative motifs matches the style's rate
     const fr = rng(mix(seed, k, 0x2545f491)), f = style.figurative, step = k * f + phase;
     const group = opts.group ?? (Math.floor(step + f) > Math.floor(step) ? "mirror-v" : pickW(fr, style.groups));
-    const drawn: { grid: Grid; group: Group; ll: number; look: number; seed: number }[] = [];
+    const drawn: { grid: Grid; group: Group; traits: Traits; ll: number; look: number; seed: number }[] = [];
     for (let j = 0; j < pool; j++) {
       const s = mix(seed, k, j), m = grammarMotif({ seed: s, size: opts.size, group, palette, style });
-      drawn.push({ grid: m.grid, group: m.group, ll: learned ? logLikelihood(m.grid, sub) : 0, look: looks(m.grid, m.group === "mirror-v" ? style.density * 0.6 : style.density, m.program.length), seed: s });
+      drawn.push({ grid: m.grid, group: m.group, traits: m.traits, ll: learned ? logLikelihood(m.grid, sub) : 0, look: looks(m.grid, m.group === "mirror-v" ? style.density * 0.6 : style.density, m.program.length), seed: s });
     }
     const lo = Math.min(...drawn.map((c) => c.ll)), hi = Math.max(...drawn.map((c) => c.ll));
     const best = drawn.map((c) => ({ ...c, score: c.look + (hi > lo ? (0.25 * (c.ll - lo)) / (hi - lo) : 0) })).sort((a, b) => b.score - a.score)[0]!;
     const nearest = nearestReference(best.grid, sub.references);
     if (nearest.iou >= maxIoU) { rejected.push({ seed: best.seed, reason: "near-copy", detail: nearest.iou }); continue; }
-    accepted.push({ grid: best.grid, seed: best.seed, group: best.group, logLikelihood: best.ll, nearest, density: density(best.grid), lineage: { model: sub.key, dataset, references: sub.references.map((x) => x.id) } });
+    accepted.push({ grid: best.grid, seed: best.seed, group: best.group, traits: best.traits, logLikelihood: best.ll, nearest, density: density(best.grid), lineage: { model: sub.key, dataset, references: sub.references.map((x) => x.id) } });
   }
   return { accepted, rejected };
 }

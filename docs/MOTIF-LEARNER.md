@@ -88,6 +88,12 @@ Drawing cell by cell from 3×3 patch statistics (simulated annealing, still avai
   - for each motif, 10 programs are drawn and ranked by looks (density near the style's, several parts, no big solid blocks, no stray stitches) plus a nudge from the patch log-likelihood;
   - the near-copy gate (IoU < 0.8 over all 8 rotations and reflections) still applies.
 - **Family choice:** figurative or geometric is chosen before ranking and is stratified. Over a run, the share of figurative motifs matches the style's rate, and the ranking cannot favour one family.
+- **Learning from ratings (`learnStyle`):**
+  - every motif records its traits: family, symmetry, core, arm and flowers;
+  - on the engine page each generated motif has Like and Not this buttons, and the ratings are kept in the page's database;
+  - before each batch, the style's profile is moved towards what was liked. The base profile counts as 4 ratings; a like adds 1 to each of the motif's traits, and a "Not this" takes away half of one;
+  - no weight falls below a twentieth of its share, so a disliked shape becomes rare but never impossible;
+  - in a test through the browser bundle, 6 liked trees and 2 rejected nested-rhomb motifs took Ukrainian from 8 trees in 40 to 34, and from 2 nested rhombs to 0.
 
 ## Results now (honest scope)
 

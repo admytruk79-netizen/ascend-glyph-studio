@@ -236,3 +236,19 @@ test("grammar: the figurative share matches the style's rate, in one run and one
   const share = single.filter((c) => c.group === "mirror-v").length / single.length;
   assert.ok(Math.abs(share - rate) < 0.12, `one at a time: ${share.toFixed(2)} vs ${rate}`);
 });
+
+test("grammar: likes and dislikes move the style towards what the viewer liked", async () => {
+  const { generateGrammar, learnStyle, GRAMMAR_STYLES } = await import("./grammar.ts");
+  const base = GRAMMAR_STYLES.Ukrainian!;
+  assert.equal(learnStyle(base, []), base);
+  const star = { family: "geometric" as const, group: "d4" as const, core: "octagram", arm: "diag", flowers: [] };
+  const tree = { family: "figurative" as const, group: "mirror-v" as const, flowers: ["tulip"] };
+  const ratings = [...Array(6).fill({ traits: star, liked: true }), ...Array(4).fill({ traits: tree, liked: false })];
+  const learned = learnStyle(base, ratings);
+  const share = (w: Record<string, number>, k: string) => w[k]! / Object.values(w).reduce((a, b) => a + b, 0);
+  assert.ok(share(learned.cores, "octagram") > share(base.cores, "octagram"));
+  assert.ok(learned.figurative < base.figurative && learned.figurative > 0);
+  assert.ok(learned.flowers.tulip! > 0, "a disliked trait is made rarer, never impossible");
+  const count = (st: typeof base) => generateGrammar(ua, model.dataset, { count: 30, seed: 3, size: 15, pool: 1, style: st }).accepted.filter((c) => c.traits?.core === "octagram").length;
+  assert.ok(count(learned) > count(base), `octagram cores: learned ${count(learned)} vs base ${count(base)}`);
+});

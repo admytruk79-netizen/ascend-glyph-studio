@@ -142,6 +142,8 @@ export interface Candidate {
   nearest: { id: string | null; iou: number };
   density: number;
   lineage: { model: string; dataset: string; references: string[] };
+  /** Grammar motifs only: what the motif was built from. */
+  traits?: import("./grammar.ts").Traits;
 }
 export interface Rejection { seed: number; reason: "near-copy" | "implausible"; detail: number }
 
