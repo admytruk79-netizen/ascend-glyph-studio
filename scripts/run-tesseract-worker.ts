@@ -224,7 +224,9 @@ async function execute(run:any){
   const branchLeafCounts=patterns.map(p=>p.productionObjects?.filter(o=>!!o.branchLeaf).length??0);
   process.stdout.write(JSON.stringify({runId:run.id,stage:"generation-pass",feedbackPass,patterns:patterns.length,targetBatch:batchSize,candidatePoolSize,complexity:passComplexity,experimentalBranchLeaf:intent.enableCoverageAwareBranchLeaf===true,
    branchLeafCandidates:branchLeafCounts.filter(n=>n>0).length,
-   branchLeafPlacements:branchLeafCounts.reduce((n,v)=>n+v,0)})+"\n");
+   branchLeafPlacements:branchLeafCounts.reduce((n,v)=>n+v,0),
+   connectedBranchLeafCandidates:patterns.filter(p=>p.portConnections?.some(l=>l.fromObjectId.includes(":branch-leaf:")&&l.toObjectId.includes(":branch-leaf:"))).length,
+   sourcePortJunctions:patterns.reduce((n,p)=>n+(p.portConnections?.length??0),0)})+"\n");
   let passed=0;
   for(const [candidateIndex,p] of patterns.entries()){
    let raster:RasterCritique|null=null;
@@ -257,6 +259,8 @@ async function execute(run:any){
    if(branchLeafCount>0){
     process.stdout.write(JSON.stringify({runId:run.id,stage:"branch-leaf-raster-diagnostic",
      pattern:p.id,branchLeafPlacements:branchLeafCount,
+     sourcePortJunctions:p.portConnections?.length??0,
+     sourcePortLineage:p.portConnections??[],
      digitalMotifMarkEstimate:p.coverageBudget?.motifCoverage??null,
      rasterQuality:raster.quality,rasterClutter:raster.clutter,
      rasterSurvive:raster.survive,rasterFlags:raster.flags,
