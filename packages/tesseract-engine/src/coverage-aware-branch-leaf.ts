@@ -127,8 +127,8 @@ export function buildCoverageAwareBranchLeafAssembly(
     // horizontal branch-to-seed junction.
     const stemPrimitive=primitiveForForm(stem.form);
     const leafPrimitive=primitiveForForm(seed.form);
-    const stemBox=stemPrimitive?.viewBox.trim().split(/[\\s,]+/).map(Number);
-    const leafBox=leafPrimitive?.viewBox.trim().split(/[\\s,]+/).map(Number);
+    const stemBox=stemPrimitive?.viewBox.trim().split(/[\s,]+/).map(Number);
+    const leafBox=leafPrimitive?.viewBox.trim().split(/[\s,]+/).map(Number);
     const growth=leafPrimitive?.ports.find(p=>p.id==="growth");
     const validBox=(v:number[]|undefined)=>!!v&&v.length===4&&
      v.every(Number.isFinite)&&v[2]!>0&&v[3]!>0;
