@@ -11,8 +11,9 @@ import type {ProductionGlyphObject} from "./production-object";
  *
  * The "coverage" objective is balanced NOMINAL motif footprints across
  * garment thirds, with a deliberate empty-space ceiling. Actual raster mark
- * coverage is measured later from final stitch IR. Proximity is not a sewn
- * junction: no connector, underlay or manufacturer approval is implied.
+ * coverage is measured later from final stitch IR. Ports are provisionally
+ * aligned for a separate, fail-closed stitch router; placement itself is not
+ * a sewn junction, underlay or manufacturer approval.
  */
 export function buildCoverageAwareBranchLeafAssembly(
  originals:readonly ProductionGlyphObject[],
@@ -120,16 +121,47 @@ export function buildCoverageAwareBranchLeafAssembly(
      "stem",branch.id,clusterId);
     if(!stem||!fits(footprint(stem),occupied))continue;
     const leaves:ProductionGlyphObject[]=[];
-    const sx=stem.placement.xMm!,sy=stem.placement.yMm!;
-    const leafW=seed.physical.widthMm*.65;
-    const offset=stem.physical.widthMm/2+leafW/2+gap*1.5;
+    // Aim each seed's existing growth port back at the corresponding
+    // existing branch port. Spatial proximity alone previously left the
+    // growth port pointing upward, so the stitch router rejected every
+    // horizontal branch-to-seed junction.
+    const stemPrimitive=primitiveForForm(stem.form);
+    const leafPrimitive=primitiveForForm(seed.form);
+    const stemBox=stemPrimitive?.viewBox.trim().split(/[\\s,]+/).map(Number);
+    const leafBox=leafPrimitive?.viewBox.trim().split(/[\\s,]+/).map(Number);
+    const growth=leafPrimitive?.ports.find(p=>p.id==="growth");
+    const validBox=(v:number[]|undefined)=>!!v&&v.length===4&&
+     v.every(Number.isFinite)&&v[2]!>0&&v[3]!>0;
+    if(!validBox(stemBox)||!validBox(leafBox)||!growth)continue;
+    const stemRotation=(stem.placement.rotationDeg??stem.physical.rotationDeg)*Math.PI/180;
+    const stemC=Math.cos(stemRotation),stemS=Math.sin(stemRotation);
     for(const sign of [-1,1]){
      if(out.length+1+leaves.length>=limit)break;
-     const leaf=clone(seed,seed.id+":"+clusterId+":leaf:"+sign,
-      sx+sign*offset,sy-stem.physical.heightMm*.18,.65,
-      "leaf",stem.id,clusterId);
-     if(leaf&&fits(footprint(leaf),[...occupied,footprint(stem),
-      ...leaves.map(footprint)]))leaves.push(leaf);
+     const port=stemPrimitive!.ports.find(p=>p.id===(sign<0?"left":"right"));
+     if(!port)continue;
+     const dx=((port.x-stemBox![0]!)/stemBox![2]!-.5)*stem.physical.widthMm;
+     const dy=((port.y-stemBox![1]!)/stemBox![3]!-.5)*stem.physical.heightMm;
+     const anchorX=stem.placement.xMm!+dx*stemC-dy*stemS;
+     const anchorY=stem.placement.yMm!+dx*stemS+dy*stemC;
+     const angle=port.angleDeg*Math.PI/180+stemRotation;
+     const rotationDeg=port.angleDeg+(stem.placement.rotationDeg??stem.physical.rotationDeg)+180-growth.angleDeg;
+     const leafRotation=rotationDeg*Math.PI/180;
+     const leafW=seed.physical.widthMm*.65,leafH=seed.physical.heightMm*.65;
+     const leafDx=((growth.x-leafBox![0]!)/leafBox![2]!-.5)*leafW;
+     const leafDy=((growth.y-leafBox![1]!)/leafBox![3]!-.5)*leafH;
+     const rotatedDx=leafDx*Math.cos(leafRotation)-leafDy*Math.sin(leafRotation);
+     const rotatedDy=leafDx*Math.sin(leafRotation)+leafDy*Math.cos(leafRotation);
+     for(const span of [Math.max(10,gap*3+5),Math.max(14,gap*3+9),Math.max(18,gap*3+13)]){
+      if(span>28)continue; // router's conservative provisional maximum
+      const x=anchorX+Math.cos(angle)*span-rotatedDx;
+      const y=anchorY+Math.sin(angle)*span-rotatedDy;
+      const candidate=clone(seed,seed.id+":"+clusterId+":leaf:"+sign,
+       x,y,.65,"leaf",stem.id,clusterId);
+      if(!candidate)continue;
+      const leaf={...candidate,placement:{...candidate.placement,rotationDeg}};
+      if(fits(footprint(leaf),[...occupied,footprint(stem),
+       ...leaves.map(footprint)])){leaves.push(leaf);break;}
+     }
     }
     // Never emit an isolated stem; this is an atomic cluster.
     if(!leaves.length)continue;
