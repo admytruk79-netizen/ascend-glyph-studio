@@ -3,6 +3,7 @@ import type {GarmentZone} from "../src/garment";
 import type {ProductionGlyphObject} from "../src/production-object";
 import {ASCEND_PRIMITIVES} from "../src/ascend-primitives";
 import {buildPortAwareStitchConnectors} from "../src/port-aware-stitch-connectors";
+import {buildCoverageAwareBranchLeafAssembly} from "../src/coverage-aware-branch-leaf";
 import {compileProductionObjectsToStitchIr,stitchIrFootprints} from "../src/production-stitch-ir";
 import {evaluateSurfaceLayout} from "../src/garment-surface-math";
 import {assessCandidateSurface} from "../src/surface-candidate-gate";
@@ -67,6 +68,49 @@ describe("port-aware production stitch connectors",()=>{
  it("does not silently bridge distinct thread-color blocks",()=>{
   const contrasting={...b,threadColor:"#aa0000"};
   expect(buildPortAwareStitchConnectors([a,contrasting],zone,band,options).objects).toEqual([]);
+ });
+ it("allows two distinct stem ports only inside one source-tracked cluster",()=>{
+  const cluster=(o:ProductionGlyphObject,role:"stem"|"leaf",clusterId="fixture")=>({
+   ...o,branchLeaf:{clusterId,role,sourcePrimitiveStatus:"source-derived-provisional" as const,
+    validationState:"REFERENCE" as const}
+  });
+  const stem=cluster(glyph("stem",60,55),"stem");
+  const upper=cluster(glyph("leaf-upper",60,30),"leaf");
+  const lower=cluster(glyph("leaf-lower",60,80),"leaf");
+  const opts={...options,maxConnections:4,branchLeafClusterOnly:true};
+  const joined=buildPortAwareStitchConnectors([upper,stem,lower],zone,
+   {minYmm:10,maxYmm:95},opts);
+  expect(joined.objects).toHaveLength(2);
+  const stemPorts=joined.lineage.map(l=>
+   l.fromObjectId==="stem"?l.fromPortId:l.toPortId);
+  expect(new Set(stemPorts)).toEqual(new Set(["top","bottom"]));
+  expect(joined.lineage.every(l=>l.validationState==="REFERENCE")).toBe(true);
+  const differentCluster=cluster(lower,"leaf","other-cluster");
+  expect(buildPortAwareStitchConnectors([upper,stem,differentCluster],zone,
+   {minYmm:10,maxYmm:95},opts).objects).toHaveLength(1);
+  expect(buildPortAwareStitchConnectors([upper,stem,lower],zone,
+   {minYmm:10,maxYmm:95},{...opts,maxConnections:0}).objects).toEqual([]);
+ });
+ it("connects at least one port-aligned, real branch/seed placement without editing source glyphs",()=>{
+  const sleeve:GarmentZone={...zone,circumferenceMm:360,heightMm:120};
+  const sourceBranch={...glyph("source-branch",30,60),form:"branch",
+   geometryRef:"ascend:branch",physical:{...a.physical,widthMm:16,heightMm:16}};
+  const sourceSeed={...glyph("source-seed",330,60),form:"seed",
+   geometryRef:"ascend:seed",physical:{...a.physical,widthMm:12,heightMm:12},
+   embroidery:{...a.embroidery,stitchFamily:"satin" as const,satinWidthMm:2.2}};
+  const originals=[sourceBranch,sourceSeed],before=JSON.stringify(originals);
+  const clones=buildCoverageAwareBranchLeafAssembly(originals,sleeve,
+   {minYmm:20,maxYmm:100},{maxExtra:18,minGapMm:2,minFeatureMm:.8});
+  expect(clones.some(g=>g.branchLeaf?.role==="stem")).toBe(true);
+  const result=buildPortAwareStitchConnectors([...originals,...clones],sleeve,
+   {minYmm:20,maxYmm:100},
+   {maxConnections:12,minGapMm:2,maxSpanMm:28,branchLeafClusterOnly:true});
+  expect(result.objects.length).toBeGreaterThan(0);
+  expect(result.objects.every(o=>o.kind==="run")).toBe(true);
+  expect(result.lineage.every(l=>l.fromObjectId.includes("branch-leaf:")&&
+   l.toObjectId.includes("branch-leaf:"))).toBe(true);
+  expect(JSON.stringify(originals)).toBe(before);
+  expect(result.lineage.every(l=>l.validationState==="REFERENCE")).toBe(true);
  });
  it("does not use unreviewed geometry or fabricate links when no compatible ports exist",()=>{
   const invalid={...a,geometryRef:"corpus:axis"};
