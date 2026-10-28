@@ -292,7 +292,7 @@ export function generateGrammar(sub: SubModel, dataset: string, opts: { count: n
   for (let k = 0; accepted.length < count && k < count * 4; k++) {
     // the family (figurative or geometric, and its symmetry) is drawn first so the ranking cannot favour one family
     // stratified: over any run the share of figurative motifs matches the style's rate
-    const fr = rng(mix(seed, k, 0x2545f491)), f = style.figurative, step = (k + phase) * f;
+    const fr = rng(mix(seed, k, 0x2545f491)), f = style.figurative, step = k * f + phase;
     const group = opts.group ?? (Math.floor(step + f) > Math.floor(step) ? "mirror-v" : pickW(fr, style.groups));
     const drawn: { grid: Grid; group: Group; ll: number; look: number; seed: number }[] = [];
     for (let j = 0; j < pool; j++) {

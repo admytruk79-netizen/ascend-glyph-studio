@@ -225,3 +225,14 @@ test("grammar: clean motifs with exact symmetry, deterministic, ranked by the mo
   assert.deepEqual(styleOf(inventStyle(3)), styleOf(inventStyle(3)));
   assert.notDeepEqual(styleOf(inventStyle(3)), styleOf(inventStyle(4)));
 });
+
+test("grammar: the figurative share matches the style's rate, in one run and one motif at a time", async () => {
+  const { generateGrammar, GRAMMAR_STYLES } = await import("./grammar.ts");
+  const rate = GRAMMAR_STYLES.Ukrainian!.figurative;
+  const run = generateGrammar(ua, model.dataset, { count: 20, seed: 4, size: 15, pool: 2 }).accepted;
+  assert.equal(run.filter((c) => c.group === "mirror-v").length, Math.round(20 * rate));
+  // the page asks for one motif per call: the rate must hold there too
+  const single = Array.from({ length: 80 }, (_, i) => generateGrammar(ua, model.dataset, { count: 1, seed: 1000 + i * 104729, size: 15, pool: 1 }).accepted[0]!);
+  const share = single.filter((c) => c.group === "mirror-v").length / single.length;
+  assert.ok(Math.abs(share - rate) < 0.12, `one at a time: ${share.toFixed(2)} vs ${rate}`);
+});
