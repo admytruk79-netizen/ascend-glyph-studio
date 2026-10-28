@@ -1,0 +1,32 @@
+name: Motif learner — probe museum APIs
+# Samples open museum APIs for Ukrainian embroidery so collectors are written against real responses.
+on:
+  push:
+    branches: [claude/tesseract-glyph-training-t298iv]
+    paths:
+      - "scripts/motifs/probe-museums.mts"
+      - ".github/workflows/motif-museum-probe.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npx --yes tsx scripts/motifs/probe-museums.mts
+      - name: Commit probe results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/motifs/probe
+          if git diff --cached --quiet; then echo "no changes"; exit 0; fi
+          git commit -m "Probe museum APIs for Ukrainian embroidery (run ${{ github.run_id }})"
+          git pull --rebase origin ${{ github.ref_name }}
+          git push origin HEAD:${{ github.ref_name }}

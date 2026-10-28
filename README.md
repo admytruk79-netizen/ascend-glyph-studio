@@ -119,7 +119,7 @@ Systems communicate through explicit APIs and immutable production contracts, no
 | Source primitives | **Provisional.** Nine primitives are hand-coded approximations in `ascend-primitives.ts` (`source-derived-provisional`); **Line** is not yet defined. None are yet traced from the original drawings. |
 | Semantics, grammar, scale, anti-generic evaluation, lineage | Implemented foundations in `packages/tesseract-engine`. |
 | Research corpus | Ingestion pipeline, dedupe/checkpoint invariants, Neon importer and research schema exist. **Collected so far: tens of objects**, far below the 25,000 validation milestone. |
-| Train/validation/holdout splits, pattern-language model | **Not started.** Generation currently uses explicit grammar and evolutionary search. |
+| Train/validation/holdout splits, pattern-language model | Full-corpus CLIP/palette/codebook training runs daily (`tesseract-train-full.yml`). `packages/motif-learner` adds a learned counted-motif model with leave-one-group-out evaluation and generation; it is trained so far only on 10 repository-authored seed charts (0 independent historical sources). |
 | Manufacturing compiler and validation | Universal production validation, geometry/process adapter contracts and fail-closed diary projection implemented; physical validation pending. |
 | Manufacturer capability profiles / ROVIQ routing | Basic manufacturer eligibility in `production-orchestrator`; ROVIQ integration not wired. |
 | Cost-aware production | Not started. |
@@ -142,6 +142,7 @@ The renderer is **not yet production-ready**. Specimen sheets come from the engi
 - `packages/tesseract-engine` — language, primitives, corpus graph, renderer, evaluation, analytics and security foundation
 - `packages/design-schema` — design contracts
 - `packages/glyph-engine` — deterministic synthesis infrastructure
+- `packages/motif-learner` — learns counted-thread motif construction (3×3 construction model, symmetry, colour layers) per tradition, generates new symmetric motifs with near-copy and plausibility gates, held-out evaluation; see `docs/MOTIF-LEARNER.md`
 - `packages/glyph-registry` — glyph and source-geometry registry
 - `packages/spatial-glyph` — spatial/4D projection of glyphs
 - `packages/garment-spec` / `packages/material-spec` — production specifications
