@@ -32,6 +32,36 @@ for(const r of q.rows){
    if(delta>.12)failures.push(`${r.ordinal}:layout-occupancy=${Number(s.surfaceMath.layoutOccupancy).toFixed(3)} target=${requestedOccupancy.toFixed(3)}`);
   }
  }
+ // Source-port junctions are physical stitch IR, never untracked SVG helpers.
+ // The persisted lineage must survive worker -> candidate -> production pack.
+ const productionObjects=Array.isArray(s.productionObjects)?s.productionObjects:[];
+ const stitchObjects=Array.isArray(s.stitchObjects)?s.stitchObjects:[];
+ const links=Array.isArray(s.portConnections)?s.portConnections:[];
+ const connectorIds=new Set(stitchObjects.filter((o:any)=>
+  typeof o?.id==="string"&&o.id.startsWith("connector:")).map((o:any)=>o.id));
+ const sourceById=new Map(productionObjects.map((o:any)=>[o.id,o]));
+ if(connectorIds.size!==links.length)
+  failures.push(`${r.ordinal}:connector-lineage-count-mismatch:${connectorIds.size}:${links.length}`);
+ for(const [i,link] of links.entries()){
+  const id=`connector:${i}`;
+  const ir=stitchObjects.find((o:any)=>o.id===id);
+  if(!ir||ir.kind!=="run")failures.push(`${r.ordinal}:missing-run-connector:${id}`);
+  if(link?.validationState!=="REFERENCE")
+   failures.push(`${r.ordinal}:connector-not-reference:${id}`);
+  const from:any=sourceById.get(link?.fromObjectId),to:any=sourceById.get(link?.toObjectId);
+  if(!from||!to)failures.push(`${r.ordinal}:connector-missing-source:${id}`);
+  else if(from.geometryRef!==link.fromGeometryRef||to.geometryRef!==link.toGeometryRef)
+   failures.push(`${r.ordinal}:connector-geometry-provenance-mismatch:${id}`);
+ }
+ if(runIntent.enableCoverageAwareBranchLeaf===true){
+  const branchLeaves=productionObjects.filter((o:any)=>o?.branchLeaf);
+  const connected=new Set(links.flatMap((l:any)=>[l.fromObjectId,l.toObjectId]));
+  for(const o of branchLeaves){
+   if(!connected.has(o.id))failures.push(`${r.ordinal}:orphan-branch-leaf:${o.id}`);
+   if(o.branchLeaf.validationState!=="REFERENCE")
+    failures.push(`${r.ordinal}:branch-leaf-not-reference:${o.id}`);
+  }
+ }
  const pc=s.productionCompile;
  if(!pc)failures.push(`${r.ordinal}:missing-production-compile`);
  else{
