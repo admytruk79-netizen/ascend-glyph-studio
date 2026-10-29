@@ -55,7 +55,8 @@ await writeFile(join(dir,base+"-runsheet.json"),JSON.stringify(sheet,null,2),"ut
 const manifest={
  schemaVersion:"staging-production-pack-1",
  runId,ordinal:row.ordinal,seed:row.seed,solverVersion:row.solver_version,
- prototypeOnly:!compiled.gate.release,
+ prototypeOnly:connectedOnly||!compiled.gate.release,
+ productionApproved:false,
  blockers:compiled.gate.checks.filter(x=>!x.pass),
  machine:{
   id:machine.id,maker:machine.maker,model:machine.model,
@@ -80,4 +81,4 @@ const manifest={
  files:[base+".dst",base+"-stitches.svg",base+"-runsheet.json",base+"-manifest.json"]
 };
 await writeFile(join(dir,base+"-manifest.json"),JSON.stringify(manifest,null,2),"utf8");
-process.stdout.write(JSON.stringify({dir,base,release:compiled.gate.release,blockers:manifest.blockers,compiledStitches:compiled.realized.stitchCount},null,2)+"\n");
+process.stdout.write(JSON.stringify({dir,base,release:connectedOnly?false:compiled.gate.release,blockers:manifest.blockers,compiledStitches:compiled.realized.stitchCount},null,2)+"\n");
