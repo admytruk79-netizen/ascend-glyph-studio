@@ -15,6 +15,16 @@ await pool.end();
 const row=q.rows[0];if(!row)throw new Error("candidate not found");
 const s=row.state??{},stitchObjects=s.stitchObjects as ProductionStitchIrObject[]|undefined;
 if(!Array.isArray(stitchObjects)||!stitchObjects.length)throw new Error("candidate has no persisted stitchObjects");
+const sourcePortLineage=Array.isArray(s.portConnections)?s.portConnections:[];
+const connectorIds=new Set(stitchObjects.filter(o=>o.id.startsWith("connector:")).map(o=>o.id));
+if(connectorIds.size!==sourcePortLineage.length||
+ sourcePortLineage.some((link:any,i:number)=>link?.validationState!=="REFERENCE"||
+  !connectorIds.has("connector:"+i)))
+ throw new Error("source-port stitch objects do not match persisted REFERENCE lineage");
+const sourceIds=new Set((Array.isArray(s.productionObjects)?s.productionObjects:[]).map((o:any)=>o.id));
+if(sourcePortLineage.some((link:any)=>!sourceIds.has(link.fromObjectId)||!sourceIds.has(link.toObjectId)))
+ throw new Error("source-port lineage references missing production glyphs");
+
 const machine=machineTemplate(s.machineProfileId);if(!machine)throw new Error("candidate has no known machine profile");
 const recipeId=String(s.productionCompile?.recipeId??"linen-180-prewashed"),recipe=recipes[recipeId];
 if(!recipe)throw new Error(`unknown recipe ${recipeId}`);
@@ -54,6 +64,9 @@ const manifest={
   totalThreadM:compiled.math.totalThreadM,machineMinutes:compiled.minutes,
   colors:compiled.plan.colors,trims:compiled.plan.trims,jumps:compiled.plan.jumps
  },
+ // Digital reference lineage is traceable; it is not physical sew-out approval.
+ sourcePortJunctions:{validationState:"REFERENCE",count:sourcePortLineage.length,
+  lineage:sourcePortLineage},
  octave:s.octave??null,surfaceMath:s.surfaceMath??null,
  files:[base+".dst",base+"-stitches.svg",base+"-runsheet.json",base+"-manifest.json"]
 };
