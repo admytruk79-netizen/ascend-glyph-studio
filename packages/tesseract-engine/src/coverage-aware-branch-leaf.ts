@@ -1,6 +1,7 @@
 import {primitiveForForm} from "./ascend-primitives";
 import type {GarmentZone} from "./garment";
 import {circumferenceAt,juxtaposition,type SurfaceFootprint} from "./garment-surface-math";
+import {buildPortAwareStitchConnectors} from "./port-aware-stitch-connectors";
 import type {ProductionGlyphObject} from "./production-object";
 
 /**
@@ -180,5 +181,30 @@ export function buildCoverageAwareBranchLeafAssembly(
    }
   }
  }
- return out;
+ // Only keep motifs whose EXISTING source ports can actually be joined by
+ // the same conservative router used in final stitch-IR compilation.
+ // Each cluster is evaluated with all other placed motifs as obstacles, but
+ // only its own stem/leaf ports are eligible for connections. This prevents
+ // disconnected decorative clones from inflating nominal motif coverage.
+ const retained=new Set<string>();
+ const clusterIds=[...new Set(out.map(o=>o.branchLeaf?.clusterId).filter((id):id is string=>!!id))];
+ for(const clusterId of clusterIds){
+  const scoped=out.map(o=>o.branchLeaf?.clusterId===clusterId
+   ?o:{...o,branchLeaf:undefined});
+  const routed=buildPortAwareStitchConnectors([...originals,...scoped],zone,band,{
+   maxConnections:2,minGapMm:gap,maxSpanMm:28,branchLeafClusterOnly:true
+  });
+  const connected=new Set(routed.lineage.flatMap(link=>
+   [link.fromObjectId,link.toObjectId]));
+  const stem=out.find(o=>o.branchLeaf?.clusterId===clusterId&&
+   o.branchLeaf.role==="stem");
+  if(!stem||!connected.has(stem.id))continue;
+  retained.add(stem.id);
+  for(const leaf of out){
+   if(leaf.branchLeaf?.clusterId===clusterId&&
+      leaf.branchLeaf.role==="leaf"&&connected.has(leaf.id))
+    retained.add(leaf.id);
+  }
+ }
+ return out.filter(o=>retained.has(o.id));
 }
