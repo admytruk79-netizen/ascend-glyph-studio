@@ -325,7 +325,7 @@ async function persist(run:any,judged:{p:any;raster:RasterCritique|null;score:nu
      };
     }
    }
-   const state={patternId:p.id,lineageId:p.lineageId,svg:p.svg,conceptSvg:p.conceptSvg,objectives:p.objectives,finalCritique:p.finalCritique,raster,feedbackPass,mode,concepts,corpusSignals,visualCorpusCount,corpusObjectCount,productionObjects:p.productionObjects,stitchObjects:p.stitchObjects,coverageBudget:p.coverageBudget,surfaceMath:p.surfaceMath,machineProfileId:p.machineProfileId,physicalSizeMm:p.physicalSizeMm,octave:p.octave,productionCompile};
+   const state={patternId:p.id,lineageId:p.lineageId,svg:p.svg,conceptSvg:p.conceptSvg,objectives:p.objectives,finalCritique:p.finalCritique,raster,feedbackPass,mode,concepts,corpusSignals,visualCorpusCount,corpusObjectCount,productionObjects:p.productionObjects,stitchObjects:p.stitchObjects,portConnections:p.portConnections??[],coverageBudget:p.coverageBudget,surfaceMath:p.surfaceMath,machineProfileId:p.machineProfileId,physicalSizeMm:p.physicalSizeMm,octave:p.octave,productionCompile};
    const complexity={target:intent.complexity??.72,novelty:p.novelty};
    const disposition=raster&&!raster.survive?"rejected-raster":"candidate";
    await c.query(`insert into synthesis_candidate(id,run_id,ordinal,state,complexity,score,disposition)
