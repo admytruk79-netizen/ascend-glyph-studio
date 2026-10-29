@@ -1,3 +1,4 @@
+import type {CompositionObjective} from "./composition-evolution";
 import type {MediumId} from "./medium-compiler";
 import type {SashEvidenceGrammar} from "./sash-evidence-grammar";
 import type {StructuralFeedback} from "./structural-feedback";
@@ -15,12 +16,33 @@ export function buildMasterCompositionPlan(input:{
  complexity:number;
  sashGrammar?:SashEvidenceGrammar;
  structuralFeedback?:StructuralFeedback;
+ targetOccupancy?:number;
+ compositionObjective?:CompositionObjective;
 }):MasterCompositionPlan{
  const {mode,medium,sashGrammar:g,structuralFeedback:fb}=input;
  const sash=!!g&&(mode==="band"||mode==="sleeve"||mode==="cuff"||mode==="collar");
  if(sash){
-  const centerShare=Math.max(.44,Math.min(.68,g.centralShare+(fb?.centralHierarchyBoost??0)*.14));
-  const centerY=(1-centerShare)/2,railGap=.028,edge=.018;
+  const requested=input.targetOccupancy,railGap=.028,edge=.018;
+  // targetOccupancy describes the full framed envelope, not just the central
+  // motif field. Reserve the two rail gaps inside that target.
+  const baseShare=requested===undefined?g.centralShare:Math.max(.20,Math.min(.75,requested-railGap*2));
+  // Search archetypes influence the stitchable field envelope without
+  // changing canonical glyphs, provenance, or machine-safe seam geometry.
+  const objective=input.compositionObjective;
+  const negativeSpaceAdjustment=objective?(objective.negativeSpace-.6)*-.12:0;
+  const hierarchyAdjustment=objective?(objective.focalHierarchy-.65)*.08:0;
+  const centerShare=Math.max(.20,Math.min(.75,baseShare+(fb?.centralHierarchyBoost??0)*.14+negativeSpaceAdjustment+hierarchyAdjustment));
+  const centerY=(1-centerShare)/2;
+  // Distinct rhythmic grammar for the preview and production-safe line plan.
+  // All added rails are bounded inside the same envelope and never duplicate
+  // canonical glyph geometry. Actual stitch clearance still needs validation.
+  const rhythmicCount=objective?.archetype==="rhythmic-border"?3:
+   objective?.archetype==="interlocking-field"?2:1;
+  const innerRails=Array.from({length:rhythmicCount-1},(_,i)=>{
+   const fraction=(i+1)/rhythmicCount;
+   const y=centerY+centerShare*fraction;
+   return {id:`rhythm-divider-${i+1}`,x1:edge+.02,y1:y,x2:1-edge-.02,y2:y,opacity:.42};
+  });
   const framing=[
     {id:"rail-top",x1:edge,y1:Math.max(.01,centerY-railGap),x2:1-edge,y2:Math.max(.01,centerY-railGap),opacity:.78},
     {id:"rail-bottom",x1:edge,y1:Math.min(.99,centerY+centerShare+railGap),x2:1-edge,y2:Math.min(.99,centerY+centerShare+railGap),opacity:.78}
@@ -35,7 +57,7 @@ export function buildMasterCompositionPlan(input:{
   return {
    id:productionMedium?"scholarly-sash-v4-production-safe":"scholarly-sash-v4-shared-plan",
    primary:{scaleX:1,scaleY:centerShare,offsetX:0,offsetY:centerY},
-   auxiliaryLines:productionMedium?framing:[...framing,...decorativeEdges]
+   auxiliaryLines:productionMedium?[...framing,...innerRails]:[...framing,...innerRails,...decorativeEdges]
   };
  }
  // Non-sash embroidery/leather master composition is intentionally single-source.

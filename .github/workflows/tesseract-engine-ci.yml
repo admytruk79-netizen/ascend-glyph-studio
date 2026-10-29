@@ -16,7 +16,7 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -25,3 +25,101 @@ jobs:
       - run: npm install --no-audit --no-fund
       - name: Full worker verification
         run: npm run verify:tesseract-worker
+      - name: Create isolated production-integration benchmark run
+        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration' || github.head_ref == 'tesseract-surface-gate-wired-20261017' || github.ref_name == 'tesseract-surface-gate-wired-20261017'
+        id: create_staging
+        env:
+          DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+        shell: bash
+        run: |
+          RUN_ID="$(npx tsx scripts/create-staging-benchmark-run.mts)"
+          echo "run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
+          echo "Created integration run $RUN_ID"
+      - name: Execute integration worker once
+        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration' || github.head_ref == 'tesseract-surface-gate-wired-20261017' || github.ref_name == 'tesseract-surface-gate-wired-20261017'
+        env:
+          DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+          WORKER_RUN_ID: ${{ steps.create_staging.outputs.run_id }}
+          WORKER_ONCE: "1"
+          PORT: "10001"
+        run: npx tsx scripts/run-tesseract-worker.ts
+      - name: Print integration benchmark metrics
+        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration' || github.head_ref == 'tesseract-surface-gate-wired-20261017' || github.ref_name == 'tesseract-surface-gate-wired-20261017'
+        env:
+          DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+        run: npx tsx scripts/benchmark-tesseract.mts "${{ steps.create_staging.outputs.run_id }}"
+      - name: Assert integration production metadata
+        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration' || github.head_ref == 'tesseract-surface-gate-wired-20261017' || github.ref_name == 'tesseract-surface-gate-wired-20261017'
+        env:
+          DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+        run: npx tsx scripts/assert-staging-production-metadata.mts "${{ steps.create_staging.outputs.run_id }}"
+      - name: Enforce 3.7 visual baseline
+        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration' || github.head_ref == 'tesseract-surface-gate-wired-20261017' || github.ref_name == 'tesseract-surface-gate-wired-20261017'
+        env:
+          DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+        run: npx tsx scripts/assert-tesseract-regression.mts "${{ steps.create_staging.outputs.run_id }}"
+      # A/B diagnostic only. The fixed-seed default 3.7 gate above remains
+      # authoritative, and the experimental run cannot promote production.
+      - name: Create opt-in branch leaf comparison run
+        if: always() && (github.head_ref == 'tesseract-surface-gate-wired-20261017' || github.ref_name == 'tesseract-surface-gate-wired-20261017') && steps.create_staging.outcome == 'success'
+        id: create_branchleaf
+        env:
+          DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+          TESSERACT_EXPERIMENT_BRANCH_LEAF: "1"
+        shell: bash
+        run: |
+          RUN_ID="$(npx tsx scripts/create-staging-benchmark-run.mts)"
+          echo "run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
+          echo "Created opt-in branch leaf comparison run $RUN_ID"
+      - name: Execute opt-in branch leaf worker
+        if: always() && steps.create_branchleaf.outcome == 'success'
+        id: branchleaf_worker
+        env:
+          DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+          WORKER_RUN_ID: ${{ steps.create_branchleaf.outputs.run_id }}
+          WORKER_ONCE: "1"
+          PORT: "10002"
+        run: npx tsx scripts/run-tesseract-worker.ts
+      - name: Print opt-in branch leaf benchmark metrics
+        if: always() && steps.branchleaf_worker.outcome == 'success'
+        env:
+          DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+        run: npx tsx scripts/benchmark-tesseract.mts "${{ steps.create_branchleaf.outputs.run_id }}"
+      - name: Assert opt-in branch leaf production metadata
+        if: always() && steps.branchleaf_worker.outcome == 'success'
+        env:
+          DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+        run: npx tsx scripts/assert-staging-production-metadata.mts "${{ steps.create_branchleaf.outputs.run_id }}"
+      - name: Assess opt-in 3.7 raster gate (diagnostic only)
+        if: always() && steps.branchleaf_worker.outcome == 'success'
+        continue-on-error: true
+        env:
+          DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+        run: npx tsx scripts/assert-tesseract-regression.mts "${{ steps.create_branchleaf.outputs.run_id }}"
+      # Diagnostic prototype only: even though the authoritative 3.7 gate
+      # above fails, export a REAL connected stitch candidate for inspection.
+      # The manifest must retain REFERENCE lineage and cannot imply approval.
+      - name: Export connected branch-leaf prototype pack (non-promoting)
+        if: always() && steps.branchleaf_worker.outcome == 'success'
+        env:
+          DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+        run: npx tsx scripts/export-staging-production-pack.mts "${{ steps.create_branchleaf.outputs.run_id }}" connected out/branchleaf-prototype-pack
+      - name: Upload connected branch-leaf prototype pack
+        if: always() && steps.branchleaf_worker.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: tesseract-experimental-connected-prototype
+          path: out/branchleaf-prototype-pack
+          if-no-files-found: error
+      - name: Export integration production pack
+        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration' || github.head_ref == 'tesseract-surface-gate-wired-20261017' || github.ref_name == 'tesseract-surface-gate-wired-20261017'
+        env:
+          DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+        run: npx tsx scripts/export-staging-production-pack.mts "${{ steps.create_staging.outputs.run_id }}" 0 out/staging-production-pack
+      - name: Upload integration production pack
+        if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration' || github.head_ref == 'tesseract-surface-gate-wired-20261017' || github.ref_name == 'tesseract-surface-gate-wired-20261017'
+        uses: actions/upload-artifact@v4
+        with:
+          name: tesseract-production-integration-pack
+          path: out/staging-production-pack
+          if-no-files-found: error

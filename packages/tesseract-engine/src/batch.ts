@@ -79,7 +79,12 @@ export function runTesseractBatch(input:BatchInput):BatchResult{
    const canvas=zoneCanvas(z),zoneTopology=zoneTopologies[z.id]!,zoneGenome=genomeFromTopology(`${input.seed}:${i}:${z.id}`,zoneTopology);
    let zoneProductionObjects=constructionEnvelope?productionObjectsFromTopology(zoneTopology,constructionEnvelope,{zoneId:z.id,seamPolicy:constructionEnvelope.seamPolicy,wrapAllowed:z.wrapAllowed}):undefined;
    if(zoneProductionObjects)assertProductionRelations(zoneTopology,zoneProductionObjects);
-   const layout=solveRelationalLayout(zoneTopology,canvas.width,canvas.height,zoneGenome.seed,z,{minGapMm:constructionEnvelope?.minGapMm,seamPolicy:constructionEnvelope?.seamPolicy});
+   const footprintById=Object.fromEntries((zoneProductionObjects??[]).map(o=>[o.id,{widthMm:o.physical.widthMm,heightMm:o.physical.heightMm,clearanceMm:o.physical.clearanceMm}]));
+   const layout=solveRelationalLayout(zoneTopology,canvas.width,canvas.height,zoneGenome.seed,z,{
+    minGapMm:constructionEnvelope?.minGapMm,
+    seamPolicy:constructionEnvelope?.seamPolicy,
+    footprintById
+   });
    if(zoneProductionObjects)zoneProductionObjects=placeProductionObjects(zoneProductionObjects,layout.points);
    const svg=projectSemanticGeometry(zoneGenome,canvas.width,canvas.height,z,{minGapMm:constructionEnvelope?.minGapMm,seamPolicy:constructionEnvelope?.seamPolicy});
    let surfaceMath:ReturnType<typeof evaluateSurfaceLayout>|undefined;
