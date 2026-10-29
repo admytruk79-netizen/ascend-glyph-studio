@@ -96,6 +96,21 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
         run: npx tsx scripts/assert-tesseract-regression.mts "${{ steps.create_branchleaf.outputs.run_id }}"
+      # Diagnostic prototype only: even though the authoritative 3.7 gate
+      # above fails, export a REAL connected stitch candidate for inspection.
+      # The manifest must retain REFERENCE lineage and cannot imply approval.
+      - name: Export connected branch-leaf prototype pack (non-promoting)
+        if: always() && steps.branchleaf_worker.outcome == 'success'
+        env:
+          DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+        run: npx tsx scripts/export-staging-production-pack.mts "${{ steps.create_branchleaf.outputs.run_id }}" connected out/branchleaf-prototype-pack
+      - name: Upload connected branch-leaf prototype pack
+        if: always() && steps.branchleaf_worker.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: tesseract-experimental-connected-prototype
+          path: out/branchleaf-prototype-pack
+          if-no-files-found: error
       - name: Export integration production pack
         if: github.head_ref == 'tesseract-production-integration' || github.ref_name == 'tesseract-production-integration' || github.head_ref == 'tesseract-surface-gate-wired-20261017' || github.ref_name == 'tesseract-surface-gate-wired-20261017'
         env:
