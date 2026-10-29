@@ -309,7 +309,10 @@ export function generatePatterns(input:PatternGeneratorInput):GeneratedPattern[]
     maxYmm:compositionPlan.primary.offsetY*physicalSize.height+
      Math.max(20,compositionPlan.primary.scaleY*physicalSize.height)
    },{
-    maxConnections:Math.min(6,Math.ceil(productionObjects.length/3)),
+    // Keep enough capacity for every eligible two-leaf cluster. The router
+    // still limits each stem to two distinct ports and rejects crossings.
+    maxConnections:input.enableCoverageAwareBranchLeaf===true&&input.enablePortConnectors!==true
+     ?12:Math.min(6,Math.ceil(productionObjects.length/3)),
     minGapMm:constructionEnvelope.minGapMm,
     maxSpanMm:28,
     branchLeafClusterOnly:input.enablePortConnectors!==true
