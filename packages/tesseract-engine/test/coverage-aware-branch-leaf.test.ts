@@ -3,6 +3,7 @@ import type {GarmentZone} from "../src/garment";
 import type {ProductionGlyphObject} from "../src/production-object";
 import {circumferenceAt,juxtaposition,type SurfaceFootprint} from "../src/garment-surface-math";
 import {buildCoverageAwareBranchLeafAssembly} from "../src/coverage-aware-branch-leaf";
+import {buildPortAwareStitchConnectors} from "../src/port-aware-stitch-connectors";
 import {compileProductionObjectsToStitchIr} from "../src/production-stitch-ir";
 import {measureStitchCoverageBudget} from "../src/stitch-coverage-budget";
 
@@ -93,4 +94,32 @@ describe("coverage-aware source-derived branch/leaf grammar (experimental)",()=>
   expect(buildCoverageAwareBranchLeafAssembly([crowdedBranch,crowdedSeed],small,
    {minYmm:0,maxYmm:20},options)).toEqual([]);
  });
+ it("rejects decorative branch-leaf clones when no same-thread source-port route exists",()=>{
+  const incompatibleSeed={...seed,threadColor:"#b20000"};
+  const originals=[branch,incompatibleSeed],before=JSON.stringify(originals);
+  const clones=buildCoverageAwareBranchLeafAssembly(originals,cylinder,band,options);
+  expect(clones).toEqual([]);
+  expect(JSON.stringify(originals)).toBe(before);
+ });
+ it("retains only stems and leaves with routable canonical source-port junctions",()=>{
+  const originals=[branch,seed],before=JSON.stringify(originals);
+  const clones=buildCoverageAwareBranchLeafAssembly(originals,cylinder,band,options);
+  expect(clones.length).toBeGreaterThan(0);
+  const clusters=[...new Set(clones.map(o=>o.branchLeaf?.clusterId))];
+  for(const clusterId of clusters){
+   const scoped=clones.map(o=>o.branchLeaf?.clusterId===clusterId
+    ?o:{...o,branchLeaf:undefined});
+   const routed=buildPortAwareStitchConnectors([...originals,...scoped],cylinder,band,{
+    maxConnections:2,minGapMm:options.minGapMm,maxSpanMm:28,branchLeafClusterOnly:true
+   });
+   const joined=new Set(routed.lineage.flatMap(link=>[link.fromObjectId,link.toObjectId]));
+   const members=clones.filter(o=>o.branchLeaf?.clusterId===clusterId);
+   expect(members.some(o=>o.branchLeaf?.role==="stem")).toBe(true);
+   expect(members.some(o=>o.branchLeaf?.role==="leaf")).toBe(true);
+   expect(members.every(o=>joined.has(o.id))).toBe(true);
+   expect(routed.lineage.every(link=>link.validationState==="REFERENCE")).toBe(true);
+  }
+  expect(JSON.stringify(originals)).toBe(before);
+ });
+
 });
