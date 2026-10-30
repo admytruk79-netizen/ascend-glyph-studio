@@ -1,3 +1,4 @@
+import type {MachineTemplate} from "./machine-template";
 import type {StitchIrObject,StitchIrPoint} from "./production-stitch-ir";
 import {routingMetrics} from "./stitch-travel-optimizer";
 import {compileLoomPlan,type LoomPlan} from "./loom-program";
@@ -39,9 +40,34 @@ function geometryErrors(objects:readonly StitchIrObject[],w:number,h:number){
  }
  return errors;
 }
-export function planEmbroideryJob(objects:readonly StitchIrObject[],opts:{widthMm:number;heightMm:number;trimJumpMm?:number}):ManufacturingJobPlan{
+export function planEmbroideryJob(objects:readonly StitchIrObject[],opts:{widthMm:number;heightMm:number;trimJumpMm?:number;machine?:MachineTemplate}):ManufacturingJobPlan{
  const {widthMm,heightMm}=opts,trimJumpMm=opts.trimJumpMm??7;
  const errors=geometryErrors(objects,widthMm,heightMm);
+ // Single-hoop feasibility only. Multi-hoop registration requires a separate gate.
+ const machine=opts.machine;
+ if(machine){
+  const x=machine.fieldX.value,y=machine.fieldY.value;
+  if(machine.fieldX.unit!=="mm"||machine.fieldY.unit!=="mm"||
+     !Number.isFinite(x)||!Number.isFinite(y)||x<=0||y<=0){
+   errors.push("machine-field-unverified");
+  }else if(!((widthMm<=x&&heightMm<=y)||(widthMm<=y&&heightMm<=x))){
+   errors.push("machine-field-exceeded:segmentation-required");
+  }
+  if(!Number.isInteger(machine.heads)||machine.heads<1||
+     !Number.isInteger(machine.needlesPerHead)||machine.needlesPerHead<1){
+   errors.push("machine-needle-capacity-unverified");
+  }
+  if(!Number.isInteger(machine.maxColors)||machine.maxColors<1){
+   errors.push("machine-color-capacity-unverified");
+  }else if(new Set(objects.map(o=>o.color)).size>machine.maxColors){
+   errors.push("machine-color-capacity-exceeded");
+  }
+  if(!machine.frames?.length)errors.push("machine-frame-unverified");
+  if(!machine.acceptedFormats?.length)errors.push("machine-format-unverified");
+  if(!Number.isFinite(machine.registrationToleranceMm)||machine.registrationToleranceMm<=0){
+   errors.push("machine-registration-unverified");
+  }
+ }
  const operations:ManufacturingOperation[]=[];
  let previous:StitchIrObject|undefined;
  for(const o of objects){
@@ -59,7 +85,10 @@ export function planEmbroideryJob(objects:readonly StitchIrObject[],opts:{widthM
   previous=o;
  }
  const m=routingMetrics(objects);
- return {schema:"ascend.manufacturing.job.v1",process:"embroidery",widthMm,heightMm,operations,sourceObjectIds:objects.map(o=>o.id),metrics:{travelMm:m.travelMm,colorChanges:m.colorChanges,longJumps:operations.filter(o=>o.kind==="trim").length,operationCount:operations.length},validation:{valid:errors.length===0,errors,warnings:["Reference plan only: material calibration, machine-specific postprocessing and sew-out are required."]}};
+ return {schema:"ascend.manufacturing.job.v1",process:"embroidery",widthMm,heightMm,operations,sourceObjectIds:objects.map(o=>o.id),metrics:{travelMm:m.travelMm,colorChanges:m.colorChanges,longJumps:operations.filter(o=>o.kind==="trim").length,operationCount:operations.length},validation:{valid:errors.length===0,errors,warnings:[
+  "Reference plan only: material calibration, machine-specific postprocessing and sew-out are required.",
+  ...(machine?[`Machine template ${machine.id} (${machine.confidence}) is not production approval.`]:[])
+ ]}};
 }
 export function planWeavingJob(objects:readonly StitchIrObject[],opts:{widthMm:number;heightMm:number;endsPerCm:number;picksPerCm:number;maxShafts?:number;maxTreadles?:number}):ManufacturingJobPlan{
  const errors=geometryErrors(objects,opts.widthMm,opts.heightMm);
