@@ -68,9 +68,12 @@ export function planHoopSegmentationCandidates(
   if(ps.length<2||ps.some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y))){
    errors.push("invalid-path:"+o.id);continue;
   }
-  const xs=ps.map(p=>p.x),ys=ps.map(p=>p.y);
-  const bounds={minX:Math.min(...xs),minY:Math.min(...ys),
-   maxX:Math.max(...xs),maxY:Math.max(...ys)};
+  // Linear scan avoids spreading an unbounded stitch path into function arguments.
+  const bounds:Bounds={minX:Infinity,minY:Infinity,maxX:-Infinity,maxY:-Infinity};
+  for(const p of ps){
+   bounds.minX=Math.min(bounds.minX,p.x);bounds.minY=Math.min(bounds.minY,p.y);
+   bounds.maxX=Math.max(bounds.maxX,p.x);bounds.maxY=Math.max(bounds.maxY,p.y);
+  }
   if(bounds.minX<0||bounds.minY<0||bounds.maxX>widthMm||bounds.maxY>heightMm){
    errors.push("outside-job-envelope:"+o.id);continue;
   }
