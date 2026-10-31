@@ -1,4 +1,5 @@
 import type {MachineTemplate} from "./machine-template";
+import {planHoopSegmentationCandidates,type HoopSegmentationCandidate} from "./hoop-segmentation";
 import type {StitchIrObject,StitchIrPoint} from "./production-stitch-ir";
 import {routingMetrics} from "./stitch-travel-optimizer";
 import {compileLoomPlan,type LoomPlan} from "./loom-program";
@@ -24,6 +25,7 @@ export type ManufacturingJobPlan={
  metrics:{travelMm:number;colorChanges:number;longJumps:number;operationCount:number};
  validation:{valid:boolean;errors:string[];warnings:string[]};
  loom?:{liftPlan:LoomPlan;shaftDraft:ShaftDraft};
+ segmentationCandidate?:HoopSegmentationCandidate;
 };
 const pts=(o:StitchIrObject):StitchIrPoint[]=>o.kind==="fill"?o.polygon:o.path;
 const d=(a:StitchIrPoint,b:StitchIrPoint)=>Math.hypot(a.x-b.x,a.y-b.y);
@@ -43,7 +45,8 @@ function geometryErrors(objects:readonly StitchIrObject[],w:number,h:number){
 export function planEmbroideryJob(objects:readonly StitchIrObject[],opts:{widthMm:number;heightMm:number;trimJumpMm?:number;machine?:MachineTemplate}):ManufacturingJobPlan{
  const {widthMm,heightMm}=opts,trimJumpMm=opts.trimJumpMm??7;
  const errors=geometryErrors(objects,widthMm,heightMm);
- // Single-hoop feasibility only. Multi-hoop registration requires a separate gate.
+ let segmentationCandidate:HoopSegmentationCandidate|undefined;
+ // Oversized jobs remain invalid. Candidate grouping does not authorize multi-hoop execution.
  const machine=opts.machine;
  if(machine){
   const x=machine.fieldX.value,y=machine.fieldY.value;
@@ -52,6 +55,8 @@ export function planEmbroideryJob(objects:readonly StitchIrObject[],opts:{widthM
    errors.push("machine-field-unverified");
   }else if(!((widthMm<=x&&heightMm<=y)||(widthMm<=y&&heightMm<=x))){
    errors.push("machine-field-exceeded:segmentation-required");
+   segmentationCandidate=planHoopSegmentationCandidates(objects,{widthMm,heightMm,machine});
+   errors.push(...segmentationCandidate.errors.map(e=>"segmentation:"+e));
   }
   if(!Number.isInteger(machine.heads)||machine.heads<1||
      !Number.isInteger(machine.needlesPerHead)||machine.needlesPerHead<1){
@@ -87,8 +92,9 @@ export function planEmbroideryJob(objects:readonly StitchIrObject[],opts:{widthM
  const m=routingMetrics(objects);
  return {schema:"ascend.manufacturing.job.v1",process:"embroidery",widthMm,heightMm,operations,sourceObjectIds:objects.map(o=>o.id),metrics:{travelMm:m.travelMm,colorChanges:m.colorChanges,longJumps:operations.filter(o=>o.kind==="trim").length,operationCount:operations.length},validation:{valid:errors.length===0,errors,warnings:[
   "Reference plan only: material calibration, machine-specific postprocessing and sew-out are required.",
-  ...(machine?[`Machine template ${machine.id} (${machine.confidence}) is not production approval.`]:[])
- ]}};
+  ...(machine?[`Machine template ${machine.id} (${machine.confidence}) is not production approval.`]:[]),
+  ...(segmentationCandidate?.tiles.length?[`Reference-only hoop grouping: ${segmentationCandidate.tiles.length} candidate tile(s); registration and physical sew-out remain blocked.`]:[])
+ ]},...(segmentationCandidate?{segmentationCandidate}:{})};
 }
 export function planWeavingJob(objects:readonly StitchIrObject[],opts:{widthMm:number;heightMm:number;endsPerCm:number;picksPerCm:number;maxShafts?:number;maxTreadles?:number}):ManufacturingJobPlan{
  const errors=geometryErrors(objects,opts.widthMm,opts.heightMm);
