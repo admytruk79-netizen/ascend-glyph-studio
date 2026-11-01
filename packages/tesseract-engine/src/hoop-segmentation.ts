@@ -1,4 +1,5 @@
 import type {MachineTemplate} from "./machine-template";
+import {auditHoopRegistrationGeometry,type HoopRegistrationGeometryAudit} from "./hoop-registration-audit";
 import type {StitchIrObject,StitchIrPoint} from "./production-stitch-ir";
 
 /**
@@ -17,6 +18,7 @@ export type HoopSegmentationCandidate={
  status:"reference-only";
  fieldMm:{width:number;height:number};
  tiles:HoopTile[];
+ registrationGeometryAudit?:HoopRegistrationGeometryAudit;
  errors:string[];
  releaseBlockers:string[];
 };
@@ -44,7 +46,7 @@ export function planHoopSegmentationCandidates(
  ];
  const result=(tiles:HoopTile[]):HoopSegmentationCandidate=>({
   schema:"ascend.hoop-segmentation.candidate.v1",status:"reference-only",
-  fieldMm,tiles,errors,releaseBlockers
+  fieldMm,tiles,...(tiles.length?{registrationGeometryAudit:auditHoopRegistrationGeometry(tiles,fieldMm)}:{}),errors,releaseBlockers
  });
  if(machine.fieldX.unit!=="mm"||machine.fieldY.unit!=="mm"||
     !Number.isFinite(fieldMm.width)||!Number.isFinite(fieldMm.height)||
