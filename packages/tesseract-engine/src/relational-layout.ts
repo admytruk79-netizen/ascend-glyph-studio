@@ -9,10 +9,10 @@ function hash(s:string){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=
 function clamp(x:number,a:number,b:number){return Math.max(a,Math.min(b,x))}
 function desired(e:TopologyEdge,w:number,h:number){
  const base=Math.min(w,h);
- const map:Record<string,number>={anchor:.18,flow:.27,branch:.23,oppose:.34,intersect:.12,enclose:.16,transform:.25,terminate:.3,return:.2,ascend:.3,orbit:.2,bridge:.3,radiate:.26,repeat:.18};
+ const map:Record<string,number>={anchor:.18,flow:.27,branch:.23,oppose:.34,intersect:.12,enclose:.16,transform:.25,terminate:.3,return:.2,ascend:.3,orbit:.2,bridge:.3,radiate:.26,repeat:.18,nest:.10,mirror:.22};
  return base*(map[e.relation]??.24);
 }
-function orientation(e:TopologyEdge){const m:Record<string,number>={ascend:-90,flow:-72,branch:-45,oppose:0,bridge:0,return:180,orbit:25,radiate:-35};return m[e.relation]??0}
+function orientation(e:TopologyEdge){const m:Record<string,number>={ascend:-90,flow:-72,branch:-45,oppose:0,bridge:0,return:180,orbit:25,radiate:-35,mirror:0,nest:90,repeat:0,enclose:90,intersect:45};return m[e.relation]??0}
 
 export function solveRelationalLayout(t:Topology,width:number,height:number,seed:string,zone?:GarmentZone,constraints?:{minGapMm?:number;seamPolicy?:"avoid"|"continuous"|"resolve"}):Layout{
  const pad=Math.max(18,Math.min(width,height)*.08),pts:Record<string,LayoutPoint>={};

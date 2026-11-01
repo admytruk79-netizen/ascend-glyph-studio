@@ -272,3 +272,42 @@ For contract manufacturing, each real factory receives a capability profile cont
 Tesseract generates against the selected profile. ROVIQ receives the immutable production package and handles routing, work order, materials, QC and shipment.
 
 This allows a local prototype machine and a large Chinese multi-head factory to use the same semantic design language while receiving different valid manufacturing projections.
+
+## Motif and pattern grammar — 11 October 2026
+
+Tesseract now treats **motifs** and **patterns** as different scales of the same language compiler.
+
+The canonical path is:
+
+**semantic intent → ASCEND motif family → compound motif graph → octave development → pattern composition → garment/machine projection → production objects → stitch compiler → production manifest**
+
+### Motif layer
+
+A motif is no longer a decorative polygon selected at render time. It is a typed compound graph assembled from ASCEND primitives. Each motif instance records:
+
+- semantic concept;
+- motif family;
+- canonical ASCEND primitive members;
+- internal relations;
+- scale profile;
+- transformation operation;
+- production node IDs;
+- evidence/composition grammar used to arrange it.
+
+Current ASCEND-native motif families include origin/seed, lineage/root, protected core, ascent/path, choice/crossing, return/orbit, and spirit/radiance.
+
+Research traditions do **not** replace ASCEND motif geometry. Ukrainian sash evidence, learned corpus statistics, and other structural research influence repetition, alternation, nesting, symmetry, framing, interruption and hierarchy only.
+
+### Motif operations
+
+Motifs can be developed through repeat, mirror, rotate, nest, alternate, interrupt, enclose and branch operations. These operations are compiled into Tesseract relational constraints, so they affect solved geometry rather than existing only as labels.
+
+### Pattern layer
+
+A pattern is a higher-order composition of motif instances. Pattern generation therefore operates on compound motifs rather than raw semantic nodes. The octave controller develops these motif graphs through bounded recursive stages while the garment, machine, stitch and surface envelopes prevent illegal expansion.
+
+The pattern layer remains responsible for macro hierarchy, rhythm, negative space, focal events, band/field structure, seam behavior and product placement. The motif layer is responsible for meso-scale identity and internal compound form.
+
+### Validation
+
+The motif branch is evaluated with the existing 40-design benchmark: Ukrainian bands, ASCEND emblems, sleeve compositions and Western leather. The benchmark requires real production objects and stitch objects for acceptance; decorative SVG-only output does not count.
