@@ -1,0 +1,45 @@
+name: Motif learner — collect Met candidates
+# Searches the Met Open Access API for public-domain Ukrainian textiles, reads counted grids from the images in memory
+# (images are never stored) and commits review-only motif records to data/motifs/met/. Nothing trains on them until a
+# person sets culturalAccess to open.
+on:
+  push:
+    branches: [claude/tesseract-glyph-training-t298iv]
+    paths:
+      - "scripts/motifs/collect-met-counted.mts"
+      - ".github/workflows/motif-met-collect.yml"
+  workflow_dispatch:
+    inputs:
+      max_per_query:
+        description: Object ids taken from each search
+        default: "120"
+concurrency:
+  group: motif-met-collect-${{ github.ref }}
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install runtime
+        run: npm install --no-save --no-audit --no-fund sharp tsx
+      - name: Collect and read
+        env:
+          MET_MAX_PER_QUERY: ${{ inputs.max_per_query || '120' }}
+        run: npx tsx scripts/motifs/collect-met-counted.mts
+      - name: Commit review records
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/motifs/met
+          if git diff --cached --quiet; then echo "no changes"; exit 0; fi
+          git commit -m "Collect Met counted-motif candidates for review (run ${{ github.run_id }})"
+          git push origin HEAD:${{ github.ref_name }}

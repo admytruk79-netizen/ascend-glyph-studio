@@ -1,0 +1,318 @@
+{
+ "schema": "ascend.motif-records.v1",
+ "records": [
+  {
+   "id": "ua-seed-star8",
+   "name": "Eight-pointed star (восьмикутна зірка)",
+   "tradition": "Ukrainian",
+   "region": null,
+   "technique": "cross-stitch",
+   "sourceGroup": "ua-seed-star8",
+   "chart": [
+    "...............",
+    ".......R.......",
+    "......RRR......",
+    "..R...RRR...R..",
+    "...RR.RRR.RR...",
+    "...RRR.R.RRR...",
+    "....RRR.RRR....",
+    ".RRRR.RKR.RRRR.",
+    "....RRR.RRR....",
+    "...RRR.R.RRR...",
+    "...RR.RRR.RR...",
+    "..R...RRR...R..",
+    "......RRR......",
+    ".......R.......",
+    "..............."
+   ],
+   "provenance": {
+    "kind": "repository-authored-generic-form",
+    "licence": "repository-authored",
+    "culturalAccess": "open",
+    "independentSource": false,
+    "note": "Charted in this repository as a generic counted rendering of a widely documented folk form. Not traced from any museum object or pattern book; not an independent historical source and not regional evidence."
+   }
+  },
+  {
+   "id": "ua-seed-sown-rhomb",
+   "name": "Sown-field rhomb (засіяне поле)",
+   "tradition": "Ukrainian",
+   "region": null,
+   "technique": "cross-stitch",
+   "sourceGroup": "ua-seed-sown-rhomb",
+   "chart": [
+    "........K........",
+    ".......KKK.......",
+    "......KKRKK......",
+    ".....KK.R.KK.....",
+    "....KKR.R.RKK....",
+    "...KK...R...KK...",
+    "..KKR.R.R.R.RKK..",
+    ".KK.....R.....KK.",
+    "KKRRRRRRRRRRRRRKK",
+    ".KK.....R.....KK.",
+    "..KKR.R.R.R.RKK..",
+    "...KK...R...KK...",
+    "....KKR.R.RKK....",
+    ".....KK.R.KK.....",
+    "......KKRKK......",
+    ".......KKK.......",
+    "........K........"
+   ],
+   "provenance": {
+    "kind": "repository-authored-generic-form",
+    "licence": "repository-authored",
+    "culturalAccess": "open",
+    "independentSource": false,
+    "note": "Charted in this repository as a generic counted rendering of a widely documented folk form. Not traced from any museum object or pattern book; not an independent historical source and not regional evidence."
+   }
+  },
+  {
+   "id": "ua-seed-sun",
+   "name": "Sun (сонечко)",
+   "tradition": "Ukrainian",
+   "region": null,
+   "technique": "cross-stitch",
+   "sourceGroup": "ua-seed-sun",
+   "chart": [
+    "........K........",
+    "........K........",
+    "........K........",
+    "...K.........K...",
+    "....K.RRRRR.K....",
+    ".....RR...RR.....",
+    "....RR.....RR....",
+    "....R..YYY..R....",
+    "KKK.R..YYY..R.KKK",
+    "....R..YYY..R....",
+    "....RR.....RR....",
+    ".....RR...RR.....",
+    "....K.RRRRR.K....",
+    "...K.........K...",
+    "........K........",
+    "........K........",
+    "........K........"
+   ],
+   "provenance": {
+    "kind": "repository-authored-generic-form",
+    "licence": "repository-authored",
+    "culturalAccess": "open",
+    "independentSource": false,
+    "note": "Charted in this repository as a generic counted rendering of a widely documented folk form. Not traced from any museum object or pattern book; not an independent historical source and not regional evidence."
+   }
+  },
+  {
+   "id": "ua-seed-nested-rhomb",
+   "name": "Nested rhombs (вкладені ромби)",
+   "tradition": "Ukrainian",
+   "region": null,
+   "technique": "cross-stitch",
+   "sourceGroup": "ua-seed-nested-rhomb",
+   "chart": [
+    "........K........",
+    ".......KRK.......",
+    "......K...K......",
+    ".....K..R..K.....",
+    "....K..R.R..K....",
+    "...K..R...R..K...",
+    "..K..R..K..R..K..",
+    ".K..R..K.K..R..K.",
+    "KR.R..K.R.K..R.RK",
+    ".K..R..K.K..R..K.",
+    "..K..R..K..R..K..",
+    "...K..R...R..K...",
+    "....K..R.R..K....",
+    ".....K..R..K.....",
+    "......K...K......",
+    ".......KRK.......",
+    "........K........"
+   ],
+   "provenance": {
+    "kind": "repository-authored-generic-form",
+    "licence": "repository-authored",
+    "culturalAccess": "open",
+    "independentSource": false,
+    "note": "Charted in this repository as a generic counted rendering of a widely documented folk form. Not traced from any museum object or pattern book; not an independent historical source and not regional evidence."
+   }
+  },
+  {
+   "id": "ua-seed-rose",
+   "name": "Rose rosette (ружа)",
+   "tradition": "Ukrainian",
+   "region": null,
+   "technique": "cross-stitch",
+   "sourceGroup": "ua-seed-rose",
+   "chart": [
+    ".....K.K.....",
+    "....KRKRK....",
+    ".....RRR.....",
+    ".K..R.R.R..K.",
+    "KRR.RRRRR.RRK",
+    ".KRRR.K.RRRK.",
+    "..RRRKKKRRR..",
+    ".KRRR.K.RRRK.",
+    "KRR.RRRRR.RRK",
+    ".K..R.R.R..K.",
+    ".....RRR.....",
+    "....KRKRK....",
+    ".....K.K....."
+   ],
+   "provenance": {
+    "kind": "repository-authored-generic-form",
+    "licence": "repository-authored",
+    "culturalAccess": "open",
+    "independentSource": false,
+    "note": "Charted in this repository as a generic counted rendering of a widely documented folk form. Not traced from any museum object or pattern book; not an independent historical source and not regional evidence."
+   }
+  },
+  {
+   "id": "ua-seed-rams-horns",
+   "name": "Ram's horns (баранячі ріжки)",
+   "tradition": "Ukrainian",
+   "region": null,
+   "technique": "cross-stitch",
+   "sourceGroup": "ua-seed-rams-horns",
+   "chart": [
+    "...............",
+    ".KK.........KK.",
+    "K..K.......K..K",
+    "K.K.K.....K.K.K",
+    ".K..K.....K..K.",
+    "....K.....K....",
+    ".....K...K.....",
+    "......KRK......",
+    ".......K......."
+   ],
+   "provenance": {
+    "kind": "repository-authored-generic-form",
+    "licence": "repository-authored",
+    "culturalAccess": "open",
+    "independentSource": false,
+    "note": "Charted in this repository as a generic counted rendering of a widely documented folk form. Not traced from any museum object or pattern book; not an independent historical source and not regional evidence."
+   }
+  },
+  {
+   "id": "ua-seed-fir",
+   "name": "Fir branch (ялинка)",
+   "tradition": "Ukrainian",
+   "region": null,
+   "technique": "cross-stitch",
+   "sourceGroup": "ua-seed-fir",
+   "chart": [
+    "......R......",
+    ".....RRR.....",
+    "....R.R.R....",
+    "...R..R..R...",
+    ".....RRR.....",
+    "....R.R.R....",
+    "...R..R..R...",
+    "..R...R...R..",
+    "....RRRRR....",
+    "...R..R..R...",
+    "..R...R...R..",
+    ".R....R....R.",
+    "......R......",
+    ".....KKK.....",
+    "....KKKKK...."
+   ],
+   "provenance": {
+    "kind": "repository-authored-generic-form",
+    "licence": "repository-authored",
+    "culturalAccess": "open",
+    "independentSource": false,
+    "note": "Charted in this repository as a generic counted rendering of a widely documented folk form. Not traced from any museum object or pattern book; not an independent historical source and not regional evidence."
+   }
+  },
+  {
+   "id": "ua-seed-tulip",
+   "name": "Tulip (тюльпан)",
+   "tradition": "Ukrainian",
+   "region": null,
+   "technique": "cross-stitch",
+   "sourceGroup": "ua-seed-tulip",
+   "chart": [
+    "...R...R...",
+    "..RRR.RRR..",
+    ".RRRRRRRRR.",
+    ".RR.RRR.RR.",
+    ".RRRRRRRRR.",
+    "..RRR.RRR..",
+    "...RRRRR...",
+    ".....K.....",
+    ".G...K...G.",
+    ".GG..K..GG.",
+    "..GGGKGGG..",
+    ".....K.....",
+    ".....K....."
+   ],
+   "provenance": {
+    "kind": "repository-authored-generic-form",
+    "licence": "repository-authored",
+    "culturalAccess": "open",
+    "independentSource": false,
+    "note": "Charted in this repository as a generic counted rendering of a widely documented folk form. Not traced from any museum object or pattern book; not an independent historical source and not regional evidence."
+   }
+  },
+  {
+   "id": "ua-seed-kalyna",
+   "name": "Guelder-rose berries (калина)",
+   "tradition": "Ukrainian",
+   "region": null,
+   "technique": "cross-stitch",
+   "sourceGroup": "ua-seed-kalyna",
+   "chart": [
+    "......K......",
+    ".....K.K.....",
+    "....K...K....",
+    "...RR...RR...",
+    "..RRRR.RRRR..",
+    "..RRRR.RRRR..",
+    "...RR.R.RR...",
+    ".....RRR.....",
+    "....RRRRR....",
+    "....RRRRR....",
+    ".....RRR.....",
+    "..GG..K..GG..",
+    ".GGGG.K.GGGG.",
+    "..GG..K..GG.."
+   ],
+   "provenance": {
+    "kind": "repository-authored-generic-form",
+    "licence": "repository-authored",
+    "culturalAccess": "open",
+    "independentSource": false,
+    "note": "Charted in this repository as a generic counted rendering of a widely documented folk form. Not traced from any museum object or pattern book; not an independent historical source and not regional evidence."
+   }
+  },
+  {
+   "id": "ua-seed-oak",
+   "name": "Oak leaf (дубове листя)",
+   "tradition": "Ukrainian",
+   "region": null,
+   "technique": "cross-stitch",
+   "sourceGroup": "ua-seed-oak",
+   "chart": [
+    ".....G.....",
+    "....GGG....",
+    "...GG.GG...",
+    "..GGG.GGG..",
+    "...GG.GG...",
+    "..GGGGGGG..",
+    ".GGG.G.GGG.",
+    "..GG.G.GG..",
+    ".GGG.G.GGG.",
+    "..GGGGGGG..",
+    "....GKG....",
+    ".....K.....",
+    ".....K....."
+   ],
+   "provenance": {
+    "kind": "repository-authored-generic-form",
+    "licence": "repository-authored",
+    "culturalAccess": "open",
+    "independentSource": false,
+    "note": "Charted in this repository as a generic counted rendering of a widely documented folk form. Not traced from any museum object or pattern book; not an independent historical source and not regional evidence."
+   }
+  }
+ ]
+}
