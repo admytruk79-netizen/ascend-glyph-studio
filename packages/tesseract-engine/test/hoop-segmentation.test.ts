@@ -59,4 +59,32 @@ describe("reference-only hoop segmentation candidates",()=>{
   expect(job.segmentationCandidate?.tiles).toHaveLength(2);
   expect(job.validation.warnings.join(" ")).toMatch(/registration and physical sew-out remain blocked/);
  });
+ it("reports disconnected reference fields without implying registration approval",()=>{
+  const p=plan([line("a",10,10),line("b",500,300)]);
+  const audit=p.registrationGeometryAudit!;
+  expect(audit.status).toBe("reference-only");
+  expect(audit.connectedByFieldOverlap).toBe(false);
+  expect(audit.fieldOverlapLinks).toEqual([]);
+  expect(audit.unreachableFromFirstTileIds).toEqual(["hoop-002"]);
+  expect(audit.warnings).toContain("no-continuous-shared-field-corridor-external-registration-datum-required");
+  expect(p.releaseBlockers).toContain("registration-marks-and-cross-hoop-continuity-unverified");
+ });
+ it("reports a positive shared field corridor but still blocks physical registration",()=>{
+  const p=plan([line("a",10,10),line("b",360,10)]);
+  expect(p.tiles).toHaveLength(2);
+  const audit=p.registrationGeometryAudit!;
+  expect(audit.connectedByFieldOverlap).toBe(true);
+  expect(audit.unreachableFromFirstTileIds).toEqual([]);
+  expect(audit.fieldOverlapLinks).toEqual([{
+   fromTileId:"hoop-001",toTileId:"hoop-002",
+   overlapMm:{x:360,y:10,width:6,height:203}
+  }]);
+  expect(audit.warnings).toContain("registration-marks-fixturing-and-seam-continuity-unverified");
+  expect(p.releaseBlockers.length).toBeGreaterThan(0);
+ });
+ it("does not invent a registration audit when input geometry is rejected",()=>{
+  const p=plan([line("wide",10,10,400,5)]);
+  expect(p.registrationGeometryAudit).toBeUndefined();
+ });
+
 });
