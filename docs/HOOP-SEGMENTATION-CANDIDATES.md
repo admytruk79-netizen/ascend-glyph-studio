@@ -31,3 +31,14 @@ Run `npm --workspace @ascend/tesseract-engine run typecheck` and `npm --workspac
 ## Preservation
 
 The planner operates only on existing stitch-IR point envelopes and IDs. It does not alter ASCEND source geometry, source attribution, motif lineage, rights gates, cultural labels or training admission policy. Reference data must not be promoted to `MANUFACTURER-VALIDATED` or `PRODUCTION-VALIDATED` without evidence.
+
+## Reference registration geometry audit (2026-11-01)
+
+The candidate now includes `registrationGeometryAudit` when at least one valid tile is generated. For each pair of proposed native-orientation field rectangles, it records strictly positive shared-area rectangles and whether all tiles are connected through shared-field corridors. The audit is deterministic and does not alter stitch coordinates, source motifs, or provenance. Touching edges with zero overlap are not treated as corridors.
+
+- `connectedByFieldOverlap: true` means only that the *reference rectangles* form a connected graph. It does **not** prove that registration marks can be safely placed, that the frame can access the overlap, or that a seam or sleeve can be registered.
+- Disconnected fields receive `no-continuous-shared-field-corridor-external-registration-datum-required`; external alignment may still be possible with manufacturer-approved fixtures, but is **not** assumed.
+- All candidate plans retain `registration-marks-and-cross-hoop-continuity-unverified`, manufacturer fixture blockers, and physical sew-out blockers. No release state is promoted.
+- Pairwise field-overlap analysis is bounded by the existing 128-tile maximum; it does not claim optimized hoop placement or machine-local digitization.
+
+**Next implementation gate:** use manufacturer-measured usable field/hoop restrictions and a verified garment seam/no-go map to find permissible registration-mark sites, then validate registration tolerance with a controlled sew-out. Until those inputs exist, the audit is geometry evidence only.
