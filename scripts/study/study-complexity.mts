@@ -12,7 +12,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import pg from "pg";
 import sharp from "sharp";
 import { USER_AGENT } from "../corpus/sources.ts";
-import { centre, complexityOf, objectTypeOf, profileOf, type Complexity } from "./complexity.ts";
+import { centre, complexityOf, objectTypeOf, profileOf, STUDY_PX, type Complexity } from "./complexity.ts";
 
 const db = new pg.Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false }, max: 2 });
 db.on("error", () => {});
@@ -35,7 +35,7 @@ async function fetchImage(url: string): Promise<Buffer> {
   return Buffer.from(await res.arrayBuffer());
 }
 
-const measured: ({ id: string; type: string; tradition: string; title: string } & Complexity)[] = [];
+const measured: ({ id: string; type: string; tradition: string; title: string; closeup: boolean } & Complexity)[] = [];
 let failed = 0;
 const deadline = Date.now() + Number(process.env.STUDY_MAX_MINUTES ?? 45) * 60_000;
 // a few hosts at a time: interleave by host so one slow museum does not hold the rest
@@ -43,17 +43,21 @@ for (const r of items as any[]) {
   if (Date.now() > deadline) break;
   try {
     const buf = await fetchImage(r.image_url);
-    const raw = await sharp(buf).rotate().resize(384, 384, { fit: "inside" }).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+    // the centre is measured at STUDY_PX after cropping, the same scale ASCEND designs are measured at
+    const raw = await sharp(buf).rotate().resize(Math.round(STUDY_PX / 0.72), Math.round(STUDY_PX / 0.72), { fit: "inside" }).removeAlpha().raw().toBuffer({ resolveWithObject: true });
     const c = complexityOf(centre({ data: raw.data, width: raw.info.width, height: raw.info.height }));
-    measured.push({ id: r.id, type: r.type, tradition: r.tradition ?? "Unlabelled", title: String(r.title).slice(0, 120), ...c });
+    // a close-up: ornament fills a good part of the centre (not a whole garment on a mannequin or a table)
+    measured.push({ id: r.id, type: r.type, tradition: r.tradition ?? "Unlabelled", title: String(r.title).slice(0, 120), closeup: c.cover >= 0.35, ...c });
     if (measured.length % 50 === 0) console.log(JSON.stringify({ measured: measured.length, failed }));
   } catch (e) { if (++failed <= 5) console.log(JSON.stringify({ failed: r.id, error: String((e as Error).message).slice(0, 120) })); }
 }
 
 const group = (key: (m: (typeof measured)[number]) => string) => { const g = new Map<string, Complexity[]>(); for (const m of measured) { const k = key(m); (g.get(k) ?? g.set(k, []).get(k)!).push(m); } return g; };
 const body = {
-  version: "complexity/0.1", builtAt: new Date().toISOString(), measured: measured.length, failed,
+  version: "complexity/0.2-closeups", px: STUDY_PX, builtAt: new Date().toISOString(), measured: measured.length, failed,
   types: Object.fromEntries([...group((m) => m.type)].map(([k, v]) => [k, profileOf(v)])),
+  // close-ups only: the profile to fit designs to (whole-garment photos lose fine detail at any resolution)
+  closeups: Object.fromEntries([...group((m) => (m.closeup ? m.type : "-"))].filter(([k]) => k !== "-").map(([k, v]) => [k, profileOf(v)])),
   typeTradition: Object.fromEntries([...group((m) => `${m.type}|${m.tradition}`)].filter(([, v]) => v.length >= 8).map(([k, v]) => [k, profileOf(v)])),
   // the most and least complex pieces of each type, for review
   examples: Object.fromEntries(["towel", "shirt", "skirt"].map((t) => { const v = measured.filter((m) => m.type === t).sort((a, b) => b.elements - a.elements); return [t, { busiest: v.slice(0, 5).map((m) => ({ id: m.id, title: m.title, elements: m.elements, cover: m.cover })), plainest: v.slice(-3).map((m) => ({ id: m.id, title: m.title, elements: m.elements, cover: m.cover })) }]; })),

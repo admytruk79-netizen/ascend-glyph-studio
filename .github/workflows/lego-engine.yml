@@ -1,0 +1,38 @@
+name: Lego engine
+# Keeps the pattern engine unbreakable: piece analysis and generator tests, plus the robustness sweep (every generator,
+# any grammar, size and seed, returns stitchable geometry or nothing), on every change to the engine.
+on:
+  push:
+    paths:
+      - "packages/blend-engine/**"
+      - "packages/stitch-engine/**"
+      - "scripts/train/**"
+      - "scripts/engine/**"
+      - "scripts/study/**"
+      - ".github/workflows/lego-engine.yml"
+  pull_request:
+    paths:
+      - "packages/blend-engine/**"
+      - "packages/stitch-engine/**"
+      - "scripts/train/**"
+      - "scripts/engine/**"
+      - "scripts/study/**"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - name: Typecheck blend-engine
+        run: npx tsc --noEmit -p packages/blend-engine
+      - name: Piece analysis, learning and generator tests
+        run: npx tsx --test scripts/train/learn.test.ts scripts/train/lego.test.ts
+      - name: Robustness sweep
+        run: npx tsx --test scripts/engine/robustness.test.ts

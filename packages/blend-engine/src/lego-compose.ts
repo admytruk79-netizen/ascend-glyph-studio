@@ -7,15 +7,27 @@
  * never paired with the hero: new combinations of known pieces, which is where new designs come from.
  */
 import { Kit } from "./folk-rich.ts";
-import { BRICKS, widthOf, type BrickId, type Roles } from "./lego.ts";
+import { BRICKS, outlineBrick, widthOf, type BrickId, type Roles } from "./lego.ts";
+import { densify } from "./densify.ts";
+import { stitchSafe } from "./stitch-safe.ts";
 
 export type LegoGrammar = {
   images: number;
   bricks: Record<string, { share: number; perImage: number; extent: number; colors?: string[] }>;
   pairs: Record<string, { n: number; dx: number; dy: number; ratio: number }>;
   mirrorV: number;
+  /** bricks learned from the corpus (clusters of pieces no catalogue brick matched), drawn from their outline */
+  learned?: { id: string; outline: [number, number][]; share: number; aspect: number }[];
 };
-export type BandPlan = { hero: BrickId; companions: BrickId[]; filler: BrickId | null; units: number; mirrored: boolean; novelPairs: string[] };
+export type BandPlan = { hero: BrickId; companions: string[]; filler: BrickId | null; units: number; mirrored: boolean; novelPairs: string[] };
+
+/** Draw a catalogue brick or a learned one (a solid fill from its averaged outline). */
+function drawPiece(k: Kit, g: LegoGrammar, id: string, x: number, y: number, size: number, c: Roles, flip: 1 | -1 = 1) {
+  if (id in BRICKS) return BRICKS[id as BrickId].draw(k, x, y, size, c, undefined, flip);
+  const l = g.learned?.find((b) => b.id === id);
+  if (l) outlineBrick(k, flip < 0 ? l.outline.map(([u, v]) => [-u, v] as [number, number]) : l.outline, x, y, size, c.accent);
+}
+const pieceWidth = (g: LegoGrammar, id: string, size: number) => (id in BRICKS ? widthOf(id as BrickId, size) : size * Math.min(1.4, Math.max(0.4, g.learned?.find((b) => b.id === id)?.aspect ?? 1)));
 
 const isBrick = (id: string): id is BrickId => id in BRICKS;
 function rng(seed: string) {
@@ -36,9 +48,11 @@ export function planBand(g: LegoGrammar, seed: string, explore = 0.3): Omit<Band
   const hero = pick(heroes.length ? heroes : known.filter((b) => BRICKS[b].scale !== "filler"), w, r) ?? "rose";
   const partners = Object.entries(g.pairs).filter(([k]) => k.startsWith(`${hero}|`)).map(([k, v]) => ({ b: k.split("|")[1]!, n: v.n }))
     .filter((p): p is { b: BrickId; n: number } => isBrick(p.b) && p.b !== hero && BRICKS[p.b].scale !== "filler");
-  const companions: BrickId[] = [], novelPairs: string[] = [];
-  const first = r() < explore || !partners.length
-    ? pick(known.filter((b) => b !== hero && BRICKS[b].scale === "companion"), w, r)
+  const companions: string[] = [], novelPairs: string[] = [];
+  // exploring: a companion the corpus never paired with the hero, sometimes a brick learned from the corpus itself
+  const learned = (g.learned ?? []).map((b) => b.id);
+  const first: string | undefined = r() < explore || !partners.length
+    ? (learned.length && r() < 0.4 ? pick(learned, (id) => g.learned!.find((b) => b.id === id)!.share + 0.01, r) : pick(known.filter((b) => b !== hero && BRICKS[b].scale === "companion"), w, r))
     : pick(partners, (p) => p.n, r)?.b;
   if (first) { companions.push(first); if (!partners.some((p) => p.b === first)) novelPairs.push(`${hero}+${first}`); }
   const filler = pick(known.filter((b) => BRICKS[b].scale === "filler" && b !== "grapes"), w, r) ?? null;
@@ -46,7 +60,11 @@ export function planBand(g: LegoGrammar, seed: string, explore = 0.3): Omit<Band
 }
 
 /** Lay the plan out as a band `length` × `height` mm. */
-export function composeBand(g: LegoGrammar, o: { seed: string; length?: number; height?: number; roles: Roles; explore?: number }): { kit: Kit; plan: BandPlan } {
+/**
+ * `fill`: fill motifs grown into the ground after layout (true = every clearing, a number = at most that many, 0 = none).
+ * Returns null when the band cannot be made stitchable (fail closed: see stitch-safe.ts).
+ */
+export function composeBand(g: LegoGrammar, o: { seed: string; length?: number; height?: number; roles: Roles; explore?: number; fill?: boolean | number }): { kit: Kit; plan: BandPlan } | null {
   const L = o.length ?? 250, H = o.height ?? 60, CY = H / 2, c = o.roles;
   const p = planBand(g, o.seed, o.explore);
   const k = new Kit();
@@ -59,7 +77,7 @@ export function composeBand(g: LegoGrammar, o: { seed: string; length?: number; 
   const Sc = comp ? S * Math.max(0.38, Math.min(0.62, pair?.ratio ?? 0.5)) : 0;
   const Sf = Math.min(12, inner * 0.3);
   // slots: [companion] hero [companion] side by side with GAP between, the filler in what is left at the unit edge
-  const wH = widthOf(p.hero, S), wC = comp ? widthOf(comp, Sc) : 0, wF = p.filler ? widthOf(p.filler, Sf) : 0;
+  const wH = widthOf(p.hero, S), wC = comp ? pieceWidth(g, comp, Sc) : 0, wF = p.filler ? widthOf(p.filler, Sf) : 0;
   const group = wH + (comp ? (p.mirrored ? 2 : 1) * (wC + GAP) : 0);
   const units = Math.max(2, Math.floor(L / (group + (p.filler ? wF + 2 * GAP : GAP)))), U = L / units;
   const filler = p.filler && U - group >= wF + 2 * GAP ? p.filler : null;
@@ -70,13 +88,18 @@ export function composeBand(g: LegoGrammar, o: { seed: string; length?: number; 
     BRICKS[p.hero].draw(k, hx, CY, S, c);
     if (comp) {
       const off = wH / 2 + GAP + wC / 2, y = CY + lift(pair?.dy, Sc);
-      if (p.mirrored) for (const s of [-1, 1] as const) BRICKS[comp].draw(k, hx + s * off, y, Sc, c, undefined, (-s) as 1 | -1);
-      else BRICKS[comp].draw(k, hx + off, y, Sc, c);
+      if (p.mirrored) for (const s of [-1, 1] as const) drawPiece(k, g, comp, hx + s * off, y, Sc, c, (-s) as 1 | -1);
+      else drawPiece(k, g, comp, hx + off, y, Sc, c);
     }
     if (filler) BRICKS[filler].draw(k, u * U, CY, Sf, c);
   }
   k.resolveGaps();
-  return { kit: k, plan: { ...p, filler, units } };
+  if (o.fill) {
+    // grow fill motifs into the ground inside the frame rows, mirrored when the band mirrors
+    densify(k, { width: L, height: H, colors: c, margin: 7, variant: Math.floor(rng(o.seed + "/fill")() * 3), ...(p.mirrored ? { mirrorX: L / 2 } : {}), ...(typeof o.fill === "number" ? { maxMotifs: o.fill } : {}) });
+    k.resolveGaps();
+  }
+  return stitchSafe(k) ? { kit: k, plan: { ...p, filler, units } } : null;
 }
 
 /**

@@ -13,11 +13,16 @@ export const MOTIF_TYPES: Record<string, string> = {
   amorphous: "a free-flowing curvilinear ornament without clear motifs", figures: "an ornament with human figures",
 };
 export const REGIONS: [RegExp, string][] = [
-  [/hutsul|гуцул|kosiv|косів|verkhovyn|верховин/i, "Hutsul"], [/poltav|полтав/i, "Poltava"], [/podil|поділ|vinnyts|вінниц|khmelnyt|хмельниц/i, "Podillia"],
-  [/bukovyn|буковин|chernivts|чернівц/i, "Bukovyna"], [/kyiv|kiev|київ|киев/i, "Kyiv"], [/chernih|черніг|черниг/i, "Chernihiv"],
-  [/volyn|волин|polis|поліс|полес/i, "Volyn–Polissia"], [/boyk|бойк/i, "Boyko"], [/lemk|лемк/i, "Lemko"], [/pokut|покут/i, "Pokuttia"],
-  [/zakarpat|закарпат|uzhhorod|ужгород|transcarpath/i, "Transcarpathia"], [/slobo|слобож|kharkiv|харків/i, "Slobozhanshchyna"],
-  [/lviv|львів|galic|галич/i, "Galicia"], [/dnipr|дніпр|zaporiz|запоріж|kherson|херсон|odes|одес/i, "South"],
+  // Ukrainian, Russian and Latin spellings of regions, their towns and oblasts (catalogues use all three)
+  [/hutsul|гуцул|kosiv|косів|косов|verkhovyn|верховин|kolomy|коломи/i, "Hutsul"],
+  [/poltav|полтав|reshetyliv|решетилів|решетилов|opishn|опішн|опошн|myrhorod|миргород|lubny|лубн/i, "Poltava"],
+  [/podil|поділ|подол|vinnyts|вінниц|винниц|khmelnyt|хмельниц|kamian|кам'ян|каменец/i, "Podillia"],
+  [/bukovyn|буковин|chernivts|чернівц|черновц/i, "Bukovyna"], [/kyiv|kiev|київ|киев|bila tserkv|біла церкв|cherkas|черкас/i, "Kyiv"],
+  [/chernih|черніг|черниг|nizhyn|ніжин|нежин/i, "Chernihiv"],
+  [/volyn|волин|волын|polis|поліс|полес|rivne|рівн|ровн|zhytomyr|житомир/i, "Volyn–Polissia"], [/boyk|бойк/i, "Boyko"], [/lemk|лемк/i, "Lemko"], [/pokut|покут/i, "Pokuttia"],
+  [/zakarpat|закарпат|uzhhorod|ужгород|transcarpath/i, "Transcarpathia"], [/slobo|слобож|kharkiv|харків|харьк|sumy|суми|сумск/i, "Slobozhanshchyna"],
+  [/lviv|львів|львов|galic|галич|ternopil|тернопіл|тернопол|ivano-frank|івано-франк|ивано-франк/i, "Galicia"],
+  [/dnipr|дніпр|днепр|zaporiz|запоріж|запорож|kherson|херсон|odes|одес/i, "South"],
 ];
 export function regionOf(r: { region?: string; title?: string; culture?: string }): string | undefined {
   const t = `${r.region ?? ""} ${r.title ?? ""} ${r.culture ?? ""}`;

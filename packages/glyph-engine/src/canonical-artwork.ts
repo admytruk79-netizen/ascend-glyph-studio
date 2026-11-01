@@ -23,7 +23,8 @@ export function validateCanonicalArtwork(a:CanonicalArtwork):string[]{
  if(!a.polygons.length||a.polygons.some(p=>p.length<3))e.push("invalid-artwork-polygons");
  if(a.compoundPaths?.some(p=>!p.rings.length||p.rings.some(r=>r.length<3)))e.push("invalid-artwork-compound-paths");
  if(a.polygons.flat().some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y))||a.compoundPaths?.flatMap(p=>p.rings).flat().some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y)))e.push("non-finite-artwork-geometry");
- const raw={id:a.id,revision:a.revision,viewBox:a.viewBox,polygons:a.polygons,compoundPaths:a.compoundPaths,minLineUnits:a.minLineUnits,minGapUnits:a.minGapUnits};if(a.sourceHash!==hashCanonicalArtwork(raw))e.push("canonical-source-hash-mismatch");
+ // compoundPaths only when present: an absent field must hash like it did when the artwork was created
+ const raw={id:a.id,revision:a.revision,viewBox:a.viewBox,polygons:a.polygons,...(a.compoundPaths!==undefined?{compoundPaths:a.compoundPaths}:{}),minLineUnits:a.minLineUnits,minGapUnits:a.minGapUnits};if(a.sourceHash!==hashCanonicalArtwork(raw))e.push("canonical-source-hash-mismatch");
  return e;
 }
 export function projectCanonicalArtwork(a:CanonicalArtwork,p:ProjectionInput):ArtworkProjection{

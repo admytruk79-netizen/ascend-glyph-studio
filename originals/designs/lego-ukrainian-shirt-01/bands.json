@@ -1,0 +1,224 @@
+{
+  "scope": "file:/tmp/claude-0/ua/grammar.json",
+  "grammarImages": 1061,
+  "bands": [
+    {
+      "id": "lego-01",
+      "hero": "rhomb-frame",
+      "companions": [
+        "star-lily"
+      ],
+      "filler": "leaf",
+      "mirrored": false,
+      "novelPairs": [
+        "rhomb-frame+star-lily"
+      ],
+      "units": 3,
+      "product": "shirt",
+      "fill": 20,
+      "profileScore": 0.75,
+      "complexity": {
+        "cover": 0.418,
+        "elements": 12,
+        "levels": 2,
+        "fine": 0.083,
+        "colors": 5,
+        "edges": 0.39,
+        "mirror": 0.513
+      },
+      "stitches": 13032,
+      "minutes": 36.2,
+      "colors": 5,
+      "gateFailed": []
+    },
+    {
+      "id": "lego-02",
+      "hero": "horns",
+      "companions": [
+        "bird"
+      ],
+      "filler": null,
+      "mirrored": true,
+      "novelPairs": [],
+      "units": 2,
+      "product": "shirt",
+      "fill": 20,
+      "profileScore": 0.97,
+      "complexity": {
+        "cover": 0.444,
+        "elements": 5,
+        "levels": 2,
+        "fine": 0,
+        "colors": 5,
+        "edges": 0.398,
+        "mirror": 0.969
+      },
+      "stitches": 12996,
+      "minutes": 39,
+      "colors": 5,
+      "gateFailed": []
+    },
+    {
+      "id": "lego-03",
+      "hero": "horns",
+      "companions": [
+        "bird"
+      ],
+      "filler": "star5",
+      "mirrored": false,
+      "novelPairs": [],
+      "units": 2,
+      "product": "shirt",
+      "fill": 30,
+      "profileScore": 0.77,
+      "complexity": {
+        "cover": 0.386,
+        "elements": 11,
+        "levels": 3,
+        "fine": 0.091,
+        "colors": 5,
+        "edges": 0.353,
+        "mirror": 0.525
+      },
+      "stitches": 11002,
+      "minutes": 34.5,
+      "colors": 5,
+      "gateFailed": []
+    },
+    {
+      "id": "lego-04",
+      "hero": "medallion",
+      "companions": [
+        "star8"
+      ],
+      "filler": "fan",
+      "mirrored": false,
+      "novelPairs": [],
+      "units": 3,
+      "product": "shirt",
+      "fill": 30,
+      "profileScore": 2.28,
+      "complexity": {
+        "cover": 0.453,
+        "elements": 21,
+        "levels": 5,
+        "fine": 0,
+        "colors": 5,
+        "edges": 0.406,
+        "mirror": 0.528
+      },
+      "stitches": 13466,
+      "minutes": 41,
+      "colors": 5,
+      "gateFailed": []
+    },
+    {
+      "id": "lego-05",
+      "hero": "medallion",
+      "companions": [
+        "star-lily"
+      ],
+      "filler": "leaf",
+      "mirrored": false,
+      "novelPairs": [],
+      "units": 3,
+      "product": "shirt",
+      "fill": 20,
+      "profileScore": 2.29,
+      "complexity": {
+        "cover": 0.439,
+        "elements": 22,
+        "levels": 5,
+        "fine": 0.182,
+        "colors": 4,
+        "edges": 0.379,
+        "mirror": 0.551
+      },
+      "stitches": 13905,
+      "minutes": 40,
+      "colors": 5,
+      "gateFailed": []
+    },
+    {
+      "id": "lego-06",
+      "hero": "medallion",
+      "companions": [
+        "star-lily"
+      ],
+      "filler": "fan",
+      "mirrored": false,
+      "novelPairs": [],
+      "units": 3,
+      "product": "shirt",
+      "fill": 20,
+      "profileScore": 2.29,
+      "complexity": {
+        "cover": 0.441,
+        "elements": 22,
+        "levels": 5,
+        "fine": 0.182,
+        "colors": 6,
+        "edges": 0.379,
+        "mirror": 0.558
+      },
+      "stitches": 14444,
+      "minutes": 41.5,
+      "colors": 5,
+      "gateFailed": []
+    },
+    {
+      "id": "lego-07",
+      "hero": "horns",
+      "companions": [
+        "lily"
+      ],
+      "filler": "leaf",
+      "mirrored": false,
+      "novelPairs": [],
+      "units": 3,
+      "product": "shirt",
+      "fill": 20,
+      "profileScore": 0.79,
+      "complexity": {
+        "cover": 0.39,
+        "elements": 7,
+        "levels": 1,
+        "fine": 0.286,
+        "colors": 6,
+        "edges": 0.362,
+        "mirror": 0.485
+      },
+      "stitches": 10856,
+      "minutes": 31.5,
+      "colors": 5,
+      "gateFailed": []
+    },
+    {
+      "id": "lego-08",
+      "hero": "horns",
+      "companions": [
+        "bird"
+      ],
+      "filler": "snowflake",
+      "mirrored": false,
+      "novelPairs": [],
+      "units": 2,
+      "product": "shirt",
+      "fill": 30,
+      "profileScore": 0.7,
+      "complexity": {
+        "cover": 0.413,
+        "elements": 9,
+        "levels": 2,
+        "fine": 0.222,
+        "colors": 5,
+        "edges": 0.365,
+        "mirror": 0.582
+      },
+      "stitches": 13457,
+      "minutes": 38.7,
+      "colors": 5,
+      "gateFailed": []
+    }
+  ]
+}

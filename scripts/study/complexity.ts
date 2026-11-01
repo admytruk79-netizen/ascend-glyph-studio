@@ -3,7 +3,7 @@
  * be compared with each other and with ASCEND designs (the same function scores a rendered design).
  *
  *   cover        share of the cloth covered by ornament (ink)
- *   elements     separate pieces of ornament in view (how busy), at the study resolution (longest side 384 px)
+ *   elements     separate pieces of ornament in view (how busy), at the study resolution (STUDY_PX)
  *
  * Photos and renders are both lightly blurred first, so crisp vector renders and soft photos compare fairly.
  *   levels       distinct size scales in use (big forms, medium motifs, small fillers, seeds: up to ~6)
@@ -13,6 +13,9 @@
  *   mirror       how far the ornament matches itself turned over about the vertical centre line (0–1)
  */
 import { components, foreground, paletteOf, type Raster } from "../train/learn.ts";
+
+/** Longest side, in pixels, at which museum photos and ASCEND designs are both measured. */
+export const STUDY_PX = 512;
 
 export type Complexity = { cover: number; elements: number; levels: number; fine: number; colors: number; edges: number; mirror: number };
 export const MEASURES: (keyof Complexity)[] = ["cover", "elements", "levels", "fine", "colors", "edges", "mirror"];
@@ -88,13 +91,21 @@ export function profileOf(cs: Complexity[]): Profile {
   return out;
 }
 
-/** How far a design sits from a profile: 0 = inside the middle half on every measure; each measure outside adds its distance in inter-quartile ranges. */
-export function distanceToProfile(c: Complexity, p: Profile): { score: number; low: string[]; high: string[] } {
+/**
+ * How much each measure counts when fitting a design. Edge detail and mirror are measured on museum photos that are
+ * often whole garments at low resolution and rarely centred, so they read low there; they count a quarter until the
+ * close-up study (study-complexity.mts, close-up profiles) gives comparable numbers.
+ */
+export const MEASURE_WEIGHT: Record<keyof Complexity, number> = { cover: 1, elements: 1, levels: 1, fine: 0.5, colors: 0.5, edges: 0.25, mirror: 0.25 };
+/** Against close-up profiles (ornament filling the frame, same scale as the design) edge detail counts nearly in full. */
+export const CLOSEUP_WEIGHT: Record<keyof Complexity, number> = { cover: 1, elements: 1, levels: 1, fine: 0.5, colors: 0.5, edges: 0.75, mirror: 0.4 };
+
+/** How far a design sits from a profile: 0 = inside the middle half on every measure; each measure outside adds its weighted distance in inter-quartile ranges. */
+export function distanceToProfile(c: Complexity, p: Profile, weight: Record<keyof Complexity, number> = MEASURE_WEIGHT): { score: number; low: string[]; high: string[] } {
   let score = 0; const low: string[] = [], high: string[] = [];
   for (const m of MEASURES) {
-    const r = p[m], iqr = Math.max(1e-3, r.p75 - r.p25);
-    if (c[m] < r.p25) { score += (r.p25 - c[m]) / iqr; low.push(m); } else if (c[m] > r.p75) { score += (c[m] - r.p75) / iqr; high.push(m); }
+    const r = p[m], iqr = Math.max(1e-3, r.p75 - r.p25), w = weight[m];
+    if (c[m] < r.p25) { score += (w * (r.p25 - c[m])) / iqr; low.push(m); } else if (c[m] > r.p75) { score += (w * (c[m] - r.p75)) / iqr; high.push(m); }
   }
   return { score: +score.toFixed(2), low, high };
 }
-

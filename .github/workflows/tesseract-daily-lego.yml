@@ -1,0 +1,48 @@
+name: Tesseract daily Lego designs
+# Every morning, after the night's training: new bands from the latest learned Ukrainian grammar with Oleksandr's
+# signature mixed in, fitted to the shirt, towel and skirt complexity profiles; plus solid field panels and bands.
+# Every design passes the stitch gate; boards, SVGs and DST files are kept as the run's artifact and a summary
+# (plans, fill, profile scores) goes to Neon (learned_model 'daily-designs-latest').
+on:
+  schedule:
+    - cron: "29 6 * * *"
+  push:
+    branches: [claude/tesseract-corpus-harvest]
+    paths:
+      - ".github/workflows/tesseract-daily-lego.yml"
+      - "scripts/originals/publish-daily.mts"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  designs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-save --no-audit --no-fund pg sharp tsx
+      - name: Bands fitted to shirts, towels and skirts
+        env:
+          DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+          SIGNATURE: "0.15"
+        run: |
+          day=$(date -u +%F)
+          for product in shirt towel skirt; do
+            PRODUCT=$product npx tsx scripts/originals/lego-bands.mts out/daily/$product tradition:Ukrainian 6 "$day-$product"
+          done
+      - name: Solid field panels and bands
+        run: SEED="field-$(date -u +%F)" npx tsx scripts/originals/field-pack.mts out/daily/field 2
+      - name: Summary to Neon
+        env:
+          DATABASE_URL: ${{ secrets.TESSERACT_DATABASE_URL }}
+        run: npx tsx scripts/originals/publish-daily.mts out/daily "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: daily-designs-${{ github.run_id }}
+          path: out/daily
+          retention-days: 30
+          if-no-files-found: ignore
