@@ -8,6 +8,7 @@ import type {HoopTile} from "./hoop-segmentation";
 export type HoopRegistrationGeometryAudit={
  schema:"ascend.hoop-registration.geometry-audit.v1";
  status:"reference-only";
+ jobEnvelopeMm?:{width:number;height:number};
  fieldOverlapLinks:{
   fromTileId:string;toTileId:string;
   overlapMm:{x:number;y:number;width:number;height:number};
@@ -18,27 +19,38 @@ export type HoopRegistrationGeometryAudit={
 };
 
 export function auditHoopRegistrationGeometry(
- tiles:readonly HoopTile[],fieldMm:{width:number;height:number}
+ tiles:readonly HoopTile[],fieldMm:{width:number;height:number},
+ jobEnvelopeMm?:{width:number;height:number}
 ):HoopRegistrationGeometryAudit{
  const warnings=["registration-marks-fixturing-and-seam-continuity-unverified"];
+ if(jobEnvelopeMm)warnings.push("rectangular-job-envelope-is-not-a-verified-fabric-or-seam-map");
  const links:HoopRegistrationGeometryAudit["fieldOverlapLinks"]=[];
  if(!Number.isFinite(fieldMm.width)||!Number.isFinite(fieldMm.height)||
     fieldMm.width<=0||fieldMm.height<=0||
+    (jobEnvelopeMm!==undefined&&(!Number.isFinite(jobEnvelopeMm.width)||!Number.isFinite(jobEnvelopeMm.height)||jobEnvelopeMm.width<=0||jobEnvelopeMm.height<=0))||
     tiles.some(t=>!Number.isFinite(t.hoopOriginMm.x)||!Number.isFinite(t.hoopOriginMm.y))){
   return {
    schema:"ascend.hoop-registration.geometry-audit.v1",status:"reference-only",
-   fieldOverlapLinks:[],connectedByFieldOverlap:false,
+   ...(jobEnvelopeMm?{jobEnvelopeMm}:{}),fieldOverlapLinks:[],connectedByFieldOverlap:false,
    unreachableFromFirstTileIds:tiles.map(t=>t.id),
    warnings:[...warnings,"invalid-reference-field-or-origin"]
   };
+ }
+ if(!tiles.length){
+  return {schema:"ascend.hoop-registration.geometry-audit.v1",status:"reference-only",
+   ...(jobEnvelopeMm?{jobEnvelopeMm}:{}),fieldOverlapLinks:[],connectedByFieldOverlap:false,
+   unreachableFromFirstTileIds:[],warnings:[...warnings,"no-hoop-tiles"]};
  }
  const adjacency=tiles.map(()=>new Set<number>());
  for(let i=0;i<tiles.length;i++){
   for(let j=i+1;j<tiles.length;j++){
    const a=tiles[i]!.hoopOriginMm,b=tiles[j]!.hoopOriginMm;
-   const x=Math.max(a.x,b.x),y=Math.max(a.y,b.y);
-   const width=Math.min(a.x+fieldMm.width,b.x+fieldMm.width)-x;
-   const height=Math.min(a.y+fieldMm.height,b.y+fieldMm.height)-y;
+   // Only count shared field inside the reference job rectangle, not empty
+   // space beyond the panel. This still cannot prove fabric accessibility.
+   const x=Math.max(a.x,b.x,jobEnvelopeMm?0:-Infinity);
+   const y=Math.max(a.y,b.y,jobEnvelopeMm?0:-Infinity);
+   const width=Math.min(a.x+fieldMm.width,b.x+fieldMm.width,jobEnvelopeMm?.width??Infinity)-x;
+   const height=Math.min(a.y+fieldMm.height,b.y+fieldMm.height,jobEnvelopeMm?.height??Infinity)-y;
    // Touching edges have zero shared area, so do not imply a corridor.
    if(width>0&&height>0){
     links.push({fromTileId:tiles[i]!.id,toTileId:tiles[j]!.id,
@@ -62,6 +74,7 @@ export function auditHoopRegistrationGeometry(
  }
  return {
   schema:"ascend.hoop-registration.geometry-audit.v1",status:"reference-only",
+  ...(jobEnvelopeMm?{jobEnvelopeMm}:{}),
   fieldOverlapLinks:links,connectedByFieldOverlap:unreachableFromFirstTileIds.length===0,
   unreachableFromFirstTileIds,warnings
  };
