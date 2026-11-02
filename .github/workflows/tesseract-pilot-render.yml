@@ -1,0 +1,23 @@
+name: Tesseract pilot SVG render
+on:
+  push:
+    branches: [render-tesseract-pilot-20261102]
+  workflow_dispatch:
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build --workspace=@ascend/tesseract-engine
+      - run: node scripts/export-tesseract-pilot.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tesseract-pilot-svg
+          path: tesseract-render-output/
+          if-no-files-found: warn
