@@ -2,6 +2,10 @@ name: Tesseract pilot SVG render
 on:
   push:
     branches: [render-tesseract-pilot-20261102]
+  pull_request:
+    paths:
+      - 'scripts/export-tesseract-pilot.cjs'
+      - '.github/workflows/tesseract-pilot-render.yml'
   workflow_dispatch:
 jobs:
   render:
