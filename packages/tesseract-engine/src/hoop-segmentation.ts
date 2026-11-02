@@ -46,7 +46,7 @@ export function planHoopSegmentationCandidates(
  ];
  const result=(tiles:HoopTile[]):HoopSegmentationCandidate=>({
   schema:"ascend.hoop-segmentation.candidate.v1",status:"reference-only",
-  fieldMm,tiles,...(tiles.length?{registrationGeometryAudit:auditHoopRegistrationGeometry(tiles,fieldMm)}:{}),errors,releaseBlockers
+  fieldMm,tiles,...(tiles.length?{registrationGeometryAudit:auditHoopRegistrationGeometry(tiles,fieldMm,{width:widthMm,height:heightMm})}:{}),errors,releaseBlockers
  });
  if(machine.fieldX.unit!=="mm"||machine.fieldY.unit!=="mm"||
     !Number.isFinite(fieldMm.width)||!Number.isFinite(fieldMm.height)||
