@@ -42,3 +42,25 @@ The candidate now includes `registrationGeometryAudit` when at least one valid t
 - Pairwise field-overlap analysis is bounded by the existing 128-tile maximum; it does not claim optimized hoop placement or machine-local digitization.
 
 **Next implementation gate:** use manufacturer-measured usable field/hoop restrictions and a verified garment seam/no-go map to find permissible registration-mark sites, then validate registration tolerance with a controlled sew-out. Until those inputs exist, the audit is geometry evidence only.
+
+## Rectangular job-envelope registration audit hardening (2026-11-02)
+
+The candidate audit now clips pairwise machine-field intersections to the job's
+declared rectangular width and height. Overlap that exists only outside that
+rectangle is no longer counted as a registration corridor. A zero-tile direct
+audit reports disconnected/invalid rather than vacuously connected. The
+optional `jobEnvelopeMm` field records which reference bounds were applied;
+callers that omit it retain the older unbounded field-intersection behavior.
+
+Added regression fixtures for clipped overlaps, entirely external overlaps,
+empty tile sets, a four-zone **complete-shirt panel proxy**, and a three-zone
+**tapered-sleeve rectangular proxy**. These are deterministic geometry tests,
+not full pattern-piece benchmarks: the sleeve proxy does not model taper,
+fabric access, seams, no-go regions, stabilizer, or physical registration.
+The 3.7 golden visual comparison is still outstanding and must not be
+described as passed.
+
+A positive `connectedByFieldOverlap` means only a shared *reference
+rectangle*. It does not establish a usable registration-mark location,
+continuous fabric under the frame, seam-safe placement, or measured machine
+tolerance. All manufacturing and physical release blockers remain active.
