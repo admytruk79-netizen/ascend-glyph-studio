@@ -1,5 +1,6 @@
 import {describe,it,expect} from "vitest";
 import {planHoopSegmentationCandidates} from "../src/hoop-segmentation";
+import {auditHoopRegistrationGeometry} from "../src/hoop-registration-audit";
 import {planEmbroideryJob} from "../src/manufacturing-job-plan";
 import {MACHINE_TEMPLATES} from "../src/machine-template";
 import type {StitchIrObject} from "../src/production-stitch-ir";
@@ -85,6 +86,54 @@ describe("reference-only hoop segmentation candidates",()=>{
  it("does not invent a registration audit when input geometry is rejected",()=>{
   const p=plan([line("wide",10,10,400,5)]);
   expect(p.registrationGeometryAudit).toBeUndefined();
+ });
+
+ it("clips shared-field corridors to the rectangular job envelope",()=>{
+  const tiles=[
+   {id:"a",sourceObjectIds:["a"],boundsMm:{x:0,y:90,width:10,height:10},hoopOriginMm:{x:0,y:90}},
+   {id:"b",sourceObjectIds:["b"],boundsMm:{x:80,y:90,width:10,height:10},hoopOriginMm:{x:80,y:90}}
+  ];
+  const audit=auditHoopRegistrationGeometry(tiles,{width:100,height:100},{width:100,height:100});
+  expect(audit.fieldOverlapLinks).toEqual([{
+   fromTileId:"a",toTileId:"b",overlapMm:{x:80,y:90,width:20,height:10}
+  }]);
+  expect(audit.connectedByFieldOverlap).toBe(true);
+  expect(audit.jobEnvelopeMm).toEqual({width:100,height:100});
+  expect(audit.warnings).toContain("rectangular-job-envelope-is-not-a-verified-fabric-or-seam-map");
+ });
+ it("does not count overlap wholly outside the reference panel or approve empty tiles",()=>{
+  const tiles=[
+   {id:"a",sourceObjectIds:["a"],boundsMm:{x:0,y:120,width:10,height:10},hoopOriginMm:{x:0,y:120}},
+   {id:"b",sourceObjectIds:["b"],boundsMm:{x:80,y:120,width:10,height:10},hoopOriginMm:{x:80,y:120}}
+  ];
+  const audit=auditHoopRegistrationGeometry(tiles,{width:100,height:100},{width:100,height:100});
+  expect(audit.fieldOverlapLinks).toEqual([]);
+  expect(audit.connectedByFieldOverlap).toBe(false);
+  expect(audit.unreachableFromFirstTileIds).toEqual(["b"]);
+  const empty=auditHoopRegistrationGeometry([],{width:100,height:100},{width:100,height:100});
+  expect(empty.connectedByFieldOverlap).toBe(false);
+  expect(empty.warnings).toContain("no-hoop-tiles");
+ });
+ it("reference complete-shirt panel proxy preserves all source objects and blocks release",()=>{
+  const motifs=[line("front-left",30,30,30,20),line("front-right",440,30,30,20),
+   line("back",30,300,30,20),line("sleeve",440,300,30,20)];
+  const candidate=plan(motifs);
+  expect(candidate.errors).toEqual([]);
+  expect(candidate.tiles).toHaveLength(4);
+  expect(candidate.tiles.flatMap(t=>t.sourceObjectIds).sort()).toEqual(motifs.map(o=>o.id).sort());
+  expect(candidate.releaseBlockers.length).toBeGreaterThan(0);
+  expect(plan([...motifs].reverse()).tiles).toEqual(candidate.tiles);
+  expect(planEmbroideryJob(motifs,{widthMm:700,heightMm:500,machine}).validation.valid).toBe(false);
+ });
+ it("reference tapered-sleeve rectangular proxy preserves intact motifs but does not validate taper",()=>{
+  const motifs=[line("upper",70,20,20,20),line("middle",80,250,15,20),line("cuff",95,500,10,15)];
+  const candidate=planHoopSegmentationCandidates(motifs,{widthMm:200,heightMm:650,machine});
+  expect(candidate.errors).toEqual([]);
+  expect(candidate.tiles).toHaveLength(3);
+  expect(candidate.tiles.flatMap(t=>t.sourceObjectIds)).toEqual(["upper","middle","cuff"]);
+  expect(candidate.releaseBlockers).toContain("manufacturer-hoop-orientation-and-fixturing-unverified");
+  expect(candidate.registrationGeometryAudit?.jobEnvelopeMm).toEqual({width:200,height:650});
+  expect(planEmbroideryJob(motifs,{widthMm:200,heightMm:650,machine}).validation.valid).toBe(false);
  });
 
 });
