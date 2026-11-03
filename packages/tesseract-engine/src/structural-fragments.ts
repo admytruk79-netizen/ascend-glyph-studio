@@ -15,7 +15,7 @@ export type FragmentRejection={sourceId:string;reason:string};
 export type FragmentLibrary={fragments:StructuralFragment[];rejected:FragmentRejection[]};
 
 const permittedRelations=new Set(["anchor","flow","branch","oppose","intersect","enclose","transform","terminate","return","ascend"]);
-const restrictedAccess=new Set<string>(["sacred-restricted"]);
+const allowedAccess=new Set<CulturalAccess>(["structural-public","documented-public"]);
 const hash=(s:string)=>{let h=2166136261;for(let i=0;i<s.length;i++)h=Math.imul(h^s.charCodeAt(i),16777619);return (h>>>0).toString(36);};
 
 /** Extract relation and proportion statistics from an explicitly annotated topology.
@@ -25,7 +25,7 @@ export function extractStructuralFragments(observations:readonly {source:Fragmen
  const fragments:StructuralFragment[]=[],rejected:FragmentRejection[]=[];
  for(const {source,topology} of observations){
   const reject=(reason:string)=>rejected.push({sourceId:source.id,reason});
-  if(restrictedAccess.has(source.access)){reject("cultural-access-restricted");continue;}
+  if(!allowedAccess.has(source.access)){reject("cultural-access-restricted");continue;}
   if(source.rights!=="permitted-structural-study"){reject("rights-not-cleared");continue;}
   if(!source.verified||!source.sourceIds.length||!source.traditionId){reject("insufficient-provenance");continue;}
   const nodes=new Map(topology.nodes.map(n=>[n.id,n]));
@@ -50,7 +50,7 @@ export function recombineStructuralFragments(base:Topology,library:FragmentLibra
  const nodes=base.nodes.map(n=>({...n})),edges=base.edges.map(e=>({...e}));
  const ids=new Set(nodes.map(n=>n.id));
  if(ids.size!==nodes.length)throw new Error("duplicate-base-node-id");
- const fragments=library.fragments.filter(f=>f.source.access!=="sacred-restricted"&&f.source.rights==="permitted-structural-study"&&f.source.verified&&f.source.sourceIds.length).sort((a,b)=>a.id.localeCompare(b.id));
+ const fragments=library.fragments.filter(f=>allowedAccess.has(f.source.access)&&f.source.rights==="permitted-structural-study"&&f.source.verified&&f.source.sourceIds.length).sort((a,b)=>a.id.localeCompare(b.id));
  const used:string[]=[],sources=new Set<string>(),existing=new Set(edges.map(e=>`${e.from}|${e.to}|${e.relation}`));
  if(nodes.length<2)return {topology:{nodes,edges},usedFragmentIds:used,sourceIds:[],status:"structural-reference-only"};
  let cursor=parseInt(hash(seed),36)>>>0;
