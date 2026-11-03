@@ -2,7 +2,7 @@ import {describe,it,expect} from "vitest";
 import {extractStructuralFragments,recombineStructuralFragments} from "../src/structural-fragments";
 import type {Topology} from "../src/topology";
 const base:Topology={nodes:[{id:"a",conceptId:"origin",form:"seed",scale:1},{id:"b",conceptId:"ascent",form:"axis",scale:2},{id:"c",conceptId:"return",form:"orbit",scale:3}],edges:[{from:"a",to:"b",relation:"flow",weight:1}]};
-const source=(id:string,access:"public"|"sacred-restricted"="public")=>({id,traditionId:"ukrainian-ornament",sourceIds:["museum-record-"+id],access,rights:"permitted-structural-study" as const,verified:true});
+const source=(id:string,access:"structural-public"|"sacred-restricted"="structural-public")=>({id,traditionId:"ukrainian-ornament",sourceIds:["museum-record-"+id],access,rights:"permitted-structural-study" as const,verified:true});
 describe("structural fragment synthesis",()=>{
  it("rejects restricted and unlicensed sources",()=>{
   const out=extractStructuralFragments([{source:source("safe"),topology:base},{source:source("sacred","sacred-restricted"),topology:base},{source:{...source("unknown"),rights:"unknown" as const},topology:base}]);
