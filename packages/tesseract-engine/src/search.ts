@@ -20,15 +20,18 @@ import {nameLineage} from "./lineage";
 import type {LearnedRelationPrior} from "./learned-relation-prior";
 import {learnedRelationScore} from "./learned-relation-prior";
 import type {StructuralFeedback} from "./structural-feedback";
+import {recombineStructuralFragments,type FragmentLibrary} from "./structural-fragments";
 
-export type SearchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];antiStyle?:WeightedRef[];visualCorpus?:ImageObservation[];selectionPolicy?:SelectionPolicy;niches?:DesignNicheId[];medium?:MediumId;physicalHistory?:PhysicalValidation[];substrateId?:string;machineProfileId?:string;population?:number;keep?:number;generations?:number;relationPrior?:LearnedRelationPrior;structuralFeedback?:StructuralFeedback};
+export type SearchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];antiStyle?:WeightedRef[];visualCorpus?:ImageObservation[];selectionPolicy?:SelectionPolicy;niches?:DesignNicheId[];medium?:MediumId;physicalHistory?:PhysicalValidation[];substrateId?:string;machineProfileId?:string;population?:number;keep?:number;generations?:number;relationPrior?:LearnedRelationPrior;structuralFeedback?:StructuralFeedback;fragmentLibrary?:FragmentLibrary};
 export type SearchCandidate={topology:Topology;score:number;novelty:number;lineageId:string;objectives:ObjectiveVector;trace:string[]};
 type Scored={t:Topology;score:number;objectives?:ObjectiveVector};
 
 export function searchDesignSpace(input:SearchInput):SearchCandidate[]{
  const plan=compileIntent(input.intent),principles=retrievePrinciples(plan.intent,input.principles);
  const searchCorpus=input.visualCorpus?.length?(input.visualCorpus.length>256?input.visualCorpus.filter((_,i)=>i%Math.ceil(input.visualCorpus!.length/256)===0).slice(0,256):input.visualCorpus):undefined;
- const root=buildTopology(plan.semanticSkeleton,principles),history:Topology[]=[root];
+ const skeleton=buildTopology(plan.semanticSkeleton,principles);
+ const root=input.fragmentLibrary?recombineStructuralFragments(skeleton,input.fragmentLibrary,input.seed).topology:skeleton;
+ const history:Topology[]=[root];
  const ancestry=new WeakMap<Topology,string[]>();
  const lineageIds=new WeakMap<Topology,string>();
  lineageIds.set(root,nameLineage(root,0,input.niches).id);
