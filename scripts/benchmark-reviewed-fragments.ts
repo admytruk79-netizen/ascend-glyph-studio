@@ -26,10 +26,11 @@ async function main(){
  const opts={seed,intent,principles:[],population:32,generations:3,keep:8};
  const baseline=runTesseractBatch(opts);
  const withFragments=runTesseractBatch({...opts,fragmentLibrary:library});
+ if(!baseline.candidates.length||!withFragments.candidates.length||!baseline.specimenSheet||!withFragments.specimenSheet)throw Error("Benchmark did not produce both specimen sheets");
  await mkdir(output,{recursive:true});
  await Promise.all([
-  writeFile(resolve(output,"baseline-specimens.svg"),baseline.specimenSheet?.svg??""),
-  writeFile(resolve(output,"fragment-specimens.svg"),withFragments.specimenSheet?.svg??""),
+  writeFile(resolve(output,"baseline-specimens.svg"),baseline.specimenSheet.svg),
+  writeFile(resolve(output,"fragment-specimens.svg"),withFragments.specimenSheet.svg),
   writeFile(resolve(output,"comparison.json"),JSON.stringify({
    schema:"ascend.fragment-benchmark.v1",seed,tradition,
    inputLibrary:input,libraryFragmentCount:library.fragments.length,
