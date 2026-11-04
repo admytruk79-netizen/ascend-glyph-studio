@@ -25,6 +25,17 @@ describe("reviewed fragment evidence compiler",()=>{
   const out=compileReviewedFragmentEvidence([record("1","ukrainian-ornament"),record("2","other-tradition")]);
   expect(out.counts.fragments).toBe(0);
  });
+ it("blocks holdout leakage even when an object is duplicated under a train label",()=>{
+  const out=compileReviewedFragmentEvidence([record("1"),record("2"),record("1","ukrainian-ornament","holdout")]);
+  expect(out.counts.fragments).toBe(0);
+  expect(out.excluded.some(x=>x.reason==="validation-holdout-identity-leakage")).toBe(true);
+ });
+ it("blocks conflicting tradition labels for the same image",()=>{
+  const a=record("1"),b=record("2"),conflict=record("1","other-tradition");
+  const out=compileReviewedFragmentEvidence([a,b,conflict]);
+  expect(out.counts.fragments).toBe(0);
+  expect(out.excluded.some(x=>x.reason==="cross-tradition-source-conflict")).toBe(true);
+ });
  it("rejects repeated source families and malformed provenance",()=>{
   const a=record("1"),b=record("2");b.reference.objectFamilyId=a.reference.objectFamilyId;b.reference.institution=a.reference.institution;
   const out=compileReviewedFragmentEvidence([a,b]);
