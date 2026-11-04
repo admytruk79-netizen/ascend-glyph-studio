@@ -27,6 +27,7 @@ async function main(){
   try{r=JSON.parse(line) as Input;}catch{errors.push({objectId:"unknown",reason:"invalid-json"});continue;}
   if(records.length>=max)break;
   if(r.rightsStatus!=="approved"||r.culturalReview!=="approved"){errors.push({objectId:r.id,reason:"approval-required"});continue;}
+  if(auditMeta.has(r.id)){errors.push({objectId:r.id,reason:"duplicate-object-id"});continue;}
   if(!r.imageFile||!r.objectURL||!r.id||!r.objectFamilyId||!r.raw?.institution){errors.push({objectId:r.id??"unknown",reason:"missing-provenance-or-image-file"});continue;}
   const path=resolve(root,r.imageFile);
   if(isAbsolute(r.imageFile)||relative(root,path).startsWith("..")||relative(root,path)===""){errors.push({objectId:r.id,reason:"image-outside-root"});continue;}
