@@ -33,7 +33,7 @@ These are database inventory counts, **not** a count of individually rights-revi
 2. Place approved images locally and run `npm run embroidery:analyze` with `CORPUS_IN` and `IMAGE_ROOT`. The output now carries the explicit `traditionId` and `split` supplied by the reviewer.
 3. Run `npx tsx scripts/corpus/compile-reviewed-fragments.ts`. Missing labels, invalid schema, restricted/unreviewed references and validation/holdout entries cannot become training fragments. The compiler requires at least two independent approved objects for each structural operation *within a tradition*.
 4. Pass the resulting approved library to `runTesseractBatch({fragmentLibrary: ...})` and compare fixed-seed runs with/without the library. Source IDs are recorded in candidate trace. Never transplant historical contours into ASCEND glyph geometry.
-5. Inspect actual SVGs for sophistication, originality, cultural appropriateness and construction feasibility. Maintain `structural-reference-only` status until evidence and physical tests justify promotion.
+5. Run `FRAGMENT_TRADITION=ukrainian-ornament npx tsx scripts/benchmark-reviewed-fragments.ts` to produce `baseline-specimens.svg`, `fragment-specimens.svg`, and `comparison.json` from the actual batch engine with identical seeds and search settings. The benchmark refuses an empty or unreviewed fragment library; no fixture is silently substituted.\n6. Inspect actual SVGs for sophistication, originality, cultural appropriateness and construction feasibility. Maintain `structural-reference-only` status until evidence and physical tests justify promotion.
 
 ## Current limitations
 
