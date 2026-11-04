@@ -19,6 +19,13 @@ export type ReviewedFragmentCompilation={
 /** No train/validation leakage, no cross-tradition rule synthesis, no unreviewed promotion. */
 export function compileReviewedFragmentEvidence(records:readonly ReviewedFragmentRecord[]):ReviewedFragmentCompilation{
  const grouped=new Map<string,ReferenceEvidence[]>();
+ // Holdout/validation identities win over train labels even if records are duplicated.
+ const identity=(r:ReferenceEvidence)=>[r.objectId&&"id:"+r.objectId,r.imageSha256&&"sha:"+r.imageSha256.toLowerCase(),r.institution&&r.objectFamilyId&&"family:"+r.institution+":"+r.objectFamilyId].filter((x):x is string=>!!x);
+ const reserved=new Set(records.filter(x=>x.split==="validation"||x.split==="holdout").flatMap(x=>x.reference?identity(x.reference):[]));
+ const identityTraditions=new Map<string,Set<string>>();
+ for(const x of records.filter(x=>x.split==="train"&&x.reference))for(const key of identity(x.reference)){
+  const traditions=identityTraditions.get(key)??new Set<string>();traditions.add(x.traditionId?.trim()??"");identityTraditions.set(key,traditions);
+ }
  const excluded:ReviewedFragmentCompilation["excluded"]=[];
  let heldOut=0,train=0,approvedRules=0,fragments=0;
  for(const record of records){
@@ -27,6 +34,12 @@ export function compileReviewedFragmentEvidence(records:readonly ReviewedFragmen
   if(record.split!=="train"){excluded.push({objectId:r?.objectId??"unknown",reason:"invalid-or-missing-split"});continue;}
   if(!record.traditionId?.trim()||["global","unattributed","unknown"].includes(record.traditionId.toLowerCase().trim())){
    excluded.push({objectId:r?.objectId??"unknown",reason:"missing-specific-tradition"});continue;
+  }
+  if(r&&identity(r).some(key=>reserved.has(key))){
+   excluded.push({objectId:r.objectId,reason:"validation-holdout-identity-leakage"});continue;
+  }
+  if(r&&identity(r).some(key=>(identityTraditions.get(key)?.size??0)>1)){
+   excluded.push({objectId:r.objectId,reason:"cross-tradition-source-conflict"});continue;
   }
   if(!r||r.rightsStatus!=="approved"||r.culturalReview!=="approved"){
    excluded.push({objectId:r?.objectId??"unknown",reason:"independent-rights-and-cultural-review-required"});continue;
