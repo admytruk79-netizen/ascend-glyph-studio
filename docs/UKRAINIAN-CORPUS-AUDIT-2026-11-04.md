@@ -38,3 +38,12 @@ These are database inventory counts, **not** a count of individually rights-revi
 ## Current limitations
 
 No source images were fetched, no database rows were modified, and no new records were automatically approved in this change. No visual superiority or machine validation is claimed. The next milestone is a measured, source-reviewed Ukrainian pilot and an A/B render benchmark. The production engine POA's garment, stitch, machine and physical-sample gates remain in force.
+
+
+## Benchmark admission hardening — 2026-11-05
+
+The benchmark now checks the exported library's reference-only status and explicit `manufacturerValidated:false` / `physicallyValidated:false` flags, tradition consistency, allowed cultural access, permitted structural-study rights, unique fragment IDs, at least two distinct supporting object IDs per rule, recognized structural relations, and bounded numeric statistics. It refuses to write an A/B comparison when the engine's candidate traces show no actual fragment use. When fragments are used, `comparison.json` includes the used fragment IDs and source-object IDs.
+
+These are **metadata consistency checks**, not independent verification of the source records, their legal rights, cultural review, independence of supporting institutions, or authenticity. Do not manufacture approval labels or substitute synthetic fragments to satisfy the gate. A valid benchmark remains `concept-comparison-only`, not evidence of visual superiority or production validation.
+
+Verification sequence: run `npm run verify:tesseract-worker` and the repository test suite on the PR head; compile only independently reviewed train-split image analyses; run `FRAGMENT_TRADITION=ukrainian-ornament npx tsx scripts/benchmark-reviewed-fragments.ts`; inspect both generated SVG sheets and the trace manifest; conduct human visual/provenance review. Until those steps succeed, no real-corpus A/B outcome is claimed.
