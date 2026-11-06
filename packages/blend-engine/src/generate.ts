@@ -98,6 +98,20 @@ export function mixFrieze(req: Request): { dist: Record<string, number>; source:
 }
 
 export function generate(req: Request, count = 6): Candidate[] {
+  if (!Number.isInteger(count) || count < 0 || count > 1000) throw new Error("count must be an integer between 0 and 1000");
+  if (!Number.isSafeInteger(req.seed ?? 1)) throw new Error("seed must be a safe integer");
+  if (!req.zone || !Number.isFinite(req.zone.finishedLength) || !Number.isFinite(req.zone.height) ||
+      req.zone.finishedLength <= 0 || req.zone.height <= 0) throw new Error("zone dimensions must be positive finite millimeters");
+  const seam = req.zone.seamAllowance ?? 0;
+  const overlap = req.zone.closureOverlap ?? 0;
+  if (![seam, overlap].every((v) => Number.isFinite(v) && v >= 0) ||
+      2 * seam + overlap >= req.zone.finishedLength) throw new Error("invalid seam allowance or closure overlap");
+  if (req.zone.height <= 7.4) throw new Error("zone height must exceed minimum rail clearance");
+  if (!Object.keys(req.weights).length || Object.values(req.weights).some((v) => !Number.isFinite(v) || v < 0))
+    throw new Error("tradition weights must be finite nonnegative numbers");
+  if (req.profiles?.some((p) => !Number.isFinite(p.n) || p.n < 0 ||
+      Object.values(p.frieze).some((v) => !Number.isFinite(v) || v < 0)))
+    throw new Error("measured profile values must be finite nonnegative numbers");
   const rand = rng(req.seed ?? 1);
   const total = Object.values(req.weights).reduce((a, b) => a + b, 0);
   if (!(total > 0)) throw new Error("weights must sum to more than 0");
