@@ -14,9 +14,10 @@
     "corpus:build": "tsx scripts/build-research-corpus.ts",
     "corpus:import": "tsx scripts/import-research-corpus.ts",
     "tesseract:worker": "tsx scripts/run-tesseract-worker.ts",
-    "verify:tesseract-worker": "npm run typecheck --workspace=@ascend/tesseract-engine && npm run build --workspace=@ascend/tesseract-engine && npm test --workspace=@ascend/tesseract-engine && npm run pilot --workspace=@ascend/tesseract-engine && npm run typecheck --workspace=@ascend/stitch-engine && npm test --workspace=@ascend/stitch-engine",
+    "verify:tesseract-worker": "npm run typecheck --workspace=@ascend/tesseract-engine && npm run build --workspace=@ascend/tesseract-engine && npm test --workspace=@ascend/tesseract-engine && npm run pilot --workspace=@ascend/tesseract-engine && npm run typecheck --workspace=@ascend/stitch-engine && npm test --workspace=@ascend/stitch-engine && npm run test:review-queue",
     "render:build:tesseract": "npm install --no-audit --no-fund && npm run verify:tesseract-worker",
-    "embroidery:analyze": "tsx scripts/analyze-reviewed-embroidery.ts"
+    "embroidery:analyze": "tsx scripts/analyze-reviewed-embroidery.ts",
+    "test:review-queue": "node --test test/prepare-ukrainian-review-queue.test.mjs"
   },
   "devDependencies": {
     "tsx": "^4.19.2",

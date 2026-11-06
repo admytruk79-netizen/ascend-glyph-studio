@@ -20,15 +20,19 @@ import {nameLineage} from "./lineage";
 import type {LearnedRelationPrior} from "./learned-relation-prior";
 import {learnedRelationScore} from "./learned-relation-prior";
 import type {StructuralFeedback} from "./structural-feedback";
+import {recombineStructuralFragments,type FragmentLibrary} from "./structural-fragments";
 
-export type SearchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];antiStyle?:WeightedRef[];visualCorpus?:ImageObservation[];selectionPolicy?:SelectionPolicy;niches?:DesignNicheId[];medium?:MediumId;physicalHistory?:PhysicalValidation[];substrateId?:string;machineProfileId?:string;population?:number;keep?:number;generations?:number;relationPrior?:LearnedRelationPrior;structuralFeedback?:StructuralFeedback};
+export type SearchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];antiStyle?:WeightedRef[];visualCorpus?:ImageObservation[];selectionPolicy?:SelectionPolicy;niches?:DesignNicheId[];medium?:MediumId;physicalHistory?:PhysicalValidation[];substrateId?:string;machineProfileId?:string;population?:number;keep?:number;generations?:number;relationPrior?:LearnedRelationPrior;structuralFeedback?:StructuralFeedback;fragmentLibrary?:FragmentLibrary};
 export type SearchCandidate={topology:Topology;score:number;novelty:number;lineageId:string;objectives:ObjectiveVector;trace:string[]};
 type Scored={t:Topology;score:number;objectives?:ObjectiveVector};
 
 export function searchDesignSpace(input:SearchInput):SearchCandidate[]{
  const plan=compileIntent(input.intent),principles=retrievePrinciples(plan.intent,input.principles);
  const searchCorpus=input.visualCorpus?.length?(input.visualCorpus.length>256?input.visualCorpus.filter((_,i)=>i%Math.ceil(input.visualCorpus!.length/256)===0).slice(0,256):input.visualCorpus):undefined;
- const root=buildTopology(plan.semanticSkeleton,principles),history:Topology[]=[root];
+ const skeleton=buildTopology(plan.semanticSkeleton,principles);
+ const fragmentSeed=input.fragmentLibrary?recombineStructuralFragments(skeleton,input.fragmentLibrary,input.seed):undefined;
+ const root=fragmentSeed?.topology??skeleton;
+ const history:Topology[]=[root];
  const ancestry=new WeakMap<Topology,string[]>();
  const lineageIds=new WeakMap<Topology,string>();
  lineageIds.set(root,nameLineage(root,0,input.niches).id);
@@ -67,7 +71,7 @@ export function searchDesignSpace(input:SearchInput):SearchCandidate[]{
   const manufacturing=input.medium?assessManufacturability(t,input.medium):undefined;
   const physical=input.medium&&input.physicalHistory?.length?productionFitness(t,input.medium,input.physicalHistory,input.substrateId,input.machineProfileId):undefined;
   const objectives=objectiveVector(t,{semanticScore:e.score,novelty,culturalConfidence:1,visual,manufacturing,physical});
-  return {topology:t,score:e.score+novelty*18+(survival?.fitnessDelta??0)+learnedRelationScore(t,input.relationPrior),novelty,lineageId:lineage.id,objectives,trace:[`lineage:${lineage.id}`,`parents:${lineage.parentIds.join(",")||"root"}`,`novelty:${novelty.toFixed(3)}`,`relations:${new Set(t.edges.map(x=>x.relation)).size}`,`corpus-fitness:${(survival?.fitnessDelta??0).toFixed(2)}`,`species:${classifySpecies(t)}`,`learned-relation:${learnedRelationScore(t,input.relationPrior).toFixed(2)}`,`niche:${assignNiche(t,input.niches).primary}`,...(input.medium&&input.physicalHistory?.length?(()=>{const p=productionFitness(t,input.medium!,input.physicalHistory!,input.substrateId,input.machineProfileId);return [`physical-risk:${p.risk.toFixed(2)}`,`physical-confidence:${p.confidence.toFixed(2)}`,...p.reasons]})():[]),...(survival?.reasons??[])]};
+  return {topology:t,score:e.score+novelty*18+(survival?.fitnessDelta??0)+learnedRelationScore(t,input.relationPrior),novelty,lineageId:lineage.id,objectives,trace:[`lineage:${lineage.id}`,...(fragmentSeed?[`fragment-status:${fragmentSeed.status}`,`fragment-ids:${fragmentSeed.usedFragmentIds.join(",")||"none"}`,`fragment-sources:${fragmentSeed.sourceIds.join(",")||"none"}`]:[]),`parents:${lineage.parentIds.join(",")||"root"}`,`novelty:${novelty.toFixed(3)}`,`relations:${new Set(t.edges.map(x=>x.relation)).size}`,`corpus-fitness:${(survival?.fitnessDelta??0).toFixed(2)}`,`species:${classifySpecies(t)}`,`learned-relation:${learnedRelationScore(t,input.relationPrior).toFixed(2)}`,`niche:${assignNiche(t,input.niches).primary}`,...(input.medium&&input.physicalHistory?.length?(()=>{const p=productionFitness(t,input.medium!,input.physicalHistory!,input.substrateId,input.machineProfileId);return [`physical-risk:${p.risk.toFixed(2)}`,`physical-confidence:${p.confidence.toFixed(2)}`,...p.reasons]})():[]),...(survival?.reasons??[])]};
  });
  const keep=Math.max(1,Math.min(input.keep??8,32));
  return paretoSelect(finalists.map(x=>({item:x,objectives:x.objectives})),keep).map(x=>x.item);
