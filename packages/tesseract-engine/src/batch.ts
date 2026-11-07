@@ -14,6 +14,7 @@ import {buildGarmentAtlas} from "./garment-atlas";
 import {renderGarmentAtlasSvg,type GarmentSvg} from "./garment-svg";
 import {planPrimitiveEvolution,type EvolutionPlan} from "./evolution";
 import type {ImageObservation} from "./image-corpus";
+import type {FragmentLibrary} from "./structural-fragments";
 import {topologyVisualVector} from "./candidate-visual-vector";
 import {assessVisual,type VisualAssessment} from "./visual-assessment";
 import {adaptForProduction,type MediumId,type ProductionAdaptation} from "./medium-compiler";
@@ -32,7 +33,7 @@ import {productionObjectsFromTopology,assertProductionRelations,placeProductionO
 import {machineTemplate,assertUsableMachineTemplate,type MachineTemplate} from "./machine-template";
 import {compileProductionObjectsToStitchIr,type StitchIrObject} from "./production-stitch-ir";
 
-export type BatchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];constructionIntent?:ConstructionIntent;antiStyle?:WeightedRef[];garment?:GarmentConfiguration;compatibilityRules?:CompatibilityRule[];visualCorpus?:ImageObservation[];medium?:MediumId;learnedConstraints?:LearnedConstraintSnapshot;physicalHistory?:PhysicalValidation[];machineProfileId?:string;population?:number;generations?:number;keep?:number};
+export type BatchInput={seed:string;intent:IntentVector;principles:PrincipleRecord[];constructionIntent?:ConstructionIntent;antiStyle?:WeightedRef[];garment?:GarmentConfiguration;compatibilityRules?:CompatibilityRule[];visualCorpus?:ImageObservation[];fragmentLibrary?:FragmentLibrary;medium?:MediumId;learnedConstraints?:LearnedConstraintSnapshot;physicalHistory?:PhysicalValidation[];machineProfileId?:string;population?:number;generations?:number;keep?:number};
 export type ZoneProjection={zoneId:string;kind:GarmentZone["kind"];surface:GarmentZone["surface"];wrap:boolean;behavior:ZoneBehavior;svg:SvgProjection;productionObjects?:ProductionGlyphObject[];stitchObjects?:StitchIrObject[];surfaceMath?:ReturnType<typeof evaluateSurfaceLayout>};
 export type BatchCandidate={rank:number;score:number;novelty:number;lineageId:string;objectives:ObjectiveVector;trace:string[];genomeId:string;productionObjects?:ProductionGlyphObject[];projection:SvgProjection;zones:ZoneProjection[];continuity:ContinuityEvent[];registration:ContinuitySegment[];trajectories:GarmentTrajectory[];garmentProjection?:GarmentSvg;evolution:EvolutionPlan;visualAssessment?:VisualAssessment;productionAdaptation?:ProductionAdaptation;manufacturability?:ManufacturabilityReport};
 export type BatchResult={seed:string;candidateCount:number;garmentId?:string;machine?:MachineTemplate;configurationIssues:ConfigurationIssue[];constructionEnvelope?:ConstructionEnvelope;candidates:BatchCandidate[];specimenSheet?:SpecimenSheet};
@@ -47,7 +48,7 @@ export function runTesseractBatch(input:BatchInput):BatchResult{
  if(machine)assertUsableMachineTemplate(machine);
  const constructionEnvelope=input.medium?deriveConstructionEnvelope(input.garment,input.medium,undefined,input.constructionIntent,machine):undefined;
  const niches=nichesForGarment(input.garment);
- const found:SearchCandidate[]=searchDesignSpace({seed:input.seed,intent,principles:input.principles,antiStyle:input.antiStyle,visualCorpus:input.visualCorpus,niches:niches.length?niches:undefined,medium:input.medium,physicalHistory:input.physicalHistory,substrateId:input.garment?.material.substrateId,machineProfileId:input.machineProfileId,population:input.population??64,generations:input.generations??5,keep:input.keep??12});
+ const found:SearchCandidate[]=searchDesignSpace({seed:input.seed,intent,principles:input.principles,antiStyle:input.antiStyle,visualCorpus:input.visualCorpus,fragmentLibrary:input.fragmentLibrary,niches:niches.length?niches:undefined,medium:input.medium,physicalHistory:input.physicalHistory,substrateId:input.garment?.material.substrateId,machineProfileId:input.machineProfileId,population:input.population??64,generations:input.generations??5,keep:input.keep??12});
  const zones=input.garment?designableZones(input.garment):[];
  const candidates=found.map((c,i)=>{
   const octaveUsableArea=constructionEnvelope
