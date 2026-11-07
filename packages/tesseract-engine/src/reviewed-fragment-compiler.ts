@@ -21,9 +21,11 @@ export function compileReviewedFragmentEvidence(records:readonly ReviewedFragmen
  const grouped=new Map<string,ReferenceEvidence[]>();
  // Holdout/validation identities win over train labels even if records are duplicated.
  const sourceUrlKey=(value:string)=>{try{const url=new URL(value);if(url.protocol!=="https:"&&url.protocol!=="http:")return "";url.hash="";return url.toString();}catch{return "";}};
+ const str=(value:unknown)=>typeof value==="string"?value.trim():"";
  const identity=(r:ReferenceEvidence)=>{
-  const url=typeof r.objectUrl==="string"?sourceUrlKey(r.objectUrl):"";
-  return [r.objectId&&"id:"+r.objectId,r.imageSha256&&"sha:"+r.imageSha256.toLowerCase(),url&&"url:"+url,r.institution&&r.objectFamilyId&&"family:"+r.institution.toLowerCase()+":"+r.objectFamilyId.toLowerCase()].filter((x):x is string=>!!x);
+  const id=str(r.objectId),hash=str(r.imageSha256).toLowerCase(),url=sourceUrlKey(str(r.objectUrl));
+  const institution=str(r.institution).toLowerCase(),family=str(r.objectFamilyId).toLowerCase();
+  return [id&&"id:"+id,hash&&"sha:"+hash,url&&"url:"+url,institution&&family&&"family:"+institution+":"+family].filter((x):x is string=>!!x);
  };
  const reserved=new Set(records.filter(x=>x.split==="validation"||x.split==="holdout").flatMap(x=>x.reference?identity(x.reference):[]));
  const identityTraditions=new Map<string,Set<string>>();
