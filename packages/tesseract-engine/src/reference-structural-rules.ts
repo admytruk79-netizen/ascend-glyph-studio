@@ -36,7 +36,7 @@ export function extractStructuralRules(references:readonly ReferenceEvidence[],m
   const family=typeof r?.objectFamilyId==="string"?r.objectFamilyId.trim():"";
   const hash=typeof r?.imageSha256==="string"?r.imageSha256.toLowerCase():"";
   const url=typeof r?.objectUrl==="string"?sourceUrlKey(r.objectUrl):null;
-  if(!objectId||!institution||!url||!family||!r.structuralFeaturesVersion||!/^[a-f0-9]{64}$/.test(hash)||!Array.isArray(r.operations)){
+  if(!objectId||!institution||!url||!family||!r?.structuralFeaturesVersion||!/^[a-f0-9]{64}$/.test(hash)||!Array.isArray(r?.operations)){
    excluded.push({objectId:objectId||"unknown",reason:"missing-or-invalid-provenance"});continue;
   }
   if(r.rightsStatus!=="approved"||r.culturalReview!=="approved"){
