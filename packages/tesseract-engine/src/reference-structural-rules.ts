@@ -13,26 +13,43 @@ export type StructuralRule={
 };
 export type ExtractionResult={rules:StructuralRule[];excluded:{objectId:string;reason:string}[]};
 const operations:Operation[]=["repeat","alternate","nest","mirror","interrupt","branch","surround","scale-shift","void"];
+/** A fragment/anchor is not an independent source. Only actual object URLs count. */
+const sourceUrlKey=(value:string):string|null=>{
+ try {
+  const url=new URL(value);
+  if(url.protocol!=="https:"&&url.protocol!=="http:")return null;
+  url.hash="";
+  return url.toString();
+ }catch{return null;}
+};
 export function extractStructuralRules(references:readonly ReferenceEvidence[],minimumIndependentObjects=2):ExtractionResult{
  if(!Number.isInteger(minimumIndependentObjects)||minimumIndependentObjects<2)throw Error("At least two independent objects required");
  const eligible:ReferenceEvidence[]=[];
  const excluded:ExtractionResult["excluded"]=[];
+ const ids=new Set<string>();
+ const urls=new Set<string>();
  const hashes=new Set<string>();
  const families=new Set<string>();
  for(const r of references){
-  if(!r.objectId||!r.institution||!r.objectUrl||!r.objectFamilyId||!r.structuralFeaturesVersion||!r.imageSha256||!/^[a-f0-9]{64}$/i.test(r.imageSha256)){
-   excluded.push({objectId:r.objectId,reason:"missing-or-invalid-provenance"});continue;
+  const objectId=typeof r?.objectId==="string"?r.objectId.trim():"";
+  const institution=typeof r?.institution==="string"?r.institution.trim():"";
+  const family=typeof r?.objectFamilyId==="string"?r.objectFamilyId.trim():"";
+  const hash=typeof r?.imageSha256==="string"?r.imageSha256.toLowerCase():"";
+  const url=typeof r?.objectUrl==="string"?sourceUrlKey(r.objectUrl):null;
+  if(!objectId||!institution||!url||!family||!r.structuralFeaturesVersion||!/^[a-f0-9]{64}$/.test(hash)||!Array.isArray(r.operations)){
+   excluded.push({objectId:objectId||"unknown",reason:"missing-or-invalid-provenance"});continue;
   }
   if(r.rightsStatus!=="approved"||r.culturalReview!=="approved"){
-   excluded.push({objectId:r.objectId,reason:"rights-or-cultural-review-not-approved"});continue;
+   excluded.push({objectId,reason:"rights-or-cultural-review-not-approved"});continue;
   }
-  if(hashes.has(r.imageSha256)||families.has(r.institution+"::"+r.objectFamilyId)){
-   excluded.push({objectId:r.objectId,reason:"duplicate-image-or-object-family"});continue;
+  const familyKey=institution.toLowerCase()+"::"+family.toLowerCase();
+  if(ids.has(objectId)||urls.has(url)||hashes.has(hash)||families.has(familyKey)){
+   excluded.push({objectId,reason:"duplicate-image-or-object-family"});continue;
   }
   if(r.operations.some(op=>!operations.includes(op))){
-   excluded.push({objectId:r.objectId,reason:"unknown-structural-operation"});continue;
+   excluded.push({objectId,reason:"unknown-structural-operation"});continue;
   }
-  hashes.add(r.imageSha256);families.add(r.institution+"::"+r.objectFamilyId);eligible.push(r);
+  ids.add(objectId);urls.add(url);hashes.add(hash);families.add(familyKey);eligible.push(r);
  }
  const rules:StructuralRule[]=[];
  for(const operation of operations){
