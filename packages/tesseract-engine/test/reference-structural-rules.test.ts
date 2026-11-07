@@ -37,6 +37,9 @@ describe("reference structural rule gates",()=>{
   expect(malformed.excluded.map(x=>x.reason)).toContain("missing-or-invalid-provenance");
   const badUrl=extractStructuralRules([item("a"),item("b",{objectUrl:"file:///tmp/source"})]);
   expect(badUrl.rules).toEqual([]);
+  const nullRecord=extractStructuralRules([item("a"),null as unknown as ReferenceEvidence]);
+  expect(nullRecord.rules).toEqual([]);
+  expect(nullRecord.excluded.map(x=>x.reason)).toContain("missing-or-invalid-provenance");
  });
  it("rejects unsupported lineage and never grants manufacturing validation",()=>{
   const rules=extractStructuralRules([item("a"),item("b")]).rules;
