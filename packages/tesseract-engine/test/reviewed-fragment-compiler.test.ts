@@ -30,6 +30,13 @@ describe("reviewed fragment evidence compiler",()=>{
   expect(out.counts.fragments).toBe(0);
   expect(out.excluded.some(x=>x.reason==="validation-holdout-identity-leakage")).toBe(true);
  });
+ it("blocks holdout leakage through the same source object URL even when IDs and hashes differ",()=>{
+  const trainA=record("1"),trainB=record("2"),holdout=record("3","ukrainian-ornament","holdout");
+  holdout.reference.objectUrl=trainA.reference.objectUrl+"#alternate-view";
+  const out=compileReviewedFragmentEvidence([trainA,trainB,holdout]);
+  expect(out.counts.fragments).toBe(0);
+  expect(out.excluded.some(x=>x.objectId==="1"&&x.reason==="validation-holdout-identity-leakage")).toBe(true);
+ });
  it("blocks conflicting tradition labels for the same image",()=>{
   const a=record("1"),b=record("2"),conflict=record("1","other-tradition");
   const out=compileReviewedFragmentEvidence([a,b,conflict]);
